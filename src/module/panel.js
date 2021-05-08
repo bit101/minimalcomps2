@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Style } from "./style.js";
 
 export class Panel extends Component {
   constructor(parent, x, y, w, h) {
@@ -13,12 +14,16 @@ export class Panel extends Component {
     const style = document.createElement("style");
     style.textContent = `
     .MinimalPanel {
-      ${Component.baseStyle}
-      ${Component.shadowStyle}
+      ${Style.baseStyle}
+      ${Style.shadowStyle}
       background-color: #eee;
       height: 100%;
       position: relative;
       width: 100%;
+    }
+    .MinimalPanel:disabled,
+    .MinimalPanel[disabled] {
+      ${Style.disabledStyle}
     }
     `;
     this.shadowRoot.append(style, panel);

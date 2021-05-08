@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Style } from "./style.js";
 
 export class TextArea extends Component {
   constructor(parent, x, y, text) {
@@ -14,29 +15,21 @@ export class TextArea extends Component {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalTextArea {
-        ${Component.baseStyle}
-        ${Component.shadowStyle}
-        background-color: #fff;
-        border: none;
-        color: #333;
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-        padding: 2 2px;
+        ${Style.baseStyle}
+        ${Style.textStyle}
+        ${Style.shadowStyle}
+        padding: 4px;
         resize: none;
-        width: 100%;
       }
       .MinimalTextArea:disabled,
       .MinimalTextArea[disabled] {
-        opacity: 50%;
-        user-select: none;
+        ${Style.disabledStyle}
       }
       .MinimalTextArea::selection {
-        background: #666;
-        color: #fff;
+        ${Style.textSelectionStyle}
       }
       .MinimalTextArea:focus {
-        ${Component.focusStyle}
+        ${Style.focusStyle}
       }
     `;
     this.shadowRoot.append(style, textArea);
@@ -48,6 +41,15 @@ export class TextArea extends Component {
 
   set text(text) {
     this.textArea.value = text;
+  }
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    this.textArea.disabled = !this.enabled;
   }
 }
 

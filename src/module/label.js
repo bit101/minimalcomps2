@@ -1,24 +1,40 @@
 import { Component } from "./component.js";
+import { Style } from "./style.js";
 
 export class Label extends Component {
   constructor(parent, x, y, text) {
     super(parent, x, y);
 
-    const label = document.createElement("div");
-    label.textContent = text;
-    label.setAttribute("class", "MinimalLabel");
+    this.label = document.createElement("div");
+    this.label.textContent = text;
+    this.label.setAttribute("class", "MinimalLabel");
 
     const style = document.createElement("style");
     style.textContent = `
       .MinimalLabel {
-        ${Component.baseStyle}
+        ${Style.baseStyle}
         white-space: nowrap;
-        font: 10px sans;
-        color: #000;
+        color: #333;
         user-select: none;
       }
+      .MinimalLabelDisabled {
+        ${Style.disabledStyle}
+      }
     `;
-    this.shadowRoot.append(style, label);
+    this.shadowRoot.append(style, this.label);
+  }
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    if (this.enabled) {
+      this.label.setAttribute("class", "MinimalLabel");
+    } else {
+      this.label.setAttribute("class", "MinimalLabel MinimalLabelDisabled");
+    }
   }
 }
 

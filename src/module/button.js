@@ -1,22 +1,26 @@
 import { Component } from "./component.js";
+import { Style } from "./style.js";
 
 export class Button extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
 
-    this.setAttribute("class", "MinimalButton");
     this.setSize(100, 20);
 
-    const button = document.createElement("div");
-    button.setAttribute("class", "MinimalButton");
-    button.setAttribute("tabindex", "0");
+    this.button = document.createElement("div");
+    this.button.setAttribute("class", "MinimalButton");
+    this.button.setAttribute("tabindex", "0");
 
-    const label = document.createElement("div");
-    label.textContent = text;
-    label.setAttribute("class", "MinimalButtonLabel");
-    button.appendChild(label);
+    this.label = document.createElement("div");
+    this.label.textContent = text;
+    this.label.setAttribute("class", "MinimalButtonLabel");
+    this.button.appendChild(this.label);
 
-    this.addEventListener("click", defaultHandler);
+    this.addEventListener("click", (event) => {
+      if (this.enabled) {
+        defaultHandler(event);
+      }
+    })
     this.addEventListener("keypress", (event) => {
       if (event.keyCode === 13) {
         this.click();
@@ -26,9 +30,8 @@ export class Button extends Component {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalButtonLabel {
-        ${Component.baseStyle}
-        ${Component.fontStyle}
-        color: #000;
+        ${Style.baseStyle}
+        color: #333;
         text-align: center;
         top: 50%;
         transform: translateY(-50%);
@@ -36,9 +39,10 @@ export class Button extends Component {
         white-space: nowrap;
         width: 100%;
       }
-      .MinimalButton {
-        ${Component.baseStyle}
-        background-color: #fff;
+      .MinimalButton,
+      .MinimalButtonDisabled {
+        ${Style.baseStyle}
+        background-color: #eee;
         border-radius: 0;
         border: 1px solid #999;
         cursor: pointer;
@@ -47,23 +51,34 @@ export class Button extends Component {
         width: 100%;
       }
       .MinimalButton:hover {
-        background-color: #eee;
+        background-color: #fff;
       }
       .MinimalButton:active {
         background-color: #ccc;
       }
-      .MinimalButton:disabled,
-      .MinimalButton[disabled] {
-        cursor: default;
-        opacity: 0.5;
+      .MinimalButtonDisabled {
+        ${Style.disabledStyle}
       }
       .MinimalButton:focus {
-        ${Component.focusStyle}
+        ${Style.focusStyle}
       }
     `;
-    this.shadowRoot.append(style, button);
+    this.shadowRoot.append(style, this.button);
   }
 
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    if (this.enabled) {
+        this.button.setAttribute("class", "MinimalButton");
+    } else {
+      this.button.setAttribute("class", "MinimalButtonDisabled");
+    }
+    this.button.enabled = enabled;
+  }
 }
 
 customElements.define("minimal-button", Button);

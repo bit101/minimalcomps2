@@ -1,14 +1,10 @@
 import { Panel } from "./panel.js";
 
-
 export class Component extends HTMLElement {
-  static baseStyle = "box-sizing: border-box;position: absolute;font: 10px sans;";
-  static focusStyle = "outline: 1px solid #ccc; outline-offset: 2px;"
-  static shadowStyle = "box-shadow: inset 1px 1px 2px #808080;"
-
   constructor(parent, x, y) {
     super();
 
+    this._enabled = true;
     this.attachShadow({mode: "open"});
     this.style.position = "absolute";  
     this.move(x, y);
@@ -63,6 +59,14 @@ export class Component extends HTMLElement {
   set height(h) {
     this._height = h;
     this.style.height = h + "px";
+  }
+
+  get enabled() {
+    return this._enabled;
+  }
+
+  set enabled(enabled) {
+    this._enabled = enabled;
   }
 }
 
