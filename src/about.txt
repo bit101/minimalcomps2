@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Lacquer
+- Font Author: Copyright 2019 The Lacquer Project Authors (https://github.com/Lacquer-Font/Lacquer)
+- Font Source: http://fonts.gstatic.com/s/lacquer/v5/EYqzma1QwqpG4_BBB7-AXhttQ5I.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
