@@ -1,3 +1,10 @@
 - tabindex for all
+- no focus when disabled
 - events handled for all
-- handle enable/disable
+
+
+
+- progress bar
+- hslider
+- vslider
+
