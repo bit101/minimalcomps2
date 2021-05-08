@@ -55,6 +55,10 @@ export class Label extends Component {
     this._text = text;
     this.label.textContent = text;
   }
+
+  get width() {
+    return this.label.offsetWidth;
+  }
 }
 
 customElements.define("minimal-label", Label);

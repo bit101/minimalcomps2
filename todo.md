@@ -3,7 +3,6 @@
 
 
 
-- progress bar
 - hslider
 - vslider
 
