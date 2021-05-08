@@ -5,11 +5,18 @@ import { Label } from "./label.js";
 export class Checkbox extends Component {
   constructor(parent, x, y, text, checked, defaultHandler) {
     super(parent, x, y);
+    this._text = text;
+    this._defaultHandler = defaultHandler;
 
-    this.defaultHandler = defaultHandler;
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
     this.setSize(100, 10);
+    this.checked = checked;
+  }
 
-
+  createChildren() {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("class", "MinimalCheckbox");
     this.wrapper.setAttribute("tabindex", "0");
@@ -18,21 +25,11 @@ export class Checkbox extends Component {
     this.check.setAttribute("class", "MinimalCheckboxCheck");
     this.wrapper.appendChild(this.check);
 
-    this.label = new Label(this.wrapper, 15, -1, text);
+    this.label = new Label(this.wrapper, 15, -1, this._text);
+    this.shadowRoot.append(this.wrapper);
+  }
 
-    this.addEventListener("click", (event) => {
-      if(this.enabled) {
-        this.toggle();
-        this.defaultHandler(event);
-      }
-    });
-    this.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-        this.click();
-      }
-    });
-    this.checked = checked;
-
+  createStyle() {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalCheckbox {
@@ -62,7 +59,21 @@ export class Checkbox extends Component {
         ${Style.focusStyle}
       }
     `;
-    this.shadowRoot.append(style, this.wrapper);
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.addEventListener("click", (event) => {
+      if(this.enabled) {
+        this.toggle();
+        this._defaultHandler && this._defaultHandler(event);
+      }
+    });
+    this.addEventListener("keypress", (event) => {
+      if (event.keyCode === 13) {
+        this.click();
+      }
+    });
   }
 
   setCheckStyle() {
@@ -97,6 +108,15 @@ export class Checkbox extends Component {
     super.enabled = enabled;
     this.setCheckStyle();
     this.label.enabled = enabled;
+  }
+
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
   }
 
 }

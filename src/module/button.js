@@ -4,29 +4,29 @@ import { Style } from "./style.js";
 export class Button extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
+    this._text = text;
+    this._defaultHandler = defaultHandler;
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
 
     this.setSize(100, 20);
+  }
 
+  createChildren() {
     this.button = document.createElement("div");
     this.button.setAttribute("class", "MinimalButton");
     this.button.setAttribute("tabindex", "0");
 
     this.label = document.createElement("div");
-    this.label.textContent = text;
+    this.label.textContent = this._text;
     this.label.setAttribute("class", "MinimalButtonLabel");
     this.button.appendChild(this.label);
+    this.shadowRoot.append(this.button);
+  }
 
-    this.addEventListener("click", (event) => {
-      if (this.enabled) {
-        defaultHandler(event);
-      }
-    })
-    this.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-        this.click();
-      }
-    });
-
+  createStyle() {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalButtonLabel {
@@ -63,7 +63,18 @@ export class Button extends Component {
         ${Style.focusStyle}
       }
     `;
-    this.shadowRoot.append(style, this.button);
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.addEventListener("click", (event) => {
+      this.enabled && this._defaultHandler && this._defaultHandler(event);
+    });
+    this.addEventListener("keypress", (event) => {
+      if (event.keyCode === 13) {
+        this.click();
+      }
+    });
   }
 
   get enabled() {

@@ -2,16 +2,27 @@ import { Component } from "./component.js";
 import { Style } from "./style.js";
 
 export class TextArea extends Component {
-  constructor(parent, x, y, text) {
+  constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
+    this._text = text;
+    this._defaultHandler = defaultHandler;
 
-    const textArea = document.createElement("textArea");
-    textArea.setAttribute("class", "MinimalTextArea");
-    textArea.value = text;
-    this.textArea = textArea;
+    this.createStyle();
+    this.createChildren();
+    this.createListeners();
 
     this.setSize(100, 100);
+ }
 
+  createChildren() {
+    this.textArea = document.createElement("textArea");
+    this.textArea.setAttribute("class", "MinimalTextArea");
+    this.textArea.value = this._text;
+    this.textArea = this.textArea;
+    this.shadowRoot.append(this.textArea);
+  }
+
+  createStyle() {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalTextArea {
@@ -32,14 +43,21 @@ export class TextArea extends Component {
         ${Style.focusStyle}
       }
     `;
-    this.shadowRoot.append(style, textArea);
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.textArea.addEventListener("input", (event) => {
+      this.enabled && this._defaultHandler && this._defaultHandler(event);
+    });
   }
 
   get text() {
-    return this.textArea.value;
+    return this._text;
   }
 
   set text(text) {
+    this._text = text;
     this.textArea.value = text;
   }
 

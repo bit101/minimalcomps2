@@ -2,16 +2,27 @@ import { Component } from "./component.js";
 import { Style } from "./style.js";
 
 export class TextInput extends Component {
-  constructor(parent, x, y, text) {
+  constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
+    this._text = text;
+    this._defaultHandler = defaultHandler;
 
+    this.createStyle();
+    this.createChildren();
+    this.createListeners();
+
+    this.setSize(100, 20);
+  }
+
+  createChildren() {
     this.input = document.createElement("input");
     this.input.setAttribute("type", "text");
     this.input.setAttribute("class", "MinimalTextInput");
-    this.input.value = text;
+    this.input.value = this._text;
+    this.shadowRoot.append(this.input);
+  }
 
-    this.setSize(100, 20);
-
+  createStyle() {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalTextInput {
@@ -31,14 +42,21 @@ export class TextInput extends Component {
         ${Style.focusStyle}
       }
     `;
-    this.shadowRoot.append(style, this.input);
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.input.addEventListener("input", (event) => {
+      this.enabled && this._defaultHandler && this._defaultHandler(event);
+    });
   }
 
   get text() {
-    return this.input.value;
+    return this._text;
   }
 
   set text(text) {
+    this._text = text;
     this.input.value = text;
   }
 

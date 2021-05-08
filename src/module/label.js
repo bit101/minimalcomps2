@@ -4,12 +4,21 @@ import { Style } from "./style.js";
 export class Label extends Component {
   constructor(parent, x, y, text) {
     super(parent, x, y);
-
     this._text = text;
+
+    this.createChildren();
+    this.createStyle();
+  }
+
+  createChildren() {
+    this._text = this._text;
     this.label = document.createElement("div");
     this.label.textContent = this._text;
     this.label.setAttribute("class", "MinimalLabel");
+    this.shadowRoot.append(this.label);
+  }
 
+  createStyle() {
     const style = document.createElement("style");
     style.textContent = `
       .MinimalLabel {
@@ -22,7 +31,7 @@ export class Label extends Component {
         ${Style.disabledStyle}
       }
     `;
-    this.shadowRoot.append(style, this.label);
+    this.shadowRoot.append(style);
   }
 
   get enabled() {
