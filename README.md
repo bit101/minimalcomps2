@@ -47,3 +47,7 @@ So far we have the following components:
 - VSlider
 
 More to come.
+
+### Use
+
+Currently implemented via JS Modules. Not sure how it will play out in the long run, but you can get an idea of how it works in the `demo/index.html` and `demo/main.js` files.
