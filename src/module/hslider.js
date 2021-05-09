@@ -131,15 +131,19 @@ export class HSlider extends Component {
   //////////////////////////////////
   
   addLabels(text) {
-    this.label = document.createElement("div");
-    this.label.setAttribute("class", "MinimalSliderLabel")
-    this.label.textContent = text;
-    this.shadowRoot.append(this.label);
+    if (!this.label) {
+      this.label = document.createElement("div");
+      this.label.setAttribute("class", "MinimalSliderLabel")
+      this.shadowRoot.append(this.label);
+      this.label.textContent = text;
+    }
 
-    this.valueLabel = document.createElement("div");
-    this.valueLabel.setAttribute("class", "MinimalSliderLabel")
-    this.valueLabel.textContent = this.value;
-    this.shadowRoot.append(this.valueLabel);
+    if (!this.valueLabel) {
+      this.valueLabel = document.createElement("div");
+      this.valueLabel.setAttribute("class", "MinimalSliderLabel")
+      this.valueLabel.textContent = this.value;
+      this.shadowRoot.append(this.valueLabel);
+    }
 
     this.updateLabelStyles();
   }

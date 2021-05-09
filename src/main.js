@@ -5,6 +5,7 @@ const h1 = new HSlider(panel, 70, 20, 10, 0, 100, (event) => console.log(event.t
 h1.height = 5;
 h1.handleSize = 5;
 h1.width = 290;
+h1.addLabels("Tiny 1")
 const h2 = new HSlider(panel, 70, 35, 30, 0, 100)
 h2.height = 5;
 h2.width = 290;
