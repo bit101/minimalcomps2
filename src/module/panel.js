@@ -9,6 +9,10 @@ export class Panel extends Component {
     this.setSize(w, h);
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     const panel = document.createElement("div");
     panel.setAttribute("class", "MinimalPanel");
@@ -34,6 +38,10 @@ export class Panel extends Component {
     this.shadowRoot.append(style);
   }
 
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+  
   addChild(child) {
     this.shadowRoot.append(child);
   }

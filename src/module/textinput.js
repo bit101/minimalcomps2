@@ -9,8 +9,13 @@ export class TextInput extends Component {
     this.createListeners();
 
     this.setSize(100, 20);
+    this.addEventListener("input", defaultHandler);
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this.input = document.createElement("input");
     this.input.setAttribute("type", "text");
@@ -43,9 +48,38 @@ export class TextInput extends Component {
   }
 
   createListeners() {
-    this.input.addEventListener("input", (event) => {
-      this.enabled && this._defaultHandler && this._defaultHandler(event);
-    });
+    this.onInput = this.onInput.bind(this);
+    this.input.addEventListener("input", this.onInput);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+  
+  onInput() {
+    this._text = this.input.value;
+    this.dispatchEvent(new Event("input"));
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.input.disabled = !this.enabled;
+      if (this.enabled) {
+        this.input.addEventListener("input", this.onInput);
+      } else {
+        this.input.removeEventListener("input", this.onInput);
+      }
+    }
   }
 
   get text() {
@@ -57,14 +91,6 @@ export class TextInput extends Component {
     this.input.value = text;
   }
 
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    super.enabled = enabled;
-    this.input.disabled = !this.enabled;
-  }
 }
 
 customElements.define("minimal-textinput", TextInput);

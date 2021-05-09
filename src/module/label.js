@@ -7,6 +7,10 @@ export class Label extends Component {
     this.createStyle();
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this._text = this._text;
     this.label = document.createElement("div");
@@ -31,6 +35,11 @@ export class Label extends Component {
     this.shadowRoot.append(style);
   }
 
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
   get enabled() {
     return super.enabled;
   }

@@ -2,7 +2,6 @@ export class Checkbox extends Component {
   constructor(parent, x, y, text, checked, defaultHandler) {
     super(parent, x, y);
     this._text = text;
-    this._defaultHandler = defaultHandler;
 
     this.createChildren();
     this.createStyle();
@@ -10,8 +9,13 @@ export class Checkbox extends Component {
 
     this.setSize(100, 10);
     this.checked = checked;
+    this.addEventListener("click", defaultHandler);
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("class", "MinimalCheckbox");
@@ -59,29 +63,53 @@ export class Checkbox extends Component {
   }
 
   createListeners() {
-    this.addEventListener("click", (event) => {
-      if(this.enabled) {
-        this.toggle();
-        this._defaultHandler && this._defaultHandler(event);
-      }
-    });
-    this.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-        this.click();
-      }
-    });
+    this.onClick = this.onClick.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this.onClick);
+    this.addEventListener("keypress", this.onKeyPress);
   }
 
-  setCheckStyle() {
-    let className = "MinimalCheckboxCheck ";
-    if (this.checked) {
-      className = "MinimalCheckboxCheckChecked ";
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  onClick(event) {
+    event.stopPropagation();
+    if (this.enabled) {
+      this.toggle();
+      this.dispatchEvent(new Event("click"));
     }
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode == 13 && this.enabled) {
+      this.wrapper.click();
+    }
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  toggle() {
+    this.checked = !this.checked;
+  }
+  
+  updateCheckStyle() {
+    let className = this.checked
+      ? "MinimalCheckboxCheckChecked "
+      : "MinimalCheckboxCheck ";
+
     if (!this.enabled) {
       className += "MinimalCheckboxCheckDisabled";
     }
     this.check.setAttribute("class", className);
   }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
 
   get checked() {
     return this._checked;
@@ -89,11 +117,7 @@ export class Checkbox extends Component {
 
   set checked(checked) {
     this._checked = checked;
-    this.setCheckStyle();
-  }
-
-  toggle() {
-    this.checked = !this.checked;
+    this.updateCheckStyle();
   }
 
   get enabled() {
@@ -101,13 +125,15 @@ export class Checkbox extends Component {
   }
 
   set enabled(enabled) {
-    super.enabled = enabled;
-    this.setCheckStyle();
-    this.label.enabled = enabled;
-    if (this.enabled) {
-      this.wrapper.tabIndex = 0;
-    } else {
-      this.wrapper.tabIndex = -1;
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.updateCheckStyle();
+      this.label.enabled = enabled;
+      if (this.enabled) {
+        this.wrapper.tabIndex = 0;
+      } else {
+        this.wrapper.tabIndex = -1;
+      }
     }
   }
 

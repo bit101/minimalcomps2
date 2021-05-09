@@ -70,6 +70,12 @@ export class VSlider extends HSlider {
   // General
   //////////////////////////////////
 
+  calculateValueFromPos(y) {
+    const percent = 1 - y / (this.height - this.handleSize);
+    const value = this.min + (this.max - this.min) * percent;
+    this.updateValue(value);
+  }
+
   updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     percent = Math.max(0, percent);
@@ -92,12 +98,6 @@ export class VSlider extends HSlider {
 
   updateSliderSize(w, h) {
     this.setSize(h, w);
-  }
-
-  calculateValueFromPos(y) {
-    const percent = 1 - y / (this.height - this.handleSize);
-    const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
   }
 
   //////////////////////////////////

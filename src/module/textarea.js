@@ -9,13 +9,17 @@ export class TextArea extends Component {
     this.createListeners();
 
     this.setSize(100, 100);
+    this.addEventListener("input", defaultHandler);
  }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this.textArea = document.createElement("textArea");
     this.textArea.setAttribute("class", "MinimalTextArea");
     this.textArea.value = this._text;
-    this.textArea = this.textArea;
     this.shadowRoot.append(this.textArea);
   }
 
@@ -44,9 +48,38 @@ export class TextArea extends Component {
   }
 
   createListeners() {
-    this.textArea.addEventListener("input", (event) => {
-      this.enabled && this._defaultHandler && this._defaultHandler(event);
-    });
+    this.onInput = this.onInput.bind(this);
+    this.textArea.addEventListener("input", this.onInput);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+  
+  onInput() {
+    this._text = this.textArea.value;
+    this.dispatchEvent(new Event("input"));
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.textArea.disabled = !this.enabled;
+      if (this.enabled) {
+        this.textArea.addEventListener("input", this.onInput);
+      } else {
+        this.textArea.removeEventListener("input", this.onInput);
+      }
+    }
   }
 
   get text() {
@@ -56,15 +89,6 @@ export class TextArea extends Component {
   set text(text) {
     this._text = text;
     this.textArea.value = text;
-  }
-
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    super.enabled = enabled;
-    this.textArea.disabled = !this.enabled;
   }
 }
 

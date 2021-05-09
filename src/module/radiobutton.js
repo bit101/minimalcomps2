@@ -4,7 +4,6 @@ export class RadioButton extends Component {
     RadioButtonGroup.addToGroup(group, this);
 
     this._group = group;
-    this._defaultHandler = defaultHandler;
     this._text = text;
 
     this.createStyle();
@@ -13,8 +12,13 @@ export class RadioButton extends Component {
 
     this.setSize(100, 10);
     this.checked = checked;
+    this.addEventListener("click", defaultHandler);
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("class", "MinimalRadioButton");
@@ -65,31 +69,51 @@ export class RadioButton extends Component {
   }
 
   createListeners() {
-    this.addEventListener("click", (event) => {
-      if(this.enabled) {
-        this.toggle();
-        this._defaultHandler && this._defaultHandler(event);
-      }
-    });
-    this.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-        this.click();
-      }
-    });
+    this.onClick = this.onClick.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this.onClick);
+    this.wrapper.addEventListener("keypress", this.onKeyPress);
   }
 
-  setCheckStyle() {
-    let className = "MinimalRadioButtonCheck ";
-    if (this.checked) {
-      className = "MinimalRadioButtonCheckChecked ";
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  onClick(event) {
+    event.stopPropagation();
+    if (this.enabled) {
+      this.checked = true;
+      this.dispatchEvent(new Event("click"));
     }
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode == 13 && this.enabled) {
+      this.wrapper.click();
+    }
+  }
+
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+  
+  updateCheckStyle() {
+    let className = this.checked
+      ? "MinimalRadioButtonCheckChecked "
+      : "MinimalRadioButtonCheck ";
+
     if (!this.enabled) {
       className += "MinimalRadioButtonCheckDisabled";
     }
     this.check.setAttribute("class", className);
   }
 
-
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
   get checked() {
     return this._checked;
   }
@@ -99,11 +123,7 @@ export class RadioButton extends Component {
       RadioButtonGroup.clearGroup(this._group);
     }
     this._checked = checked;
-    this.setCheckStyle();
-  }
-
-  toggle() {
-    this.checked = !this.checked;
+    this.updateCheckStyle();
   }
 
   get enabled() {
@@ -111,13 +131,15 @@ export class RadioButton extends Component {
   }
 
   set enabled(enabled) {
-    super.enabled = enabled;
-    this.setCheckStyle();
-    this.label.enabled = enabled;
-    if (this.enabled) {
-      this.wrapper.tabIndex = 0;
-    } else {
-      this.wrapper.tabIndex = -1;
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.updateCheckStyle();
+      this.label.enabled = enabled;
+      if (this.enabled) {
+        this.wrapper.tabIndex = 0;
+      } else {
+        this.wrapper.tabIndex = -1;
+      }
     }
   }
 
@@ -129,7 +151,6 @@ export class RadioButton extends Component {
     this._text = text;
     this.label.text = text;
   }
-
 }
 
 customElements.define("minimal-radiobutton", RadioButton);

@@ -2,15 +2,19 @@ export class Button extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
-    this._defaultHandler = defaultHandler;
 
     this.createChildren();
     this.createStyle();
     this.createListeners();
 
     this.setSize(100, 20);
+    this.addEventListener("click", defaultHandler);
   }
 
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
   createChildren() {
     this.button = document.createElement("div");
     this.button.setAttribute("class", "MinimalButton");
@@ -64,15 +68,33 @@ export class Button extends Component {
   }
 
   createListeners() {
-    this.addEventListener("click", (event) => {
-      this.enabled && this._defaultHandler && this._defaultHandler(event);
-    });
-    this.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-        this.click();
-      }
-    });
+    this.onClick = this.onClick.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.button.addEventListener("click", this.onClick);
+    this.button.addEventListener("keypress", this.onKeyPress);
   }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  onClick(event) {
+    event.stopPropagation();
+    if (this.enabled) {
+      this.dispatchEvent(new Event("click"));
+    }
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode == 13 && this.enabled) {
+      this.click();
+    }
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
 
   get enabled() {
     return super.enabled;
@@ -88,6 +110,15 @@ export class Button extends Component {
       this.button.tabIndex = -1;
     }
     this.button.enabled = enabled;
+  }
+
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.textContent = text;
   }
 }
 

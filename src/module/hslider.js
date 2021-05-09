@@ -148,6 +148,12 @@ export class HSlider extends Component {
     this.updateLabelStyles();
   }
 
+  calculateValueFromPos(x) {
+    const percent = x / (this.width - this.handleSize);
+    const value = this.min + (this.max - this.min) * percent;
+    this.updateValue(value);
+  }
+
   roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
@@ -200,12 +206,6 @@ export class HSlider extends Component {
       this.updateValueLabel();
       this.dispatchEvent(new Event("change"));
     }
-  }
-
-  calculateValueFromPos(x) {
-    const percent = x / (this.width - this.handleSize);
-    const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
   }
 
   updateValueLabel() {

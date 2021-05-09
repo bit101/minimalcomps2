@@ -1,7 +1,7 @@
 export class ProgressBar extends Component {
-  constructor(parent, x, y, value, max) {
+  constructor(parent, x, y, progress, max) {
     super(parent, x, y);
-    this._value = value;
+    this._progress = progress;
     this._max = max;
 
     this.createChildren();
@@ -10,6 +10,10 @@ export class ProgressBar extends Component {
     this.setSize(100, 10);
     this.updateBar();
   }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
 
   createChildren() {
     this.bar = document.createElement("div");
@@ -42,28 +46,41 @@ export class ProgressBar extends Component {
     this.shadowRoot.append(style);
   }
 
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+  
   updateBar() {
-    let percent = this.value / this.max;
+    let percent = this.progress / this.max;
     percent = Math.max(0, percent);
     percent = Math.min(1, percent);
     this.fill.style.width = percent * this.width + "px";
   }
 
-  get value() {
-    return this._value;
-  }
-
-  set value(value) {
-    this._value = value;
-    this.updateBar();
-  }
-
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
   get max() {
     return this._max;
   }
 
   set max(max) {
     this._max = max;
+    let progress = Math.min(this.progress, this.max);
+    this.progress = Math.max(progress, 0);
+    this.updateBar();
+  }
+
+  get progress() {
+    return this._progress;
+  }
+
+  set progress(progress) {
+    progress = Math.min(progress, this.max);
+    progress = Math.max(progress, 0);
+    this._progress = progress;
     this.updateBar();
   }
 

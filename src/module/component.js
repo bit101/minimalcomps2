@@ -28,6 +28,37 @@ export class Component extends HTMLElement {
     this.height = h;
   }
   
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  get enabled() {
+    return this._enabled;
+  }
+
+  set enabled(enabled) {
+    this._enabled = enabled;
+  }
+  
+  get height() {
+    return this._height;
+  }
+
+  set height(h) {
+    this._height = h;
+    this.style.height = h + "px";
+  }
+
+  get width() {
+    return this._width;
+  }
+
+  set width(w) {
+    this._width = w;
+    this.style.width = w + "px";
+  }
+
   get x() {
     return this._x;
   }
@@ -45,33 +76,8 @@ export class Component extends HTMLElement {
     this._y = y;
     this.style.top = y + "px";
   }
-
-  get width() {
-    return this._width;
-  }
-
-  set width(w) {
-    this._width = w;
-    this.style.width = w + "px";
-  }
-
-  get height() {
-    return this._height;
-  }
-
-  set height(h) {
-    this._height = h;
-    this.style.height = h + "px";
-  }
-
-  get enabled() {
-    return this._enabled;
-  }
-
-  set enabled(enabled) {
-    this._enabled = enabled;
-  }
 }
+
 
 customElements.define("minimal-component", Component);
 
