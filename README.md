@@ -4,7 +4,7 @@ Pure HTML/JS reimagining of https://github.com/minimalcomps/minimalcomps
 
 Implemented using Web Components and Shadow DOM. Probably imperfectly.
 
-Very much a work in progress at the moment.
+Very early preview and very much a work in progress at the moment.
 
 ## Goals
 
