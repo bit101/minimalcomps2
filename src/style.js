@@ -2,7 +2,7 @@ export class Style {
   static baseStyle = `
     box-sizing: border-box;
     position: absolute;
-    font: 10px sans;
+    font: 10px sans-serif;
   `;
   static disabledStyle = ` 
     cursor: default;

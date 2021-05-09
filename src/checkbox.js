@@ -25,7 +25,7 @@ export class Checkbox extends Component {
     this.check.setAttribute("class", "MinimalCheckboxCheck");
     this.wrapper.appendChild(this.check);
 
-    this.label = new Label(this.wrapper, 15, -1, this._text);
+    this.label = new Label(this.wrapper, 15, 0, this._text);
     this.shadowRoot.append(this.wrapper);
   }
 

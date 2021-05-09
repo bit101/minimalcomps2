@@ -28,7 +28,7 @@ export class RadioButton extends Component {
     this.check.setAttribute("class", "MinimalRadioButtonCheck");
     this.wrapper.appendChild(this.check);
 
-    this.label = new Label(this.wrapper, 15, -1, this.text);
+    this.label = new Label(this.wrapper, 15, 0, this.text);
 
     this.shadowRoot.append(this.wrapper);
   }
