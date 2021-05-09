@@ -1,6 +1,3 @@
-import { HSlider } from "./hslider.js";
-import { Style } from "./style.js";
-
 export class VSlider extends HSlider {
 
   setSliderSize(w, h) {
@@ -10,7 +7,7 @@ export class VSlider extends HSlider {
   createChildren() {
     this.slider = document.createElement("div");
     this.slider.setAttribute("class", "MinimalSlider");
-    this.slider.setAttribute("tabindex", "0");
+    this.slider.tabIndex = 0;
 
     this.handle = document.createElement("div");
     this.handle.setAttribute("class", "MinimalSliderHandle");
@@ -29,6 +26,9 @@ export class VSlider extends HSlider {
         height: 100%;
         width: 100%;
       }
+      .MinimalSliderDisabled {
+        ${Style.disabledStyle}
+      }
       .MinimalSliderHandle {
         ${Style.baseStyle}
         background-color: #fff;
@@ -36,15 +36,31 @@ export class VSlider extends HSlider {
         height: ${this.handleSize}px;
         width: 100%;
       }
+      .MinimalSliderHandleDisabled {
+        ${Style.disabledStyle}
+      }
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
+      .MinimalSliderLabel {
+        ${Style.baseStyle}
+        color: #333;
+        white-space: nowrap;
+        text-align: center;
+        overflow: hidden;
+      }
+      .MinimalSliderLabelDisabled {
+        ${Style.disabledStyle}
+      } 
     `;
     this.shadowRoot.append(style);
   }
 
 
   onMouseDown(event) {
+    if (!this.enabled) {
+      return;
+    }
     this.offsetY = event.clientY - this.getBoundingClientRect().top - this.handle.offsetTop;
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       let y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
@@ -57,6 +73,9 @@ export class VSlider extends HSlider {
   }
 
   onMouseMove(event) {
+    if (!this.enabled) {
+      return;
+    }
     let y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
     this.handle.style.top = y + "px";
     this.updateValueFromY(y);
@@ -70,6 +89,7 @@ export class VSlider extends HSlider {
     const value = this.min + (this.max - this.min) * percent;
     const mult = Math.pow(10, this.decimals);
     this._value = Math.round(value * mult) / mult;
+    this.setValueLabel();
     this._defaultHander && this._defaultHander(this._value);
   }
 
@@ -80,6 +100,17 @@ export class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
+  addLabels(text, width) {
+    super.addLabels(text, width);
+    this.label.style.left = (-width + this.width) / 2 + "px";
+    this.label.style.top = "-15px";
+    this.label.style.width = width + "px";
+
+    this.valueLabel.style.width = width + "px";
+    this.valueLabel.style.left = (-width + this.width) / 2 + "px";
+    this.valueLabel.style.top = this.height + 5 + "px";
+  }
+
   get handleSize() {
     return this._handleSize;
   }
@@ -88,6 +119,21 @@ export class VSlider extends HSlider {
     this._handleSize = handleSize;
     this.handle.style.height = handleSize + "px";
     this.updateBar();
+  }
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    console.log(enabled);
+    super.enabled = enabled;
+    this.setEnabledStyle();
+    if (this.enabled) {
+      this.slider.tabIndex = 0;
+    } else {
+      this.slider.tabIndex = -1;
+    }
   }
 
 }

@@ -1,0 +1,257 @@
+export class Component extends HTMLElement{constructor(parent,x,y){super();this._enabled=true;this.attachShadow({mode:"open"});this.style.position="absolute";this.move(x,y);if(!parent){return}if(parent instanceof Panel){parent.addChild(this)}else{parent.appendChild(this)}}move(x,y){this.x=x;this.y=y}setSize(w,h){this.width=w;this.height=h}get x(){return this._x}set x(x){this._x=x;this.style.left=x+"px"}get y(){return this._y}set y(y){this._y=y;this.style.top=y+"px"}get width(){return this._width}set width(w){this._width=w;this.style.width=w+"px"}get height(){return this._height}set height(h){this._height=h;this.style.height=h+"px"}get enabled(){return this._enabled}set enabled(enabled){this._enabled=enabled}}customElements.define("minimal-component",Component);export class Button extends Component{constructor(parent,x,y,text,defaultHandler){super(parent,x,y);this._text=text;this._defaultHandler=defaultHandler;this.createChildren();this.createStyle();this.createListeners();this.setSize(100,20)}createChildren(){this.button=document.createElement("div");this.button.setAttribute("class","MinimalButton");this.button.tabIndex=0;this.label=document.createElement("div");this.label.textContent=this._text;this.label.setAttribute("class","MinimalButtonLabel");this.button.appendChild(this.label);this.shadowRoot.append(this.button)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalButtonLabel {
+        ${Style.baseStyle}
+        color: #333;
+        text-align: center;
+        top: 50%;
+        transform: translateY(-50%);
+        user-select: none;
+        white-space: nowrap;
+        width: 100%;
+      }
+      .MinimalButton,
+      .MinimalButtonDisabled {
+        ${Style.baseStyle}
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: pointer;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+      }
+      .MinimalButton:hover {
+        background-color: #fff;
+      }
+      .MinimalButton:active {
+        background-color: #ccc;
+      }
+      .MinimalButtonDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalButton:focus {
+        ${Style.focusStyle}
+      }
+    `;this.shadowRoot.append(style)}createListeners(){this.addEventListener("click",event=>{this.enabled&&this._defaultHandler&&this._defaultHandler(event)});this.addEventListener("keypress",event=>{if(event.keyCode===13){this.click()}})}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;if(this.enabled){this.button.setAttribute("class","MinimalButton");this.button.tabIndex=0}else{this.button.setAttribute("class","MinimalButtonDisabled");this.button.tabIndex=-1}this.button.enabled=enabled}}customElements.define("minimal-button",Button);export class Checkbox extends Component{constructor(parent,x,y,text,checked,defaultHandler){super(parent,x,y);this._text=text;this._defaultHandler=defaultHandler;this.createChildren();this.createStyle();this.createListeners();this.setSize(100,10);this.checked=checked}createChildren(){this.wrapper=document.createElement("div");this.wrapper.setAttribute("class","MinimalCheckbox");this.wrapper.tabIndex=0;this.check=document.createElement("div");this.check.setAttribute("class","MinimalCheckboxCheck");this.wrapper.appendChild(this.check);this.label=new Label(this.wrapper,15,-1,this._text);this.shadowRoot.append(this.wrapper)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalCheckbox {
+        ${Style.baseStyle}
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalCheckboxCheck {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        width: 10px;
+        height: 10px;
+      }
+      .MinimalCheckboxCheckChecked {
+        ${Style.baseStyle}
+        border: 2px solid #999;
+        background-color: #fff;
+        width: 10px;
+        height: 10px;
+      }
+      .MinimalCheckboxCheckDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalCheckbox:focus {
+        ${Style.focusStyle}
+      }
+    `;this.shadowRoot.append(style)}createListeners(){this.addEventListener("click",event=>{if(this.enabled){this.toggle();this._defaultHandler&&this._defaultHandler(event)}});this.addEventListener("keypress",event=>{if(event.keyCode===13){this.click()}})}setCheckStyle(){let className="MinimalCheckboxCheck ";if(this.checked){className="MinimalCheckboxCheckChecked "}if(!this.enabled){className+="MinimalCheckboxCheckDisabled"}this.check.setAttribute("class",className)}get checked(){return this._checked}set checked(checked){this._checked=checked;this.setCheckStyle()}toggle(){this.checked=!this.checked}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;this.setCheckStyle();this.label.enabled=enabled;if(this.enabled){this.wrapper.tabIndex=0}else{this.wrapper.tabIndex=-1}}get text(){return this._text}set text(text){this._text=text;this.label.text=text}}customElements.define("minimal-checkbox",Checkbox);export class HSlider extends Component{constructor(parent,x,y,value,min,max,defaultHandler){super(parent,x,y);this._min=min;this._max=max;this._decimals=1;this._value=this.roundValue(value);this._defaultHander=defaultHandler;this._handleSize=10;this.createChildren();this.createStyle();this.createListeners();this.setSliderSize(100,this.handleSize);this.updateBar()}setSliderSize(w,h){this.setSize(w,h)}createChildren(){this.slider=document.createElement("div");this.slider.setAttribute("class","MinimalSlider");this.slider.tabIndex=0;this.handle=document.createElement("div");this.handle.setAttribute("class","MinimalSliderHandle");this.slider.appendChild(this.handle);this.shadowRoot.append(this.slider)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalSlider {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalSliderDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalSliderHandle {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+        width: ${this.handleSize}px;
+      }
+      .MinimalSliderHandleDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalSlider:focus {
+        ${Style.focusStyle}
+      }
+      .MinimalSliderLabel {
+        ${Style.baseStyle}
+        color: #333;
+        white-space: nowrap;
+        text-align: right;
+        overflow: hidden;
+      }
+      .MinimalSliderLabelDisabled {
+        ${Style.disabledStyle}
+      } 
+    `;this.shadowRoot.append(style)}createListeners(){this.onMouseDown=this.onMouseDown.bind(this);this.onMouseMove=this.onMouseMove.bind(this);this.onMouseUp=this.onMouseUp.bind(this);this.onKeyDown=this.onKeyDown.bind(this);this.addEventListener("mousedown",this.onMouseDown);this.addEventListener("keydown",this.onKeyDown)}roundValue(value){value=Math.min(value,this.max);value=Math.max(value,this.min);const mult=Math.pow(10,this.decimals);return Math.round(value*mult)/mult}addLabels(text,width){this.label=document.createElement("div");this.label.setAttribute("class","MinimalSliderLabel");this.label.textContent=text;this.label.style.left=-width-5+"px";this.label.style.top=Math.round(this.height/2-6)+"px";this.label.style.width=width+"px";this.shadowRoot.append(this.label);this.valueLabel=document.createElement("div");this.valueLabel.setAttribute("class","MinimalSliderLabel");this.valueLabel.textContent=this.value;this.valueLabel.style.left=this.width+5+"px";this.valueLabel.style.top=Math.round(this.height/2-6)+"px";this.shadowRoot.append(this.valueLabel)}onMouseDown(event){if(!this.enabled){return}this.offsetX=event.clientX-this.getBoundingClientRect().left-this.handle.offsetLeft;if(this.offsetX<0||this.offsetX>this.handleSize){let x=event.clientX-this.getBoundingClientRect().left-this.handleSize/2;this.updateValueFromX(x);this.updateBar();this.offsetX=this.handleSize/2}document.body.addEventListener("mousemove",this.onMouseMove);document.body.addEventListener("mouseup",this.onMouseUp)}onMouseMove(event){if(!this.enabled){return}let x=event.clientX-this.getBoundingClientRect().left-this.offsetX;this.handle.style.left=x+"px";this.updateValueFromX(x);this.updateBar()}updateValueFromX(x){x=Math.min(x,this.width-this.handleSize);x=Math.max(x,0);const percent=x/(this.width-this.handleSize);const value=this.min+(this.max-this.min)*percent;this._value=this.roundValue(value);this.setValueLabel();this._defaultHander&&this._defaultHander(this._value)}setValueLabel(){if(this.valueLabel){this.valueLabel.textContent=this.value}}onMouseUp(){if(!this.enabled){return}document.body.removeEventListener("mousemove",this.onMouseMove);document.body.removeEventListener("mouseup",this.onMouseUp)}onKeyDown(event){if(!this.enabled){return}const inc=1/Math.pow(10,this._decimals);const oldValue=this.value;let value=oldValue;switch(event.keyCode){case 37:case 40:value-=inc;break;case 38:case 39:value+=inc;break;default:break}if(value!=oldValue){this._value=this.roundValue(value);this.updateBar();this.setValueLabel();this._defaultHander&&this._defaultHander(this._value)}}updateBar(){let percent=(this.value-this.min)/(this.max-this.min);percent=Math.max(0,percent);percent=Math.min(1,percent);this.handle.style.left=percent*(this.width-this._handleSize)+"px"}get value(){return this._value}set value(value){this._value=value;this.updateBar()}get min(){return this._min}set min(min){this._min=min;this.updateBar()}get max(){return this._max}set max(max){this._max=max;this.updateBar()}get decimals(){return this._decimals}set decimals(decimals){this._decimals=decimals;this._value=this.roundValue(this._value)}get handleSize(){return this._handleSize}set handleSize(handleSize){this._handleSize=handleSize;this.handle.style.width=handleSize+"px";this.updateBar()}get width(){return super.width}set width(width){super.width=width;if(this.valueLabel){this.valueLabel.style.left=this.width+5+"px"}this.updateBar()}get height(){return super.height}set height(height){super.height=height;if(this.valueLabel){this.valueLabel.style.top=Math.round(this.height/2-6)+"px"}if(this.label){this.label.style.top=Math.round(this.height/2-6)+"px"}}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;this.setEnabledStyle();if(this.enabled){this.slider.tabIndex=0}else{this.slider.tabIndex=-1}}setEnabledStyle(){if(this.enabled){this.label&&this.label.setAttribute("class","MinimalSliderLabel");this.valueLabel&&this.valueLabel.setAttribute("class","MinimalSliderLabel");this.slider.setAttribute("class","MinimalSlider");this.handle.setAttribute("class","MinimalSliderHandle")}else{this.label&&this.label.setAttribute("class","MinimalSliderLabel MinimalSliderLabelDisabled");this.valueLabel&&this.valueLabel.setAttribute("class","MinimalSliderLabel MinimalSliderLabelDisabled");this.slider.setAttribute("class","MinimalSlider MinimalSliderDisabled");this.handle.setAttribute("class","MinimalSliderHandle MinimalSliderHandleDisabled")}}}customElements.define("minimal-hslider",HSlider);export class Label extends Component{constructor(parent,x,y,text){super(parent,x,y);this._text=text;this.createChildren();this.createStyle()}createChildren(){this._text=this._text;this.label=document.createElement("div");this.label.textContent=this._text;this.label.setAttribute("class","MinimalLabel");this.shadowRoot.append(this.label)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalLabel {
+        ${Style.baseStyle}
+        white-space: nowrap;
+        color: #333;
+        user-select: none;
+      }
+      .MinimalLabelDisabled {
+        ${Style.disabledStyle}
+      }
+    `;this.shadowRoot.append(style)}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;if(this.enabled){this.label.setAttribute("class","MinimalLabel")}else{this.label.setAttribute("class","MinimalLabel MinimalLabelDisabled")}}get text(){return this._text}set text(text){this._text=text;this.label.textContent=text}get width(){return this.label.offsetWidth}}customElements.define("minimal-label",Label);export class Panel extends Component{constructor(parent,x,y,w,h){super(parent,x,y);this.createChildren();this.createStyle();this.setSize(w,h)}createChildren(){const panel=document.createElement("div");panel.setAttribute("class","MinimalPanel");this.shadowRoot.append(panel)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalPanel {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #eee;
+        height: 100%;
+        position: relative;
+        width: 100%;
+      }
+      .MinimalPanel:disabled,
+      .MinimalPanel[disabled] {
+        ${Style.disabledStyle}
+      }
+      `;this.shadowRoot.append(style)}addChild(child){this.shadowRoot.append(child)}}customElements.define("minimal-panel",Panel);export class ProgressBar extends Component{constructor(parent,x,y,value,max){super(parent,x,y);this._value=value;this._max=max;this.createChildren();this.createStyle();this.setSize(100,10);this.updateBar()}createChildren(){this.bar=document.createElement("div");this.bar.setAttribute("class","MinimalProgressBar");this.fill=document.createElement("div");this.fill.setAttribute("class","MinimalProgressBarFill");this.bar.appendChild(this.fill);this.shadowRoot.append(this.bar)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalProgressBar {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalProgressBarFill {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+      }
+    `;this.shadowRoot.append(style)}updateBar(){let percent=this.value/this.max;percent=Math.max(0,percent);percent=Math.min(1,percent);this.fill.style.width=percent*this.width+"px"}get value(){return this._value}set value(value){this._value=value;this.updateBar()}get max(){return this._max}set max(max){this._max=max;this.updateBar()}}customElements.define("minimal-progressbar",ProgressBar);export class RadioButton extends Component{constructor(parent,x,y,group,text,checked,defaultHandler){super(parent,x,y);RadioButtonGroup.addToGroup(group,this);this._group=group;this._defaultHandler=defaultHandler;this._text=text;this.createStyle();this.createChildren();this.createListeners();this.setSize(100,10);this.checked=checked}createChildren(){this.wrapper=document.createElement("div");this.wrapper.setAttribute("class","MinimalRadioButton");this.wrapper.tabIndex=0;this.check=document.createElement("div");this.check.setAttribute("class","MinimalRadioButtonCheck");this.wrapper.appendChild(this.check);this.label=new Label(this.wrapper,15,-1,this.text);this.shadowRoot.append(this.wrapper)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalRadioButton {
+        ${Style.baseStyle}
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalRadioButton:focus {
+        ${Style.focusStyle}
+      }
+      .MinimalRadioButtonCheck {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        border-radius: 5px;
+        background-color: #ccc;
+        width: 10px;
+        height: 10px;
+      }
+      .MinimalRadioButtonCheckChecked {
+        ${Style.baseStyle}
+        border-radius: 5px;
+        border: 2px solid #999;
+        background-color: #fff;
+        width: 10px;
+        height: 10px;
+      }
+      .MinimalRadioButtonCheckDisabled {
+        ${Style.disabledStyle}
+      }
+    `;this.shadowRoot.append(style)}createListeners(){this.addEventListener("click",event=>{if(this.enabled){this.toggle();this._defaultHandler&&this._defaultHandler(event)}});this.addEventListener("keypress",event=>{if(event.keyCode===13){this.click()}})}setCheckStyle(){let className="MinimalRadioButtonCheck ";if(this.checked){className="MinimalRadioButtonCheckChecked "}if(!this.enabled){className+="MinimalRadioButtonCheckDisabled"}this.check.setAttribute("class",className)}get checked(){return this._checked}set checked(checked){if(checked){RadioButtonGroup.clearGroup(this._group)}this._checked=checked;this.setCheckStyle()}toggle(){this.checked=!this.checked}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;this.setCheckStyle();this.label.enabled=enabled;if(this.enabled){this.wrapper.tabIndex=0}else{this.wrapper.tabIndex=-1}}get text(){return this._text}set text(text){this._text=text;this.label.text=text}}customElements.define("minimal-radiobutton",RadioButton);export class RadioButtonGroup{static groups={};static getValueForGroup(group){const rbGroup=RadioButtonGroup.groups[group];if(!rbGroup){return null}for(let i=0;i<rbGroup.length;i++){const rb=rbGroup[i];if(rb.checked){return rb.text}}return null}static clearGroup(group){const rbGroup=RadioButtonGroup.groups[group];if(!rbGroup){return}for(let i=0;i<rbGroup.length;i++){const rb=rbGroup[i];rb.checked=false}}static addToGroup(group,rb){if(!RadioButtonGroup.groups[group]){RadioButtonGroup.groups[group]=[]}RadioButtonGroup.groups[group].push(rb)}}export class Style{static baseStyle=`
+    box-sizing: border-box;
+    position: absolute;
+    font: 10px sans;
+  `;static disabledStyle=` 
+    cursor: default;
+    opacity: 0.5;
+    user-select: none;
+  `;static focusStyle=`
+    outline: 1px solid #ccc;
+    outline-offset: 2px;
+  `;static shadowStyle=`
+    box-shadow: inset 1px 1px 2px #808080;
+  `;static textStyle=`
+    background-color: #fff;
+    border: none;
+    color: #333;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  `;static textSelectionStyle=`
+    background: #666;
+    color: #fff;
+  `}export class TextArea extends Component{constructor(parent,x,y,text,defaultHandler){super(parent,x,y);this._text=text;this._defaultHandler=defaultHandler;this.createStyle();this.createChildren();this.createListeners();this.setSize(100,100)}createChildren(){this.textArea=document.createElement("textArea");this.textArea.setAttribute("class","MinimalTextArea");this.textArea.value=this._text;this.textArea=this.textArea;this.shadowRoot.append(this.textArea)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalTextArea {
+        ${Style.baseStyle}
+        ${Style.textStyle}
+        ${Style.shadowStyle}
+        padding: 4px;
+        resize: none;
+      }
+      .MinimalTextArea:disabled,
+      .MinimalTextArea[disabled] {
+        ${Style.disabledStyle}
+      }
+      .MinimalTextArea::selection {
+        ${Style.textSelectionStyle}
+      }
+      .MinimalTextArea:focus {
+        ${Style.focusStyle}
+      }
+    `;this.shadowRoot.append(style)}createListeners(){this.textArea.addEventListener("input",event=>{this.enabled&&this._defaultHandler&&this._defaultHandler(event)})}get text(){return this._text}set text(text){this._text=text;this.textArea.value=text}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;this.textArea.disabled=!this.enabled}}customElements.define("minimal-textarea",TextArea);export class TextInput extends Component{constructor(parent,x,y,text,defaultHandler){super(parent,x,y);this._text=text;this._defaultHandler=defaultHandler;this.createStyle();this.createChildren();this.createListeners();this.setSize(100,20)}createChildren(){this.input=document.createElement("input");this.input.setAttribute("type","text");this.input.setAttribute("class","MinimalTextInput");this.input.value=this._text;this.shadowRoot.append(this.input)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalTextInput {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        ${Style.textStyle}
+        padding: 0 4px;
+      }
+      .MinimalTextInput:disabled,
+      .MinimalTextInput[disabled] {
+        ${Style.disabledStyle}
+      }
+      .MinimalTextInput::selection {
+        ${Style.textSelectionStyle}
+      }
+      .MinimalTextInput:focus {
+        ${Style.focusStyle}
+      }
+    `;this.shadowRoot.append(style)}createListeners(){this.input.addEventListener("input",event=>{this.enabled&&this._defaultHandler&&this._defaultHandler(event)})}get text(){return this._text}set text(text){this._text=text;this.input.value=text}get enabled(){return super.enabled}set enabled(enabled){super.enabled=enabled;this.input.disabled=!this.enabled}}customElements.define("minimal-textinput",TextInput);export class VSlider extends HSlider{setSliderSize(w,h){this.setSize(h,w)}createChildren(){this.slider=document.createElement("div");this.slider.setAttribute("class","MinimalSlider");this.slider.tabIndex=0;this.handle=document.createElement("div");this.handle.setAttribute("class","MinimalSliderHandle");this.slider.appendChild(this.handle);this.shadowRoot.append(this.slider)}createStyle(){const style=document.createElement("style");style.textContent=`
+      .MinimalSlider {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalSliderDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalSliderHandle {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: ${this.handleSize}px;
+        width: 100%;
+      }
+      .MinimalSliderHandleDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalSlider:focus {
+        ${Style.focusStyle}
+      }
+      .MinimalSliderLabel {
+        ${Style.baseStyle}
+        color: #333;
+        white-space: nowrap;
+        text-align: center;
+        overflow: hidden;
+      }
+      .MinimalSliderLabelDisabled {
+        ${Style.disabledStyle}
+      } 
+    `;this.shadowRoot.append(style)}onMouseDown(event){if(!this.enabled){return}this.offsetY=event.clientY-this.getBoundingClientRect().top-this.handle.offsetTop;if(this.offsetY<0||this.offsetY>this.handleSize){let y=event.clientY-this.getBoundingClientRect().top-this.handleSize/2;this.updateValueFromY(y);this.updateBar();this.offsetY=this.handleSize/2}document.body.addEventListener("mousemove",this.onMouseMove);document.body.addEventListener("mouseup",this.onMouseUp)}onMouseMove(event){if(!this.enabled){return}let y=event.clientY-this.getBoundingClientRect().top-this.offsetY;this.handle.style.top=y+"px";this.updateValueFromY(y);this.updateBar()}updateValueFromY(y){y=Math.min(y,this.height-this.handleSize);y=Math.max(y,0);const percent=1-y/(this.height-this.handleSize);const value=this.min+(this.max-this.min)*percent;const mult=Math.pow(10,this.decimals);this._value=Math.round(value*mult)/mult;this.setValueLabel();this._defaultHander&&this._defaultHander(this._value)}updateBar(){let percent=(this.value-this.min)/(this.max-this.min);percent=Math.max(0,percent);percent=Math.min(1,percent);this.handle.style.top=this.height-this.handleSize-percent*(this.height-this._handleSize)+"px"}addLabels(text,width){super.addLabels(text,width);this.label.style.left=(-width+this.width)/2+"px";this.label.style.top="-15px";this.label.style.width=width+"px";this.valueLabel.style.width=width+"px";this.valueLabel.style.left=(-width+this.width)/2+"px";this.valueLabel.style.top=this.height+5+"px"}get handleSize(){return this._handleSize}set handleSize(handleSize){this._handleSize=handleSize;this.handle.style.height=handleSize+"px";this.updateBar()}get enabled(){return super.enabled}set enabled(enabled){console.log(enabled);super.enabled=enabled;this.setEnabledStyle();if(this.enabled){this.slider.tabIndex=0}else{this.slider.tabIndex=-1}}}customElements.define("minimal-vslider",VSlider);

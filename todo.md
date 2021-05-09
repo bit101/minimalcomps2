@@ -1,8 +1,2 @@
-- tabindex for all
-- no focus when disabled
-
-
-
-- hslider
-- vslider
-
+- assignable tabindex
+- clean up sliders

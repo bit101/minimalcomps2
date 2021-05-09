@@ -1,6 +1,3 @@
-import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 export class Panel extends Component {
   constructor(parent, x, y, w, h) {
     super(parent, x, y);

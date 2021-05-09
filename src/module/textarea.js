@@ -1,6 +1,3 @@
-import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 export class TextArea extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);

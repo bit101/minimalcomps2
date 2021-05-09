@@ -1,6 +1,3 @@
-import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 export class Button extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -17,7 +14,7 @@ export class Button extends Component {
   createChildren() {
     this.button = document.createElement("div");
     this.button.setAttribute("class", "MinimalButton");
-    this.button.setAttribute("tabindex", "0");
+    this.button.tabIndex = 0;
 
     this.label = document.createElement("div");
     this.label.textContent = this._text;
@@ -84,9 +81,11 @@ export class Button extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-        this.button.setAttribute("class", "MinimalButton");
+      this.button.setAttribute("class", "MinimalButton");
+      this.button.tabIndex = 0;
     } else {
       this.button.setAttribute("class", "MinimalButtonDisabled");
+      this.button.tabIndex = -1;
     }
     this.button.enabled = enabled;
   }

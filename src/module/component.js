@@ -1,5 +1,3 @@
-import { Panel } from "./panel.js";
-
 export class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
@@ -8,6 +6,9 @@ export class Component extends HTMLElement {
     this.attachShadow({mode: "open"});
     this.style.position = "absolute";  
     this.move(x, y);
+    if (!parent) {
+      return;
+    }
     if (parent instanceof Panel) {
       parent.addChild(this);
     } else {

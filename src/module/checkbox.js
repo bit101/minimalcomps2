@@ -1,7 +1,3 @@
-import { Component } from "./component.js";
-import { Style } from "./style.js";
-import { Label } from "./label.js";
-
 export class Checkbox extends Component {
   constructor(parent, x, y, text, checked, defaultHandler) {
     super(parent, x, y);
@@ -19,7 +15,7 @@ export class Checkbox extends Component {
   createChildren() {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("class", "MinimalCheckbox");
-    this.wrapper.setAttribute("tabindex", "0");
+    this.wrapper.tabIndex = 0;
 
     this.check = document.createElement("div");
     this.check.setAttribute("class", "MinimalCheckboxCheck");
@@ -108,6 +104,11 @@ export class Checkbox extends Component {
     super.enabled = enabled;
     this.setCheckStyle();
     this.label.enabled = enabled;
+    if (this.enabled) {
+      this.wrapper.tabIndex = 0;
+    } else {
+      this.wrapper.tabIndex = -1;
+    }
   }
 
   get text() {
