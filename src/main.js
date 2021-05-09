@@ -1,43 +1,36 @@
 import { Panel, HSlider, VSlider } from "./minimalcomps.js";
-// import { Button } from "./module/button.js";
-// import { Label } from "./module/label.js";
-// import { TextInput } from "./module/textinput.js";
-// import { TextArea } from "./module/textarea.js";
-// import { Checkbox } from "./module/checkbox.js";
-// import { RadioButton } from "./module/radiobutton.js";
-// import { RadioButtonGroup } from "./module/radiobuttongroup.js";
-// import { ProgressBar } from "./module/progressbar.js";
-// import { HSlider } from "./module/hslider.js";
-// import { VSlider } from "./module/vslider.js";
 
 const panel = new Panel(document.body, 40, 40, 400, 310);
-const h1 = new HSlider(panel, 70, 20, 10, 0, 100)
+const h1 = new HSlider(panel, 70, 20, 10, 0, 100, (event) => console.log(event.target.value));
 h1.height = 5;
 h1.handleSize = 5;
 h1.width = 290;
-h1.addLabels("Tiny 1", 50);
 const h2 = new HSlider(panel, 70, 35, 30, 0, 100)
 h2.height = 5;
 h2.width = 290;
-h2.addLabels("Tiny 2", 50);
+h2.addLabels("Tiny 2");
 const h3 = new HSlider(panel, 70, 50, 50, 0, 100)
 h3.width = 290;
-h3.addLabels("Default", 50);
+h3.addLabels("Default");
 const h4 = new HSlider(panel, 70, 70, 70, 0, 100)
 h4.height = 20;
 h4.width = 290;
-h4.addLabels("Big 1", 50);
+h4.addLabels("Big 1");
 const h5 = new HSlider(panel, 70, 110, 90, 0, 100)
 h5.height = 20;
 h5.handleSize = 20;
 h5.width = 290;
-h5.addLabels("Big 2", 50);
+h5.addLabels("Big 2");
+
+window.h5 = h5
+h5.addEventListener("change", event => console.log(event.target.value));
+
 
 for (let i = 0; i < 21; i++) {
   const label = String.fromCharCode(65 + i);
-  const v1 = new VSlider(panel, 20 + i * 17, 170, 50 + Math.sin(i / 21 * Math.PI * 2) * 50, 0, 100);
+  const v1 = new VSlider(panel, 20 + i * 17, 170, 50 + Math.sin(i / 21 * Math.PI * 2) * 50, 0, 100, event => console.log(event.target.value));
   v1.decimals = 0;
-  v1.addLabels(label, 40);
+  v1.addLabels(label);
 }
 
 // const label = new Label(panel, 20, 20, "I am a label...");

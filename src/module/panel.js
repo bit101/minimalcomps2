@@ -1,10 +1,11 @@
 export class Panel extends Component {
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
+    w = w || window.innerWidth;
+    h = h || window.innerHeight;
 
     this.createChildren();
     this.createStyle();
-
     this.setSize(w, h);
   }
 

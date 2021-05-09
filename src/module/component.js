@@ -1,6 +1,8 @@
 export class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
+    x = x || 0;
+    y = y || 0;
 
     this._enabled = true;
     this.attachShadow({mode: "open"});

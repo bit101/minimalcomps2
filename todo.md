@@ -1,2 +1,4 @@
 - assignable tabindex
-- clean up sliders
+- color chooser
+- indicator light
+- numeric stepper
