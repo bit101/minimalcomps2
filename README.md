@@ -4,7 +4,7 @@ Pure HTML/JS reimagining of https://github.com/minimalcomps/minimalcomps
 
 Implemented using Web Components and Shadow DOM. Probably imperfectly.
 
-Very much a work in progress at the moment.
+Very early preview and very much a work in progress at the moment.
 
 ## Goals
 
@@ -47,3 +47,7 @@ So far we have the following components:
 - VSlider
 
 More to come.
+
+### Use
+
+Currently implemented via JS Modules. Not sure how it will play out in the long run, but you can get an idea of how it works in the `demo/index.html` and `demo/main.js` files.
