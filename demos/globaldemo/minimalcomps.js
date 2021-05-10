@@ -1493,7 +1493,7 @@ var mc2 = (function (exports) {
         letter-spacing: 1px;
         padding: 0 4px;
         width: 70px;
-        height: 40px;
+        height: 20px;
         text-transform: uppercase;
       }
       .MinimalColorPickerInput:disabled,
