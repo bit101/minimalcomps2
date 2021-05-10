@@ -2,7 +2,6 @@ export class TextInput extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
-    this._defaultHandler = defaultHandler;
 
     this.createStyle();
     this.createChildren();

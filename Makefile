@@ -13,6 +13,7 @@ default:
 	src/textarea.js \
 	src/textinput.js \
 	src/vslider.js \
+	src/colorpicker.js \
 	> dist/temp.js
 
 	@rollup dist/temp.js --file dist/minimalcomps.js --format iife --name mc2
