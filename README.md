@@ -63,3 +63,5 @@ There are two files in the `dist` directory:
   - Your main script will need to have `type="module"` defined in order to import the classes.
   - You'll need a server running to run this locally. You can't import JS modules from the file system.
   - Example in `demos/moduledemo/`
+
+When things get a bit more polished, I'll create an npm module.
