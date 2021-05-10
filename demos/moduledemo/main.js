@@ -1,4 +1,4 @@
-import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider } from "./minimalcomps.js";
+import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider } from "./minimalcomps.mjs";
 
 const panel = new Panel(document.body, 40, 40, 200, 400);
 

@@ -1,5 +1,5 @@
 default:
-	@uglifyjs \
+	@cat \
 	src/component.js \
 	src/button.js \
 	src/checkbox.js \
@@ -13,4 +13,11 @@ default:
 	src/textarea.js \
 	src/textinput.js \
 	src/vslider.js \
-	-o demo/minimalcomps.js
+	> dist/temp.js
+
+	@rollup dist/temp.js --file dist/minimalcomps.js --format iife --name mc2
+	@rollup dist/temp.js --file dist/minimalcomps.mjs --format es
+
+	@rm dist/temp.js
+	@cp dist/minimalcomps.js demos/globaldemo/
+	@cp dist/minimalcomps.mjs demos/moduledemo/
