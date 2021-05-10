@@ -45,6 +45,7 @@ So far we have the following components:
 - TextArea
 - HSlider
 - VSlider
+- ColorPicker
 
 More to come.
 
