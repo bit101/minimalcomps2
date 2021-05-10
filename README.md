@@ -58,7 +58,7 @@ There are two files in the `dist` directory:
 
 - `minimalcomps.mjs` - This is for use with JS modules.
   - `import { Button } from "./minimalcomps.mjs";`
-  - `new Button(panel, 20, 20, "Click me", handler);
+  - `new Button(panel, 20, 20, "Click me", handler);`
   - No need to add the file in your HTML.
   - Your main script will need to have `type="module"` defined in order to import the classes.
   - You'll need a server running to run this locally. You can't import JS modules from the file system.
