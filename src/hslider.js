@@ -6,7 +6,6 @@ export class HSlider extends Component {
     this._decimals = 1;
     this._value = this.roundValue(value);
     this._handleSize = 10;
-    this._labelWidth = 100;
 
     this.createChildren();
     this.createStyle();
@@ -59,17 +58,6 @@ export class HSlider extends Component {
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
-      .MinimalSliderLabel {
-        ${Style.baseStyle}
-        color: #333;
-        white-space: nowrap;
-        text-align: right;
-        overflow: hidden;
-        user-select: none;        
-      }
-      .MinimalSliderLabelDisabled {
-        ${Style.disabledStyle}
-      } 
     `;
     this.shadowRoot.append(style);
   }
@@ -132,20 +120,17 @@ export class HSlider extends Component {
   
   addLabels(text) {
     if (!this.label) {
-      this.label = document.createElement("div");
-      this.label.setAttribute("class", "MinimalSliderLabel")
+      // hack - add to body to init width
+      this.label = new Label(document.body, 0, 0, text);
       this.shadowRoot.append(this.label);
-      this.label.textContent = text;
     }
 
     if (!this.valueLabel) {
-      this.valueLabel = document.createElement("div");
-      this.valueLabel.setAttribute("class", "MinimalSliderLabel")
-      this.valueLabel.textContent = this.value;
+      this.valueLabel = new Label(document.body, 0, 0, this.value);
       this.shadowRoot.append(this.valueLabel);
     }
 
-    this.updateLabelStyles();
+    this.updateLabelPositions();
   }
 
   calculateValueFromPos(x) {
@@ -169,28 +154,29 @@ export class HSlider extends Component {
   }
 
   updateEnabledStyle() {
+    if (this.label) {
+      this.label.enabled = this.enabled;
+    }
+    if (this.valueLabel) {
+      this.valueLabel.enabled = this.enabled;
+    }
     if (this.enabled) {
-      this.label && this.label.setAttribute("class", "MinimalSliderLabel");
-      this.valueLabel && this.valueLabel.setAttribute("class", "MinimalSliderLabel");
       this.slider.setAttribute("class", "MinimalSlider");
       this.handle.setAttribute("class", "MinimalSliderHandle");
     } else {
-      this.label && this.label.setAttribute("class", "MinimalSliderLabel MinimalSliderLabelDisabled");
-      this.valueLabel && this.valueLabel.setAttribute("class", "MinimalSliderLabel MinimalSliderLabelDisabled");
       this.slider.setAttribute("class", "MinimalSlider MinimalSliderDisabled");
       this.handle.setAttribute("class", "MinimalSliderHandle MinimalSliderHandleDisabled");
     }
   }
 
-  updateLabelStyles() {
+  updateLabelPositions() {
     if (this.label) {
-      this.label.style.left = -this._labelWidth - 5 + "px";
-      this.label.style.top = Math.round(this.height / 2 - 6) + "px";
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
     }
     if (this.valueLabel) {
-      this.label.style.width = this._labelWidth + "px";
-      this.valueLabel.style.left = this.width + 5 + "px";
-      this.valueLabel.style.top = Math.round(this.height / 2 - 6) + "px";
+      this.valueLabel.x = this.width + 5;
+      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
     }
   }
 
@@ -210,7 +196,7 @@ export class HSlider extends Component {
 
   updateValueLabel() {
     if (this.valueLabel) {
-      this.valueLabel.textContent = this.value;
+      this.valueLabel.text = this.value;
     }
   }
 
@@ -242,7 +228,6 @@ export class HSlider extends Component {
         this.addEventListener("mousedown", this.onMouseDown);
         this.addEventListener("keydown", this.onKeyDown)
       } else {
-        console.log("removing");
         this.slider.tabIndex = -1;
         this.removeEventListener("mousedown", this.onMouseDown);
         this.removeEventListener("keydown", this.onKeyDown);
@@ -268,16 +253,7 @@ export class HSlider extends Component {
 
   set height(height) {
     super.height = height;
-    this.updateLabelStyles();
-  }
-
-  get labelWidth() {
-    return this._labelWidth;
-  }
-
-  set labelWidth(labelWidth) {
-    this._labelWidth = labelWidth;
-    this.updateLabelStyles();
+    this.updateLabelPositions();
   }
 
   get max() {
@@ -320,7 +296,7 @@ export class HSlider extends Component {
 
   set width(width) {
     super.width = width;
-    this.updateLabelStyles();
+    this.updateLabelPositions();
     this.updateHandlePosition();
   }
 }

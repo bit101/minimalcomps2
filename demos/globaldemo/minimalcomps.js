@@ -106,9 +106,8 @@ var mc2 = (function (exports) {
       this.button.setAttribute("class", "MinimalButton");
       this.button.tabIndex = 0;
 
-      this.label = document.createElement("div");
-      this.label.textContent = this._text;
-      this.label.setAttribute("class", "MinimalButtonLabel");
+      // hack - put the label on body, otherwise it will not have width initially.
+      this.label = new Label(document.body, 0, 0, this._text);
       this.button.appendChild(this.label);
       this.shadowRoot.append(this.button);
     }
@@ -116,16 +115,6 @@ var mc2 = (function (exports) {
     createStyle() {
       const style = document.createElement("style");
       style.textContent = `
-      .MinimalButtonLabel {
-        ${Style.baseStyle}
-        color: #333;
-        text-align: center;
-        top: 50%;
-        transform: translateY(-50%);
-        user-select: none;
-        white-space: nowrap;
-        width: 100%;
-      }
       .MinimalButton,
       .MinimalButtonDisabled {
         ${Style.baseStyle}
@@ -178,6 +167,16 @@ var mc2 = (function (exports) {
     }
 
     //////////////////////////////////
+    // General
+    //////////////////////////////////
+
+    setSize(w, h) {
+      super.setSize(w, h);
+      this.label.x = (this.width - this.label.width) / 2;
+      this.label.y = (this.height - this.label.height) / 2 - 1;
+    }
+
+    //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
@@ -204,7 +203,7 @@ var mc2 = (function (exports) {
 
     set text(text) {
       this._text = text;
-      this.label.textContent = text;
+      this.label.text = text;
     }
   }
 
@@ -371,7 +370,6 @@ var mc2 = (function (exports) {
       this._decimals = 1;
       this._value = this.roundValue(value);
       this._handleSize = 10;
-      this._labelWidth = 100;
 
       this.createChildren();
       this.createStyle();
@@ -424,17 +422,6 @@ var mc2 = (function (exports) {
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
-      .MinimalSliderLabel {
-        ${Style.baseStyle}
-        color: #333;
-        white-space: nowrap;
-        text-align: right;
-        overflow: hidden;
-        user-select: none;        
-      }
-      .MinimalSliderLabelDisabled {
-        ${Style.disabledStyle}
-      } 
     `;
       this.shadowRoot.append(style);
     }
@@ -495,20 +482,17 @@ var mc2 = (function (exports) {
     
     addLabels(text) {
       if (!this.label) {
-        this.label = document.createElement("div");
-        this.label.setAttribute("class", "MinimalSliderLabel");
+        // hack - add to body to init width
+        this.label = new Label(document.body, 0, 0, text);
         this.shadowRoot.append(this.label);
-        this.label.textContent = text;
       }
 
       if (!this.valueLabel) {
-        this.valueLabel = document.createElement("div");
-        this.valueLabel.setAttribute("class", "MinimalSliderLabel");
-        this.valueLabel.textContent = this.value;
+        this.valueLabel = new Label(document.body, 0, 0, this.value);
         this.shadowRoot.append(this.valueLabel);
       }
 
-      this.updateLabelStyles();
+      this.updateLabelPositions();
     }
 
     calculateValueFromPos(x) {
@@ -532,28 +516,29 @@ var mc2 = (function (exports) {
     }
 
     updateEnabledStyle() {
+      if (this.label) {
+        this.label.enabled = this.enabled;
+      }
+      if (this.valueLabel) {
+        this.valueLabel.enabled = this.enabled;
+      }
       if (this.enabled) {
-        this.label && this.label.setAttribute("class", "MinimalSliderLabel");
-        this.valueLabel && this.valueLabel.setAttribute("class", "MinimalSliderLabel");
         this.slider.setAttribute("class", "MinimalSlider");
         this.handle.setAttribute("class", "MinimalSliderHandle");
       } else {
-        this.label && this.label.setAttribute("class", "MinimalSliderLabel MinimalSliderLabelDisabled");
-        this.valueLabel && this.valueLabel.setAttribute("class", "MinimalSliderLabel MinimalSliderLabelDisabled");
         this.slider.setAttribute("class", "MinimalSlider MinimalSliderDisabled");
         this.handle.setAttribute("class", "MinimalSliderHandle MinimalSliderHandleDisabled");
       }
     }
 
-    updateLabelStyles() {
+    updateLabelPositions() {
       if (this.label) {
-        this.label.style.left = -this._labelWidth - 5 + "px";
-        this.label.style.top = Math.round(this.height / 2 - 6) + "px";
+        this.label.x = -this.label.width - 5;
+        this.label.y = (this.height - this.label.height) / 2;
       }
       if (this.valueLabel) {
-        this.label.style.width = this._labelWidth + "px";
-        this.valueLabel.style.left = this.width + 5 + "px";
-        this.valueLabel.style.top = Math.round(this.height / 2 - 6) + "px";
+        this.valueLabel.x = this.width + 5;
+        this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
       }
     }
 
@@ -573,7 +558,7 @@ var mc2 = (function (exports) {
 
     updateValueLabel() {
       if (this.valueLabel) {
-        this.valueLabel.textContent = this.value;
+        this.valueLabel.text = this.value;
       }
     }
 
@@ -605,7 +590,6 @@ var mc2 = (function (exports) {
           this.addEventListener("mousedown", this.onMouseDown);
           this.addEventListener("keydown", this.onKeyDown);
         } else {
-          console.log("removing");
           this.slider.tabIndex = -1;
           this.removeEventListener("mousedown", this.onMouseDown);
           this.removeEventListener("keydown", this.onKeyDown);
@@ -631,16 +615,7 @@ var mc2 = (function (exports) {
 
     set height(height) {
       super.height = height;
-      this.updateLabelStyles();
-    }
-
-    get labelWidth() {
-      return this._labelWidth;
-    }
-
-    set labelWidth(labelWidth) {
-      this._labelWidth = labelWidth;
-      this.updateLabelStyles();
+      this.updateLabelPositions();
     }
 
     get max() {
@@ -683,7 +658,7 @@ var mc2 = (function (exports) {
 
     set width(width) {
       super.width = width;
-      this.updateLabelStyles();
+      this.updateLabelPositions();
       this.updateHandlePosition();
     }
   }
@@ -701,7 +676,7 @@ var mc2 = (function (exports) {
       this.createChildren();
       this.createStyle();
       this._width = this.label.offsetWidth;
-      this.height = 14;
+      this.height = 12;
     }
 
     //////////////////////////////////
@@ -1434,21 +1409,24 @@ var mc2 = (function (exports) {
       this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
     }
 
-    updateLabelStyles() {
+    updateLabelPositions() {
       if (this.label) {
-        this.label.style.left = (-this._labelWidth + this.width) / 2 + "px";
-        this.label.style.top = "-15px";
-        this.label.style.width = this._labelWidth + "px";
+        this.label.x = -(this.label.width - this.width) / 2;
+        this.label.y = -this.label.height - 5;
       }
       if (this.valueLabel) {
-        this.valueLabel.style.width = this._labelWidth + "px";
-        this.valueLabel.style.left = (-this._labelWidth + this.width) / 2 + "px";
-        this.valueLabel.style.top = this.height + 5 + "px";
+        this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
+        this.valueLabel.y = this.height + 5;
       }
     }
 
     updateSliderSize(w, h) {
       this.setSize(h, w);
+    }
+
+    updateValueLabel() {
+      super.updateValueLabel();
+      this.updateLabelPositions();
     }
 
     //////////////////////////////////
@@ -1463,6 +1441,16 @@ var mc2 = (function (exports) {
     set handleSize(handleSize) {
       this._handleSize = handleSize;
       this.handle.style.height = handleSize + "px";
+      this.updateHandlePosition();
+    }
+
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.updateLabelPositions();
       this.updateHandlePosition();
     }
 

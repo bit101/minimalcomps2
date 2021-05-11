@@ -7,7 +7,7 @@ export class Label extends Component {
     this.createChildren();
     this.createStyle();
     this._width = this.label.offsetWidth;
-    this.height = 14;
+    this.height = 12;
   }
 
   //////////////////////////////////

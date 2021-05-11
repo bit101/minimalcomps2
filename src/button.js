@@ -20,9 +20,8 @@ export class Button extends Component {
     this.button.setAttribute("class", "MinimalButton");
     this.button.tabIndex = 0;
 
-    this.label = document.createElement("div");
-    this.label.textContent = this._text;
-    this.label.setAttribute("class", "MinimalButtonLabel");
+    // hack - put the label on body, otherwise it will not have width initially.
+    this.label = new Label(document.body, 0, 0, this._text);
     this.button.appendChild(this.label);
     this.shadowRoot.append(this.button);
   }
@@ -30,16 +29,6 @@ export class Button extends Component {
   createStyle() {
     const style = document.createElement("style");
     style.textContent = `
-      .MinimalButtonLabel {
-        ${Style.baseStyle}
-        color: #333;
-        text-align: center;
-        top: 50%;
-        transform: translateY(-50%);
-        user-select: none;
-        white-space: nowrap;
-        width: 100%;
-      }
       .MinimalButton,
       .MinimalButtonDisabled {
         ${Style.baseStyle}
@@ -92,6 +81,16 @@ export class Button extends Component {
   }
 
   //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  setSize(w, h) {
+    super.setSize(w, h);
+    this.label.x = (this.width - this.label.width) / 2;
+    this.label.y = (this.height - this.label.height) / 2 - 1;
+  }
+
+  //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
@@ -118,7 +117,7 @@ export class Button extends Component {
 
   set text(text) {
     this._text = text;
-    this.label.textContent = text;
+    this.label.text = text;
   }
 }
 

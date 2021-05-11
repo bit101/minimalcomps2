@@ -83,21 +83,24 @@ export class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
-  updateLabelStyles() {
+  updateLabelPositions() {
     if (this.label) {
-      this.label.style.left = (-this._labelWidth + this.width) / 2 + "px";
-      this.label.style.top = "-15px";
-      this.label.style.width = this._labelWidth + "px";
+      this.label.x = -(this.label.width - this.width) / 2;
+      this.label.y = -this.label.height - 5;
     }
     if (this.valueLabel) {
-      this.valueLabel.style.width = this._labelWidth + "px";
-      this.valueLabel.style.left = (-this._labelWidth + this.width) / 2 + "px";
-      this.valueLabel.style.top = this.height + 5 + "px";
+      this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
+      this.valueLabel.y = this.height + 5;
     }
   }
 
   updateSliderSize(w, h) {
     this.setSize(h, w);
+  }
+
+  updateValueLabel() {
+    super.updateValueLabel();
+    this.updateLabelPositions();
   }
 
   //////////////////////////////////
@@ -112,6 +115,16 @@ export class VSlider extends HSlider {
   set handleSize(handleSize) {
     this._handleSize = handleSize;
     this.handle.style.height = handleSize + "px";
+    this.updateHandlePosition();
+  }
+
+  get height() {
+    return super.height;
+  }
+
+  set height(height) {
+    super.height = height;
+    this.updateLabelPositions();
     this.updateHandlePosition();
   }
 
