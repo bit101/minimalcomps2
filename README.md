@@ -46,6 +46,7 @@ So far we have the following components:
 - HSlider
 - VSlider
 - ColorPicker
+- NumericStepper
 
 More to come.
 
