@@ -1,6 +1,4 @@
 - assignable tabindex
-- color chooser
 - indicator light
-- numeric stepper
 - uniform "label" vs "text" accessors
 - radiobutton arrow nav (get index from group. go to next index. wrap)
