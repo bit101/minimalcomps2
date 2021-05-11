@@ -1,12 +1,18 @@
 export class Label extends Component {
   constructor(parent, x, y, text) {
-    super(parent, x, y);
+    super(null, x, y);
     this._text = text;
     this._autosize = true;
 
     this.createChildren();
     this.createStyle();
+    // width will be 0 until it is on the live DOM
+    // so we put it on document.body, get width
+    // then remove it and add it to parent.
+    document.body.appendChild(this);
     this._width = this.label.offsetWidth;
+    document.body.removeChild(this);
+    this.addToParent(parent);
     this.height = 12;
   }
 

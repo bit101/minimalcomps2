@@ -8,11 +8,17 @@ class Component extends HTMLElement {
     this.attachShadow({mode: "open"});
     this.style.position = "absolute";  
     this.move(x, y);
+    this.addToParent(parent);
+  }
+
+  addToParent(parent) {
     if (!parent) {
       return;
     }
     if (parent instanceof Panel) {
       parent.addChild(this);
+    } else if (parent.toString() === "[object ShadowRoot]") {
+      parent.append(this);
     } else {
       parent.appendChild(this);
     }
@@ -102,11 +108,9 @@ class Button extends Component {
     this.button = document.createElement("div");
     this.button.setAttribute("class", "MinimalButton");
     this.button.tabIndex = 0;
-
-    // hack - put the label on body, otherwise it will not have width initially.
-    this.label = new Label(document.body, 0, 0, this._text);
-    this.button.appendChild(this.label);
     this.shadowRoot.append(this.button);
+
+    this.label = new Label(this.shadowRoot, 0, 0, this._text);
   }
 
   createStyle() {
@@ -170,7 +174,7 @@ class Button extends Component {
   setSize(w, h) {
     super.setSize(w, h);
     this.label.x = (this.width - this.label.width) / 2;
-    this.label.y = (this.height - this.label.height) / 2 - 1;
+    this.label.y = (this.height - this.label.height) / 2;
   }
 
   //////////////////////////////////
@@ -479,14 +483,11 @@ class HSlider extends Component {
   
   addLabels(text) {
     if (!this.label) {
-      // hack - add to body to init width
-      this.label = new Label(document.body, 0, 0, text);
-      this.shadowRoot.append(this.label);
+      this.label = new Label(this.shadowRoot, 0, 0, text);
     }
 
     if (!this.valueLabel) {
-      this.valueLabel = new Label(document.body, 0, 0, this.value);
-      this.shadowRoot.append(this.valueLabel);
+      this.valueLabel = new Label(this.shadowRoot, 0, 0, this.value);
     }
 
     this.updateLabelPositions();
@@ -666,13 +667,19 @@ customElements.define("minimal-hslider", HSlider);
 
 class Label extends Component {
   constructor(parent, x, y, text) {
-    super(parent, x, y);
+    super(null, x, y);
     this._text = text;
     this._autosize = true;
 
     this.createChildren();
     this.createStyle();
+    // width will be 0 until it is on the live DOM
+    // so we put it on document.body, get width
+    // then remove it and add it to parent.
+    document.body.appendChild(this);
     this._width = this.label.offsetWidth;
+    document.body.removeChild(this);
+    this.addToParent(parent);
     this.height = 12;
   }
 

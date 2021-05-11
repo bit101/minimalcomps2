@@ -8,11 +8,17 @@ export class Component extends HTMLElement {
     this.attachShadow({mode: "open"});
     this.style.position = "absolute";  
     this.move(x, y);
+    this.addToParent(parent);
+  }
+
+  addToParent(parent) {
     if (!parent) {
       return;
     }
     if (parent instanceof Panel) {
       parent.addChild(this);
+    } else if (parent.toString() === "[object ShadowRoot]") {
+      parent.append(this);
     } else {
       parent.appendChild(this);
     }

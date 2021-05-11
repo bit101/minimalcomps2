@@ -120,14 +120,11 @@ export class HSlider extends Component {
   
   addLabels(text) {
     if (!this.label) {
-      // hack - add to body to init width
-      this.label = new Label(document.body, 0, 0, text);
-      this.shadowRoot.append(this.label);
+      this.label = new Label(this.shadowRoot, 0, 0, text);
     }
 
     if (!this.valueLabel) {
-      this.valueLabel = new Label(document.body, 0, 0, this.value);
-      this.shadowRoot.append(this.valueLabel);
+      this.valueLabel = new Label(this.shadowRoot, 0, 0, this.value);
     }
 
     this.updateLabelPositions();
