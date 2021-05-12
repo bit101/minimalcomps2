@@ -47,6 +47,7 @@ So far we have the following components:
 - VSlider
 - ColorPicker
 - NumericStepper
+- Dropdown
 
 More to come.
 
