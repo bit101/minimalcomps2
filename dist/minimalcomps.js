@@ -1013,6 +1013,7 @@ var mc2 = (function (exports) {
         // down
         RadioButtonGroup.getNextInGroup(this.group, this).focus();
       } else if (event.keyCode == 38) {
+        // up
         RadioButtonGroup.getPrevInGroup(this.group, this).focus();
       }
     }
