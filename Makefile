@@ -15,6 +15,7 @@ default:
 	src/vslider.js \
 	src/colorpicker.js \
 	src/numericstepper.js \
+	src/dropdown.js \
 	> dist/temp.js
 
 	@rollup dist/temp.js --file dist/minimalcomps.js --format iife --name mc2

@@ -21,7 +21,7 @@ export class Button extends Component {
     this.button.tabIndex = 0;
     this.shadowRoot.append(this.button);
 
-    this.label = new Label(this.shadowRoot, 0, 0, this._text);
+    this.label = new Label(this.button, 0, 0, this._text);
   }
 
   createStyle() {
@@ -84,8 +84,8 @@ export class Button extends Component {
 
   setSize(w, h) {
     super.setSize(w, h);
-    this.label.x = (this.width - this.label.width) / 2;
-    this.label.y = (this.height - this.label.height) / 2;
+    this.label.x = (this.width - this.label.width) / 2 - 1;
+    this.label.y = (this.height - this.label.height) / 2 -1;
   }
 
   //////////////////////////////////
