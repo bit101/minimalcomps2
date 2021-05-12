@@ -33,4 +33,22 @@ export class RadioButtonGroup {
     RadioButtonGroup.groups[group].push(rb);
   }
 
+  static getNextInGroup(group, rb) {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    if (index >= g.length - 1) {
+      return g[0];
+    }
+    return g[index + 1]
+  }
+
+  static getPrevInGroup(group, rb) {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    if (index <= 0) {
+      return g[g.length - 1];
+    }
+    return g[index - 1]
+  }
+
 }

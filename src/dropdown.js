@@ -50,6 +50,7 @@ export class Dropdown extends Component {
     item.setAttribute("class", "MinimalDropdownItem");
     item.addEventListener("click", this.onItemClick);
     item.setAttribute("data-index", index);
+    item.tabIndex = 0;
 
     let label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
@@ -109,6 +110,10 @@ export class Dropdown extends Component {
       .MinimalDropdownItem:hover {
         background-color: #f8f8f8;
       }
+      .MinimalDropdownItem:focus {
+        ${Style.focusStyle}
+        background-color: #f8f8f8;
+      }
     `;
     this.shadowRoot.append(style);
   }
@@ -152,15 +157,32 @@ export class Dropdown extends Component {
     this.label.text = this._text
     this.toggle();
     this.dispatchEvent(new Event("change"));
+    this.wrapper.focus();
   }
 
   onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       // enter
-      this.wrapper.click();
+      this.shadowRoot.activeElement.click();
     } else if (event.keyCode === 27 || event.keyCode == 9) {
       // escape || tab
       this.close();
+    } else if (event.keyCode == 40) {
+      // down
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.lastChild) {
+        this.dropdown.firstChild.focus();
+      } else {
+        this.shadowRoot.activeElement.nextSibling.focus();
+      }
+    } else if (event.keyCode == 38) {
+      // up
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.firstChild) {
+        this.dropdown.lastChild.focus();
+      } else {
+        this.shadowRoot.activeElement.previousSibling.focus();
+      }
     }
   }
 

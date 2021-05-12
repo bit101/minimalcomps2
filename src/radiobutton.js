@@ -3,7 +3,7 @@ export class RadioButton extends Component {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
 
-    this._group = group;
+    this.group = group;
     this._text = text;
 
     this.createStyle();
@@ -40,7 +40,7 @@ export class RadioButton extends Component {
         ${Style.baseStyle}
         cursor: pointer;
         height: 100%;
-        width: 100%;
+        width: auto;
       }
       .MinimalRadioButton:focus {
         ${Style.focusStyle}
@@ -72,7 +72,7 @@ export class RadioButton extends Component {
     this.onClick = this.onClick.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+    this.wrapper.addEventListener("keydown", this.onKeyPress);
   }
 
   //////////////////////////////////
@@ -89,7 +89,14 @@ export class RadioButton extends Component {
 
   onKeyPress(event) {
     if (event.keyCode == 13 && this.enabled) {
+      // enter
       this.wrapper.click();
+    } else if (event.keyCode == 40) {
+      // down
+      RadioButtonGroup.getNextInGroup(this.group, this).focus();
+    } else if (event.keyCode == 38) {
+      // up
+      RadioButtonGroup.getPrevInGroup(this.group, this).focus();
     }
   }
 
@@ -98,6 +105,10 @@ export class RadioButton extends Component {
   // General
   //////////////////////////////////
   
+  focus() {
+    this.wrapper.focus();
+  }
+
   updateCheckStyle() {
     let className = this.checked
       ? "MinimalRadioButtonCheckChecked "
@@ -120,7 +131,7 @@ export class RadioButton extends Component {
 
   set checked(checked) {
     if(checked) {
-      RadioButtonGroup.clearGroup(this._group);
+      RadioButtonGroup.clearGroup(this.group);
     }
     this._checked = checked;
     this.updateCheckStyle();
@@ -150,6 +161,14 @@ export class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
+  }
+
+  get width() {
+    return super.width;
+  }
+
+  set width(w) {
+    this.wrapper.style.width = this.label.width + 15 + "px";
   }
 }
 

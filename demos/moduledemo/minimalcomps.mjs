@@ -918,7 +918,7 @@ class RadioButton extends Component {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
 
-    this._group = group;
+    this.group = group;
     this._text = text;
 
     this.createStyle();
@@ -955,7 +955,7 @@ class RadioButton extends Component {
         ${Style.baseStyle}
         cursor: pointer;
         height: 100%;
-        width: 100%;
+        width: auto;
       }
       .MinimalRadioButton:focus {
         ${Style.focusStyle}
@@ -987,7 +987,7 @@ class RadioButton extends Component {
     this.onClick = this.onClick.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+    this.wrapper.addEventListener("keydown", this.onKeyPress);
   }
 
   //////////////////////////////////
@@ -1004,7 +1004,13 @@ class RadioButton extends Component {
 
   onKeyPress(event) {
     if (event.keyCode == 13 && this.enabled) {
+      // enter
       this.wrapper.click();
+    } else if (event.keyCode == 40) {
+      // down
+      RadioButtonGroup.getNextInGroup(this.group, this).focus();
+    } else if (event.keyCode == 38) {
+      RadioButtonGroup.getPrevInGroup(this.group, this).focus();
     }
   }
 
@@ -1013,6 +1019,10 @@ class RadioButton extends Component {
   // General
   //////////////////////////////////
   
+  focus() {
+    this.wrapper.focus();
+  }
+
   updateCheckStyle() {
     let className = this.checked
       ? "MinimalRadioButtonCheckChecked "
@@ -1035,7 +1045,7 @@ class RadioButton extends Component {
 
   set checked(checked) {
     if(checked) {
-      RadioButtonGroup.clearGroup(this._group);
+      RadioButtonGroup.clearGroup(this.group);
     }
     this._checked = checked;
     this.updateCheckStyle();
@@ -1065,6 +1075,14 @@ class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
+  }
+
+  get width() {
+    return super.width;
+  }
+
+  set width(w) {
+    this.wrapper.style.width = this.label.width + 15 + "px";
   }
 }
 
@@ -1104,6 +1122,24 @@ class RadioButtonGroup {
       RadioButtonGroup.groups[group] = [];
     }
     RadioButtonGroup.groups[group].push(rb);
+  }
+
+  static getNextInGroup(group, rb) {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    if (index >= g.length - 1) {
+      return g[0];
+    }
+    return g[index + 1]
+  }
+
+  static getPrevInGroup(group, rb) {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    if (index <= 0) {
+      return g[g.length - 1];
+    }
+    return g[index - 1]
   }
 
 }
@@ -1872,6 +1908,7 @@ class Dropdown extends Component {
     item.setAttribute("class", "MinimalDropdownItem");
     item.addEventListener("click", this.onItemClick);
     item.setAttribute("data-index", index);
+    item.tabIndex = 0;
 
     let label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
@@ -1931,6 +1968,10 @@ class Dropdown extends Component {
       .MinimalDropdownItem:hover {
         background-color: #f8f8f8;
       }
+      .MinimalDropdownItem:focus {
+        ${Style.focusStyle}
+        background-color: #f8f8f8;
+      }
     `;
     this.shadowRoot.append(style);
   }
@@ -1974,15 +2015,32 @@ class Dropdown extends Component {
     this.label.text = this._text;
     this.toggle();
     this.dispatchEvent(new Event("change"));
+    this.wrapper.focus();
   }
 
   onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       // enter
-      this.wrapper.click();
+      this.shadowRoot.activeElement.click();
     } else if (event.keyCode === 27 || event.keyCode == 9) {
       // escape || tab
       this.close();
+    } else if (event.keyCode == 40) {
+      // down
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.lastChild) {
+        this.dropdown.firstChild.focus();
+      } else {
+        this.shadowRoot.activeElement.nextSibling.focus();
+      }
+    } else if (event.keyCode == 38) {
+      // up
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.firstChild) {
+        this.dropdown.lastChild.focus();
+      } else {
+        this.shadowRoot.activeElement.previousSibling.focus();
+      }
     }
   }
 
