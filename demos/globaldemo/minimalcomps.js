@@ -1826,9 +1826,10 @@ var mc2 = (function (exports) {
   class Dropdown extends Component {
     constructor(parent, x, y, items, defaultHandler) {
       super(parent, x, y);
-      this._items = items;
-      this._open = false;
-      this._itemElements = [];
+      this.items = items;
+      this.open = false;
+      this.itemElements = [];
+      this._index = -1;
       this._text = "";
 
       this.createChildren();
@@ -1836,6 +1837,7 @@ var mc2 = (function (exports) {
       this.createListeners();
 
       this.setSize(100, 20);
+      this.createItems();
       this.addEventListener("change", defaultHandler);
     }
 
@@ -1850,6 +1852,7 @@ var mc2 = (function (exports) {
       this.shadowRoot.append(this.wrapper);
 
       this.label = new Label(this.wrapper, 3, 3);
+
       this.button = document.createElement("div");
       this.button.setAttribute("class", "MinimalDropdownButton");
       this.button.textContent = "+";
@@ -1858,16 +1861,28 @@ var mc2 = (function (exports) {
       this.dropdown = document.createElement("div");
       this.dropdown.style.display = "none";
       this.shadowRoot.append(this.dropdown);
+    }
 
-      for (let i = 0; i < items.length; i++) {
-        let item = document.createElement("div");
-        item.setAttribute("class", "MinimalDropdownItem");
-        item.style.top = 19 + i * 19 + "px";
-        this._itemElements.push(item);
-        let label = new Label(item, 0, 0, items[i]);
-        label.move(3, 4);
+    createItems() {
+      for (let i = 0; i < this.items.length; i++) {
+        let item = this.createItem(i);
         this.dropdown.appendChild(item);
       }
+    }
+
+    createItem(index) {
+      let item = document.createElement("div");
+      item.setAttribute("class", "MinimalDropdownItem");
+      item.addEventListener("click", this.onItemClick);
+      item.setAttribute("data-index", index);
+
+      let label = new Label(item, 3, 0, this.items[index]);
+      label.y = (this.height - label.height) / 2;
+
+      const itemObj = {item, label};
+      this.updateItem(itemObj, index);
+      this.itemElements.push(itemObj);
+      return item;
     }
 
     createStyle() {
@@ -1891,8 +1906,11 @@ var mc2 = (function (exports) {
       .MinimalDropdown:focus {
         ${Style.focusStyle}
       }
-      .MinimalDropdownButton {
+      .MinimalDropdownButton,
+      .MinimalDropdownButtonDisabled {
         ${Style.baseStyle}
+        line-height: 9px;
+        color: #333;
         background-color: #eee;
         border-radius: 0;
         border: 1px solid #999;
@@ -1901,10 +1919,12 @@ var mc2 = (function (exports) {
         left: 80px;
         top: -1px;
         text-align: center;
+        user-select: none;
+      }
+      .MinimalDropdownButtonDisabled {
+        ${Style.disabledStyle}
       }
       .MinimalDropdownItem {
-        width: 100px;
-        height: 20px;
         ${Style.baseStyle}
         background-color: #fff;
         border-radius: 0;
@@ -1921,12 +1941,14 @@ var mc2 = (function (exports) {
     createListeners() {
       this.toggle = this.toggle.bind(this);
       this.onItemClick = this.onItemClick.bind(this);
+      this.onKeyPress = this.onKeyPress.bind(this);
+      this.onDocumentClick = this.onDocumentClick.bind(this);
 
       this.wrapper.addEventListener("click", this.toggle);
-      for (let i = 0; i < this._itemElements.length; i++) {
-        this._itemElements[i].addEventListener("click", this.onItemClick);
+      for (let i = 0; i < this.itemElements.length; i++) {
+        this.itemElements[i].addEventListener("click", this.onItemClick);
       }
-      // this.button.addEventListener("keypress", this.onKeyPress);
+      this.addEventListener("keydown", this.onKeyPress);
     }
 
     //////////////////////////////////
@@ -1934,59 +1956,70 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     toggle(event) {
-      this._open = !this._open;
-      if (this._open) {
+      event && event.stopPropagation();
+      this.open = !this.open;
+      if (this.open) {
         this.initialZ = this.style.zIndex;
         this.style.zIndex = 1000000;
         this.dropdown.style.display = "block";
+        document.addEventListener("click", this.onDocumentClick);
       } else {
         this.style.zIndex = this.initialZ;
         this.dropdown.style.display = "none";
+        document.removeEventListener("click", this.onDocumentClick);
       }
     }
 
     onItemClick(event) {
+      event.stopPropagation();
       this._text = event.target.firstChild.text;
+      this._index = event.target.getAttribute("data-index");
       this.label.text = this._text;
       this.toggle();
       this.dispatchEvent(new Event("change"));
     }
 
-    // onKeyPress(event) {
-    //   if (event.keyCode == 13 && this.enabled) {
-    //     this.click();
-    //   }
-    // }
+    onKeyPress(event) {
+      if (event.keyCode === 13 && this.enabled) {
+        // enter
+        this.wrapper.click();
+      } else if (event.keyCode === 27 || event.keyCode == 9) {
+        // escape || tab
+        this.close();
+      }
+    }
+
+    onDocumentClick(event) {
+      if (event.target.className !== "MinimalDropdownItem") {
+        this.close();
+      }
+    }
 
     //////////////////////////////////
     // General
     //////////////////////////////////
 
-    get width() {
-      return super.width;
+    close() {
+      this.open = true;
+      this.toggle();
     }
 
-    set width(width) {
-      super.width = width;
-      this.button.style.left = this.width - this.height + "px";
-      for (let i = 0; i < this._itemElements.length; i++) {
-        this._itemElements[i].style.width = this.width + "px";
-      }
-    }
-
-    get height() {
-      return super.height;
-    }
-
-    set height(height) {
-      super.height = height;
-      this.label.y = (this.height - this.label.height) / 2;
+    updateButton() {
       this.button.style.left = this.width - this.height + "px";
       this.button.style.width = this.height + "px";
       this.button.style.height = this.height + "px";
-      for (let i = 0; i < this._itemElements.length; i++) {
-        this._itemElements[i].style.top = this.height - 1 + i * (this.height - 1) + "px";
-        this._itemElements[i].style.height = this.height + "px";
+      this.button.style.lineHeight = this.height - 1 + "px";
+    }
+
+    updateItem(itemObj, i) {
+      const { item, label } = itemObj;
+
+      const h = this.height - 1;
+      item.style.top = h + i * h + "px";
+      item.style.width = this.width + "px";
+      item.style.height = this.height + "px";
+      if (item.firstChild) {
+        label.y = (this.height - label.height) / 2;
       }
     }
 
@@ -2000,13 +2033,55 @@ var mc2 = (function (exports) {
     }
 
     set enabled(enabled) {
+      if (this.enabled === enabled) {
+        return;
+      }
       super.enabled = enabled;
-      this.label.enabled = enabled;
-      this.button.enabled = enabled;
+      if (this.enabled) {
+        this.wrapper.addEventListener("click", this.toggle);
+        this.wrapper.setAttribute("class", "MinimalDropdown");
+        this.button.setAttribute("class", "MinimalDropdownButton");
+        this.tabIndex = 0;
+      } else {
+        this.wrapper.removeEventListener("click", this.toggle);
+        this.wrapper.setAttribute("class", "MinimalDropdown MinimalDropdownDisabled");
+        this.button.setAttribute("class", "MinimalDropdownButton MinimalDropdownButtonDisabled");
+        this.tabIndex = -1;
+        this.open = false;
+        this.style.zIndex = this.initialZ;
+        this.dropdown.style.display = "none";
+      }
+    }
+
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.label.y = (this.height - this.label.height) / 2;
+      this.updateButton();
+      this.itemElements.forEach((item, i) => this.updateItem(item, i));
+    }
+
+    get index() {
+      return this._index;
     }
 
     get text() {
       return this._text;
+    }
+
+    get width() {
+      return super.width;
+    }
+
+    set width(width) {
+      super.width = width;
+      this.updateButton();
+      this.itemElements.forEach(item => {
+        this.updateItem(item);
+      });
     }
 
   }

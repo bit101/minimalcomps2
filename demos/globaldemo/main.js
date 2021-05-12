@@ -1,7 +1,7 @@
 const panel = new mc2.Panel(document.body, 40, 40, 200, 470);
 
-const items = ["one", "two", "three", "four", "five"];
-dd = new mc2.Dropdown(panel, 20, 20, items, () => console.log(dd.text));
+const stuff = ["one", "two", "three", "four", "five"];
+dd = new mc2.Dropdown(panel, 20, 20, stuff, () => console.log(dd.index, dd.text));
 // new mc2.Button(panel, 20, 20, "Button")
 new mc2.Checkbox(panel, 20, 50, "Checkbox");
 new mc2.RadioButton(panel, 20, 80, "group", "RadioButton 1", true);
