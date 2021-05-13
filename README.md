@@ -48,6 +48,7 @@ So far we have the following components:
 - ColorPicker
 - NumericStepper
 - Dropdown
+- Image
 
 More to come.
 
