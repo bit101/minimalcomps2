@@ -16,13 +16,8 @@ export class ProgressBar extends Component {
   //////////////////////////////////
 
   createChildren() {
-    this.bar = document.createElement("div");
-    this.bar.setAttribute("class", "MinimalProgressBar");
-
-    this.fill = document.createElement("div");
-    this.fill.setAttribute("class", "MinimalProgressBarFill");
-    this.bar.appendChild(this.fill);
-    this.shadowRoot.append(this.bar);
+    this.bar = this.createDiv(this.wrapper, "MinimalProgressBar");
+    this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
   createStyle() {

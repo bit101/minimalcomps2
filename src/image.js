@@ -16,9 +16,7 @@ export class Image extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.image = document.createElement("img");
-    this.image.setAttribute("class", "MinimalImage");
-    this.shadowRoot.append(this.image);
+    this.image = this.createElement(this.wrapper, "img", "MinimalImage");
   }
 
   createStyle() {

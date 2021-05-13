@@ -16,11 +16,8 @@ export class Button extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.button = document.createElement("div");
-    this.button.setAttribute("class", "MinimalButton");
-    this.button.tabIndex = 0;
-    this.shadowRoot.append(this.button);
-
+    this.wrapper.tabIndex = 0;
+    this.button = this.createDiv(this.wrapper, "MinimalButton");
     this.label = new Label(this.button, 0, 0, this._text);
   }
 
@@ -30,7 +27,7 @@ export class Button extends Component {
       .MinimalButton,
       .MinimalButtonDisabled {
         ${Style.baseStyle}
-        background-color: #eee;
+        background-color: #f9f9f9;
         border-radius: 0;
         border: 1px solid #999;
         cursor: pointer;

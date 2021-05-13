@@ -17,22 +17,14 @@ export class ColorPicker extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.wrapper = document.createElement("div");
-    this.wrapper.setAttribute("class", "MinimalColorPicker");
+    this.setWrapperClass("MinimalColorPicker");
 
-    this.input = document.createElement("input");
-    this.input.setAttribute("type", "text");
-    this.input.setAttribute("class", "MinimalColorPickerInput");
+    this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
     this.input.value = this._color;
-    this.wrapper.appendChild(this.input);
 
-    this.preview = document.createElement("div");
-    this.preview.setAttribute("class", "MinimalColorPickerPreview");
+    this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
-    this.wrapper.appendChild(this.preview);
-
-    this.shadowRoot.append(this.wrapper);
   }
 
   createStyle() {

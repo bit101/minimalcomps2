@@ -16,11 +16,8 @@ export class TextInput extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.input = document.createElement("input");
-    this.input.setAttribute("type", "text");
-    this.input.setAttribute("class", "MinimalTextInput");
+    this.input = this.createInput(this.wrapper, "MinimalTextInput");
     this.input.value = this._text;
-    this.shadowRoot.append(this.input);
   }
 
   createStyle() {

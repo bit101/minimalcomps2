@@ -14,9 +14,7 @@ export class Panel extends Component {
   //////////////////////////////////
   
   createChildren() {
-    const panel = document.createElement("div");
-    panel.setAttribute("class", "MinimalPanel");
-    this.shadowRoot.append(panel);
+    this.setWrapperClass("MinimalPanel");
   }
 
   createStyle() {
@@ -42,9 +40,6 @@ export class Panel extends Component {
   // General
   //////////////////////////////////
   
-  addChild(child) {
-    this.shadowRoot.append(child);
-  }
 }
 
 customElements.define("minimal-panel", Panel);

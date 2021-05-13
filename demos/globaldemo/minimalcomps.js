@@ -6,25 +6,73 @@ var mc2 = (function (exports) {
       super();
       x = x || 0;
       y = y || 0;
-
       this._enabled = true;
-      this.attachShadow({mode: "open"});
-      this.style.position = "absolute";  
+
+      this.createWrapper();
+      this.createWrapperStyle();
+
       this.move(x, y);
-      this.addToParent(parent);
+      this.addToParent(parent, this);
     }
 
-    addToParent(parent) {
+    //////////////////////////////////
+    // Creators
+    //////////////////////////////////
+
+    createDiv(parent, className) {
+      return this.createElement(parent, "div", className);
+    }
+
+    createElement(parent, type, className) {
+      const el = document.createElement(type);
+      el.setAttribute("class", className);
+      this.addToParent(parent, el);
+      return el;
+    }
+
+    createInput(parent, className) {
+      const input = this.createElement(parent, "input", className);
+      input.type = "text";
+      return input;
+    }
+
+    createWrapper() {
+      this.attachShadow({mode: "open"});
+      this.wrapper = this.createDiv(null, "MinimalWrapper");
+      this.shadowRoot.append(this.wrapper);
+    }
+
+    createWrapperStyle() {
+      const style = document.createElement("style");
+      style.textContent = `
+      .MinimalWrapper {
+        ${Style.baseStyle}
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+      }
+    `;
+      this.shadowRoot.append(style);
+      this.style.position = "absolute";  
+    }
+
+    //////////////////////////////////
+    // Creators
+    //////////////////////////////////
+
+    addToParent(parent, child) {
       if (!parent) {
         return;
       }
-      if (parent instanceof Panel) {
-        parent.addChild(this);
-      } else if (parent.toString() === "[object ShadowRoot]") {
-        parent.append(this);
+      if (parent.toString() === "[object ShadowRoot]") {
+        parent.append(child);
       } else {
-        parent.appendChild(this);
+        parent.appendChild(child);
       }
+    }
+
+    appendChild(child) {
+      this.shadowRoot.append(child);
     }
 
     move(x, y) {
@@ -36,6 +84,11 @@ var mc2 = (function (exports) {
       this.width = w;
       this.height = h;
     }
+
+    setWrapperClass(className) {
+      this.wrapper.setAttribute("class", className);
+    }
+
     
     //////////////////////////////////
     // Getters/Setters
@@ -108,11 +161,8 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.button = document.createElement("div");
-      this.button.setAttribute("class", "MinimalButton");
-      this.button.tabIndex = 0;
-      this.shadowRoot.append(this.button);
-
+      this.wrapper.tabIndex = 0;
+      this.button = this.createDiv(this.wrapper, "MinimalButton");
       this.label = new Label(this.button, 0, 0, this._text);
     }
 
@@ -122,7 +172,7 @@ var mc2 = (function (exports) {
       .MinimalButton,
       .MinimalButtonDisabled {
         ${Style.baseStyle}
-        background-color: #eee;
+        background-color: #f9f9f9;
         border-radius: 0;
         border: 1px solid #999;
         cursor: pointer;
@@ -232,16 +282,10 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.wrapper = document.createElement("div");
-      this.wrapper.setAttribute("class", "MinimalCheckbox");
+      this.setWrapperClass("MinimalCheckbox");
       this.wrapper.tabIndex = 0;
-
-      this.check = document.createElement("div");
-      this.check.setAttribute("class", "MinimalCheckboxCheck");
-      this.wrapper.appendChild(this.check);
-
-      this.label = new Label(this.wrapper, 15, 0, this._text);
-      this.shadowRoot.append(this.wrapper);
+      this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
+      this.label = new Label(this.wrapper, 15, 0, this.text);
     }
 
     createStyle() {
@@ -251,7 +295,10 @@ var mc2 = (function (exports) {
         ${Style.baseStyle}
         cursor: pointer;
         height: 100%;
-        width: 100%;
+        width: auto;
+      }
+      .MinimalCheckbox:focus {
+        ${Style.focusStyle}
       }
       .MinimalCheckboxCheck {
         ${Style.baseStyle}
@@ -269,9 +316,6 @@ var mc2 = (function (exports) {
       }
       .MinimalCheckboxCheckDisabled {
         ${Style.disabledStyle}
-      }
-      .MinimalCheckbox:focus {
-        ${Style.focusStyle}
       }
     `;
       this.shadowRoot.append(style);
@@ -361,6 +405,13 @@ var mc2 = (function (exports) {
       this.label.text = text;
     }
 
+    get width() {
+      return super.width;
+    }
+
+    set width(w) {
+      this.wrapper.style.width = this.label.width + 15 + "px";
+    }
   }
 
   customElements.define("minimal-checkbox", Checkbox);
@@ -388,14 +439,9 @@ var mc2 = (function (exports) {
     // Core
     //////////////////////////////////
     createChildren() {
-      this.slider = document.createElement("div");
-      this.slider.setAttribute("class", "MinimalSlider");
-      this.slider.tabIndex = 0;
-
-      this.handle = document.createElement("div");
-      this.handle.setAttribute("class", "MinimalSliderHandle");
-      this.slider.appendChild(this.handle);
-      this.shadowRoot.append(this.slider);
+      this.wrapper.tabIndex = 0;
+      this.slider = this.createDiv(this.wrapper, "MinimalSlider");
+      this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
     }
 
     createStyle() {
@@ -680,9 +726,9 @@ var mc2 = (function (exports) {
       // so we put it on document.body, get width
       // then remove it and add it to parent.
       document.body.appendChild(this);
-      this._width = this.label.offsetWidth;
+      this._width = this.wrapper.offsetWidth;
       document.body.removeChild(this);
-      this.addToParent(parent);
+      this.addToParent(parent, this);
       this.height = 12;
     }
 
@@ -691,11 +737,8 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this._text = this._text;
-      this.label = document.createElement("div");
-      this.label.textContent = this._text;
-      this.label.setAttribute("class", "MinimalLabel");
-      this.shadowRoot.append(this.label);
+      this.setWrapperClass("MinimalLabel");
+      this.wrapper.textContent = this._text;
     }
 
     createStyle() {
@@ -728,11 +771,11 @@ var mc2 = (function (exports) {
     set autosize(autosize) {
       this._autosize = autosize;
       if (this._autosize) {
-        this.label.style.width = "auto";
-        this._width = this.label.offsetWidth;
+        this.wrapper.style.width = "auto";
+        this._width = this.wrapper.offsetWidth;
       } else {
-        this._width = this.label.offsetWidth;
-        this.label.style.width = this._width + "px";
+        this._width = this.wrapper.offsetWidth;
+        this.wrapper.style.width = this._width + "px";
       }
     }
 
@@ -743,9 +786,9 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       super.enabled = enabled;
       if (this.enabled) {
-        this.label.setAttribute("class", "MinimalLabel");
+        this.setWrapperClass("MinimalLabel");
       } else {
-        this.label.setAttribute("class", "MinimalLabel MinimalLabelDisabled");
+        this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
       }
     }
 
@@ -755,9 +798,9 @@ var mc2 = (function (exports) {
 
     set text(text) {
       this._text = text;
-      this.label.textContent = text;
+      this.wrapper.textContent = text;
       if (this._autosize) {
-        this._width = this.label.offsetWidth;
+        this._width = this.wrapper.offsetWidth;
       }
     }
 
@@ -768,7 +811,7 @@ var mc2 = (function (exports) {
     set width(w) {
       if (!this.autosize) {
         this._width = w;      
-        this.label.style.width = w + "px";
+        this.wrapper.style.width = w + "px";
       }
     }
   }
@@ -790,9 +833,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      const panel = document.createElement("div");
-      panel.setAttribute("class", "MinimalPanel");
-      this.shadowRoot.append(panel);
+      this.setWrapperClass("MinimalPanel");
     }
 
     createStyle() {
@@ -818,9 +859,6 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
     
-    addChild(child) {
-      this.shadowRoot.append(child);
-    }
   }
 
   customElements.define("minimal-panel", Panel);
@@ -843,13 +881,8 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     createChildren() {
-      this.bar = document.createElement("div");
-      this.bar.setAttribute("class", "MinimalProgressBar");
-
-      this.fill = document.createElement("div");
-      this.fill.setAttribute("class", "MinimalProgressBarFill");
-      this.bar.appendChild(this.fill);
-      this.shadowRoot.append(this.bar);
+      this.bar = this.createDiv(this.wrapper, "MinimalProgressBar");
+      this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
     }
 
     createStyle() {
@@ -920,7 +953,6 @@ var mc2 = (function (exports) {
     constructor(parent, x, y, group, text, checked, defaultHandler) {
       super(parent, x, y);
       RadioButtonGroup.addToGroup(group, this);
-
       this.group = group;
       this._text = text;
 
@@ -938,17 +970,10 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.wrapper = document.createElement("div");
-      this.wrapper.setAttribute("class", "MinimalRadioButton");
+      this.setWrapperClass("MinimalRadioButton");
       this.wrapper.tabIndex = 0;
-
-      this.check = document.createElement("div");
-      this.check.setAttribute("class", "MinimalRadioButtonCheck");
-      this.wrapper.appendChild(this.check);
-
+      this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
       this.label = new Label(this.wrapper, 15, 0, this.text);
-
-      this.shadowRoot.append(this.wrapper);
     }
 
     createStyle() {
@@ -1197,10 +1222,8 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.textArea = document.createElement("textArea");
-      this.textArea.setAttribute("class", "MinimalTextArea");
+      this.textArea = this.createElement(this.wrapper, "textArea", "MinimalTextArea");
       this.textArea.value = this._text;
-      this.shadowRoot.append(this.textArea);
     }
 
     createStyle() {
@@ -1291,11 +1314,8 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.input = document.createElement("input");
-      this.input.setAttribute("type", "text");
-      this.input.setAttribute("class", "MinimalTextInput");
+      this.input = this.createInput(this.wrapper, "MinimalTextInput");
       this.input.value = this._text;
-      this.shadowRoot.append(this.input);
     }
 
     createStyle() {
@@ -1524,22 +1544,14 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.wrapper = document.createElement("div");
-      this.wrapper.setAttribute("class", "MinimalColorPicker");
+      this.setWrapperClass("MinimalColorPicker");
 
-      this.input = document.createElement("input");
-      this.input.setAttribute("type", "text");
-      this.input.setAttribute("class", "MinimalColorPickerInput");
+      this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
       this.input.maxLength = 7;
       this.input.value = this._color;
-      this.wrapper.appendChild(this.input);
 
-      this.preview = document.createElement("div");
-      this.preview.setAttribute("class", "MinimalColorPickerPreview");
+      this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
       this.preview.style.backgroundColor = this.color;
-      this.wrapper.appendChild(this.preview);
-
-      this.shadowRoot.append(this.wrapper);
     }
 
     createStyle() {
@@ -1674,21 +1686,15 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.wrapper = document.createElement("div");
-      this.wrapper.setAttribute("class", "MinimalNumericStepper");
+      this.setWrapperClass("MinimalNumericStepper");
 
-      this.input = document.createElement("input");
-      this.input.setAttribute("type", "text");
-      this.input.setAttribute("class", "MinimalNumericStepperInput");
+      this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
       this.input.value = this._value;
-      this.wrapper.appendChild(this.input);
 
       this.minus = new Button(this.wrapper, 60, 0, "-");
       this.minus.setSize(20, 20);
       this.plus = new Button(this.wrapper, 80, 0, "+");
       this.plus.setSize(20, 20);
-
-      this.shadowRoot.append(this.wrapper);
     }
 
     createStyle() {
@@ -1883,35 +1889,28 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.wrapper = document.createElement("div");
-      this.wrapper.setAttribute("class", "MinimalDropdown");
+      this.setWrapperClass("MinimalDropdown");
       this.wrapper.tabIndex = 0;
-      this.shadowRoot.append(this.wrapper);
 
       this.label = new Label(this.wrapper, 3, 3);
 
-      this.button = document.createElement("div");
-      this.button.setAttribute("class", "MinimalDropdownButton");
+      this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
       this.button.textContent = "+";
-      this.wrapper.appendChild(this.button);
 
-      this.dropdown = document.createElement("div");
+      this.dropdown = this.createDiv(this.wrapper, null);
       this.dropdown.style.display = "none";
-      this.shadowRoot.append(this.dropdown);
     }
 
     createItems() {
       for (let i = 0; i < this.items.length; i++) {
-        let item = this.createItem(i);
-        this.dropdown.appendChild(item);
+        this.createItem(i);
       }
     }
 
     createItem(index) {
-      let item = document.createElement("div");
-      item.setAttribute("class", "MinimalDropdownItem");
-      item.addEventListener("click", this.onItemClick);
+      let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
       item.setAttribute("data-index", index);
+      item.addEventListener("click", this.onItemClick);
       item.tabIndex = 0;
 
       let label = new Label(item, 3, 0, this.items[index]);
@@ -1934,7 +1933,6 @@ var mc2 = (function (exports) {
         border: 1px solid #999;
         cursor: pointer;
         height: 100%;
-        overflow: hidden;
         width: 100%;
         cursor: pointer;
       }
@@ -2165,9 +2163,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.image = document.createElement("img");
-      this.image.setAttribute("class", "MinimalImage");
-      this.shadowRoot.append(this.image);
+      this.image = this.createElement(this.wrapper, "img", "MinimalImage");
     }
 
     createStyle() {

@@ -21,35 +21,28 @@ export class Dropdown extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.wrapper = document.createElement("div");
-    this.wrapper.setAttribute("class", "MinimalDropdown");
+    this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
-    this.shadowRoot.append(this.wrapper);
 
     this.label = new Label(this.wrapper, 3, 3);
 
-    this.button = document.createElement("div");
-    this.button.setAttribute("class", "MinimalDropdownButton");
+    this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
-    this.wrapper.appendChild(this.button);
 
-    this.dropdown = document.createElement("div");
+    this.dropdown = this.createDiv(this.wrapper, null);
     this.dropdown.style.display = "none";
-    this.shadowRoot.append(this.dropdown);
   }
 
   createItems() {
     for (let i = 0; i < this.items.length; i++) {
-      let item = this.createItem(i);
-      this.dropdown.appendChild(item);
+      this.createItem(i);
     }
   }
 
   createItem(index) {
-    let item = document.createElement("div");
-    item.setAttribute("class", "MinimalDropdownItem");
-    item.addEventListener("click", this.onItemClick);
+    let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
     item.setAttribute("data-index", index);
+    item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
     let label = new Label(item, 3, 0, this.items[index]);
@@ -72,7 +65,6 @@ export class Dropdown extends Component {
         border: 1px solid #999;
         cursor: pointer;
         height: 100%;
-        overflow: hidden;
         width: 100%;
         cursor: pointer;
       }

@@ -17,10 +17,8 @@ export class TextArea extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.textArea = document.createElement("textArea");
-    this.textArea.setAttribute("class", "MinimalTextArea");
+    this.textArea = this.createElement(this.wrapper, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
-    this.shadowRoot.append(this.textArea);
   }
 
   createStyle() {

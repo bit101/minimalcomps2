@@ -20,14 +20,9 @@ export class HSlider extends Component {
   // Core
   //////////////////////////////////
   createChildren() {
-    this.slider = document.createElement("div");
-    this.slider.setAttribute("class", "MinimalSlider");
-    this.slider.tabIndex = 0;
-
-    this.handle = document.createElement("div");
-    this.handle.setAttribute("class", "MinimalSliderHandle");
-    this.slider.appendChild(this.handle);
-    this.shadowRoot.append(this.slider);
+    this.wrapper.tabIndex = 0;
+    this.slider = this.createDiv(this.wrapper, "MinimalSlider");
+    this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
   }
 
   createStyle() {

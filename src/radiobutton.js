@@ -2,7 +2,6 @@ export class RadioButton extends Component {
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
-
     this.group = group;
     this._text = text;
 
@@ -20,17 +19,10 @@ export class RadioButton extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.wrapper = document.createElement("div");
-    this.wrapper.setAttribute("class", "MinimalRadioButton");
+    this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
-
-    this.check = document.createElement("div");
-    this.check.setAttribute("class", "MinimalRadioButtonCheck");
-    this.wrapper.appendChild(this.check);
-
+    this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
-
-    this.shadowRoot.append(this.wrapper);
   }
 
   createStyle() {
