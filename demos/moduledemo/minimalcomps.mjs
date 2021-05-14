@@ -932,6 +932,8 @@ class Panel extends Component {
   }
 
   createStyle() {
+    this.style.position = "relative";
+    this.style.display = "block";
     const style = document.createElement("style");
     style.textContent = `
       .MinimalPanel {
@@ -953,6 +955,12 @@ class Panel extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
+  
+  move(x, y) {
+    // we'll use margins to position the panel so it plays well with other stuff on the page.
+    this.style.marginLeft = this.x + "px";
+    this.style.marginTop = this.y + "px";
+  }
   
 }
 

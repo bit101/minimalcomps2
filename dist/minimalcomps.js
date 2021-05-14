@@ -935,6 +935,8 @@ var mc2 = (function (exports) {
     }
 
     createStyle() {
+      this.style.position = "relative";
+      this.style.display = "block";
       const style = document.createElement("style");
       style.textContent = `
       .MinimalPanel {
@@ -956,6 +958,12 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // General
     //////////////////////////////////
+    
+    move(x, y) {
+      // we'll use margins to position the panel so it plays well with other stuff on the page.
+      this.style.marginLeft = this.x + "px";
+      this.style.marginTop = this.y + "px";
+    }
     
   }
 
