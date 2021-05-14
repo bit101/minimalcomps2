@@ -2,8 +2,7 @@ import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, Te
 
 const panel = new Panel(document.body, 40, 40, 400, 400);
 
-btn = new Button(panel, 20, 20, "Button")
-console.log(btn);
+new Button(panel, 20, 20, "Button")
 new Checkbox(panel, 20, 50, "Checkbox");
 new RadioButton(panel, 20, 80, "group", "RadioButton 1", true);
 new RadioButton(panel, 20, 100, "group", "RadioButton 2", false);

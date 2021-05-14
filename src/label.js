@@ -1,8 +1,12 @@
 export class Label extends Component {
   constructor(parent, x, y, text) {
     super(null, x, y);
-    this._text = text;
+    this._align = "left";
     this._autosize = true;
+    this._color = "#333";
+    this._bold = false;
+    this._italic = false;
+    this._text = text;
 
     this.createChildren();
     this.createStyle();
@@ -30,11 +34,11 @@ export class Label extends Component {
     style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        white-space: nowrap;
         color: #333;
-        user-select: none;
         height: 100%;
         overflow: hidden;
+        user-select: none;
+        white-space: nowrap;
       }
       .MinimalLabelDisabled {
         ${Style.disabledStyle}
@@ -47,6 +51,15 @@ export class Label extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  get align() {
+    return this._align;
+  }
+
+  set align(align) {
+    this._align = align;
+    this.wrapper.style.textAlign = align;
+  }
   
   get autosize() {
     return this._autosize;
@@ -63,6 +76,28 @@ export class Label extends Component {
     }
   }
 
+  get bold() {
+    return this._bold;
+  }
+
+  set bold(bold) {
+    this._bold = bold;
+    if (this._bold) {
+      this.wrapper.style.fontWeight = "bold";
+    } else {
+      this.wrapper.style.fontWeight = "normal";
+    }
+  }
+
+  get color() {
+    return this._color;
+  }
+
+  set color(color) {
+    this._color = color;
+    this.wrapper.style.color = color;
+  }
+
   get enabled() {
     return super.enabled;
   }
@@ -73,6 +108,36 @@ export class Label extends Component {
       this.setWrapperClass("MinimalLabel");
     } else {
       this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+    }
+  }
+
+  get fontSize() {
+    return this._fontSize;
+  }
+
+  set fontSize(fontSize) {
+    this._fontSize = fontSize;
+    this.wrapper.style.fontSize = fontSize + "px";
+  }
+  get height() {
+    return super.height;
+  }
+
+  set height(height) {
+    super.height = height;
+    this.wrapper.style.lineHeight = height + "px";
+  }
+
+  get italic() {
+    return this._italics;
+  }
+
+  set italic(italic) {
+    this._italic = italic;
+    if (this._italic) {
+      this.wrapper.style.fontStyle = "italic";
+    } else {
+      this.wrapper.style.fontStyle = "normal";
     }
   }
 

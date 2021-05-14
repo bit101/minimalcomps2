@@ -162,22 +162,29 @@ var mc2 = (function (exports) {
     
     createChildren() {
       this.wrapper.tabIndex = 0;
+      this.wrapper.textContent = this._text;
       this.setWrapperClass("MinimalButton");
-      this.label = new Label(this.wrapper, 0, 0, this._text);
     }
 
     createStyle() {
+      const buttonStyle = `
+      ${Style.baseStyle}
+      background-color: #f9f9f9;
+      border-radius: 0;
+      border: 1px solid #999;
+      height: 100%;
+      overflow: hidden;
+      width: 100%;
+      color: #333;
+      text-align: center;
+      user-select: none;
+    `;
+
       const style = document.createElement("style");
       style.textContent = `
       .MinimalButton {
-        ${Style.baseStyle}
-        background-color: #f9f9f9;
-        border-radius: 0;
-        border: 1px solid #999;
+        ${buttonStyle}
         cursor: pointer;
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
       }
       .MinimalButton:hover {
         background-color: #fff;
@@ -187,14 +194,7 @@ var mc2 = (function (exports) {
       }
       .MinimalButtonDisabled {
         ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #f9f9f9;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
+        ${buttonStyle}
       }
       .MinimalButton:focus {
         ${Style.focusStyle}
@@ -223,7 +223,7 @@ var mc2 = (function (exports) {
 
     onKeyPress(event) {
       if (event.keyCode == 13 && this.enabled) {
-        this.click();
+        this.wrapper.click();
       }
     }
 
@@ -231,11 +231,6 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
 
-    setSize(w, h) {
-      super.setSize(w, h);
-      this.label.x = (this.width - this.label.width) / 2 - 1;
-      this.label.y = (this.height - this.label.height) / 2 -1;
-    }
 
     //////////////////////////////////
     // Getters/Setters
@@ -255,7 +250,15 @@ var mc2 = (function (exports) {
         this.wrapper.setAttribute("class", "MinimalButtonDisabled");
         this.wrapper.tabIndex = -1;
       }
-      this.wrapper.enabled = enabled;
+    }
+
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.wrapper.style.lineHeight = height - 1 + "px";
     }
 
     get text() {
@@ -747,8 +750,12 @@ var mc2 = (function (exports) {
   class Label extends Component {
     constructor(parent, x, y, text) {
       super(null, x, y);
-      this._text = text;
+      this._align = "left";
       this._autosize = true;
+      this._color = "#333";
+      this._bold = false;
+      this._italic = false;
+      this._text = text;
 
       this.createChildren();
       this.createStyle();
@@ -776,11 +783,11 @@ var mc2 = (function (exports) {
       style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        white-space: nowrap;
         color: #333;
-        user-select: none;
         height: 100%;
         overflow: hidden;
+        user-select: none;
+        white-space: nowrap;
       }
       .MinimalLabelDisabled {
         ${Style.disabledStyle}
@@ -793,6 +800,15 @@ var mc2 = (function (exports) {
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
+
+    get align() {
+      return this._align;
+    }
+
+    set align(align) {
+      this._align = align;
+      this.wrapper.style.textAlign = align;
+    }
     
     get autosize() {
       return this._autosize;
@@ -809,6 +825,28 @@ var mc2 = (function (exports) {
       }
     }
 
+    get bold() {
+      return this._bold;
+    }
+
+    set bold(bold) {
+      this._bold = bold;
+      if (this._bold) {
+        this.wrapper.style.fontWeight = "bold";
+      } else {
+        this.wrapper.style.fontWeight = "normal";
+      }
+    }
+
+    get color() {
+      return this._color;
+    }
+
+    set color(color) {
+      this._color = color;
+      this.wrapper.style.color = color;
+    }
+
     get enabled() {
       return super.enabled;
     }
@@ -819,6 +857,36 @@ var mc2 = (function (exports) {
         this.setWrapperClass("MinimalLabel");
       } else {
         this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+      }
+    }
+
+    get fontSize() {
+      return this._fontSize;
+    }
+
+    set fontSize(fontSize) {
+      this._fontSize = fontSize;
+      this.wrapper.style.fontSize = fontSize + "px";
+    }
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.wrapper.style.lineHeight = height + "px";
+    }
+
+    get italic() {
+      return this._italics;
+    }
+
+    set italic(italic) {
+      this._italic = italic;
+      if (this._italic) {
+        this.wrapper.style.fontStyle = "italic";
+      } else {
+        this.wrapper.style.fontStyle = "normal";
       }
     }
 
