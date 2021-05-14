@@ -12,7 +12,7 @@ new mc2.TextArea(panel, 20, 240, "TextArea");
 new mc2.HSlider(panel, 60, 370, 40, 0, 100).addLabels("HSlider");
 new mc2.VSlider(panel, 165, 230, 40, 0, 100).addLabels("VSlider");
 
-new mc2.ColorPicker(panel, 250, 20, "#f00");
+btn = new mc2.ColorPicker(panel, 250, 20, "#f00");
 new mc2.NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
 new mc2.Dropdown(panel, 250, 80, stuff);

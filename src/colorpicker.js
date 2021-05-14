@@ -59,6 +59,12 @@ export class ColorPicker extends Component {
       }
       .MinimalColorPickerPreviewDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        width: 20px;
+        height: 20px;
+        left: 80px;
+        background-color: #fff;
       }
       .MinimalColorPickerInput:focus {
         ${Style.focusStyle}
@@ -119,7 +125,7 @@ export class ColorPicker extends Component {
         this.preview.setAttribute("class", "MinimalColorPickerPreview");
         this.input.addEventListener("input", this.onInput);
       } else {
-        this.preview.setAttribute("class", "MinimalColorPickerPreview MinimalColorPickerPreviewDisabled");
+        this.preview.setAttribute("class", "MinimalColorPickerPreviewDisabled");
         this.input.removeEventListener("input", this.onInput);
       }
     }
