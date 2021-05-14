@@ -41,7 +41,7 @@ No need to worry about styles or layout. Just give everything an absolute x, y p
 
 [Documentation](https://github.com/bit101/minimalcomps2/wiki)
 
-### Use
+## Use
 
 There are two files in the `dist` directory:
 
