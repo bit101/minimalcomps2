@@ -17,22 +17,29 @@ export class Button extends Component {
   
   createChildren() {
     this.wrapper.tabIndex = 0;
+    this.wrapper.textContent = this._text;
     this.setWrapperClass("MinimalButton");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
   }
 
   createStyle() {
+    const buttonStyle = `
+      ${Style.baseStyle}
+      background-color: #f9f9f9;
+      border-radius: 0;
+      border: 1px solid #999;
+      height: 100%;
+      overflow: hidden;
+      width: 100%;
+      color: #333;
+      text-align: center;
+      user-select: none;
+    `;
+
     const style = document.createElement("style");
     style.textContent = `
       .MinimalButton {
-        ${Style.baseStyle}
-        background-color: #f9f9f9;
-        border-radius: 0;
-        border: 1px solid #999;
+        ${buttonStyle}
         cursor: pointer;
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
       }
       .MinimalButton:hover {
         background-color: #fff;
@@ -42,14 +49,7 @@ export class Button extends Component {
       }
       .MinimalButtonDisabled {
         ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #f9f9f9;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
+        ${buttonStyle}
       }
       .MinimalButton:focus {
         ${Style.focusStyle}
@@ -78,7 +78,7 @@ export class Button extends Component {
 
   onKeyPress(event) {
     if (event.keyCode == 13 && this.enabled) {
-      this.click();
+      this.wrapper.click();
     }
   }
 
@@ -86,11 +86,6 @@ export class Button extends Component {
   // General
   //////////////////////////////////
 
-  setSize(w, h) {
-    super.setSize(w, h);
-    this.label.x = (this.width - this.label.width) / 2 - 1;
-    this.label.y = (this.height - this.label.height) / 2 -1;
-  }
 
   //////////////////////////////////
   // Getters/Setters
@@ -110,7 +105,15 @@ export class Button extends Component {
       this.wrapper.setAttribute("class", "MinimalButtonDisabled");
       this.wrapper.tabIndex = -1;
     }
-    this.wrapper.enabled = enabled;
+  }
+
+  get height() {
+    return super.height;
+  }
+
+  set height(height) {
+    super.height = height;
+    this.wrapper.style.lineHeight = height - 1 + "px";
   }
 
   get text() {
