@@ -15,5 +15,5 @@ new mc2.VSlider(panel, 165, 230, 40, 0, 100).addLabels("VSlider");
 new mc2.ColorPicker(panel, 250, 20, "#f00");
 new mc2.NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
-new mc2.Dropdown(panel, 250, 80, stuff, 0);
+dd = new mc2.Dropdown(panel, 250, 80, stuff, 0);
 new mc2.Image(panel, 250, 120, "demo.jpg");

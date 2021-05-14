@@ -2116,7 +2116,7 @@ class Dropdown extends Component {
   constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);
     this.items = items;
-    this.open = false;
+    this._open = false;
     this.itemElements = [];
     this._index = -1;
     this._text = "";
@@ -2249,8 +2249,8 @@ class Dropdown extends Component {
 
   toggle(event) {
     event && event.stopPropagation();
-    this.open = !this.open;
-    if (this.open) {
+    this._open = !this._open;
+    if (this._open) {
       this.initialZ = this.style.zIndex;
       this.style.zIndex = 1000000;
       this.dropdown.style.display = "block";
@@ -2307,7 +2307,12 @@ class Dropdown extends Component {
   //////////////////////////////////
 
   close() {
-    this.open = true;
+    this._open = true;
+    this.toggle();
+  }
+
+  open() {
+    this._open = false;
     this.toggle();
   }
 
@@ -2354,7 +2359,7 @@ class Dropdown extends Component {
       this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
       this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
       this.tabIndex = -1;
-      this.open = false;
+      this._open = false;
       this.style.zIndex = this.initialZ;
       this.dropdown.style.display = "none";
     }
