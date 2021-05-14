@@ -1,16 +1,14 @@
 # minimalcomps2
 
-Pure HTML/JS reimagining of https://github.com/minimalcomps/minimalcomps
+Minimal UI components for rapid prototyping, experiments and proof of concept projects. 
 
-Implemented using Web Components and Shadow DOM. Probably imperfectly.
-
-Still a work in progress, but coming along nicely. Better than I had hoped.
-
-## Goals
+## Summary
 
 A single-file, drop-in library allowing you to create a quick user interface for experiments or quick ideas.
 
-The aim is for very concise, compact syntax. You can usually create a component, position it, configure it and create and event handler in a single line of code. Example:
+The aim is for very concise, compact syntax. You can usually create a component, position it, configure it and create and event handler in a single line of code. 
+
+## Example
 
 ```
 const panel = new Panel(document.body, 40, 40, 200, 200);
@@ -18,8 +16,6 @@ new Button(panel, 20, 20, "Click me", () => label.text = input.text);
 const input = new TextInput(panel, 20, 50, "hello world");
 const label = new Label(panel, 20, 80, "target label");
 ```
-
-Which give you this:
 
 ![simple demo](images/simpledemo.png)
 
@@ -29,7 +25,7 @@ The general API for each component is
 
 No need to worry about styles or layout. Just give everything an absolute x, y position.
 
-## What they look like
+## Where we are at
 
 ![component list](images/simpledemo2.png)
 
