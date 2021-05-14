@@ -23,7 +23,7 @@ The general API for each component is
 
 ```new ComponentName(parent, x, y, <possible other params>, defaultEventHandler);```
 
-No need to worry about styles or layout. Just give everything an absolute x, y position.
+No need to worry about styles or layout. Just give everything a parent, a position, a prop or two and maybe an event handler.
 
 ## Where we are at
 
