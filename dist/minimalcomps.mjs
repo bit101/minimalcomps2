@@ -1450,6 +1450,7 @@ customElements.define("minimal-textarea", TextArea);
 class TextInput extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
+    this._maxLength = 0;
     this._text = text;
 
     this.createStyle();
@@ -1525,6 +1526,15 @@ class TextInput extends Component {
         this.input.removeEventListener("input", this.onInput);
       }
     }
+  }
+
+  get maxLength() {
+    return this._maxLength;
+  }
+
+  set maxLength(maxLength) {
+    this._maxLength = maxLength;
+    this.input.maxLength = maxLength;
   }
 
   get text() {
