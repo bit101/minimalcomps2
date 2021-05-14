@@ -1,4 +1,4 @@
-# minimalcomps2
+# MinimalComps2
 
 Minimal UI components for rapid prototyping, experiments and proof of concept projects. 
 
