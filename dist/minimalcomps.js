@@ -1909,12 +1909,16 @@ var mc2 = (function (exports) {
     createListeners() {
       this.onInputChange = this.onInputChange.bind(this);
       this.onInput = this.onInput.bind(this);
-      this.onPlus = this.onPlus.bind(this);
-      this.onMinus = this.onMinus.bind(this);
+      this.onPlusDown = this.onPlusDown.bind(this);
+      this.onMinusDown = this.onMinusDown.bind(this);
+      this.onPlusUp = this.onPlusUp.bind(this);
+      this.onMinusUp = this.onMinusUp.bind(this);
       this.input.addEventListener("input", this.onInput);
       this.input.addEventListener("change", this.onInputChange);
-      this.plus.addEventListener("click", this.onPlus);
-      this.minus.addEventListener("click", this.onMinus);
+      this.plus.addEventListener("mousedown", this.onPlusDown);
+      this.minus.addEventListener("mousedown", this.onMinusDown);
+      this.plus.addEventListener("mouseup", this.onPlusUp);
+      this.minus.addEventListener("mouseup", this.onMinusUp);
     }
 
     //////////////////////////////////
@@ -1937,20 +1941,44 @@ var mc2 = (function (exports) {
       }
     }
 
-    onPlus() {
-      const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
-        this.value = value;
-        this.dispatchEvent(new Event("change"));
+    decrement() {
+      if (this.isDecrementing) {
+        const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
+        if (this.value != value) {
+          this.value = value;
+          this.dispatchEvent(new Event("change"));
+        }
+        setTimeout(() => this.decrement(), 50);
       }
     }
 
-    onMinus() {
-      const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
-        this.value = value;
-        this.dispatchEvent(new Event("change"));
+    increment() {
+      if (this.isIncrementing) {
+        const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
+        if (this.value != value) {
+          this.value = value;
+          this.dispatchEvent(new Event("change"));
+        }
+        setTimeout(() => this.increment(), 50);
       }
+    }
+
+    onMinusDown() {
+      this.isDecrementing = true;
+      this.decrement();
+    }
+
+    onMinusUp() {
+      this.isDecrementing = false;
+    }
+
+    onPlusDown() {
+      this.isIncrementing = true;
+      this.increment();
+    }
+
+    onPlusUp() {
+      this.isIncrementing = false;
     }
 
     //////////////////////////////////
