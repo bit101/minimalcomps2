@@ -205,9 +205,9 @@ var mc2 = (function (exports) {
 
     createListeners() {
       this.onClick = this.onClick.bind(this);
-      this.onKeyPress = this.onKeyPress.bind(this);
+      this.onKeyUp = this.onKeyUp.bind(this);
       this.wrapper.addEventListener("click", this.onClick);
-      this.wrapper.addEventListener("keypress", this.onKeyPress);
+      this.wrapper.addEventListener("keyup", this.onKeyUp);
     }
 
     //////////////////////////////////
@@ -221,7 +221,7 @@ var mc2 = (function (exports) {
       }
     }
 
-    onKeyPress(event) {
+    onKeyUp(event) {
       if (event.keyCode == 13 && this.enabled) {
         this.wrapper.click();
       }
@@ -1938,10 +1938,16 @@ var mc2 = (function (exports) {
       this.onMinusUp = this.onMinusUp.bind(this);
       this.input.addEventListener("input", this.onInput);
       this.input.addEventListener("change", this.onInputChange);
+
       this.plus.addEventListener("mousedown", this.onPlusDown);
-      this.minus.addEventListener("mousedown", this.onMinusDown);
       this.plus.addEventListener("mouseup", this.onPlusUp);
+      this.plus.addEventListener("keydown", this.onPlusDown);
+      this.plus.addEventListener("keyup", this.onPlusUp);
+
+      this.minus.addEventListener("mousedown", this.onMinusDown);
       this.minus.addEventListener("mouseup", this.onMinusUp);
+      this.minus.addEventListener("keydown", this.onMinusDown);
+      this.minus.addEventListener("keyup", this.onMinusUp);
     }
 
     //////////////////////////////////

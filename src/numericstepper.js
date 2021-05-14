@@ -66,10 +66,16 @@ export class NumericStepper extends Component {
     this.onMinusUp = this.onMinusUp.bind(this);
     this.input.addEventListener("input", this.onInput);
     this.input.addEventListener("change", this.onInputChange);
+
     this.plus.addEventListener("mousedown", this.onPlusDown);
-    this.minus.addEventListener("mousedown", this.onMinusDown);
     this.plus.addEventListener("mouseup", this.onPlusUp);
+    this.plus.addEventListener("keydown", this.onPlusDown);
+    this.plus.addEventListener("keyup", this.onPlusUp);
+
+    this.minus.addEventListener("mousedown", this.onMinusDown);
     this.minus.addEventListener("mouseup", this.onMinusUp);
+    this.minus.addEventListener("keydown", this.onMinusDown);
+    this.minus.addEventListener("keyup", this.onMinusUp);
   }
 
   //////////////////////////////////

@@ -60,9 +60,9 @@ export class Button extends Component {
 
   createListeners() {
     this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+    this.wrapper.addEventListener("keyup", this.onKeyUp);
   }
 
   //////////////////////////////////
@@ -76,7 +76,7 @@ export class Button extends Component {
     }
   }
 
-  onKeyPress(event) {
+  onKeyUp(event) {
     if (event.keyCode == 13 && this.enabled) {
       this.wrapper.click();
     }
