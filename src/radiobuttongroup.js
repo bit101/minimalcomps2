@@ -36,19 +36,31 @@ export class RadioButtonGroup {
   static getNextInGroup(group, rb) {
     const g = RadioButtonGroup.groups[group];
     const index = g.indexOf(rb);
+    var result;
     if (index >= g.length - 1) {
-      return g[0];
+      result = g[0];
+    } else {
+      result = g[index + 1];
     }
-    return g[index + 1]
+    if (result.enabled) {
+      return result;
+    }
+    return RadioButtonGroup.getNextInGroup(group, result);
   }
 
   static getPrevInGroup(group, rb) {
     const g = RadioButtonGroup.groups[group];
     const index = g.indexOf(rb);
+    var result;
     if (index <= 0) {
-      return g[g.length - 1];
+      result = g[g.length - 1];
+    } else {
+      result = g[index - 1];
     }
-    return g[index - 1]
+    if (result.enabled) {
+      return result;
+    }
+    return RadioButtonGroup.getPrevInGroup(group, result);
   }
 
 }

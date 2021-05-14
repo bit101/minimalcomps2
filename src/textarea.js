@@ -2,7 +2,6 @@ export class TextArea extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
-    this._defaultHandler = defaultHandler;
 
     this.createStyle();
     this.createChildren();
@@ -17,10 +16,8 @@ export class TextArea extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.textArea = document.createElement("textArea");
-    this.textArea.setAttribute("class", "MinimalTextArea");
+    this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
-    this.shadowRoot.append(this.textArea);
   }
 
   createStyle() {

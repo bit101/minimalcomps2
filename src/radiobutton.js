@@ -2,7 +2,6 @@ export class RadioButton extends Component {
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
-
     this.group = group;
     this._text = text;
 
@@ -20,17 +19,10 @@ export class RadioButton extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.wrapper = document.createElement("div");
-    this.wrapper.setAttribute("class", "MinimalRadioButton");
+    this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
-
-    this.check = document.createElement("div");
-    this.check.setAttribute("class", "MinimalRadioButtonCheck");
-    this.wrapper.appendChild(this.check);
-
+    this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
-
-    this.shadowRoot.append(this.wrapper);
   }
 
   createStyle() {
@@ -39,6 +31,12 @@ export class RadioButton extends Component {
       .MinimalRadioButton {
         ${Style.baseStyle}
         cursor: pointer;
+        height: 100%;
+        width: auto;
+      }
+      .MinimalRadioButtonDisabled {
+        ${Style.baseStyle}
+        cursor: default;
         height: 100%;
         width: auto;
       }
@@ -106,7 +104,9 @@ export class RadioButton extends Component {
   //////////////////////////////////
   
   focus() {
-    this.wrapper.focus();
+    if (this.enabled) {
+      this.wrapper.focus();
+    }
   }
 
   updateCheckStyle() {
@@ -118,6 +118,12 @@ export class RadioButton extends Component {
       className += "MinimalRadioButtonCheckDisabled";
     }
     this.check.setAttribute("class", className);
+    this.check.setAttribute("class", className);
+    if (this.enabled) {
+      this.setWrapperClass("MinimalRadioButton");
+    } else {
+      this.setWrapperClass("MinimalRadioButtonDisabled");
+    }
   }
 
   //////////////////////////////////

@@ -10,9 +10,9 @@ export class Label extends Component {
     // so we put it on document.body, get width
     // then remove it and add it to parent.
     document.body.appendChild(this);
-    this._width = this.label.offsetWidth;
+    this._width = this.wrapper.offsetWidth;
     document.body.removeChild(this);
-    this.addToParent(parent);
+    this.addToParent(parent, this);
     this.height = 12;
   }
 
@@ -21,11 +21,8 @@ export class Label extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this._text = this._text;
-    this.label = document.createElement("div");
-    this.label.textContent = this._text;
-    this.label.setAttribute("class", "MinimalLabel");
-    this.shadowRoot.append(this.label);
+    this.setWrapperClass("MinimalLabel");
+    this.wrapper.textContent = this._text;
   }
 
   createStyle() {
@@ -58,11 +55,11 @@ export class Label extends Component {
   set autosize(autosize) {
     this._autosize = autosize;
     if (this._autosize) {
-      this.label.style.width = "auto";
-      this._width = this.label.offsetWidth;
+      this.wrapper.style.width = "auto";
+      this._width = this.wrapper.offsetWidth;
     } else {
-      this._width = this.label.offsetWidth;
-      this.label.style.width = this._width + "px";
+      this._width = this.wrapper.offsetWidth;
+      this.wrapper.style.width = this._width + "px";
     }
   }
 
@@ -73,9 +70,9 @@ export class Label extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.label.setAttribute("class", "MinimalLabel");
+      this.setWrapperClass("MinimalLabel");
     } else {
-      this.label.setAttribute("class", "MinimalLabel MinimalLabelDisabled");
+      this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
     }
   }
 
@@ -85,9 +82,9 @@ export class Label extends Component {
 
   set text(text) {
     this._text = text;
-    this.label.textContent = text;
+    this.wrapper.textContent = text;
     if (this._autosize) {
-      this._width = this.label.offsetWidth;
+      this._width = this.wrapper.offsetWidth;
     }
   }
 
@@ -98,7 +95,7 @@ export class Label extends Component {
   set width(w) {
     if (!this.autosize) {
       this._width = w;      
-      this.label.style.width = w + "px";
+      this.wrapper.style.width = w + "px";
     }
   }
 }

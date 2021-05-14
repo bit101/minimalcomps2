@@ -19,21 +19,15 @@ export class NumericStepper extends Component {
   //////////////////////////////////
   
   createChildren() {
-    this.wrapper = document.createElement("div");
-    this.wrapper.setAttribute("class", "MinimalNumericStepper");
+    this.setWrapperClass("MinimalNumericStepper");
 
-    this.input = document.createElement("input");
-    this.input.setAttribute("type", "text");
-    this.input.setAttribute("class", "MinimalNumericStepperInput");
+    this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
-    this.wrapper.appendChild(this.input);
 
     this.minus = new Button(this.wrapper, 60, 0, "-");
     this.minus.setSize(20, 20);
     this.plus = new Button(this.wrapper, 80, 0, "+");
     this.plus.setSize(20, 20);
-
-    this.shadowRoot.append(this.wrapper);
   }
 
   createStyle() {
