@@ -2113,7 +2113,7 @@ class NumericStepper extends Component {
 customElements.define("minimal-numericstepper", NumericStepper);
 
 class Dropdown extends Component {
-  constructor(parent, x, y, items, defaultHandler) {
+  constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);
     this.items = items;
     this.open = false;
@@ -2127,6 +2127,7 @@ class Dropdown extends Component {
 
     this.setSize(100, 20);
     this.createItems();
+    this.index = index;
     this.addEventListener("change", defaultHandler);
   }
 
@@ -2263,9 +2264,8 @@ class Dropdown extends Component {
 
   onItemClick(event) {
     event.stopPropagation();
-    this._text = event.target.firstChild.text;
-    this._index = event.target.getAttribute("data-index");
-    this.label.text = this._text;
+    // this._text = event.target.firstChild.text;
+    this.index = event.target.getAttribute("data-index");
     this.toggle();
     this.dispatchEvent(new Event("change"));
     this.wrapper.focus();
@@ -2374,6 +2374,14 @@ class Dropdown extends Component {
 
   get index() {
     return this._index;
+  }
+
+  set index(index) {
+    if (index >= 0 && index < this.items.length) {
+      this._index = index;
+      this._text = this.items[this._index];
+      this.label.text = this._text;
+    }
   }
 
   get text() {
