@@ -1,6 +1,6 @@
 # MinimalComps2
 
-Minimal UI components for rapid prototyping, experiments and proof of concept projects. 
+A Web UI tookkit for creating rapid prototypes, experiments and proof of concept projects. 
 
 ## Summary
 
