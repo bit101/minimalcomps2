@@ -99,7 +99,10 @@ export class NumericStepper extends Component {
         this.value = value;
         this.dispatchEvent(new Event("change"));
       }
-      setTimeout(() => this.decrement(), 50);
+      this.timeout = setTimeout(() => this.decrement(), this.delay);
+      if (this.delay === 500) {
+        this.delay = 50;
+      }
     }
   }
 
@@ -110,12 +113,17 @@ export class NumericStepper extends Component {
         this.value = value;
         this.dispatchEvent(new Event("change"));
       }
-      setTimeout(() => this.increment(), 50);
+      this.timeout = setTimeout(() => this.increment(), this.delay);
+      if (this.delay === 500) {
+        this.delay = 50;
+      }
     }
   }
 
   onMinusDown() {
+    clearTimeout(this.timeout);
     this.isDecrementing = true;
+    this.delay = 500;
     this.decrement();
   }
 
@@ -124,7 +132,9 @@ export class NumericStepper extends Component {
   }
 
   onPlusDown() {
+    clearTimeout(this.timeout);
     this.isIncrementing = true;
+    this.delay = 500;
     this.increment();
   }
 
