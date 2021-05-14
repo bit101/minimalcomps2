@@ -162,15 +162,14 @@ var mc2 = (function (exports) {
     
     createChildren() {
       this.wrapper.tabIndex = 0;
-      this.button = this.createDiv(this.wrapper, "MinimalButton");
-      this.label = new Label(this.button, 0, 0, this._text);
+      this.setWrapperClass("MinimalButton");
+      this.label = new Label(this.wrapper, 0, 0, this._text);
     }
 
     createStyle() {
       const style = document.createElement("style");
       style.textContent = `
-      .MinimalButton,
-      .MinimalButtonDisabled {
+      .MinimalButton {
         ${Style.baseStyle}
         background-color: #f9f9f9;
         border-radius: 0;
@@ -188,6 +187,14 @@ var mc2 = (function (exports) {
       }
       .MinimalButtonDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #f9f9f9;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: default;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
       }
       .MinimalButton:focus {
         ${Style.focusStyle}
@@ -199,8 +206,8 @@ var mc2 = (function (exports) {
     createListeners() {
       this.onClick = this.onClick.bind(this);
       this.onKeyPress = this.onKeyPress.bind(this);
-      this.button.addEventListener("click", this.onClick);
-      this.button.addEventListener("keypress", this.onKeyPress);
+      this.wrapper.addEventListener("click", this.onClick);
+      this.wrapper.addEventListener("keypress", this.onKeyPress);
     }
 
     //////////////////////////////////
@@ -242,13 +249,13 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       super.enabled = enabled;
       if (this.enabled) {
-        this.button.setAttribute("class", "MinimalButton");
-        this.button.tabIndex = 0;
+        this.wrapper.setAttribute("class", "MinimalButton");
+        this.wrapper.tabIndex = 0;
       } else {
-        this.button.setAttribute("class", "MinimalButtonDisabled");
-        this.button.tabIndex = -1;
+        this.wrapper.setAttribute("class", "MinimalButtonDisabled");
+        this.wrapper.tabIndex = -1;
       }
-      this.button.enabled = enabled;
+      this.wrapper.enabled = enabled;
     }
 
     get text() {
@@ -297,6 +304,12 @@ var mc2 = (function (exports) {
         height: 100%;
         width: auto;
       }
+      .MinimalCheckboxDisabled {
+        ${Style.baseStyle}
+        cursor: default;
+        height: 100%;
+        width: auto;
+      }
       .MinimalCheckbox:focus {
         ${Style.focusStyle}
       }
@@ -325,7 +338,7 @@ var mc2 = (function (exports) {
       this.onClick = this.onClick.bind(this);
       this.onKeyPress = this.onKeyPress.bind(this);
       this.wrapper.addEventListener("click", this.onClick);
-      this.addEventListener("keypress", this.onKeyPress);
+      this.wrapper.addEventListener("keypress", this.onKeyPress);
     }
 
     //////////////////////////////////
@@ -363,6 +376,11 @@ var mc2 = (function (exports) {
         className += "MinimalCheckboxCheckDisabled";
       }
       this.check.setAttribute("class", className);
+      if (this.enabled) {
+        this.setWrapperClass("MinimalCheckbox");
+      } else {
+        this.setWrapperClass("MinimalCheckboxDisabled");
+      }
     }
 
     //////////////////////////////////
@@ -440,7 +458,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     createChildren() {
       this.wrapper.tabIndex = 0;
-      this.slider = this.createDiv(this.wrapper, "MinimalSlider");
+      this.setWrapperClass("MinimalSlider");
       this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
     }
 
@@ -457,6 +475,12 @@ var mc2 = (function (exports) {
       }
       .MinimalSliderDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
       }
       .MinimalSliderHandle {
         ${Style.baseStyle}
@@ -468,6 +492,12 @@ var mc2 = (function (exports) {
       }
       .MinimalSliderHandleDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+        width: ${this.handleSize}px;
+        cursor: default;
       }
       .MinimalSlider:focus {
         ${Style.focusStyle}
@@ -481,8 +511,8 @@ var mc2 = (function (exports) {
       this.onMouseMove = this.onMouseMove.bind(this);
       this.onMouseUp = this.onMouseUp.bind(this);
       this.onKeyDown = this.onKeyDown.bind(this);
-      this.addEventListener("mousedown", this.onMouseDown);
-      this.addEventListener("keydown", this.onKeyDown);
+      this.wrapper.addEventListener("mousedown", this.onMouseDown);
+      this.wrapper.addEventListener("keydown", this.onKeyDown);
     }
 
     //////////////////////////////////
@@ -570,11 +600,11 @@ var mc2 = (function (exports) {
         this.valueLabel.enabled = this.enabled;
       }
       if (this.enabled) {
-        this.slider.setAttribute("class", "MinimalSlider");
+        this.setWrapperClass("MinimalSlider");
         this.handle.setAttribute("class", "MinimalSliderHandle");
       } else {
-        this.slider.setAttribute("class", "MinimalSlider MinimalSliderDisabled");
-        this.handle.setAttribute("class", "MinimalSliderHandle MinimalSliderHandleDisabled");
+        this.setWrapperClass("MinimalSliderDisabled");
+        this.handle.setAttribute("class", "MinimalSliderHandleDisabled");
       }
     }
 
@@ -633,13 +663,13 @@ var mc2 = (function (exports) {
         super.enabled = enabled;
         this.updateEnabledStyle();
         if (this.enabled) {
-          this.slider.tabIndex = 0;
-          this.addEventListener("mousedown", this.onMouseDown);
-          this.addEventListener("keydown", this.onKeyDown);
+          this.wrapper.tabIndex = 0;
+          this.wrapper.addEventListener("mousedown", this.onMouseDown);
+          this.wrapper.addEventListener("keydown", this.onKeyDown);
         } else {
-          this.slider.tabIndex = -1;
-          this.removeEventListener("mousedown", this.onMouseDown);
-          this.removeEventListener("keydown", this.onKeyDown);
+          this.wrapper.tabIndex = -1;
+          this.wrapper.removeEventListener("mousedown", this.onMouseDown);
+          this.wrapper.removeEventListener("keydown", this.onKeyDown);
           document.removeEventListener("mousemove", this.onMouseMove);
           document.removeEventListener("mouseup", this.onMouseUp);
         }
@@ -881,7 +911,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     createChildren() {
-      this.bar = this.createDiv(this.wrapper, "MinimalProgressBar");
+      this.setWrapperClass("MinimalProgressBar");
       this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
     }
 
@@ -896,8 +926,24 @@ var mc2 = (function (exports) {
         height: 100%;
         width: 100%;
       }
+      .MinimalProgressBarDisabled {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        ${Style.disabledStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+      }
       .MinimalProgressBarFill {
         ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+      }
+      .MinimalProgressBarFillDisabled {
+        ${Style.baseStyle}
+        ${Style.disabledStyle}
         background-color: #fff;
         border: 1px solid #999;
         height: 100%;
@@ -921,6 +967,21 @@ var mc2 = (function (exports) {
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
+
+    get enabled() {
+      return super.enbled;
+    }
+
+    set enabled(enabled) {
+      super.enabled = enabled;
+      if (this._enabled) {
+        this.setWrapperClass("MinimalProgressBar");
+        this.fill.setAttribute("class", "MinimalProgressBarFill");
+      } else {
+        this.setWrapperClass("MinimalProgressBarDisabled");
+        this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
+      }
+    }
     
     get max() {
       return this._max;
@@ -982,6 +1043,12 @@ var mc2 = (function (exports) {
       .MinimalRadioButton {
         ${Style.baseStyle}
         cursor: pointer;
+        height: 100%;
+        width: auto;
+      }
+      .MinimalRadioButtonDisabled {
+        ${Style.baseStyle}
+        cursor: default;
         height: 100%;
         width: auto;
       }
@@ -1049,7 +1116,9 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     focus() {
-      this.wrapper.focus();
+      if (this.enabled) {
+        this.wrapper.focus();
+      }
     }
 
     updateCheckStyle() {
@@ -1061,6 +1130,12 @@ var mc2 = (function (exports) {
         className += "MinimalRadioButtonCheckDisabled";
       }
       this.check.setAttribute("class", className);
+      this.check.setAttribute("class", className);
+      if (this.enabled) {
+        this.setWrapperClass("MinimalRadioButton");
+      } else {
+        this.setWrapperClass("MinimalRadioButtonDisabled");
+      }
     }
 
     //////////////////////////////////
@@ -1156,19 +1231,31 @@ var mc2 = (function (exports) {
     static getNextInGroup(group, rb) {
       const g = RadioButtonGroup.groups[group];
       const index = g.indexOf(rb);
+      var result;
       if (index >= g.length - 1) {
-        return g[0];
+        result = g[0];
+      } else {
+        result = g[index + 1];
       }
-      return g[index + 1]
+      if (result.enabled) {
+        return result;
+      }
+      return RadioButtonGroup.getNextInGroup(group, result);
     }
 
     static getPrevInGroup(group, rb) {
       const g = RadioButtonGroup.groups[group];
       const index = g.indexOf(rb);
+      var result;
       if (index <= 0) {
-        return g[g.length - 1];
+        result = g[g.length - 1];
+      } else {
+        result = g[index - 1];
       }
-      return g[index - 1]
+      if (result.enabled) {
+        return result;
+      }
+      return RadioButtonGroup.getPrevInGroup(group, result);
     }
 
   }
@@ -1207,7 +1294,6 @@ var mc2 = (function (exports) {
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
       this._text = text;
-      this._defaultHandler = defaultHandler;
 
       this.createStyle();
       this.createChildren();
@@ -1222,7 +1308,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.textArea = this.createElement(this.wrapper, "textArea", "MinimalTextArea");
+      this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
       this.textArea.value = this._text;
     }
 
@@ -1314,7 +1400,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     
     createChildren() {
-      this.input = this.createInput(this.wrapper, "MinimalTextInput");
+      this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
       this.input.value = this._text;
     }
 
@@ -1407,6 +1493,12 @@ var mc2 = (function (exports) {
       }
       .MinimalSliderDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
       }
       .MinimalSliderHandle {
         ${Style.baseStyle}
@@ -1418,6 +1510,12 @@ var mc2 = (function (exports) {
       }
       .MinimalSliderHandleDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: ${this.handleSize}px;
+        width: 100%;
+        cursor: default;
       }
       .MinimalSlider:focus {
         ${Style.focusStyle}
@@ -1523,8 +1621,6 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-vslider", VSlider);
 
-
-
   class ColorPicker extends Component {
     constructor(parent, x, y, color, defaultHandler) {
       super(parent, x, y);
@@ -1559,6 +1655,8 @@ var mc2 = (function (exports) {
       style.textContent = `
       .MinimalColorPicker {
         ${Style.baseStyle}
+        width: 100%;
+        height: 100%;
       }
       .MinimalColorPickerInput {
         ${Style.baseStyle}
@@ -1925,8 +2023,7 @@ var mc2 = (function (exports) {
     createStyle() {
       const style = document.createElement("style");
       style.textContent = `
-      .MinimalDropdown,
-      .MinimalDropdownDisabled {
+      .MinimalDropdown {
         ${Style.baseStyle}
         background-color: #fff;
         border-radius: 0;
@@ -1934,10 +2031,16 @@ var mc2 = (function (exports) {
         cursor: pointer;
         height: 100%;
         width: 100%;
-        cursor: pointer;
       }
       .MinimalDropdownDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: default;
+        height: 100%;
+        width: 100%;
       }
       .MinimalDropdown:focus {
         ${Style.focusStyle}
@@ -2101,8 +2204,8 @@ var mc2 = (function (exports) {
         this.tabIndex = 0;
       } else {
         this.wrapper.removeEventListener("click", this.toggle);
-        this.wrapper.setAttribute("class", "MinimalDropdown MinimalDropdownDisabled");
-        this.button.setAttribute("class", "MinimalDropdownButton MinimalDropdownButtonDisabled");
+        this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
+        this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
         this.tabIndex = -1;
         this.open = false;
         this.style.zIndex = this.initialZ;
@@ -2169,8 +2272,7 @@ var mc2 = (function (exports) {
     createStyle() {
       const style = document.createElement("style");
       style.textContent = `
-      .MinimalImage,
-      .MinimalImageDisabled {
+      .MinimalImage {
         ${Style.baseStyle}
         background-color: #eee;
         border-radius: 0;
@@ -2178,6 +2280,10 @@ var mc2 = (function (exports) {
       }
       .MinimalImageDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
       }
     `;
       this.shadowRoot.append(style);
@@ -2196,7 +2302,7 @@ var mc2 = (function (exports) {
       this.origWidth = this.image.width;
       this.origHeight = this.image.height;
       this.updateImageSize();
-      this.image.style.opacity = "1";
+      this.image.style.visibility = "visible";
     }
 
     //////////////////////////////////
@@ -2204,7 +2310,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     load() {
-      this.image.style.opacity = "0";
+      this.image.style.visibility = "hidden";
       this.image.setAttribute("src", this._url);
     }
 
@@ -2225,10 +2331,10 @@ var mc2 = (function (exports) {
 
     set enabled(enabled) {
       super.enabled = enabled;
-      if (this.enabled) {
+      if (this._enabled) {
         this.image.setAttribute("class", "MinimalImage");
       } else {
-        this.image.setAttribute("class", "MinimalImage MinimalImageDisabled");
+        this.image.setAttribute("class", "MinimalImageDisabled");
       }
     }
 

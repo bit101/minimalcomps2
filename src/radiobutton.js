@@ -34,6 +34,12 @@ export class RadioButton extends Component {
         height: 100%;
         width: auto;
       }
+      .MinimalRadioButtonDisabled {
+        ${Style.baseStyle}
+        cursor: default;
+        height: 100%;
+        width: auto;
+      }
       .MinimalRadioButton:focus {
         ${Style.focusStyle}
       }
@@ -98,7 +104,9 @@ export class RadioButton extends Component {
   //////////////////////////////////
   
   focus() {
-    this.wrapper.focus();
+    if (this.enabled) {
+      this.wrapper.focus();
+    }
   }
 
   updateCheckStyle() {
@@ -110,6 +118,12 @@ export class RadioButton extends Component {
       className += "MinimalRadioButtonCheckDisabled";
     }
     this.check.setAttribute("class", className);
+    this.check.setAttribute("class", className);
+    if (this.enabled) {
+      this.setWrapperClass("MinimalRadioButton");
+    } else {
+      this.setWrapperClass("MinimalRadioButtonDisabled");
+    }
   }
 
   //////////////////////////////////

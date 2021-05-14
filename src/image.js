@@ -22,8 +22,7 @@ export class Image extends Component {
   createStyle() {
     const style = document.createElement("style");
     style.textContent = `
-      .MinimalImage,
-      .MinimalImageDisabled {
+      .MinimalImage {
         ${Style.baseStyle}
         background-color: #eee;
         border-radius: 0;
@@ -31,6 +30,10 @@ export class Image extends Component {
       }
       .MinimalImageDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
       }
     `;
     this.shadowRoot.append(style);
@@ -49,7 +52,7 @@ export class Image extends Component {
     this.origWidth = this.image.width;
     this.origHeight = this.image.height;
     this.updateImageSize();
-    this.image.style.opacity = "1";
+    this.image.style.visibility = "visible";
   }
 
   //////////////////////////////////
@@ -57,7 +60,7 @@ export class Image extends Component {
   //////////////////////////////////
 
   load() {
-    this.image.style.opacity = "0";
+    this.image.style.visibility = "hidden";
     this.image.setAttribute("src", this._url);
   }
 
@@ -78,10 +81,10 @@ export class Image extends Component {
 
   set enabled(enabled) {
     super.enabled = enabled;
-    if (this.enabled) {
+    if (this._enabled) {
       this.image.setAttribute("class", "MinimalImage");
     } else {
-      this.image.setAttribute("class", "MinimalImage MinimalImageDisabled");
+      this.image.setAttribute("class", "MinimalImageDisabled");
     }
   }
 

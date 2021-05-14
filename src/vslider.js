@@ -17,6 +17,12 @@ export class VSlider extends HSlider {
       }
       .MinimalSliderDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
       }
       .MinimalSliderHandle {
         ${Style.baseStyle}
@@ -28,6 +34,12 @@ export class VSlider extends HSlider {
       }
       .MinimalSliderHandleDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: ${this.handleSize}px;
+        width: 100%;
+        cursor: default;
       }
       .MinimalSlider:focus {
         ${Style.focusStyle}
@@ -132,6 +144,4 @@ export class VSlider extends HSlider {
 }
 
 customElements.define("minimal-vslider", VSlider);
-
-
 

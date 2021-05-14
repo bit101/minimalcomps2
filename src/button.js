@@ -17,15 +17,14 @@ export class Button extends Component {
   
   createChildren() {
     this.wrapper.tabIndex = 0;
-    this.button = this.createDiv(this.wrapper, "MinimalButton");
-    this.label = new Label(this.button, 0, 0, this._text);
+    this.setWrapperClass("MinimalButton");
+    this.label = new Label(this.wrapper, 0, 0, this._text);
   }
 
   createStyle() {
     const style = document.createElement("style");
     style.textContent = `
-      .MinimalButton,
-      .MinimalButtonDisabled {
+      .MinimalButton {
         ${Style.baseStyle}
         background-color: #f9f9f9;
         border-radius: 0;
@@ -43,6 +42,14 @@ export class Button extends Component {
       }
       .MinimalButtonDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #f9f9f9;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: default;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
       }
       .MinimalButton:focus {
         ${Style.focusStyle}
@@ -54,8 +61,8 @@ export class Button extends Component {
   createListeners() {
     this.onClick = this.onClick.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
-    this.button.addEventListener("click", this.onClick);
-    this.button.addEventListener("keypress", this.onKeyPress);
+    this.wrapper.addEventListener("click", this.onClick);
+    this.wrapper.addEventListener("keypress", this.onKeyPress);
   }
 
   //////////////////////////////////
@@ -97,13 +104,13 @@ export class Button extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.button.setAttribute("class", "MinimalButton");
-      this.button.tabIndex = 0;
+      this.wrapper.setAttribute("class", "MinimalButton");
+      this.wrapper.tabIndex = 0;
     } else {
-      this.button.setAttribute("class", "MinimalButtonDisabled");
-      this.button.tabIndex = -1;
+      this.wrapper.setAttribute("class", "MinimalButtonDisabled");
+      this.wrapper.tabIndex = -1;
     }
-    this.button.enabled = enabled;
+    this.wrapper.enabled = enabled;
   }
 
   get text() {

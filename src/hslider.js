@@ -21,7 +21,7 @@ export class HSlider extends Component {
   //////////////////////////////////
   createChildren() {
     this.wrapper.tabIndex = 0;
-    this.slider = this.createDiv(this.wrapper, "MinimalSlider");
+    this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
   }
 
@@ -38,6 +38,12 @@ export class HSlider extends Component {
       }
       .MinimalSliderDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
       }
       .MinimalSliderHandle {
         ${Style.baseStyle}
@@ -49,6 +55,12 @@ export class HSlider extends Component {
       }
       .MinimalSliderHandleDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+        width: ${this.handleSize}px;
+        cursor: default;
       }
       .MinimalSlider:focus {
         ${Style.focusStyle}
@@ -62,8 +74,8 @@ export class HSlider extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
-    this.addEventListener("mousedown", this.onMouseDown);
-    this.addEventListener("keydown", this.onKeyDown)
+    this.wrapper.addEventListener("mousedown", this.onMouseDown);
+    this.wrapper.addEventListener("keydown", this.onKeyDown)
   }
 
   //////////////////////////////////
@@ -153,11 +165,11 @@ export class HSlider extends Component {
       this.valueLabel.enabled = this.enabled;
     }
     if (this.enabled) {
-      this.slider.setAttribute("class", "MinimalSlider");
+      this.setWrapperClass("MinimalSlider");
       this.handle.setAttribute("class", "MinimalSliderHandle");
     } else {
-      this.slider.setAttribute("class", "MinimalSlider MinimalSliderDisabled");
-      this.handle.setAttribute("class", "MinimalSliderHandle MinimalSliderHandleDisabled");
+      this.setWrapperClass("MinimalSliderDisabled");
+      this.handle.setAttribute("class", "MinimalSliderHandleDisabled");
     }
   }
 
@@ -216,13 +228,13 @@ export class HSlider extends Component {
       super.enabled = enabled;
       this.updateEnabledStyle();
       if (this.enabled) {
-        this.slider.tabIndex = 0;
-        this.addEventListener("mousedown", this.onMouseDown);
-        this.addEventListener("keydown", this.onKeyDown)
+        this.wrapper.tabIndex = 0;
+        this.wrapper.addEventListener("mousedown", this.onMouseDown);
+        this.wrapper.addEventListener("keydown", this.onKeyDown)
       } else {
-        this.slider.tabIndex = -1;
-        this.removeEventListener("mousedown", this.onMouseDown);
-        this.removeEventListener("keydown", this.onKeyDown);
+        this.wrapper.tabIndex = -1;
+        this.wrapper.removeEventListener("mousedown", this.onMouseDown);
+        this.wrapper.removeEventListener("keydown", this.onKeyDown);
         document.removeEventListener("mousemove", this.onMouseMove);
         document.removeEventListener("mouseup", this.onMouseUp);
       }

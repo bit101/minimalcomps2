@@ -32,6 +32,12 @@ export class Checkbox extends Component {
         height: 100%;
         width: auto;
       }
+      .MinimalCheckboxDisabled {
+        ${Style.baseStyle}
+        cursor: default;
+        height: 100%;
+        width: auto;
+      }
       .MinimalCheckbox:focus {
         ${Style.focusStyle}
       }
@@ -60,7 +66,7 @@ export class Checkbox extends Component {
     this.onClick = this.onClick.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.wrapper.addEventListener("click", this.onClick);
-    this.addEventListener("keypress", this.onKeyPress);
+    this.wrapper.addEventListener("keypress", this.onKeyPress);
   }
 
   //////////////////////////////////
@@ -98,6 +104,11 @@ export class Checkbox extends Component {
       className += "MinimalCheckboxCheckDisabled";
     }
     this.check.setAttribute("class", className);
+    if (this.enabled) {
+      this.setWrapperClass("MinimalCheckbox");
+    } else {
+      this.setWrapperClass("MinimalCheckboxDisabled");
+    }
   }
 
   //////////////////////////////////

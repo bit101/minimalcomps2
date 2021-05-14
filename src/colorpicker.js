@@ -32,6 +32,8 @@ export class ColorPicker extends Component {
     style.textContent = `
       .MinimalColorPicker {
         ${Style.baseStyle}
+        width: 100%;
+        height: 100%;
       }
       .MinimalColorPickerInput {
         ${Style.baseStyle}

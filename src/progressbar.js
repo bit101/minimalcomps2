@@ -16,7 +16,7 @@ export class ProgressBar extends Component {
   //////////////////////////////////
 
   createChildren() {
-    this.bar = this.createDiv(this.wrapper, "MinimalProgressBar");
+    this.setWrapperClass("MinimalProgressBar");
     this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
@@ -31,8 +31,24 @@ export class ProgressBar extends Component {
         height: 100%;
         width: 100%;
       }
+      .MinimalProgressBarDisabled {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        ${Style.disabledStyle}
+        background-color: #ccc;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+      }
       .MinimalProgressBarFill {
         ${Style.baseStyle}
+        background-color: #fff;
+        border: 1px solid #999;
+        height: 100%;
+      }
+      .MinimalProgressBarFillDisabled {
+        ${Style.baseStyle}
+        ${Style.disabledStyle}
         background-color: #fff;
         border: 1px solid #999;
         height: 100%;
@@ -56,6 +72,21 @@ export class ProgressBar extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  get enabled() {
+    return super.enbled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    if (this._enabled) {
+      this.setWrapperClass("MinimalProgressBar");
+      this.fill.setAttribute("class", "MinimalProgressBarFill");
+    } else {
+      this.setWrapperClass("MinimalProgressBarDisabled");
+      this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
+    }
+  }
   
   get max() {
     return this._max;

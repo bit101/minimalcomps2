@@ -57,8 +57,7 @@ export class Dropdown extends Component {
   createStyle() {
     const style = document.createElement("style");
     style.textContent = `
-      .MinimalDropdown,
-      .MinimalDropdownDisabled {
+      .MinimalDropdown {
         ${Style.baseStyle}
         background-color: #fff;
         border-radius: 0;
@@ -66,10 +65,16 @@ export class Dropdown extends Component {
         cursor: pointer;
         height: 100%;
         width: 100%;
-        cursor: pointer;
       }
       .MinimalDropdownDisabled {
         ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: default;
+        height: 100%;
+        width: 100%;
       }
       .MinimalDropdown:focus {
         ${Style.focusStyle}
@@ -233,8 +238,8 @@ export class Dropdown extends Component {
       this.tabIndex = 0;
     } else {
       this.wrapper.removeEventListener("click", this.toggle);
-      this.wrapper.setAttribute("class", "MinimalDropdown MinimalDropdownDisabled");
-      this.button.setAttribute("class", "MinimalDropdownButton MinimalDropdownButtonDisabled");
+      this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
+      this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
       this.tabIndex = -1;
       this.open = false;
       this.style.zIndex = this.initialZ;
