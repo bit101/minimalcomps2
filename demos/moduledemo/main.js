@@ -1,4 +1,4 @@
-import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown } from "./minimalcomps.mjs";
+import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image } from "./minimalcomps.mjs";
 
 const panel = new Panel(document.body, 40, 40, 400, 400);
 
@@ -17,4 +17,5 @@ new VSlider(panel, 165, 230, 40, 0, 100).addLabels("VSlider");
 new ColorPicker(panel, 250, 20, "#f00");
 new NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
-new Dropdown(panel, 250, 80, stuff);
+new Dropdown(panel, 250, 80, 0, stuff);
+new Image(panel, 250, 120, "demo.jpg");

@@ -2267,7 +2267,6 @@ var mc2 = (function (exports) {
 
     onItemClick(event) {
       event.stopPropagation();
-      // this._text = event.target.firstChild.text;
       this.index = event.target.getAttribute("data-index");
       this.toggle();
       this.dispatchEvent(new Event("change"));

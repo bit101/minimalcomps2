@@ -2264,7 +2264,6 @@ class Dropdown extends Component {
 
   onItemClick(event) {
     event.stopPropagation();
-    // this._text = event.target.firstChild.text;
     this.index = event.target.getAttribute("data-index");
     this.toggle();
     this.dispatchEvent(new Event("change"));
