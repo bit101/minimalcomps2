@@ -42,10 +42,23 @@ export class Panel extends Component {
   // General
   //////////////////////////////////
   
-  move(x, y) {
+  get x() {
+    return super.x;
+  }
+
+  set x(x) {
+    this._x = x;
     // we'll use margins to position the panel so it plays well with other stuff on the page.
-    this.style.marginLeft = this.x + "px";
-    this.style.marginTop = this.y + "px";
+    this.style.marginLeft = x + "px";
+  }
+
+  get y() {
+    return super.y;
+  }
+
+  set y(y) {
+    this._y = y;
+    this.style.marginTop = y + "px";
   }
   
 }
