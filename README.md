@@ -29,43 +29,14 @@ The general API for each component is
 
 No need to worry about styles or layout. Just give everything an absolute x, y position.
 
-## Current Status
-
-So far we have the following components:
+## What they look like
 
 ![component list](images/simpledemo2.png)
 
-- Panel
-- Button
-- Checkbox
-- RadioButton
-- Label
-- ProgressBar
-- TextInput
-- TextArea
-- HSlider
-- VSlider
-- ColorPicker
-- NumericStepper
-- Dropdown
-- Image
+## Live Demos
 
-More to come.
+[Live Demos](https://bit101.github.io/minimalcomps2/)
 
-### Use
+## Documentation
 
-There are two files in the `dist` directory:
-
-- `minimalcomps.js`- You can drop this in a project with a script tag and access all components via the `mc2` global object:
-  - `new mc2.Button(panel, 20, 20, "Click me", handler);`
-  - Example in `demos/globaldemo/`
-
-- `minimalcomps.mjs` - This is for use with JS modules.
-  - `import { Button } from "./minimalcomps.mjs";`
-  - `new Button(panel, 20, 20, "Click me", handler);`
-  - No need to add the file in your HTML.
-  - Your main script will need to have `type="module"` defined in order to import the classes.
-  - You'll need a server running to run this locally. You can't import JS modules from the file system.
-  - Example in `demos/moduledemo/`
-
-When things get a bit more polished, I'll create an npm module.
+[Documentation](https://github.com/bit101/minimalcomps2/wiki)
