@@ -29,28 +29,17 @@ The general API for each component is
 
 No need to worry about styles or layout. Just give everything an absolute x, y position.
 
-## Current Status
-
-So far we have the following components:
+## What they look like
 
 ![component list](images/simpledemo2.png)
 
-- Panel
-- Button
-- Checkbox
-- RadioButton
-- Label
-- ProgressBar
-- TextInput
-- TextArea
-- HSlider
-- VSlider
-- ColorPicker
-- NumericStepper
-- Dropdown
-- Image
+## Live Demos
 
-More to come.
+[Live Demos](https://bit101.github.io/minimalcomps2/)
+
+## Documentation
+
+[Documentation](https://github.com/bit101/minimalcomps2/wiki)
 
 ### Use
 
