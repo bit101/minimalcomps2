@@ -1189,9 +1189,11 @@ class RadioButton extends Component {
       this.wrapper.click();
     } else if (event.keyCode == 40) {
       // down
+      event.preventDefault();
       RadioButtonGroup.getNextInGroup(this.group, this).focus();
     } else if (event.keyCode == 38) {
       // up
+      event.preventDefault();
       RadioButtonGroup.getPrevInGroup(this.group, this).focus();
     }
   }
