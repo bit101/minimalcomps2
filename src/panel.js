@@ -20,6 +20,7 @@ export class Panel extends Component {
   createStyle() {
     this.style.position = "relative";
     this.style.display = "block";
+    this.style.overflow = "hidden";
     const style = document.createElement("style");
     style.textContent = `
       .MinimalPanel {
