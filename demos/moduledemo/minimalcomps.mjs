@@ -888,6 +888,7 @@ class HSlider extends Component {
     this._reversed = false;
     this._value = this.roundValue(value);
     this._handleSize = 10;
+    this._showValue = true;
     this._text = text;
     this._textPosition = "left";
 
@@ -1089,6 +1090,19 @@ class HSlider extends Component {
   }
 
   updateValueLabelPosition() {
+    if (this._textPosition === "left") {
+      this.valueLabel.x = this.width + 5;
+      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else if (this._textPosition === "bottom") {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
+    }
+  }
+
+  updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
@@ -1201,6 +1215,19 @@ class HSlider extends Component {
   set reversed(reversed) {
     this._reversed = reversed;
 
+  }
+
+  get showValue() {
+    return this._showValue;
+  }
+
+  set showValue(show) {
+    this._showValue = show;
+    if (this._showValue) {
+      this.valueLabel.style.visibility = "visible";
+    } else {
+      this.valueLabel.style.visibility = "hidden";
+    }
   }
 
   get text() {
