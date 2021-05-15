@@ -11,12 +11,12 @@ new Label(panel, 20, 150, "Label");
 new ProgressBar(panel, 20, 180, 30, 100);
 new TextInput(panel, 20, 210, "TextInput");
 new TextArea(panel, 20, 240, "TextArea");
-new HSlider(panel, 60, 370, 40, 0, 100).addLabels("HSlider");
-new VSlider(panel, 165, 230, 40, 0, 100).addLabels("VSlider");
+new HSlider(panel, 60, 370, "HSlider", 40, 0, 100);
+new VSlider(panel, 165, 230, "VSlider", 40, 0, 100);
 
 new ColorPicker(panel, 250, 20, "#f00");
 new NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
-new Dropdown(panel, 250, 80, 0, stuff);
+new Dropdown(panel, 250, 80, stuff, 0);
 new Image(panel, 250, 120, "demo.jpg");
 new TextBox(panel, 250, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html=true;

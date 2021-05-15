@@ -1,5 +1,5 @@
 export class HSlider extends Component {
-  constructor(parent, x, y, value, min, max, defaultHandler) {
+  constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
     this._max = max;
@@ -7,6 +7,8 @@ export class HSlider extends Component {
     this._reversed = false;
     this._value = this.roundValue(value);
     this._handleSize = 10;
+    this._text = text;
+    this._textPosition = "left";
 
     this.createChildren();
     this.createStyle();
@@ -14,6 +16,8 @@ export class HSlider extends Component {
 
     this.updateSliderSize(100, this.handleSize);
     this.updateHandlePosition();
+    this.updateLabelPosition();
+    this.updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
   }
 
@@ -24,6 +28,8 @@ export class HSlider extends Component {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
+    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
   }
 
   createStyle() {
@@ -129,18 +135,6 @@ export class HSlider extends Component {
   // General
   //////////////////////////////////
   
-  addLabels(text) {
-    if (!this.label) {
-      this.label = new Label(this.shadowRoot, 0, 0, text);
-    }
-
-    if (!this.valueLabel) {
-      this.valueLabel = new Label(this.shadowRoot, 0, 0, this.value);
-    }
-
-    this.updateLabelPositions();
-  }
-
   calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
@@ -150,11 +144,34 @@ export class HSlider extends Component {
     this.updateValue(value);
   }
 
+  formatValue() {
+    let valStr = this.value.toString();
+    if (this.decimals <= 0) {
+      return valStr;
+    }
+    if (valStr.indexOf(".") === -1) {
+      valStr += ".";
+    }
+    const dec = valStr.split(".")[1].length;
+    for (let i = dec; i < this.decimals; i++) {
+      valStr += "0";
+    }
+    return valStr;
+  }
+
   roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
+  }
+
+  showValue(show) {
+    if (show) {
+      this.valueLabel.style.visibility = "visible";
+    } else {
+      this.valueLabel.style.visibility = "hidden";
+    }
   }
 
   updateHandlePosition() {
@@ -168,12 +185,8 @@ export class HSlider extends Component {
   }
 
   updateEnabledStyle() {
-    if (this.label) {
-      this.label.enabled = this.enabled;
-    }
-    if (this.valueLabel) {
-      this.valueLabel.enabled = this.enabled;
-    }
+    this.label.enabled = this.enabled;
+    this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
       this.setWrapperClass("MinimalSlider");
       this.handle.setAttribute("class", "MinimalSliderHandle");
@@ -183,15 +196,22 @@ export class HSlider extends Component {
     }
   }
 
-  updateLabelPositions() {
-    if (this.label) {
+  updateLabelPosition() {
+    if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else if (this._textPosition === "bottom") {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
     }
-    if (this.valueLabel) {
-      this.valueLabel.x = this.width + 5;
-      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-    }
+  }
+
+  updateValueLabelPosition() {
+    this.valueLabel.x = this.width + 5;
+    this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
 
   updateSliderSize(w, h) {
@@ -203,14 +223,8 @@ export class HSlider extends Component {
     if (this._value != value) {
       this._value = value;
       this.updateHandlePosition();
-      this.updateValueLabel();
+      this.valueLabel.text = this.formatValue();
       this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  updateValueLabel() {
-    if (this.valueLabel) {
-      this.valueLabel.text = this.value;
     }
   }
 
@@ -226,7 +240,8 @@ export class HSlider extends Component {
   set decimals(decimals) {
     this._decimals = decimals;
     this._value = this.roundValue(this._value);
-    this.updateValueLabel();
+    this.valueLabel.text = this.formatValue();
+    this.updateValueLabelPosition();
   }
 
   get enabled() {
@@ -267,7 +282,17 @@ export class HSlider extends Component {
 
   set height(height) {
     super.height = height;
-    this.updateLabelPositions();
+    this.updateLabelPosition();
+    this.updateValueLabelPosition();
+  }
+
+  get textPosition() {
+    return this.textPosition;
+  }
+
+  set textPosition(position) {
+    this._textPosition = position;
+    this.updateLabelPosition();
   }
 
   get max() {
@@ -299,6 +324,16 @@ export class HSlider extends Component {
 
   }
 
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabelPosition();
+  }
+
   get value() {
     return this._value;
   }
@@ -313,12 +348,10 @@ export class HSlider extends Component {
 
   set width(width) {
     super.width = width;
-    this.updateLabelPositions();
+    this.updateValueLabelPosition();
     this.updateHandlePosition();
   }
 }
 
 customElements.define("minimal-hslider", HSlider);
-
-
 
