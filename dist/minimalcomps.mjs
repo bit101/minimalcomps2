@@ -964,13 +964,13 @@ class HSlider extends Component {
     super(parent, x, y);
     this._min = min;
     this._max = max;
-    this._decimals = 1;
+    this._decimals = 0;
     this._reversed = false;
     this._value = this.roundValue(value);
     this._handleSize = 10;
     this._showValue = true;
     this._text = text;
-    this._textPosition = "left";
+    this._textPosition = "top";
 
     this.createChildren();
     this.createStyle();
