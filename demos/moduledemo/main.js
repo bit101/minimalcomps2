@@ -12,7 +12,7 @@ new ProgressBar(panel, 20, 180, 30, 100);
 new TextInput(panel, 20, 210, "TextInput");
 new TextArea(panel, 20, 240, "TextArea");
 new HSlider(panel, 20, 370, "HSlider", 40, 0, 100);
-new VSlider(panel, 165, 230, "VSlider", 40, 0, 100);
+new VSlider(panel, 160, 180, "VSlider", 40, 0, 100);
 
 new ColorPicker(panel, 220, 20, "#f00");
 new NumericStepper(panel, 220, 50, 20, 0, 100);

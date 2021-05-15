@@ -7,7 +7,7 @@ export class ProgressBar extends Component {
     this.createChildren();
     this.createStyle();
 
-    this.setSize(100, 10);
+    this.setSize(100, 15);
     this.updateBar();
   }
 

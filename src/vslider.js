@@ -1,4 +1,6 @@
 export class VSlider extends HSlider {
+  static defaultWidth = 15;
+  static defaultHeight = 150;
 
   //////////////////////////////////
   // Core
@@ -111,8 +113,8 @@ export class VSlider extends HSlider {
     this.valueLabel.y = this.height + 5;
   }
 
-  updateSliderSize(w, h) {
-    this.setSize(h, w);
+  setSliderSize() {
+    this.setSize(VSlider.defaultWidth, VSlider.defaultHeight);
   }
 
   updateValue(value) {

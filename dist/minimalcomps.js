@@ -963,23 +963,29 @@ var mc2 = (function (exports) {
   customElements.define("minimal-dropdown", Dropdown);
 
   class HSlider extends Component {
+    static defaultDecimals = 0;
+    static defaultTextPosition = "top";
+    static defaultWidth = 150;
+    static defaultHeight = 15;
+    static defaultHandleSize = 15;
+
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
       this._min = min;
       this._max = max;
-      this._decimals = 0;
+      this._decimals = HSlider.defaultDecimals;
       this._reversed = false;
       this._value = this.roundValue(value);
-      this._handleSize = 10;
+      this._handleSize = HSlider.defaultHandleSize;
       this._showValue = true;
       this._text = text;
-      this._textPosition = "top";
+      this._textPosition = HSlider.defaultTextPosition;
 
       this.createChildren();
       this.createStyle();
       this.createListeners();
 
-      this.updateSliderSize(100, this.handleSize);
+      this.setSliderSize();
       this.updateHandlePosition();
       this.updateLabelPosition();
       this.updateValueLabelPosition();
@@ -1190,8 +1196,8 @@ var mc2 = (function (exports) {
       this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
     }
 
-    updateSliderSize(w, h) {
-      this.setSize(w, h);
+    setSliderSize() {
+      this.setSize(HSlider.defaultWidth, HSlider.defaultHeight);
     }
 
     updateValue(value) {
@@ -1984,7 +1990,7 @@ var mc2 = (function (exports) {
       this.createChildren();
       this.createStyle();
 
-      this.setSize(100, 10);
+      this.setSize(100, 15);
       this.updateBar();
     }
 
@@ -2717,6 +2723,8 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-textinput", TextInput);
   class VSlider extends HSlider {
+    static defaultWidth = 15;
+    static defaultHeight = 150;
 
     //////////////////////////////////
     // Core
@@ -2829,8 +2837,8 @@ var mc2 = (function (exports) {
       this.valueLabel.y = this.height + 5;
     }
 
-    updateSliderSize(w, h) {
-      this.setSize(h, w);
+    setSliderSize() {
+      this.setSize(VSlider.defaultWidth, VSlider.defaultHeight);
     }
 
     updateValue(value) {
