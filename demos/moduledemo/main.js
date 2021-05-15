@@ -1,4 +1,4 @@
-import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image } from "./minimalcomps.mjs";
+import { Panel, Button, Checkbox, Label, ProgressBar, RadioButton, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image, TextBox } from "./minimalcomps.mjs";
 
 const panel = new Panel(document.body, 40, 40, 400, 400);
 
@@ -19,3 +19,4 @@ new NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
 new Dropdown(panel, 250, 80, 0, stuff);
 new Image(panel, 250, 120, "demo.jpg");
+new TextBox(panel, 250, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html=true;
