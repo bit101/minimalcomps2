@@ -888,6 +888,7 @@ class HSlider extends Component {
     this._reversed = false;
     this._value = this.roundValue(value);
     this._handleSize = 10;
+    this._showValue = true;
     this._text = text;
     this._textPosition = "left";
 
@@ -1045,14 +1046,6 @@ class HSlider extends Component {
     return Math.round(value * mult) / mult;
   }
 
-  showValue(show) {
-    if (show) {
-      this.valueLabel.style.visibility = "visible";
-    } else {
-      this.valueLabel.style.visibility = "hidden";
-    }
-  }
-
   updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     if (this.reversed) {
@@ -1201,6 +1194,19 @@ class HSlider extends Component {
   set reversed(reversed) {
     this._reversed = reversed;
 
+  }
+
+  get showValue() {
+    return this._showValue;
+  }
+
+  set showValue(show) {
+    this._showValue = show;
+    if (this._showValue) {
+      this.valueLabel.style.visibility = "visible";
+    } else {
+      this.valueLabel.style.visibility = "hidden";
+    }
   }
 
   get text() {
