@@ -18,9 +18,6 @@ export class Panel extends Component {
   }
 
   createStyle() {
-    this.style.position = "relative";
-    this.style.display = "block";
-    this.style.overflow = "hidden";
     const style = document.createElement("style");
     style.textContent = `
       .MinimalPanel {
@@ -34,6 +31,10 @@ export class Panel extends Component {
       .MinimalPanel:disabled,
       .MinimalPanel[disabled] {
         ${Style.disabledStyle}
+      }
+      :host {
+        overflow: hidden;
+        position: relative;
       }
       `;
     this.shadowRoot.append(style);

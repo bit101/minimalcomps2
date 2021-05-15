@@ -5,11 +5,12 @@ class Component extends HTMLElement {
     y = y || 0;
     this._enabled = true;
 
+    this.attachShadow({mode: "open"});
     this.createWrapper();
     this.createWrapperStyle();
 
     this.move(x, y);
-    this.addToParent(parent, this);
+    parent && parent.appendChild(this);
   }
 
   //////////////////////////////////
@@ -23,7 +24,7 @@ class Component extends HTMLElement {
   createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
-    this.addToParent(parent, el);
+    parent && parent.appendChild(el);
     return el;
   }
 
@@ -34,9 +35,9 @@ class Component extends HTMLElement {
   }
 
   createWrapper() {
-    this.attachShadow({mode: "open"});
     this.wrapper = this.createDiv(null, "MinimalWrapper");
-    this.shadowRoot.append(this.wrapper);
+    this.shadowRoot.appendChild(this.wrapper);
+    this.shadowRoot.appendChild(document.createElement("slot"));
   }
 
   createWrapperStyle() {
@@ -48,29 +49,17 @@ class Component extends HTMLElement {
         overflow: hidden;
         width: 100%;
       }
+      :host {
+        position: absolute;
+        display: block;
+      }
     `;
     this.shadowRoot.append(style);
-    this.style.position = "absolute";  
   }
 
   //////////////////////////////////
   // Creators
   //////////////////////////////////
-
-  addToParent(parent, child) {
-    if (!parent) {
-      return;
-    }
-    if (parent.toString() === "[object ShadowRoot]") {
-      parent.append(child);
-    } else {
-      parent.appendChild(child);
-    }
-  }
-
-  appendChild(child) {
-    this.shadowRoot.append(child);
-  }
 
   move(x, y) {
     this.x = x;
@@ -1399,8 +1388,7 @@ class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    document.body.removeChild(this);
-    this.addToParent(parent, this);
+    parent && parent.appendChild(this);
     this.height = 12;
   }
 
@@ -1844,9 +1832,6 @@ class Panel extends Component {
   }
 
   createStyle() {
-    this.style.position = "relative";
-    this.style.display = "block";
-    this.style.overflow = "hidden";
     const style = document.createElement("style");
     style.textContent = `
       .MinimalPanel {
@@ -1860,6 +1845,10 @@ class Panel extends Component {
       .MinimalPanel:disabled,
       .MinimalPanel[disabled] {
         ${Style.disabledStyle}
+      }
+      :host {
+        overflow: hidden;
+        position: relative;
       }
       `;
     this.shadowRoot.append(style);

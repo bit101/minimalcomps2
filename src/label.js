@@ -15,8 +15,7 @@ export class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    document.body.removeChild(this);
-    this.addToParent(parent, this);
+    parent && parent.appendChild(this);
     this.height = 12;
   }
 
