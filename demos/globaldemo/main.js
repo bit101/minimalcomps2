@@ -9,8 +9,8 @@ new mc2.Label(panel, 20, 150, "Label");
 new mc2.ProgressBar(panel, 20, 180, 30, 100);
 new mc2.TextInput(panel, 20, 210, "TextInput");
 new mc2.TextArea(panel, 20, 240, "TextArea");
-hs = new mc2.HSlider(panel, 60, 370, "HSlider", 40, 0, 100);
-new mc2.VSlider(panel, 165, 230, 40, 0, 100);
+new mc2.HSlider(panel, 60, 370, "HSlider", 40, 0, 100);
+new mc2.VSlider(panel, 165, 230, "VSlider", 40, 0, 100);
 
 new mc2.ColorPicker(panel, 250, 20, "#f00");
 new mc2.NumericStepper(panel, 250, 50, 20, 0, 100);

@@ -889,7 +889,7 @@ class HSlider extends Component {
     this._value = this.roundValue(value);
     this._handleSize = 10;
     this._text = text;
-    this._labelPosition = "left";
+    this._textPosition = "left";
 
     this.createChildren();
     this.createStyle();
@@ -897,7 +897,8 @@ class HSlider extends Component {
 
     this.updateSliderSize(100, this.handleSize);
     this.updateHandlePosition();
-    this.updateLabelPositions();
+    this.updateLabelPosition();
+    this.updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
   }
 
@@ -909,7 +910,7 @@ class HSlider extends Component {
     this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.value);
+    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
   }
 
   createStyle() {
@@ -1022,6 +1023,21 @@ class HSlider extends Component {
     this.updateValue(value);
   }
 
+  formatValue() {
+    let valStr = this.value.toString();
+    if (this.decimals <= 0) {
+      return valStr;
+    }
+    if (valStr.indexOf(".") === -1) {
+      valStr += ".";
+    }
+    const dec = valStr.split(".")[1].length;
+    for (let i = dec; i < this.decimals; i++) {
+      valStr += "0";
+    }
+    return valStr;
+  }
+
   roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
@@ -1059,19 +1075,20 @@ class HSlider extends Component {
     }
   }
 
-  updateLabelPositions() {
-    if (this._labelPosition === "left") {
+  updateLabelPosition() {
+    if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
-    } else if (this._labelPosition === "top") {
+    } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
-    } else if (this._labelPosition === "bottom") {
+    } else if (this._textPosition === "bottom") {
       this.label.x = 0;
       this.label.y = this.height + 5;
     }
+  }
 
-
+  updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
@@ -1085,7 +1102,7 @@ class HSlider extends Component {
     if (this._value != value) {
       this._value = value;
       this.updateHandlePosition();
-      this.valueLabel.text = this.value;
+      this.valueLabel.text = this.formatValue();
       this.dispatchEvent(new Event("change"));
     }
   }
@@ -1102,7 +1119,8 @@ class HSlider extends Component {
   set decimals(decimals) {
     this._decimals = decimals;
     this._value = this.roundValue(this._value);
-    this.valueLabel.text = this.value;
+    this.valueLabel.text = this.formatValue();
+    this.updateValueLabelPosition();
   }
 
   get enabled() {
@@ -1143,16 +1161,17 @@ class HSlider extends Component {
 
   set height(height) {
     super.height = height;
-    this.updateLabelPositions();
+    this.updateLabelPosition();
+    this.updateValueLabelPosition();
   }
 
-  get labelPosition() {
-    return this.labelPosition;
+  get textPosition() {
+    return this.textPosition;
   }
 
-  set labelPosition(position) {
-    this._labelPosition = position;
-    this.updateLabelPositions();
+  set textPosition(position) {
+    this._textPosition = position;
+    this.updateLabelPosition();
   }
 
   get max() {
@@ -1191,7 +1210,7 @@ class HSlider extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabelPositions();
+    this.updateLabelPosition();
   }
 
   get value() {
@@ -1208,7 +1227,7 @@ class HSlider extends Component {
 
   set width(width) {
     super.width = width;
-    this.updateLabelPositions();
+    this.updateValueLabelPosition();
     this.updateHandlePosition();
   }
 }
@@ -2689,24 +2708,23 @@ class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
-  updateLabelPositions() {
-    if (this.label) {
-      this.label.x = -(this.label.width - this.width) / 2;
-      this.label.y = -this.label.height - 5;
-    }
-    if (this.valueLabel) {
-      this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
-      this.valueLabel.y = this.height + 5;
-    }
+  updateLabelPosition() {
+    this.label.x = -(this.label.width - this.width) / 2;
+    this.label.y = -this.label.height - 5;
+  }
+
+  updateValueLabelPosition() {
+    this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
+    this.valueLabel.y = this.height + 5;
   }
 
   updateSliderSize(w, h) {
     this.setSize(h, w);
   }
 
-  updateValueLabel() {
-    super.updateValueLabel();
-    this.updateLabelPositions();
+  updateValue(value) {
+    super.updateValue(value);
+    this.updateValueLabelPosition();
   }
 
   //////////////////////////////////
@@ -2730,10 +2748,19 @@ class VSlider extends HSlider {
 
   set height(height) {
     super.height = height;
-    this.updateLabelPositions();
+    this.updateLabelPosition();
     this.updateHandlePosition();
   }
 
+  get width() {
+    return super.width;
+  }
+
+  set width(width) {
+    super.width = width;
+    this.updateLabelPosition();
+    this.updateHandlePosition();
+  }
 
 }
 

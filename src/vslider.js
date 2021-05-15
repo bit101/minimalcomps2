@@ -101,24 +101,23 @@ export class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
-  updateLabelPositions() {
-    if (this.label) {
-      this.label.x = -(this.label.width - this.width) / 2;
-      this.label.y = -this.label.height - 5;
-    }
-    if (this.valueLabel) {
-      this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
-      this.valueLabel.y = this.height + 5;
-    }
+  updateLabelPosition() {
+    this.label.x = -(this.label.width - this.width) / 2;
+    this.label.y = -this.label.height - 5;
+  }
+
+  updateValueLabelPosition() {
+    this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
+    this.valueLabel.y = this.height + 5;
   }
 
   updateSliderSize(w, h) {
     this.setSize(h, w);
   }
 
-  updateValueLabel() {
-    super.updateValueLabel();
-    this.updateLabelPositions();
+  updateValue(value) {
+    super.updateValue(value);
+    this.updateValueLabelPosition();
   }
 
   //////////////////////////////////
@@ -142,10 +141,19 @@ export class VSlider extends HSlider {
 
   set height(height) {
     super.height = height;
-    this.updateLabelPositions();
+    this.updateLabelPosition();
     this.updateHandlePosition();
   }
 
+  get width() {
+    return super.width;
+  }
+
+  set width(width) {
+    super.width = width;
+    this.updateLabelPosition();
+    this.updateHandlePosition();
+  }
 
 }
 
