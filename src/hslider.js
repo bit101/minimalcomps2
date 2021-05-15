@@ -9,13 +9,12 @@ export class HSlider extends Component {
     super(parent, x, y);
     this._min = min;
     this._max = max;
-    this._decimals = HSlider.defaultDecimals;
+    this.setDefaults();
     this._reversed = false;
     this._value = this.roundValue(value);
-    this._handleSize = HSlider.defaultHandleSize;
     this._showValue = true;
     this._text = text;
-    this._textPosition = HSlider.defaultTextPosition;
+
 
     this.createChildren();
     this.createStyle();
@@ -171,6 +170,12 @@ export class HSlider extends Component {
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
+  }
+
+  setDefaults() {
+    this._handleSize = HSlider.defaultHandleSize;
+    this._decimals = HSlider.defaultDecimals;
+    this._textPosition = HSlider.defaultTextPosition;
   }
 
   showValue(show) {

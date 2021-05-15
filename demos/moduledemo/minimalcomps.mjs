@@ -970,13 +970,12 @@ class HSlider extends Component {
     super(parent, x, y);
     this._min = min;
     this._max = max;
-    this._decimals = HSlider.defaultDecimals;
+    this.setDefaults();
     this._reversed = false;
     this._value = this.roundValue(value);
-    this._handleSize = HSlider.defaultHandleSize;
     this._showValue = true;
     this._text = text;
-    this._textPosition = HSlider.defaultTextPosition;
+
 
     this.createChildren();
     this.createStyle();
@@ -1130,6 +1129,12 @@ class HSlider extends Component {
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
+  }
+
+  setDefaults() {
+    this._handleSize = HSlider.defaultHandleSize;
+    this._decimals = HSlider.defaultDecimals;
+    this._textPosition = HSlider.defaultTextPosition;
   }
 
   showValue(show) {
@@ -2720,9 +2725,14 @@ class TextInput extends Component {
 
 customElements.define("minimal-textinput", TextInput);
 class VSlider extends HSlider {
+  static defaultDecimals = 0;
   static defaultWidth = 15;
   static defaultHeight = 150;
+  static defaultHandleSize = 15;
 
+  constructor(parent, x, y, text, value, min, max, defaultHandler) {
+    super(parent, x, y, text, value, min, max, defaultHandler);
+  }
   //////////////////////////////////
   // Core
   //////////////////////////////////
@@ -2812,6 +2822,11 @@ class VSlider extends HSlider {
     }
     const value = this.min + (this.max - this.min) * percent;
     this.updateValue(value);
+  }
+
+  setDefaults() {
+    this._decimals = VSlider.defaultDecimals;
+    this._handleSize = VSlider.defaultHandleSize;
   }
 
   updateHandlePosition() {
