@@ -69,6 +69,14 @@ var mc2 = (function (exports) {
       this.y = y;
     }
 
+    rotate(rad) {
+      this.style.transform = `rotate(${rad}rad)`;
+    }
+
+    rotateDeg(deg) {
+      this.style.transform = `rotate(${deg}deg)`;
+    }
+
     setSize(w, h) {
       this.width = w;
       this.height = h;
