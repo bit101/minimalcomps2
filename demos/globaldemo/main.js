@@ -17,3 +17,4 @@ new mc2.NumericStepper(panel, 250, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
 new mc2.Dropdown(panel, 250, 80, stuff, 0);
 new mc2.Image(panel, 250, 120, "demo.jpg");
+new mc2.TextBox(panel, 250, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html=true;

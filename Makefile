@@ -3,20 +3,21 @@ default:
 	src/component.js \
 	src/button.js \
 	src/checkbox.js \
+	src/colorpicker.js \
+	src/dropdown.js \
 	src/hslider.js \
+	src/image.js \
 	src/label.js \
+	src/numericstepper.js \
 	src/panel.js \
 	src/progressbar.js \
 	src/radiobutton.js \
 	src/radiobuttongroup.js \
 	src/style.js \
 	src/textarea.js \
+	src/textbox.js \
 	src/textinput.js \
 	src/vslider.js \
-	src/colorpicker.js \
-	src/numericstepper.js \
-	src/dropdown.js \
-	src/image.js \
 	> dist/temp.js
 
 	@rollup dist/temp.js --file dist/minimalcomps.js --format iife --name mc2

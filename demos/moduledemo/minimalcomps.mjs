@@ -435,6 +435,450 @@ class Checkbox extends Component {
 customElements.define("minimal-checkbox", Checkbox);
 
 
+class ColorPicker extends Component {
+  constructor(parent, x, y, color, defaultHandler) {
+    super(parent, x, y);
+    this._color = this.correctColor(color);
+    this._color = this.cropColor(color);
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
+    this.setSize(100, 20);
+    this.addEventListener("change", defaultHandler);
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
+  createChildren() {
+    this.setWrapperClass("MinimalColorPicker");
+
+    this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
+    this.input.maxLength = 7;
+    this.input.value = this._color;
+
+    this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
+    this.preview.style.backgroundColor = this.color;
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .MinimalColorPicker {
+        ${Style.baseStyle}
+        width: 100%;
+        height: 100%;
+      }
+      .MinimalColorPickerInput {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        ${Style.textStyle}
+        letter-spacing: 1px;
+        padding: 0 4px;
+        width: 70px;
+        height: 20px;
+        text-transform: uppercase;
+      }
+      .MinimalColorPickerInput:disabled,
+      .MinimalColorPickerInput[disabled] {
+        ${Style.disabledStyle}
+      }
+      .MinimalColorPickerPreview {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        width: 20px;
+        height: 20px;
+        left: 80px;
+        background-color: #fff;
+      }
+      .MinimalColorPickerPreviewDisabled {
+        ${Style.disabledStyle}
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        width: 20px;
+        height: 20px;
+        left: 80px;
+        background-color: #fff;
+      }
+      .MinimalColorPickerInput:focus {
+        ${Style.focusStyle}
+      }
+    `;
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.onInput = this.onInput.bind(this);
+    this.input.addEventListener("input", this.onInput);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+  
+  onInput() {
+    const color = this.correctColor(this.input.value);
+    this.input.value = color;
+    if ((color.length === 4 || color.length === 7) && this.color != color) {
+      this._color = color;
+      this.preview.style.backgroundColor = this.color;
+      this.dispatchEvent(new Event("change"));
+    }
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+  
+  correctColor(color) {
+    color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
+    return color.toUpperCase();
+  }
+
+  cropColor(color) {
+    if (color.length > 7) {
+      color = color.substring(0, 7);
+    }
+    return color;
+  }
+  
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.input.disabled = !this.enabled;
+      if (this.enabled) {
+        this.preview.setAttribute("class", "MinimalColorPickerPreview");
+        this.input.addEventListener("input", this.onInput);
+      } else {
+        this.preview.setAttribute("class", "MinimalColorPickerPreviewDisabled");
+        this.input.removeEventListener("input", this.onInput);
+      }
+    }
+  }
+
+  get color() {
+    return this._color;
+  }
+
+  set color(color) {
+    color = this.correctColor(color);
+    color = this.cropColor(color);
+    this._color = color;
+    this.input.value = color;
+    this.preview.style.backgroundColor = color;
+  }
+
+}
+
+customElements.define("minimal-colorpicker", ColorPicker);
+class Dropdown extends Component {
+  constructor(parent, x, y, items, index, defaultHandler) {
+    super(parent, x, y);
+    this.items = items;
+    this._open = false;
+    this.itemElements = [];
+    this._index = -1;
+    this._text = "";
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
+    this.setSize(100, 20);
+    this.createItems();
+    this.index = index;
+    this.addEventListener("change", defaultHandler);
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
+  createChildren() {
+    this.setWrapperClass("MinimalDropdown");
+    this.wrapper.tabIndex = 0;
+
+    this.label = new Label(this.wrapper, 3, 3);
+
+    this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
+    this.button.textContent = "+";
+
+    this.dropdown = this.createDiv(this.wrapper, null);
+    this.dropdown.style.display = "none";
+  }
+
+  createItems() {
+    for (let i = 0; i < this.items.length; i++) {
+      this.createItem(i);
+    }
+  }
+
+  createItem(index) {
+    let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
+    item.setAttribute("data-index", index);
+    item.addEventListener("click", this.onItemClick);
+    item.tabIndex = 0;
+
+    let label = new Label(item, 3, 0, this.items[index]);
+    label.y = (this.height - label.height) / 2;
+
+    const itemObj = {item, label};
+    this.updateItem(itemObj, index);
+    this.itemElements.push(itemObj);
+    return item;
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .MinimalDropdown {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalDropdownDisabled {
+        ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: default;
+        height: 100%;
+        width: 100%;
+      }
+      .MinimalDropdown:focus {
+        ${Style.focusStyle}
+      }
+      .MinimalDropdownButton,
+      .MinimalDropdownButtonDisabled {
+        ${Style.baseStyle}
+        line-height: 9px;
+        color: #333;
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
+        height: 20px;
+        width: 20px;
+        left: 80px;
+        top: -1px;
+        text-align: center;
+        user-select: none;
+      }
+      .MinimalDropdownButtonDisabled {
+        ${Style.disabledStyle}
+      }
+      .MinimalDropdownItem {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        cursor: pointer;
+      }
+      .MinimalDropdownItem:hover {
+        background-color: #f8f8f8;
+      }
+      .MinimalDropdownItem:focus {
+        ${Style.focusStyle}
+        background-color: #f8f8f8;
+      }
+    `;
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.toggle = this.toggle.bind(this);
+    this.onItemClick = this.onItemClick.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
+
+    this.wrapper.addEventListener("click", this.toggle);
+    for (let i = 0; i < this.itemElements.length; i++) {
+      this.itemElements[i].addEventListener("click", this.onItemClick);
+    }
+    this.addEventListener("keydown", this.onKeyPress);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  toggle(event) {
+    event && event.stopPropagation();
+    this._open = !this._open;
+    if (this._open) {
+      this.initialZ = this.style.zIndex;
+      this.style.zIndex = 1000000;
+      this.dropdown.style.display = "block";
+      document.addEventListener("click", this.onDocumentClick);
+    } else {
+      this.style.zIndex = this.initialZ;
+      this.dropdown.style.display = "none";
+      document.removeEventListener("click", this.onDocumentClick);
+    }
+  }
+
+  onItemClick(event) {
+    event.stopPropagation();
+    this.index = event.target.getAttribute("data-index");
+    this.toggle();
+    this.dispatchEvent(new Event("change"));
+    this.wrapper.focus();
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode === 13 && this.enabled) {
+      // enter
+      this.shadowRoot.activeElement.click();
+    } else if (event.keyCode === 27 || event.keyCode == 9) {
+      // escape || tab
+      this.close();
+    } else if (event.keyCode == 40) {
+      // down
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.lastChild) {
+        this.dropdown.firstChild.focus();
+      } else {
+        this.shadowRoot.activeElement.nextSibling.focus();
+      }
+    } else if (event.keyCode == 38) {
+      // up
+      if (this.shadowRoot.activeElement === this.wrapper ||
+          this.shadowRoot.activeElement === this.dropdown.firstChild) {
+        this.dropdown.lastChild.focus();
+      } else {
+        this.shadowRoot.activeElement.previousSibling.focus();
+      }
+    }
+  }
+
+  onDocumentClick(event) {
+    if (event.target.className !== "MinimalDropdownItem") {
+      this.close();
+    }
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  close() {
+    this._open = true;
+    this.toggle();
+  }
+
+  open() {
+    this._open = false;
+    this.toggle();
+  }
+
+  updateButton() {
+    this.button.style.left = this.width - this.height + "px";
+    this.button.style.width = this.height + "px";
+    this.button.style.height = this.height + "px";
+    this.button.style.lineHeight = this.height - 1 + "px";
+  }
+
+  updateItem(itemObj, i) {
+    const { item, label } = itemObj;
+
+    const h = this.height - 1;
+    item.style.top = h + i * h + "px";
+    item.style.width = this.width + "px";
+    item.style.height = this.height + "px";
+    if (item.firstChild) {
+      label.y = (this.height - label.height) / 2;
+    }
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled === enabled) {
+      return;
+    }
+    super.enabled = enabled;
+    if (this.enabled) {
+      this.wrapper.addEventListener("click", this.toggle);
+      this.wrapper.setAttribute("class", "MinimalDropdown");
+      this.button.setAttribute("class", "MinimalDropdownButton");
+      this.tabIndex = 0;
+    } else {
+      this.wrapper.removeEventListener("click", this.toggle);
+      this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
+      this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
+      this.tabIndex = -1;
+      this._open = false;
+      this.style.zIndex = this.initialZ;
+      this.dropdown.style.display = "none";
+    }
+  }
+
+  get height() {
+    return super.height;
+  }
+
+  set height(height) {
+    super.height = height;
+    this.label.y = (this.height - this.label.height) / 2;
+    this.updateButton();
+    this.itemElements.forEach((item, i) => this.updateItem(item, i));
+  }
+
+  get index() {
+    return this._index;
+  }
+
+  set index(index) {
+    if (index >= 0 && index < this.items.length) {
+      this._index = index;
+      this._text = this.items[this._index];
+      this.label.text = this._text;
+    }
+  }
+
+  get text() {
+    return this._text;
+  }
+
+  get width() {
+    return super.width;
+  }
+
+  set width(width) {
+    super.width = width;
+    this.updateButton();
+    this.itemElements.forEach(item => {
+      this.updateItem(item);
+    });
+  }
+
+}
+
+customElements.define("minimal-dropdown", Dropdown);
+
 class HSlider extends Component {
   constructor(parent, x, y, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -757,6 +1201,127 @@ customElements.define("minimal-hslider", HSlider);
 
 
 
+class Image extends Component {
+  constructor(parent, x, y, url) {
+    super(parent, x, y);
+    this._url = url;
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
+    this.setSize(100, 100);
+    this.load();
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
+  createChildren() {
+    this.image = this.createElement(this.wrapper, "img", "MinimalImage");
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .MinimalImage {
+        ${Style.baseStyle}
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
+      }
+      .MinimalImageDisabled {
+        ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #eee;
+        border-radius: 0;
+        border: 1px solid #999;
+      }
+    `;
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.onLoad = this.onLoad.bind(this);
+    this.image.addEventListener("load", this.onLoad);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  onLoad() {
+    this.origWidth = this.image.width;
+    this.origHeight = this.image.height;
+    this.updateImageSize();
+    this.image.style.visibility = "visible";
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  load() {
+    this.image.style.visibility = "hidden";
+    this.image.setAttribute("src", this._url);
+  }
+
+  updateImageSize() {
+    const aspectRatio = this.origWidth / this.origHeight;
+    this.image.width = this.width;
+    this.image.height = this.height = this.width / aspectRatio;
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    if (this._enabled) {
+      this.image.setAttribute("class", "MinimalImage");
+    } else {
+      this.image.setAttribute("class", "MinimalImageDisabled");
+    }
+  }
+
+  get height() {
+    return this.image.height;
+  }
+
+  set height(height) {
+    super.height = height;
+  }
+
+  get url() {
+    return this._url;
+  }
+
+  set url(url) {
+    this._url = url;
+    this.load();
+  }
+
+  get width() {
+    return super.width;
+  }
+
+  set width(width) {
+    super.width = width;
+    if (this.image.width) {
+      this.updateImageSize();
+    }
+  }
+}
+
+customElements.define("minimal-image", Image);
+
 class Label extends Component {
   constructor(parent, x, y, text) {
     super(null, x, y);
@@ -925,6 +1490,280 @@ class Label extends Component {
 }
 
 customElements.define("minimal-label", Label);
+class NumericStepper extends Component {
+  constructor(parent, x, y, value, min, max, defaultHandler) {
+    super(parent, x, y);
+    this._min = min;
+    this._max = max;
+    this._decimals = 0;
+    this._value = this.roundValue(value);
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
+    this.setSize(100, 20);
+    this.addEventListener("change", defaultHandler);
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
+  createChildren() {
+    this.setWrapperClass("MinimalNumericStepper");
+
+    this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
+    this.input.value = this._value;
+
+    this.minus = new Button(this.wrapper, 60, 0, "-");
+    this.minus.setSize(20, 20);
+    this.plus = new Button(this.wrapper, 80, 0, "+");
+    this.plus.setSize(20, 20);
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .MinimalNumericStepper {
+        ${Style.baseStyle}
+        width: 100%;
+        height: 100%;
+      }
+      .MinimalNumericStepperInput {
+        ${Style.baseStyle}
+        ${Style.shadowStyle}
+        ${Style.textStyle}
+        padding: 0 4px;
+        width: 60px;
+        height: 20px;
+      }
+      .MinimalNumericStepperInput:disabled,
+      .MinimalNumericStepperInput[disabled] {
+        ${Style.disabledStyle}
+      }
+      .MinimalNumericStepperInput:focus {
+        ${Style.focusStyle}
+      }
+    `;
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onInput = this.onInput.bind(this);
+    this.onPlusDown = this.onPlusDown.bind(this);
+    this.onMinusDown = this.onMinusDown.bind(this);
+    this.onPlusUp = this.onPlusUp.bind(this);
+    this.onMinusUp = this.onMinusUp.bind(this);
+    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
+    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
+    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
+    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
+    this.input.addEventListener("input", this.onInput);
+    this.input.addEventListener("change", this.onInputChange);
+
+    this.plus.addEventListener("mousedown", this.onPlusDown);
+    this.plus.addEventListener("mouseup", this.onPlusUp);
+    this.plus.addEventListener("keydown", this.onPlusKeyDown);
+    this.plus.addEventListener("keyup", this.onPlusKeyUp);
+
+    this.minus.addEventListener("mousedown", this.onMinusDown);
+    this.minus.addEventListener("mouseup", this.onMinusUp);
+    this.minus.addEventListener("keydown", this.onMinusKeyDown);
+    this.minus.addEventListener("keyup", this.onMinusKeyUp);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+  
+  onInput() {
+    let value = this.input.value;
+    value = value.replace(/[^-.0-9]/g, "");
+    this.input.value = value;
+  }
+  
+  onInputChange() {
+    let value = parseFloat(this.input.value);
+    value = this.roundValue(value);
+    this.input.value = value;
+    if (this.value != value) {
+      this._value = value;
+      this.dispatchEvent(new Event("change"));
+    }
+  }
+
+  decrement() {
+    if (this.isDecrementing) {
+      const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
+      if (this.value != value) {
+        this.value = value;
+        this.dispatchEvent(new Event("change"));
+      }
+      this.timeout = setTimeout(() => this.decrement(), this.delay);
+      if (this.delay === 500) {
+        this.delay = 50;
+      }
+    }
+  }
+
+  increment() {
+    if (this.isIncrementing) {
+      const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
+      if (this.value != value) {
+        this.value = value;
+        this.dispatchEvent(new Event("change"));
+      }
+      this.timeout = setTimeout(() => this.increment(), this.delay);
+      if (this.delay === 500) {
+        this.delay = 50;
+      }
+    }
+  }
+
+  onMinusDown() {
+    clearTimeout(this.timeout);
+    this.isDecrementing = true;
+    this.delay = 500;
+    this.decrement();
+  }
+
+  onMinusUp() {
+    this.isDecrementing = false;
+  }
+
+  onMinusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onMinusDown();
+    }
+  }
+
+  onMinusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onMinusUp();
+    }
+  }
+
+
+  onPlusDown() {
+    clearTimeout(this.timeout);
+    this.isIncrementing = true;
+    this.delay = 500;
+    this.increment();
+  }
+
+  onPlusUp() {
+    this.isIncrementing = false;
+  }
+
+  onPlusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onPlusDown();
+    }
+  }
+
+  onPlusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onPlusUp();
+    }
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+  
+  roundValue(value) {
+    if (this.max !== null) {
+      value = Math.min(value, this.max);
+    }
+    if (this.min !== null) {
+      value = Math.max(value, this.min);
+    }
+    const mult = Math.pow(10, this.decimals);
+    return Math.round(value * mult) / mult;
+  }
+  
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+  
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled != enabled) {
+      super.enabled = enabled;
+      this.input.disabled = !this.enabled;
+      this.plus.enabled = this.enabled;
+      this.minus.enabled = this.enabled;
+    }
+  }
+
+  get decimals() {
+    return this._decimals;
+  }
+
+  set decimals(decimals) {
+    this._decimals = decimals;
+    const value = this.roundValue(this.value);
+    if (this._value != value) {
+      this._value = value;
+      this.input.value= value;
+      this.dispatchEvent(new Event("change"));
+    }
+  }
+
+  get max() {
+    return this._max;
+  }
+
+  set max(max) {
+    this._max = max;
+    if (this.max < this.value) {
+      this.value = this.max;
+      this.dispatchEvent(new Event("change"));
+    }
+  }
+
+  get min() {
+    return this._min;
+  }
+
+  set min(min) {
+    this._min = min;
+    if (this.min > this.value) {
+      this.value = this.min;
+      this.dispatchEvent(new Event("change"));
+    }
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(value) {
+    this._value = this.roundValue(value);
+    this.input.value = this._value;
+  }
+
+  get width() {
+    return super.width;
+  }
+
+  set width(w) {
+    super.width = w;
+    this.input.style.width = w - 40 + "px";
+    this.minus.x = w - 40;
+    this.plus.x = w - 20;
+  }
+  
+}
+
+customElements.define("minimal-numericstepper", NumericStepper);
+
 class Panel extends Component {
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
@@ -1483,6 +2322,154 @@ class TextArea extends Component {
 }
 
 customElements.define("minimal-textarea", TextArea);
+class TextBox extends Component {
+  constructor(parent, x, y, text) {
+    super(parent, x, y);
+    this._align = "left";
+    this._color = "#333";
+    this._bold = false;
+    this._italic = false;
+    this._html = false;
+    this._text = text;
+
+    this.createChildren();
+    this.createStyle();
+
+    this.setSize(100, 100);
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+  
+  createChildren() {
+    this.setWrapperClass("MinimalTextBox");
+    this.wrapper.textContent = this._text;
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .MinimalTextBox {
+        ${Style.baseStyle}
+        color: #333;
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        width: 100%;
+      }
+      .MinimalTextBoxDisabled {
+        ${Style.disabledStyle}
+        ${Style.baseStyle}
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        width: 100%;
+      }
+    `;
+    this.shadowRoot.append(style);
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  get align() {
+    return this._align;
+  }
+
+  set align(align) {
+    this._align = align;
+    this.wrapper.style.textAlign = align;
+  }
+  
+  get bold() {
+    return this._bold;
+  }
+
+  set bold(bold) {
+    this._bold = bold;
+    if (this._bold) {
+      this.wrapper.style.fontWeight = "bold";
+    } else {
+      this.wrapper.style.fontWeight = "normal";
+    }
+  }
+
+  get color() {
+    return this._color;
+  }
+
+  set color(color) {
+    this._color = color;
+    this.wrapper.style.color = color;
+  }
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    if (this.enabled) {
+      this.setWrapperClass("MinimalTextBox");
+    } else {
+      this.setWrapperClass("MinimalTextBoxDisabled");
+    }
+  }
+
+  get fontSize() {
+    return this._fontSize;
+  }
+
+  set fontSize(fontSize) {
+    this._fontSize = fontSize;
+    this.wrapper.style.fontSize = fontSize + "px";
+  }
+  
+  get html() {
+    return this._html;
+  }
+
+  set html(html) {
+    this._html = html;
+    if (this._html) {
+      this.wrapper.innerHTML = this._text;
+    } else {
+      this.wrapper.textContent = this._text;
+    }
+  }
+
+  get italic() {
+    return this._italics;
+  }
+
+  set italic(italic) {
+    this._italic = italic;
+    if (this._italic) {
+      this.wrapper.style.fontStyle = "italic";
+    } else {
+      this.wrapper.style.fontStyle = "normal";
+    }
+  }
+
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    if (this._html) {
+      this.wrapper.innerHTML = this._text;
+    } else {
+      this.wrapper.textContent = this._text;
+    }
+  }
+}
+
+customElements.define("minimal-textbox", TextBox);
+
 class TextInput extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -1738,843 +2725,4 @@ class VSlider extends HSlider {
 
 customElements.define("minimal-vslider", VSlider);
 
-class ColorPicker extends Component {
-  constructor(parent, x, y, color, defaultHandler) {
-    super(parent, x, y);
-    this._color = this.correctColor(color);
-    this._color = this.cropColor(color);
-
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
-
-    this.setSize(100, 20);
-    this.addEventListener("change", defaultHandler);
-  }
-
-  //////////////////////////////////
-  // Core
-  //////////////////////////////////
-  
-  createChildren() {
-    this.setWrapperClass("MinimalColorPicker");
-
-    this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
-    this.input.maxLength = 7;
-    this.input.value = this._color;
-
-    this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
-    this.preview.style.backgroundColor = this.color;
-  }
-
-  createStyle() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .MinimalColorPicker {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalColorPickerInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        letter-spacing: 1px;
-        padding: 0 4px;
-        width: 70px;
-        height: 20px;
-        text-transform: uppercase;
-      }
-      .MinimalColorPickerInput:disabled,
-      .MinimalColorPickerInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalColorPickerPreview {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerPreviewDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
-    this.shadowRoot.append(style);
-  }
-
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.input.addEventListener("input", this.onInput);
-  }
-
-  //////////////////////////////////
-  // Handlers
-  //////////////////////////////////
-  
-  onInput() {
-    const color = this.correctColor(this.input.value);
-    this.input.value = color;
-    if ((color.length === 4 || color.length === 7) && this.color != color) {
-      this._color = color;
-      this.preview.style.backgroundColor = this.color;
-      this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  //////////////////////////////////
-  // General
-  //////////////////////////////////
-  
-  correctColor(color) {
-    color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
-    return color.toUpperCase();
-  }
-
-  cropColor(color) {
-    if (color.length > 7) {
-      color = color.substring(0, 7);
-    }
-    return color;
-  }
-  
-  //////////////////////////////////
-  // Getters/Setters
-  // alphabetical. getter first.
-  //////////////////////////////////
-  
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    if (this.enabled != enabled) {
-      super.enabled = enabled;
-      this.input.disabled = !this.enabled;
-      if (this.enabled) {
-        this.preview.setAttribute("class", "MinimalColorPickerPreview");
-        this.input.addEventListener("input", this.onInput);
-      } else {
-        this.preview.setAttribute("class", "MinimalColorPickerPreviewDisabled");
-        this.input.removeEventListener("input", this.onInput);
-      }
-    }
-  }
-
-  get color() {
-    return this._color;
-  }
-
-  set color(color) {
-    color = this.correctColor(color);
-    color = this.cropColor(color);
-    this._color = color;
-    this.input.value = color;
-    this.preview.style.backgroundColor = color;
-  }
-
-}
-
-customElements.define("minimal-colorpicker", ColorPicker);
-class NumericStepper extends Component {
-  constructor(parent, x, y, value, min, max, defaultHandler) {
-    super(parent, x, y);
-    this._min = min;
-    this._max = max;
-    this._decimals = 0;
-    this._value = this.roundValue(value);
-
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
-
-    this.setSize(100, 20);
-    this.addEventListener("change", defaultHandler);
-  }
-
-  //////////////////////////////////
-  // Core
-  //////////////////////////////////
-  
-  createChildren() {
-    this.setWrapperClass("MinimalNumericStepper");
-
-    this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
-    this.input.value = this._value;
-
-    this.minus = new Button(this.wrapper, 60, 0, "-");
-    this.minus.setSize(20, 20);
-    this.plus = new Button(this.wrapper, 80, 0, "+");
-    this.plus.setSize(20, 20);
-  }
-
-  createStyle() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .MinimalNumericStepper {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalNumericStepperInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-        width: 60px;
-        height: 20px;
-      }
-      .MinimalNumericStepperInput:disabled,
-      .MinimalNumericStepperInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalNumericStepperInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
-    this.shadowRoot.append(style);
-  }
-
-  createListeners() {
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onInput = this.onInput.bind(this);
-    this.onPlusDown = this.onPlusDown.bind(this);
-    this.onMinusDown = this.onMinusDown.bind(this);
-    this.onPlusUp = this.onPlusUp.bind(this);
-    this.onMinusUp = this.onMinusUp.bind(this);
-    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
-    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
-    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
-    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
-    this.input.addEventListener("input", this.onInput);
-    this.input.addEventListener("change", this.onInputChange);
-
-    this.plus.addEventListener("mousedown", this.onPlusDown);
-    this.plus.addEventListener("mouseup", this.onPlusUp);
-    this.plus.addEventListener("keydown", this.onPlusKeyDown);
-    this.plus.addEventListener("keyup", this.onPlusKeyUp);
-
-    this.minus.addEventListener("mousedown", this.onMinusDown);
-    this.minus.addEventListener("mouseup", this.onMinusUp);
-    this.minus.addEventListener("keydown", this.onMinusKeyDown);
-    this.minus.addEventListener("keyup", this.onMinusKeyUp);
-  }
-
-  //////////////////////////////////
-  // Handlers
-  //////////////////////////////////
-  
-  onInput() {
-    let value = this.input.value;
-    value = value.replace(/[^-.0-9]/g, "");
-    this.input.value = value;
-  }
-  
-  onInputChange() {
-    let value = parseFloat(this.input.value);
-    value = this.roundValue(value);
-    this.input.value = value;
-    if (this.value != value) {
-      this._value = value;
-      this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  decrement() {
-    if (this.isDecrementing) {
-      const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
-        this.value = value;
-        this.dispatchEvent(new Event("change"));
-      }
-      this.timeout = setTimeout(() => this.decrement(), this.delay);
-      if (this.delay === 500) {
-        this.delay = 50;
-      }
-    }
-  }
-
-  increment() {
-    if (this.isIncrementing) {
-      const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
-        this.value = value;
-        this.dispatchEvent(new Event("change"));
-      }
-      this.timeout = setTimeout(() => this.increment(), this.delay);
-      if (this.delay === 500) {
-        this.delay = 50;
-      }
-    }
-  }
-
-  onMinusDown() {
-    clearTimeout(this.timeout);
-    this.isDecrementing = true;
-    this.delay = 500;
-    this.decrement();
-  }
-
-  onMinusUp() {
-    this.isDecrementing = false;
-  }
-
-  onMinusKeyDown(event) {
-    if (event.keyCode == 13) {
-      this.onMinusDown();
-    }
-  }
-
-  onMinusKeyUp(event) {
-    if (event.keyCode == 13) {
-      this.onMinusUp();
-    }
-  }
-
-
-  onPlusDown() {
-    clearTimeout(this.timeout);
-    this.isIncrementing = true;
-    this.delay = 500;
-    this.increment();
-  }
-
-  onPlusUp() {
-    this.isIncrementing = false;
-  }
-
-  onPlusKeyDown(event) {
-    if (event.keyCode == 13) {
-      this.onPlusDown();
-    }
-  }
-
-  onPlusKeyUp(event) {
-    if (event.keyCode == 13) {
-      this.onPlusUp();
-    }
-  }
-
-  //////////////////////////////////
-  // General
-  //////////////////////////////////
-  
-  roundValue(value) {
-    if (this.max !== null) {
-      value = Math.min(value, this.max);
-    }
-    if (this.min !== null) {
-      value = Math.max(value, this.min);
-    }
-    const mult = Math.pow(10, this.decimals);
-    return Math.round(value * mult) / mult;
-  }
-  
-  //////////////////////////////////
-  // Getters/Setters
-  // alphabetical. getter first.
-  //////////////////////////////////
-  
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    if (this.enabled != enabled) {
-      super.enabled = enabled;
-      this.input.disabled = !this.enabled;
-      this.plus.enabled = this.enabled;
-      this.minus.enabled = this.enabled;
-    }
-  }
-
-  get decimals() {
-    return this._decimals;
-  }
-
-  set decimals(decimals) {
-    this._decimals = decimals;
-    const value = this.roundValue(this.value);
-    if (this._value != value) {
-      this._value = value;
-      this.input.value= value;
-      this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  get max() {
-    return this._max;
-  }
-
-  set max(max) {
-    this._max = max;
-    if (this.max < this.value) {
-      this.value = this.max;
-      this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  get min() {
-    return this._min;
-  }
-
-  set min(min) {
-    this._min = min;
-    if (this.min > this.value) {
-      this.value = this.min;
-      this.dispatchEvent(new Event("change"));
-    }
-  }
-
-  get value() {
-    return this._value;
-  }
-
-  set value(value) {
-    this._value = this.roundValue(value);
-    this.input.value = this._value;
-  }
-
-  get width() {
-    return super.width;
-  }
-
-  set width(w) {
-    super.width = w;
-    this.input.style.width = w - 40 + "px";
-    this.minus.x = w - 40;
-    this.plus.x = w - 20;
-  }
-  
-}
-
-customElements.define("minimal-numericstepper", NumericStepper);
-
-class Dropdown extends Component {
-  constructor(parent, x, y, items, index, defaultHandler) {
-    super(parent, x, y);
-    this.items = items;
-    this._open = false;
-    this.itemElements = [];
-    this._index = -1;
-    this._text = "";
-
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
-
-    this.setSize(100, 20);
-    this.createItems();
-    this.index = index;
-    this.addEventListener("change", defaultHandler);
-  }
-
-  //////////////////////////////////
-  // Core
-  //////////////////////////////////
-  
-  createChildren() {
-    this.setWrapperClass("MinimalDropdown");
-    this.wrapper.tabIndex = 0;
-
-    this.label = new Label(this.wrapper, 3, 3);
-
-    this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
-    this.button.textContent = "+";
-
-    this.dropdown = this.createDiv(this.wrapper, null);
-    this.dropdown.style.display = "none";
-  }
-
-  createItems() {
-    for (let i = 0; i < this.items.length; i++) {
-      this.createItem(i);
-    }
-  }
-
-  createItem(index) {
-    let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
-    item.setAttribute("data-index", index);
-    item.addEventListener("click", this.onItemClick);
-    item.tabIndex = 0;
-
-    let label = new Label(item, 3, 0, this.items[index]);
-    label.y = (this.height - label.height) / 2;
-
-    const itemObj = {item, label};
-    this.updateItem(itemObj, index);
-    this.itemElements.push(itemObj);
-    return item;
-  }
-
-  createStyle() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .MinimalDropdown {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdownDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdown:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalDropdownButton,
-      .MinimalDropdownButtonDisabled {
-        ${Style.baseStyle}
-        line-height: 9px;
-        color: #333;
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-        height: 20px;
-        width: 20px;
-        left: 80px;
-        top: -1px;
-        text-align: center;
-        user-select: none;
-      }
-      .MinimalDropdownButtonDisabled {
-        ${Style.disabledStyle}
-      }
-      .MinimalDropdownItem {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-      }
-      .MinimalDropdownItem:hover {
-        background-color: #f8f8f8;
-      }
-      .MinimalDropdownItem:focus {
-        ${Style.focusStyle}
-        background-color: #f8f8f8;
-      }
-    `;
-    this.shadowRoot.append(style);
-  }
-
-  createListeners() {
-    this.toggle = this.toggle.bind(this);
-    this.onItemClick = this.onItemClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.onDocumentClick = this.onDocumentClick.bind(this);
-
-    this.wrapper.addEventListener("click", this.toggle);
-    for (let i = 0; i < this.itemElements.length; i++) {
-      this.itemElements[i].addEventListener("click", this.onItemClick);
-    }
-    this.addEventListener("keydown", this.onKeyPress);
-  }
-
-  //////////////////////////////////
-  // Handlers
-  //////////////////////////////////
-
-  toggle(event) {
-    event && event.stopPropagation();
-    this._open = !this._open;
-    if (this._open) {
-      this.initialZ = this.style.zIndex;
-      this.style.zIndex = 1000000;
-      this.dropdown.style.display = "block";
-      document.addEventListener("click", this.onDocumentClick);
-    } else {
-      this.style.zIndex = this.initialZ;
-      this.dropdown.style.display = "none";
-      document.removeEventListener("click", this.onDocumentClick);
-    }
-  }
-
-  onItemClick(event) {
-    event.stopPropagation();
-    this.index = event.target.getAttribute("data-index");
-    this.toggle();
-    this.dispatchEvent(new Event("change"));
-    this.wrapper.focus();
-  }
-
-  onKeyPress(event) {
-    if (event.keyCode === 13 && this.enabled) {
-      // enter
-      this.shadowRoot.activeElement.click();
-    } else if (event.keyCode === 27 || event.keyCode == 9) {
-      // escape || tab
-      this.close();
-    } else if (event.keyCode == 40) {
-      // down
-      if (this.shadowRoot.activeElement === this.wrapper ||
-          this.shadowRoot.activeElement === this.dropdown.lastChild) {
-        this.dropdown.firstChild.focus();
-      } else {
-        this.shadowRoot.activeElement.nextSibling.focus();
-      }
-    } else if (event.keyCode == 38) {
-      // up
-      if (this.shadowRoot.activeElement === this.wrapper ||
-          this.shadowRoot.activeElement === this.dropdown.firstChild) {
-        this.dropdown.lastChild.focus();
-      } else {
-        this.shadowRoot.activeElement.previousSibling.focus();
-      }
-    }
-  }
-
-  onDocumentClick(event) {
-    if (event.target.className !== "MinimalDropdownItem") {
-      this.close();
-    }
-  }
-
-  //////////////////////////////////
-  // General
-  //////////////////////////////////
-
-  close() {
-    this._open = true;
-    this.toggle();
-  }
-
-  open() {
-    this._open = false;
-    this.toggle();
-  }
-
-  updateButton() {
-    this.button.style.left = this.width - this.height + "px";
-    this.button.style.width = this.height + "px";
-    this.button.style.height = this.height + "px";
-    this.button.style.lineHeight = this.height - 1 + "px";
-  }
-
-  updateItem(itemObj, i) {
-    const { item, label } = itemObj;
-
-    const h = this.height - 1;
-    item.style.top = h + i * h + "px";
-    item.style.width = this.width + "px";
-    item.style.height = this.height + "px";
-    if (item.firstChild) {
-      label.y = (this.height - label.height) / 2;
-    }
-  }
-
-  //////////////////////////////////
-  // Getters/Setters
-  // alphabetical. getter first.
-  //////////////////////////////////
-
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    if (this.enabled === enabled) {
-      return;
-    }
-    super.enabled = enabled;
-    if (this.enabled) {
-      this.wrapper.addEventListener("click", this.toggle);
-      this.wrapper.setAttribute("class", "MinimalDropdown");
-      this.button.setAttribute("class", "MinimalDropdownButton");
-      this.tabIndex = 0;
-    } else {
-      this.wrapper.removeEventListener("click", this.toggle);
-      this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
-      this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
-      this.tabIndex = -1;
-      this._open = false;
-      this.style.zIndex = this.initialZ;
-      this.dropdown.style.display = "none";
-    }
-  }
-
-  get height() {
-    return super.height;
-  }
-
-  set height(height) {
-    super.height = height;
-    this.label.y = (this.height - this.label.height) / 2;
-    this.updateButton();
-    this.itemElements.forEach((item, i) => this.updateItem(item, i));
-  }
-
-  get index() {
-    return this._index;
-  }
-
-  set index(index) {
-    if (index >= 0 && index < this.items.length) {
-      this._index = index;
-      this._text = this.items[this._index];
-      this.label.text = this._text;
-    }
-  }
-
-  get text() {
-    return this._text;
-  }
-
-  get width() {
-    return super.width;
-  }
-
-  set width(width) {
-    super.width = width;
-    this.updateButton();
-    this.itemElements.forEach(item => {
-      this.updateItem(item);
-    });
-  }
-
-}
-
-customElements.define("minimal-dropdown", Dropdown);
-
-class Image extends Component {
-  constructor(parent, x, y, url) {
-    super(parent, x, y);
-    this._url = url;
-
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
-
-    this.setSize(100, 100);
-    this.load();
-  }
-
-  //////////////////////////////////
-  // Core
-  //////////////////////////////////
-  
-  createChildren() {
-    this.image = this.createElement(this.wrapper, "img", "MinimalImage");
-  }
-
-  createStyle() {
-    const style = document.createElement("style");
-    style.textContent = `
-      .MinimalImage {
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-      .MinimalImageDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-    `;
-    this.shadowRoot.append(style);
-  }
-
-  createListeners() {
-    this.onLoad = this.onLoad.bind(this);
-    this.image.addEventListener("load", this.onLoad);
-  }
-
-  //////////////////////////////////
-  // Handlers
-  //////////////////////////////////
-
-  onLoad() {
-    this.origWidth = this.image.width;
-    this.origHeight = this.image.height;
-    this.updateImageSize();
-    this.image.style.visibility = "visible";
-  }
-
-  //////////////////////////////////
-  // General
-  //////////////////////////////////
-
-  load() {
-    this.image.style.visibility = "hidden";
-    this.image.setAttribute("src", this._url);
-  }
-
-  updateImageSize() {
-    const aspectRatio = this.origWidth / this.origHeight;
-    this.image.width = this.width;
-    this.image.height = this.height = this.width / aspectRatio;
-  }
-
-  //////////////////////////////////
-  // Getters/Setters
-  // alphabetical. getter first.
-  //////////////////////////////////
-
-  get enabled() {
-    return super.enabled;
-  }
-
-  set enabled(enabled) {
-    super.enabled = enabled;
-    if (this._enabled) {
-      this.image.setAttribute("class", "MinimalImage");
-    } else {
-      this.image.setAttribute("class", "MinimalImageDisabled");
-    }
-  }
-
-  get height() {
-    return this.image.height;
-  }
-
-  set height(height) {
-    super.height = height;
-  }
-
-  get url() {
-    return this._url;
-  }
-
-  set url(url) {
-    this._url = url;
-    this.load();
-  }
-
-  get width() {
-    return super.width;
-  }
-
-  set width(width) {
-    super.width = width;
-    if (this.image.width) {
-      this.updateImageSize();
-    }
-  }
-}
-
-customElements.define("minimal-image", Image);
-
-export { Button, Checkbox, ColorPicker, Component, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextInput, VSlider };
+export { Button, Checkbox, ColorPicker, Component, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider };
