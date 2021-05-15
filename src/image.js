@@ -1,4 +1,6 @@
 export class Image extends Component {
+  static defaultWidth = 100;
+
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -7,7 +9,7 @@ export class Image extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(100, 100);
+    this.setSize(Image.defaultWidth, 100);
     this.load();
   }
 

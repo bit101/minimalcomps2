@@ -133,6 +133,10 @@ var mc2 = (function (exports) {
   customElements.define("minimal-component", Component);
 
   class Button extends Component {
+    static defaultWidth = 100;
+    static defaultHeight = 20;
+    static defaultTextSize = 10;
+
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
       this._text = text;
@@ -141,7 +145,7 @@ var mc2 = (function (exports) {
       this.createStyle();
       this.createListeners();
 
-      this.setSize(100, 20);
+      this.setSize(Button.defaultWidth, Button.defaultHeight);
       this.addEventListener("click", defaultHandler);
     }
 
@@ -151,22 +155,21 @@ var mc2 = (function (exports) {
     
     createChildren() {
       this.wrapper.tabIndex = 0;
-      this.wrapper.textContent = this._text;
       this.setWrapperClass("MinimalButton");
+      this.label = new Label(this.wrapper, 0, 0, this._text);
+      this.label.autosize = false;
+      this.label.align = "center";
     }
 
     createStyle() {
       const buttonStyle = `
       ${Style.baseStyle}
+      font-size: ${Button.defaultTextSize}px;
       background-color: #f9f9f9;
       border-radius: 0;
       border: 1px solid #999;
       height: 100%;
-      overflow: hidden;
       width: 100%;
-      color: #333;
-      text-align: center;
-      user-select: none;
     `;
 
       const style = document.createElement("style");
@@ -232,6 +235,7 @@ var mc2 = (function (exports) {
 
     set enabled(enabled) {
       super.enabled = enabled;
+      this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.setAttribute("class", "MinimalButton");
         this.wrapper.tabIndex = 0;
@@ -247,7 +251,7 @@ var mc2 = (function (exports) {
 
     set height(height) {
       super.height = height;
-      this.wrapper.style.lineHeight = height - 1 + "px";
+      this.label.height = height;
     }
 
     get text() {
@@ -257,6 +261,15 @@ var mc2 = (function (exports) {
     set text(text) {
       this._text = text;
       this.label.text = text;
+    }
+
+    get width() {
+      return super.width;
+    }
+
+    set width(width) {
+      super.width = width;
+      this.label.width = width;
     }
   }
 
@@ -1356,6 +1369,8 @@ var mc2 = (function (exports) {
   customElements.define("minimal-hslider", HSlider);
 
   class Image extends Component {
+    static defaultWidth = 100;
+
     constructor(parent, x, y, url) {
       super(parent, x, y);
       this._url = url;
@@ -1364,7 +1379,7 @@ var mc2 = (function (exports) {
       this.createStyle();
       this.createListeners();
 
-      this.setSize(100, 100);
+      this.setSize(Image.defaultWidth, 100);
       this.load();
     }
 
@@ -1477,6 +1492,8 @@ var mc2 = (function (exports) {
   customElements.define("minimal-image", Image);
 
   class Label extends Component {
+    static defaultTextSize = 10;
+
     constructor(parent, x, y, text) {
       super(null, x, y);
       this._align = "left";
@@ -1494,7 +1511,7 @@ var mc2 = (function (exports) {
       document.body.appendChild(this);
       this._width = this.wrapper.offsetWidth;
       parent && parent.appendChild(this);
-      this.height = 12;
+      this.height = this.defaultTextSize + 2;
     }
 
     //////////////////////////////////
@@ -1511,6 +1528,7 @@ var mc2 = (function (exports) {
       style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
+        font-size: ${Label.defaultTextSize}px;
         color: #333;
         height: 100%;
         overflow: hidden;
