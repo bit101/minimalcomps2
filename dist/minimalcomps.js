@@ -883,7 +883,7 @@ var mc2 = (function (exports) {
   customElements.define("minimal-dropdown", Dropdown);
 
   class HSlider extends Component {
-    constructor(parent, x, y, value, min, max, defaultHandler) {
+    constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
       this._min = min;
       this._max = max;
@@ -891,6 +891,8 @@ var mc2 = (function (exports) {
       this._reversed = false;
       this._value = this.roundValue(value);
       this._handleSize = 10;
+      this._text = text;
+      this._labelPosition = "left";
 
       this.createChildren();
       this.createStyle();
@@ -898,6 +900,7 @@ var mc2 = (function (exports) {
 
       this.updateSliderSize(100, this.handleSize);
       this.updateHandlePosition();
+      this.updateLabelPositions();
       this.addEventListener("change", defaultHandler);
     }
 
@@ -908,6 +911,8 @@ var mc2 = (function (exports) {
       this.wrapper.tabIndex = 0;
       this.setWrapperClass("MinimalSlider");
       this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
+      this.label = new Label(this.wrapper, 0, 0, this._text);
+      this.valueLabel = new Label(this.wrapper, 0, 0, this.value);
     }
 
     createStyle() {
@@ -1011,18 +1016,6 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
     
-    addLabels(text) {
-      if (!this.label) {
-        this.label = new Label(this.shadowRoot, 0, 0, text);
-      }
-
-      if (!this.valueLabel) {
-        this.valueLabel = new Label(this.shadowRoot, 0, 0, this.value);
-      }
-
-      this.updateLabelPositions();
-    }
-
     calculateValueFromPos(x) {
       let percent = x / (this.width - this.handleSize);
       if (this.reversed) {
@@ -1039,6 +1032,14 @@ var mc2 = (function (exports) {
       return Math.round(value * mult) / mult;
     }
 
+    showValue(show) {
+      if (show) {
+        this.valueLabel.style.visibility = "visible";
+      } else {
+        this.valueLabel.style.visibility = "hidden";
+      }
+    }
+
     updateHandlePosition() {
       let percent = (this.value - this.min) / (this.max - this.min);
       if (this.reversed) {
@@ -1050,12 +1051,8 @@ var mc2 = (function (exports) {
     }
 
     updateEnabledStyle() {
-      if (this.label) {
-        this.label.enabled = this.enabled;
-      }
-      if (this.valueLabel) {
-        this.valueLabel.enabled = this.enabled;
-      }
+      this.label.enabled = this.enabled;
+      this.valueLabel.enabled = this.enabled;
       if (this.enabled) {
         this.setWrapperClass("MinimalSlider");
         this.handle.setAttribute("class", "MinimalSliderHandle");
@@ -1066,14 +1063,20 @@ var mc2 = (function (exports) {
     }
 
     updateLabelPositions() {
-      if (this.label) {
+      if (this._labelPosition === "left") {
         this.label.x = -this.label.width - 5;
         this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._labelPosition === "top") {
+        this.label.x = 0;
+        this.label.y = -this.label.height - 5;
+      } else if (this._labelPosition === "bottom") {
+        this.label.x = 0;
+        this.label.y = this.height + 5;
       }
-      if (this.valueLabel) {
-        this.valueLabel.x = this.width + 5;
-        this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-      }
+
+
+      this.valueLabel.x = this.width + 5;
+      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
     }
 
     updateSliderSize(w, h) {
@@ -1085,14 +1088,8 @@ var mc2 = (function (exports) {
       if (this._value != value) {
         this._value = value;
         this.updateHandlePosition();
-        this.updateValueLabel();
-        this.dispatchEvent(new Event("change"));
-      }
-    }
-
-    updateValueLabel() {
-      if (this.valueLabel) {
         this.valueLabel.text = this.value;
+        this.dispatchEvent(new Event("change"));
       }
     }
 
@@ -1108,7 +1105,7 @@ var mc2 = (function (exports) {
     set decimals(decimals) {
       this._decimals = decimals;
       this._value = this.roundValue(this._value);
-      this.updateValueLabel();
+      this.valueLabel.text = this.value;
     }
 
     get enabled() {
@@ -1152,6 +1149,15 @@ var mc2 = (function (exports) {
       this.updateLabelPositions();
     }
 
+    get labelPosition() {
+      return this.labelPosition;
+    }
+
+    set labelPosition(position) {
+      this._labelPosition = position;
+      this.updateLabelPositions();
+    }
+
     get max() {
       return this._max;
     }
@@ -1181,6 +1187,16 @@ var mc2 = (function (exports) {
 
     }
 
+    get text() {
+      return this._text;
+    }
+
+    set text(text) {
+      this._text = text;
+      this.label.text = text;
+      this.updateLabelPositions();
+    }
+
     get value() {
       return this._value;
     }
@@ -1201,8 +1217,6 @@ var mc2 = (function (exports) {
   }
 
   customElements.define("minimal-hslider", HSlider);
-
-
 
   class Image extends Component {
     constructor(parent, x, y, url) {
