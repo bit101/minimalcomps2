@@ -61,9 +61,9 @@ export class Canvas extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this._enabled) {
-      this.image.setAttribute("class", "MinimalCanvas");
+      this.canvas.setAttribute("class", "MinimalCanvas");
     } else {
-      this.image.setAttribute("class", "MinimalCanvasDisabled");
+      this.canvas.setAttribute("class", "MinimalCanvasDisabled");
     }
   }
 
