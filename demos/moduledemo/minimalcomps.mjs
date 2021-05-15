@@ -540,7 +540,10 @@ class HSlider extends Component {
   }
 
   onKeyDown(event) {
-    const inc = 1 / Math.pow(10, this._decimals);
+    let inc = 1 / Math.pow(10, this._decimals);
+    if (this.max < this.min) {
+      inc = -inc;
+    }
     let value = this.value;
 
     switch(event.keyCode) {
@@ -579,8 +582,13 @@ class HSlider extends Component {
   }
 
   roundValue(value) {
-    value = Math.min(value, this.max);
-    value = Math.max(value, this.min);
+    if (this.max > this.min) {
+      value = Math.min(value, this.max);
+      value = Math.max(value, this.min);
+    } else {
+      value = Math.max(value, this.max);
+      value = Math.min(value, this.min);
+    }
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
@@ -701,11 +709,8 @@ class HSlider extends Component {
 
   set max(max) {
     this._max = max;
-    if (this.max < this.value) {
-      this.updateValue(this.value);
-    } else {
-      this.updateHandlePosition();
-    }
+    this.updateValue(this.value);
+    this.updateHandlePosition();
   }
 
   get min() {
@@ -714,11 +719,8 @@ class HSlider extends Component {
 
   set min(min) {
     this._min = min;
-    if (this.min > this.value) {
-      this.updateValue(this.value);
-    } else {
-      this.updateHandlePosition();
-    }
+    this.updateValue(this.value);
+    this.updateHandlePosition();
   }
 
   get value() {
@@ -1933,18 +1935,22 @@ class NumericStepper extends Component {
     this.onMinusDown = this.onMinusDown.bind(this);
     this.onPlusUp = this.onPlusUp.bind(this);
     this.onMinusUp = this.onMinusUp.bind(this);
+    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
+    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
+    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
+    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
     this.input.addEventListener("input", this.onInput);
     this.input.addEventListener("change", this.onInputChange);
 
     this.plus.addEventListener("mousedown", this.onPlusDown);
     this.plus.addEventListener("mouseup", this.onPlusUp);
-    this.plus.addEventListener("keydown", this.onPlusDown);
-    this.plus.addEventListener("keyup", this.onPlusUp);
+    this.plus.addEventListener("keydown", this.onPlusKeyDown);
+    this.plus.addEventListener("keyup", this.onPlusKeyUp);
 
     this.minus.addEventListener("mousedown", this.onMinusDown);
     this.minus.addEventListener("mouseup", this.onMinusUp);
-    this.minus.addEventListener("keydown", this.onMinusDown);
-    this.minus.addEventListener("keyup", this.onMinusUp);
+    this.minus.addEventListener("keydown", this.onMinusKeyDown);
+    this.minus.addEventListener("keyup", this.onMinusKeyUp);
   }
 
   //////////////////////////////////
@@ -2006,6 +2012,19 @@ class NumericStepper extends Component {
     this.isDecrementing = false;
   }
 
+  onMinusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onMinusDown();
+    }
+  }
+
+  onMinusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onMinusUp();
+    }
+  }
+
+
   onPlusDown() {
     clearTimeout(this.timeout);
     this.isIncrementing = true;
@@ -2015,6 +2034,18 @@ class NumericStepper extends Component {
 
   onPlusUp() {
     this.isIncrementing = false;
+  }
+
+  onPlusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onPlusDown();
+    }
+  }
+
+  onPlusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onPlusUp();
+    }
   }
 
   //////////////////////////////////

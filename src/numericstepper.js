@@ -64,18 +64,22 @@ export class NumericStepper extends Component {
     this.onMinusDown = this.onMinusDown.bind(this);
     this.onPlusUp = this.onPlusUp.bind(this);
     this.onMinusUp = this.onMinusUp.bind(this);
+    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
+    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
+    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
+    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
     this.input.addEventListener("input", this.onInput);
     this.input.addEventListener("change", this.onInputChange);
 
     this.plus.addEventListener("mousedown", this.onPlusDown);
     this.plus.addEventListener("mouseup", this.onPlusUp);
-    this.plus.addEventListener("keydown", this.onPlusDown);
-    this.plus.addEventListener("keyup", this.onPlusUp);
+    this.plus.addEventListener("keydown", this.onPlusKeyDown);
+    this.plus.addEventListener("keyup", this.onPlusKeyUp);
 
     this.minus.addEventListener("mousedown", this.onMinusDown);
     this.minus.addEventListener("mouseup", this.onMinusUp);
-    this.minus.addEventListener("keydown", this.onMinusDown);
-    this.minus.addEventListener("keyup", this.onMinusUp);
+    this.minus.addEventListener("keydown", this.onMinusKeyDown);
+    this.minus.addEventListener("keyup", this.onMinusKeyUp);
   }
 
   //////////////////////////////////
@@ -137,6 +141,19 @@ export class NumericStepper extends Component {
     this.isDecrementing = false;
   }
 
+  onMinusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onMinusDown();
+    }
+  }
+
+  onMinusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onMinusUp();
+    }
+  }
+
+
   onPlusDown() {
     clearTimeout(this.timeout);
     this.isIncrementing = true;
@@ -146,6 +163,18 @@ export class NumericStepper extends Component {
 
   onPlusUp() {
     this.isIncrementing = false;
+  }
+
+  onPlusKeyDown(event) {
+    if (event.keyCode == 13) {
+      this.onPlusDown();
+    }
+  }
+
+  onPlusKeyUp(event) {
+    if (event.keyCode == 13) {
+      this.onPlusUp();
+    }
   }
 
   //////////////////////////////////

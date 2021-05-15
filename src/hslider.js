@@ -103,7 +103,10 @@ export class HSlider extends Component {
   }
 
   onKeyDown(event) {
-    const inc = 1 / Math.pow(10, this._decimals);
+    let inc = 1 / Math.pow(10, this._decimals);
+    if (this.max < this.min) {
+      inc = -inc;
+    }
     let value = this.value;
 
     switch(event.keyCode) {
@@ -144,8 +147,13 @@ export class HSlider extends Component {
   }
 
   roundValue(value) {
-    value = Math.min(value, this.max);
-    value = Math.max(value, this.min);
+    if (this.max > this.min) {
+      value = Math.min(value, this.max);
+      value = Math.max(value, this.min);
+    } else {
+      value = Math.max(value, this.max);
+      value = Math.min(value, this.min);
+    }
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
@@ -266,11 +274,8 @@ export class HSlider extends Component {
 
   set max(max) {
     this._max = max;
-    if (this.max < this.value) {
-      this.updateValue(this.value);
-    } else {
-      this.updateHandlePosition();
-    }
+    this.updateValue(this.value);
+    this.updateHandlePosition();
   }
 
   get min() {
@@ -279,11 +284,8 @@ export class HSlider extends Component {
 
   set min(min) {
     this._min = min;
-    if (this.min > this.value) {
-      this.updateValue(this.value);
-    } else {
-      this.updateHandlePosition();
-    }
+    this.updateValue(this.value);
+    this.updateHandlePosition();
   }
 
   get value() {
