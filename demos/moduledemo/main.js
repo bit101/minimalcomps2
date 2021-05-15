@@ -11,7 +11,7 @@ new Label(panel, 20, 150, "Label");
 new ProgressBar(panel, 20, 180, 30, 100);
 new TextInput(panel, 20, 210, "TextInput");
 new TextArea(panel, 20, 240, "TextArea");
-new HSlider(panel, 60, 370, "HSlider", 40, 0, 100);
+new HSlider(panel, 20, 370, "HSlider", 40, 0, 100);
 new VSlider(panel, 165, 230, "VSlider", 40, 0, 100);
 
 new ColorPicker(panel, 220, 20, "#f00");
