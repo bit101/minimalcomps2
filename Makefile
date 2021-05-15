@@ -2,6 +2,7 @@ default:
 	@cat \
 	src/component.js \
 	src/button.js \
+	src/canvas.js \
 	src/checkbox.js \
 	src/colorpicker.js \
 	src/dropdown.js \

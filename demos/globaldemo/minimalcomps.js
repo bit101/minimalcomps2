@@ -262,6 +262,97 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-button", Button);
 
+  class Canvas extends Component {
+    constructor(parent, x, y, w, h) {
+      super(parent, x, y);
+
+      this.createChildren();
+      this.createStyle();
+
+      this.setSize(w, h);
+    }
+
+    //////////////////////////////////
+    // Core
+    //////////////////////////////////
+    
+    createChildren() {
+      this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
+      this.context = this.canvas.getContext("2d");
+    }
+
+    createStyle() {
+      const style = document.createElement("style");
+      style.textContent = `
+      .MinimalCanvas {
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        width: 100%;
+        height: 100%;
+      }
+      .MinimalCanvasDisabled {
+        ${Style.disabledStyle}
+        ${Style.baseStyle}
+        background-color: #fff;
+        border-radius: 0;
+        border: 1px solid #999;
+        width: 100%;
+        height: 100%;
+      }
+    `;
+      this.shadowRoot.append(style);
+    }
+
+    //////////////////////////////////
+    // Handlers
+    //////////////////////////////////
+
+    //////////////////////////////////
+    // General
+    //////////////////////////////////
+
+    //////////////////////////////////
+    // Getters/Setters
+    // alphabetical. getter first.
+    //////////////////////////////////
+
+    get enabled() {
+      return super.enabled;
+    }
+
+    set enabled(enabled) {
+      super.enabled = enabled;
+      if (this._enabled) {
+        this.image.setAttribute("class", "MinimalCanvas");
+      } else {
+        this.image.setAttribute("class", "MinimalCanvasDisabled");
+      }
+    }
+
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.canvas.height = height;
+    }
+
+    get width() {
+      return super.width;
+    }
+
+    set width(width) {
+      super.width = width;
+      this.canvas.width = width;
+    }
+  }
+
+  customElements.define("minimal-canvas", Canvas);
+
+
   class Checkbox extends Component {
     constructor(parent, x, y, text, checked, defaultHandler) {
       super(parent, x, y);
@@ -2787,6 +2878,7 @@ var mc2 = (function (exports) {
   customElements.define("minimal-vslider", VSlider);
 
   exports.Button = Button;
+  exports.Canvas = Canvas;
   exports.Checkbox = Checkbox;
   exports.ColorPicker = ColorPicker;
   exports.Component = Component;
