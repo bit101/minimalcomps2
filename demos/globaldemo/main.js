@@ -10,7 +10,9 @@ new mc2.ProgressBar(panel, 20, 180, 30, 100);
 new mc2.TextInput(panel, 20, 210, "TextInput");
 new mc2.TextArea(panel, 20, 240, "TextArea");
 new mc2.HSlider(panel, 60, 370, 40, 0, 100).addLabels("HSlider");
-new mc2.VSlider(panel, 165, 230, 40, 0, 100).addLabels("VSlider");
+vs = new mc2.VSlider(panel, 165, 230, 40, 0, 100);
+vs.addLabels("VSlider");
+vs.reversed = true;
 
 new mc2.ColorPicker(panel, 250, 20, "#f00");
 new mc2.NumericStepper(panel, 250, 50, 20, 0, 100);

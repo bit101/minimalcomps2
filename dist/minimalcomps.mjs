@@ -441,6 +441,7 @@ class HSlider extends Component {
     this._min = min;
     this._max = max;
     this._decimals = 1;
+    this._reversed = false;
     this._value = this.roundValue(value);
     this._handleSize = 10;
 
@@ -541,7 +542,7 @@ class HSlider extends Component {
 
   onKeyDown(event) {
     let inc = 1 / Math.pow(10, this._decimals);
-    if (this.max < this.min) {
+    if (this.reversed) {
       inc = -inc;
     }
     let value = this.value;
@@ -576,25 +577,26 @@ class HSlider extends Component {
   }
 
   calculateValueFromPos(x) {
-    const percent = x / (this.width - this.handleSize);
+    let percent = x / (this.width - this.handleSize);
+    if (this.reversed) {
+      percent = 1 - percent;
+    }
     const value = this.min + (this.max - this.min) * percent;
     this.updateValue(value);
   }
 
   roundValue(value) {
-    if (this.max > this.min) {
-      value = Math.min(value, this.max);
-      value = Math.max(value, this.min);
-    } else {
-      value = Math.max(value, this.max);
-      value = Math.min(value, this.min);
-    }
+    value = Math.min(value, this.max);
+    value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
 
   updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
+    if (this.reversed) {
+      percent = 1 - percent;
+    }
     percent = Math.max(0, percent);
     percent = Math.min(1, percent);
     this.handle.style.left = percent * (this.width - this._handleSize) + "px";
@@ -721,6 +723,15 @@ class HSlider extends Component {
     this._min = min;
     this.updateValue(this.value);
     this.updateHandlePosition();
+  }
+
+  get reversed() {
+    return this._reversed;
+  }
+
+  set reversed(reversed) {
+    this._reversed = reversed;
+
   }
 
   get value() {
@@ -1659,13 +1670,19 @@ class VSlider extends HSlider {
   //////////////////////////////////
 
   calculateValueFromPos(y) {
-    const percent = 1 - y / (this.height - this.handleSize);
+    let percent = 1 - y / (this.height - this.handleSize);
+    if (this.reversed) {
+      percent = 1 - percent;
+    }
     const value = this.min + (this.max - this.min) * percent;
     this.updateValue(value);
   }
 
   updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
+    if (this.reversed) {
+      percent = 1 - percent;
+    }
     percent = Math.max(0, percent);
     percent = Math.min(1, percent);
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
