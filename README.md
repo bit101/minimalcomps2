@@ -1,6 +1,12 @@
 # MinimalComps2
 
-A Web UI tookkit for creating rapid prototypes, experiments and proof of concept projects. 
+A Web UI tookkit for creating rapid prototypes, experiments and proof of concept projects.
+
+##
+
+The site: [https://www.minimalcomps2.com/](https://www.minimalcomps2.com/)
+
+Full [documentation](https://www.minimalcomps2.com/docs) and [live demos](https://www.minimalcomps2.com/demos).
 
 ## Summary
 
@@ -28,11 +34,3 @@ No need to worry about styles or layout. Just give everything a parent, a positi
 ## Where we are at
 
 ![component list](images/simpledemo2.png)
-
-## Live Demos
-
-[Live Demos](https://bit101.github.io/minimalcomps2/)
-
-## Documentation
-
-[Documentation](https://github.com/bit101/minimalcomps2/wiki)
