@@ -11,7 +11,7 @@ export class HSlider extends Component {
     this._max = max;
     this.setDefaults();
     this._reversed = false;
-    this._value = this.roundValue(value);
+    this._value = value;
     this._showValue = true;
     this._text = text;
 
@@ -244,7 +244,6 @@ export class HSlider extends Component {
   }
 
   updateValue(value) {
-    value = this.roundValue(value);
     if (this._value != value) {
       this._value = value;
       this.updateHandlePosition();
@@ -264,9 +263,9 @@ export class HSlider extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this._value = this.roundValue(this._value);
     this.valueLabel.text = this.formatValue();
     this.updateValueLabelPosition();
+    this.updateHandlePosition();
   }
 
   get enabled() {
@@ -373,7 +372,7 @@ export class HSlider extends Component {
   }
 
   get value() {
-    return this._value;
+    return this.roundValue(this._value);
   }
 
   set value(value) {

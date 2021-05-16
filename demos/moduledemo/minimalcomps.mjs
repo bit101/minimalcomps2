@@ -140,7 +140,6 @@ customElements.define("minimal-component", Component);
 class Button extends Component {
   static defaultWidth = 100;
   static defaultHeight = 20;
-  static defaultTextSize = 10;
 
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -169,7 +168,6 @@ class Button extends Component {
   createStyle() {
     const buttonStyle = `
       ${Style.baseStyle}
-      font-size: ${Button.defaultTextSize}px;
       background-color: #f9f9f9;
       border-radius: 0;
       border: 1px solid #999;
@@ -993,7 +991,7 @@ class HSlider extends Component {
     this._max = max;
     this.setDefaults();
     this._reversed = false;
-    this._value = this.roundValue(value);
+    this._value = value;
     this._showValue = true;
     this._text = text;
 
@@ -1224,7 +1222,6 @@ class HSlider extends Component {
   }
 
   updateValue(value) {
-    value = this.roundValue(value);
     if (this._value != value) {
       this._value = value;
       this.updateHandlePosition();
@@ -1244,9 +1241,9 @@ class HSlider extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this._value = this.roundValue(this._value);
     this.valueLabel.text = this.formatValue();
     this.updateValueLabelPosition();
+    this.updateHandlePosition();
   }
 
   get enabled() {
@@ -1353,7 +1350,7 @@ class HSlider extends Component {
   }
 
   get value() {
-    return this._value;
+    return this.roundValue(this._value);
   }
 
   set value(value) {
@@ -1497,7 +1494,7 @@ class Image extends Component {
 customElements.define("minimal-image", Image);
 
 class Label extends Component {
-  static defaultTextSize = 10;
+  static defaultFontSize = 10;
 
   constructor(parent, x, y, text) {
     super(null, x, y);
@@ -1516,7 +1513,7 @@ class Label extends Component {
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
     parent && parent.appendChild(this);
-    this.height = this.defaultTextSize + 2;
+    this.height = Label.defaultFontSize + 2;
   }
 
   //////////////////////////////////
@@ -1533,7 +1530,7 @@ class Label extends Component {
     style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        font-size: ${Label.defaultTextSize}px;
+        font-size: ${Label.defaultFontSize}px;
         color: #333;
         height: 100%;
         overflow: hidden;

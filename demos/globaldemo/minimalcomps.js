@@ -143,7 +143,6 @@ var mc2 = (function (exports) {
   class Button extends Component {
     static defaultWidth = 100;
     static defaultHeight = 20;
-    static defaultTextSize = 10;
 
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
@@ -172,7 +171,6 @@ var mc2 = (function (exports) {
     createStyle() {
       const buttonStyle = `
       ${Style.baseStyle}
-      font-size: ${Button.defaultTextSize}px;
       background-color: #f9f9f9;
       border-radius: 0;
       border: 1px solid #999;
@@ -996,7 +994,7 @@ var mc2 = (function (exports) {
       this._max = max;
       this.setDefaults();
       this._reversed = false;
-      this._value = this.roundValue(value);
+      this._value = value;
       this._showValue = true;
       this._text = text;
 
@@ -1227,7 +1225,6 @@ var mc2 = (function (exports) {
     }
 
     updateValue(value) {
-      value = this.roundValue(value);
       if (this._value != value) {
         this._value = value;
         this.updateHandlePosition();
@@ -1247,9 +1244,9 @@ var mc2 = (function (exports) {
 
     set decimals(decimals) {
       this._decimals = decimals;
-      this._value = this.roundValue(this._value);
       this.valueLabel.text = this.formatValue();
       this.updateValueLabelPosition();
+      this.updateHandlePosition();
     }
 
     get enabled() {
@@ -1356,7 +1353,7 @@ var mc2 = (function (exports) {
     }
 
     get value() {
-      return this._value;
+      return this.roundValue(this._value);
     }
 
     set value(value) {
@@ -1500,7 +1497,7 @@ var mc2 = (function (exports) {
   customElements.define("minimal-image", Image);
 
   class Label extends Component {
-    static defaultTextSize = 10;
+    static defaultFontSize = 10;
 
     constructor(parent, x, y, text) {
       super(null, x, y);
@@ -1519,7 +1516,7 @@ var mc2 = (function (exports) {
       document.body.appendChild(this);
       this._width = this.wrapper.offsetWidth;
       parent && parent.appendChild(this);
-      this.height = this.defaultTextSize + 2;
+      this.height = Label.defaultFontSize + 2;
     }
 
     //////////////////////////////////
@@ -1536,7 +1533,7 @@ var mc2 = (function (exports) {
       style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        font-size: ${Label.defaultTextSize}px;
+        font-size: ${Label.defaultFontSize}px;
         color: #333;
         height: 100%;
         overflow: hidden;

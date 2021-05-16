@@ -1,7 +1,6 @@
 export class Button extends Component {
   static defaultWidth = 100;
   static defaultHeight = 20;
-  static defaultTextSize = 10;
 
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -30,7 +29,6 @@ export class Button extends Component {
   createStyle() {
     const buttonStyle = `
       ${Style.baseStyle}
-      font-size: ${Button.defaultTextSize}px;
       background-color: #f9f9f9;
       border-radius: 0;
       border: 1px solid #999;
