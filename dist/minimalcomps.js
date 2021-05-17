@@ -55,6 +55,7 @@ var mc2 = (function (exports) {
       :host {
         position: absolute;
         display: block;
+        box-sizing: border-box;
       }
     `;
       this.shadowRoot.append(style);

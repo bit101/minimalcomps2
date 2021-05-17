@@ -52,6 +52,7 @@ class Component extends HTMLElement {
       :host {
         position: absolute;
         display: block;
+        box-sizing: border-box;
       }
     `;
     this.shadowRoot.append(style);
