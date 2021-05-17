@@ -1,8 +1,5 @@
 const panel = new mc2.Panel(document.body, 40, 40, 580, 400);
 
-mc2.Defaults.button.width = 200;
-mc2.Defaults.button.height = 40;
-
 new mc2.Button(panel, 20, 20, "Button");
 new mc2.Checkbox(panel, 20, 50, "Checkbox");
 new mc2.RadioButton(panel, 20, 80, "group", "RadioButton 1", true);
