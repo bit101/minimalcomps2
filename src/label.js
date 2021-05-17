@@ -1,5 +1,4 @@
 export class Label extends Component {
-  static defaultFontSize = 10;
 
   constructor(parent, x, y, text) {
     super(null, x, y);
@@ -18,7 +17,7 @@ export class Label extends Component {
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
     parent && parent.appendChild(this);
-    this.height = Label.defaultFontSize + 2;
+    this.height = Defaults.label.fontSize + 2;
   }
 
   //////////////////////////////////
@@ -35,7 +34,7 @@ export class Label extends Component {
     style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        font-size: ${Label.defaultFontSize}px;
+        font-size: ${Defaults.label.fontSize}px;
         color: #333;
         height: 100%;
         overflow: hidden;

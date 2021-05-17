@@ -1,6 +1,4 @@
 export class Button extends Component {
-  static defaultWidth = 100;
-  static defaultHeight = 20;
 
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -10,7 +8,7 @@ export class Button extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(Button.defaultWidth, Button.defaultHeight);
+    this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
   }
 

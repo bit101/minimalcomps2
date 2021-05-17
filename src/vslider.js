@@ -1,8 +1,4 @@
 export class VSlider extends HSlider {
-  static defaultDecimals = 0;
-  static defaultWidth = 15;
-  static defaultHeight = 150;
-  static defaultHandleSize = 15;
 
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
@@ -99,8 +95,8 @@ export class VSlider extends HSlider {
   }
 
   setDefaults() {
-    this._decimals = VSlider.defaultDecimals;
-    this._handleSize = VSlider.defaultHandleSize;
+    this._decimals = Defaults.vslider.decimals;
+    this._handleSize = Defaults.vslider.handleSize;
   }
 
   updateHandlePosition() {
@@ -124,7 +120,7 @@ export class VSlider extends HSlider {
   }
 
   setSliderSize() {
-    this.setSize(VSlider.defaultWidth, VSlider.defaultHeight);
+    this.setSize(Defaults.vslider.width, Defaults.vslider.height);
   }
 
   updateValue(value) {

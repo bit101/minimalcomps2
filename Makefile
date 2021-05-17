@@ -1,5 +1,7 @@
 default:
 	@cat \
+	src/defaults.js \
+	src/style.js \
 	src/component.js \
 	src/button.js \
 	src/canvas.js \
@@ -14,7 +16,6 @@ default:
 	src/progressbar.js \
 	src/radiobutton.js \
 	src/radiobuttongroup.js \
-	src/style.js \
 	src/textarea.js \
 	src/textbox.js \
 	src/textinput.js \

@@ -1,3 +1,64 @@
+const Defaults = {
+  button: {
+    width: 100,
+    height: 20,
+  },
+  vslider: {
+    decimals: 0,
+    width: 15,
+    height: 150,
+    handleSize: 15,
+  },
+  hslider: {
+    decimals: 0,
+    textPosition: "top",
+    width: 150,
+    height: 15,
+    handleSize: 15,
+  },
+  image: {
+    width: 100,
+  },
+  label: {
+    fontSize: 10,
+  },
+};
+const Style = {};
+
+Style.baseStyle = `
+  box-sizing: border-box;
+  position: absolute;
+  font: 10px sans-serif;
+`;
+
+Style.disabledStyle = ` 
+  cursor: default;
+  opacity: 0.5;
+  user-select: none;
+`;
+
+Style.focusStyle = `
+  outline: 1px solid #ccc;
+  outline-offset: 2px;
+`;
+
+Style.shadowStyle = `
+  box-shadow: inset 1px 1px 2px #808080;
+`;
+
+Style.textStyle = `
+  background-color: #fff;
+  border: none;
+  color: #333;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+`;
+
+Style.textSelectionStyle = `
+  background: #666;
+  color: #fff;
+`;
 class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
@@ -139,8 +200,6 @@ class Component extends HTMLElement {
 customElements.define("minimal-component", Component);
 
 class Button extends Component {
-  static defaultWidth = 100;
-  static defaultHeight = 20;
 
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -150,7 +209,7 @@ class Button extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(Button.defaultWidth, Button.defaultHeight);
+    this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
   }
 
@@ -980,11 +1039,6 @@ class Dropdown extends Component {
 customElements.define("minimal-dropdown", Dropdown);
 
 class HSlider extends Component {
-  static defaultDecimals = 0;
-  static defaultTextPosition = "top";
-  static defaultWidth = 150;
-  static defaultHeight = 15;
-  static defaultHandleSize = 15;
 
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -1152,9 +1206,9 @@ class HSlider extends Component {
   }
 
   setDefaults() {
-    this._handleSize = HSlider.defaultHandleSize;
-    this._decimals = HSlider.defaultDecimals;
-    this._textPosition = HSlider.defaultTextPosition;
+    this._handleSize = Defaults.hslider.handleSize;
+    this._decimals = Defaults.hslider.decimals;
+    this._textPosition = Defaults.hslider.textPosition;
   }
 
   showValue(show) {
@@ -1219,7 +1273,7 @@ class HSlider extends Component {
   }
 
   setSliderSize() {
-    this.setSize(HSlider.defaultWidth, HSlider.defaultHeight);
+    this.setSize(Defaults.hslider.width, Defaults.hslider.height);
   }
 
   updateValue(value) {
@@ -1372,7 +1426,6 @@ class HSlider extends Component {
 customElements.define("minimal-hslider", HSlider);
 
 class Image extends Component {
-  static defaultWidth = 100;
 
   constructor(parent, x, y, url) {
     super(parent, x, y);
@@ -1382,7 +1435,7 @@ class Image extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(Image.defaultWidth, 100);
+    this.setSize(Defaults.image.width, 100);
     this.load();
   }
 
@@ -1495,7 +1548,6 @@ class Image extends Component {
 customElements.define("minimal-image", Image);
 
 class Label extends Component {
-  static defaultFontSize = 10;
 
   constructor(parent, x, y, text) {
     super(null, x, y);
@@ -1514,7 +1566,7 @@ class Label extends Component {
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
     parent && parent.appendChild(this);
-    this.height = Label.defaultFontSize + 2;
+    this.height = Defaults.label.fontSize + 2;
   }
 
   //////////////////////////////////
@@ -1531,7 +1583,7 @@ class Label extends Component {
     style.textContent = `
       .MinimalLabel {
         ${Style.baseStyle}
-        font-size: ${Label.defaultFontSize}px;
+        font-size: ${Defaults.label.fontSize}px;
         color: #333;
         height: 100%;
         overflow: hidden;
@@ -2309,103 +2361,72 @@ class RadioButton extends Component {
 customElements.define("minimal-radiobutton", RadioButton);
 
 
-class RadioButtonGroup {
-  static groups = {};
+const RadioButtonGroup = {};
 
-  static getValueForGroup(group) {
-    const rbGroup = RadioButtonGroup.groups[group];
-    if (!rbGroup) {
-      return null;
-    }
-    for (let i = 0; i < rbGroup.length; i++) {
-      const rb = rbGroup[i];
-      if (rb.checked) {
-        return rb.text;
-      }
-    }
+RadioButtonGroup.groups = {};
+
+RadioButtonGroup.getValueForGroup = (group) => {
+  const rbGroup = RadioButtonGroup.groups[group];
+  if (!rbGroup) {
     return null;
   }
-
-  static clearGroup(group) {
-    const rbGroup = RadioButtonGroup.groups[group];
-    if (!rbGroup) {
-      return;
-    }
-    for (let i = 0; i < rbGroup.length; i++) {
-      const rb = rbGroup[i];
-      rb.checked = false;
+  for (let i = 0; i < rbGroup.length; i++) {
+    const rb = rbGroup[i];
+    if (rb.checked) {
+      return rb.text;
     }
   }
+  return null;
+};
 
-  static addToGroup(group, rb) {
-    if (!RadioButtonGroup.groups[group]) {
-      RadioButtonGroup.groups[group] = [];
-    }
-    RadioButtonGroup.groups[group].push(rb);
+RadioButtonGroup.clearGroup = (group) => {
+  const rbGroup = RadioButtonGroup.groups[group];
+  if (!rbGroup) {
+    return;
   }
-
-  static getNextInGroup(group, rb) {
-    const g = RadioButtonGroup.groups[group];
-    const index = g.indexOf(rb);
-    var result;
-    if (index >= g.length - 1) {
-      result = g[0];
-    } else {
-      result = g[index + 1];
-    }
-    if (result.enabled) {
-      return result;
-    }
-    return RadioButtonGroup.getNextInGroup(group, result);
+  for (let i = 0; i < rbGroup.length; i++) {
+    const rb = rbGroup[i];
+    rb.checked = false;
   }
+};
 
-  static getPrevInGroup(group, rb) {
-    const g = RadioButtonGroup.groups[group];
-    const index = g.indexOf(rb);
-    var result;
-    if (index <= 0) {
-      result = g[g.length - 1];
-    } else {
-      result = g[index - 1];
-    }
-    if (result.enabled) {
-      return result;
-    }
-    return RadioButtonGroup.getPrevInGroup(group, result);
+RadioButtonGroup.addToGroup = (group, rb) => {
+  if (!RadioButtonGroup.groups[group]) {
+    RadioButtonGroup.groups[group] = [];
   }
+  RadioButtonGroup.groups[group].push(rb);
+};
 
-}
-class Style {
-  static baseStyle = `
-    box-sizing: border-box;
-    position: absolute;
-    font: 10px sans-serif;
-  `;
-  static disabledStyle = ` 
-    cursor: default;
-    opacity: 0.5;
-    user-select: none;
-  `;
-  static focusStyle = `
-    outline: 1px solid #ccc;
-    outline-offset: 2px;
-  `;
-  static shadowStyle = `
-    box-shadow: inset 1px 1px 2px #808080;
-  `;
-  static textStyle = `
-    background-color: #fff;
-    border: none;
-    color: #333;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-  `;
-  static textSelectionStyle = `
-    background: #666;
-    color: #fff;
-  `;
-}
+RadioButtonGroup.getNextInGroup = (group, rb) => {
+  const g = RadioButtonGroup.groups[group];
+  const index = g.indexOf(rb);
+  var result;
+  if (index >= g.length - 1) {
+    result = g[0];
+  } else {
+    result = g[index + 1];
+  }
+  if (result.enabled) {
+    return result;
+  }
+  return RadioButtonGroup.getNextInGroup(group, result);
+};
+
+RadioButtonGroup.getPrevInGroup = (group, rb) => {
+  const g = RadioButtonGroup.groups[group];
+  const index = g.indexOf(rb);
+  var result;
+  if (index <= 0) {
+    result = g[g.length - 1];
+  } else {
+    result = g[index - 1];
+  }
+  if (result.enabled) {
+    return result;
+  }
+  return RadioButtonGroup.getPrevInGroup(group, result);
+};
+
 class TextArea extends Component {
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
@@ -2749,10 +2770,6 @@ class TextInput extends Component {
 
 customElements.define("minimal-textinput", TextInput);
 class VSlider extends HSlider {
-  static defaultDecimals = 0;
-  static defaultWidth = 15;
-  static defaultHeight = 150;
-  static defaultHandleSize = 15;
 
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
@@ -2849,8 +2866,8 @@ class VSlider extends HSlider {
   }
 
   setDefaults() {
-    this._decimals = VSlider.defaultDecimals;
-    this._handleSize = VSlider.defaultHandleSize;
+    this._decimals = Defaults.vslider.decimals;
+    this._handleSize = Defaults.vslider.handleSize;
   }
 
   updateHandlePosition() {
@@ -2874,7 +2891,7 @@ class VSlider extends HSlider {
   }
 
   setSliderSize() {
-    this.setSize(VSlider.defaultWidth, VSlider.defaultHeight);
+    this.setSize(Defaults.vslider.width, Defaults.vslider.height);
   }
 
   updateValue(value) {
@@ -2921,4 +2938,4 @@ class VSlider extends HSlider {
 
 customElements.define("minimal-vslider", VSlider);
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider };

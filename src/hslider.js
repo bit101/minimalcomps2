@@ -1,9 +1,4 @@
 export class HSlider extends Component {
-  static defaultDecimals = 0;
-  static defaultTextPosition = "top";
-  static defaultWidth = 150;
-  static defaultHeight = 15;
-  static defaultHandleSize = 15;
 
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -173,9 +168,9 @@ export class HSlider extends Component {
   }
 
   setDefaults() {
-    this._handleSize = HSlider.defaultHandleSize;
-    this._decimals = HSlider.defaultDecimals;
-    this._textPosition = HSlider.defaultTextPosition;
+    this._handleSize = Defaults.hslider.handleSize;
+    this._decimals = Defaults.hslider.decimals;
+    this._textPosition = Defaults.hslider.textPosition;
   }
 
   showValue(show) {
@@ -240,7 +235,7 @@ export class HSlider extends Component {
   }
 
   setSliderSize() {
-    this.setSize(HSlider.defaultWidth, HSlider.defaultHeight);
+    this.setSize(Defaults.hslider.width, Defaults.hslider.height);
   }
 
   updateValue(value) {
