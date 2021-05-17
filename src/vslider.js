@@ -47,17 +47,6 @@ export class VSlider extends HSlider {
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
-      .MinimalSliderLabel {
-        ${Style.baseStyle}
-        color: #333;
-        white-space: nowrap;
-        text-align: center;
-        overflow: hidden;
-        user-select: none;
-      }
-      .MinimalSliderLabelDisabled {
-        ${Style.disabledStyle}
-      } 
     `;
     this.shadowRoot.append(style);
   }

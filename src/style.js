@@ -10,6 +10,7 @@ Style.disabledStyle = `
   cursor: default;
   opacity: 0.5;
   user-select: none;
+  -webkit-user-select: none;
 `;
 
 Style.focusStyle = `

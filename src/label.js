@@ -39,6 +39,7 @@ export class Label extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         white-space: nowrap;
       }
       .MinimalLabelDisabled {

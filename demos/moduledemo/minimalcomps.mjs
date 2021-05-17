@@ -35,6 +35,7 @@ Style.disabledStyle = `
   cursor: default;
   opacity: 0.5;
   user-select: none;
+  -webkit-user-select: none;
 `;
 
 Style.focusStyle = `
@@ -838,6 +839,7 @@ class Dropdown extends Component {
         top: -1px;
         text-align: center;
         user-select: none;
+        -webkit-user-select: none;
       }
       .MinimalDropdownButtonDisabled {
         ${Style.disabledStyle}
@@ -1588,6 +1590,7 @@ class Label extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         white-space: nowrap;
       }
       .MinimalLabelDisabled {
@@ -2553,6 +2556,7 @@ class TextBox extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
       .MinimalTextBoxDisabled {
@@ -2561,6 +2565,7 @@ class TextBox extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
     `;
@@ -2818,17 +2823,6 @@ class VSlider extends HSlider {
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
-      .MinimalSliderLabel {
-        ${Style.baseStyle}
-        color: #333;
-        white-space: nowrap;
-        text-align: center;
-        overflow: hidden;
-        user-select: none;
-      }
-      .MinimalSliderLabelDisabled {
-        ${Style.disabledStyle}
-      } 
     `;
     this.shadowRoot.append(style);
   }

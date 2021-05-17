@@ -32,6 +32,7 @@ export class TextBox extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
       .MinimalTextBoxDisabled {
@@ -40,6 +41,7 @@ export class TextBox extends Component {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
     `;

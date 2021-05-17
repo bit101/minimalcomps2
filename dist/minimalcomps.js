@@ -38,6 +38,7 @@ var mc2 = (function (exports) {
   cursor: default;
   opacity: 0.5;
   user-select: none;
+  -webkit-user-select: none;
 `;
 
   Style.focusStyle = `
@@ -841,6 +842,7 @@ var mc2 = (function (exports) {
         top: -1px;
         text-align: center;
         user-select: none;
+        -webkit-user-select: none;
       }
       .MinimalDropdownButtonDisabled {
         ${Style.disabledStyle}
@@ -1591,6 +1593,7 @@ var mc2 = (function (exports) {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         white-space: nowrap;
       }
       .MinimalLabelDisabled {
@@ -2556,6 +2559,7 @@ var mc2 = (function (exports) {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
       .MinimalTextBoxDisabled {
@@ -2564,6 +2568,7 @@ var mc2 = (function (exports) {
         height: 100%;
         overflow: hidden;
         user-select: none;
+        -webkit-user-select: none;
         width: 100%;
       }
     `;
@@ -2821,17 +2826,6 @@ var mc2 = (function (exports) {
       .MinimalSlider:focus {
         ${Style.focusStyle}
       }
-      .MinimalSliderLabel {
-        ${Style.baseStyle}
-        color: #333;
-        white-space: nowrap;
-        text-align: center;
-        overflow: hidden;
-        user-select: none;
-      }
-      .MinimalSliderLabelDisabled {
-        ${Style.disabledStyle}
-      } 
     `;
       this.shadowRoot.append(style);
     }

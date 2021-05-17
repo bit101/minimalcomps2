@@ -94,6 +94,7 @@ export class Dropdown extends Component {
         top: -1px;
         text-align: center;
         user-select: none;
+        -webkit-user-select: none;
       }
       .MinimalDropdownButtonDisabled {
         ${Style.disabledStyle}
