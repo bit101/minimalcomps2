@@ -371,6 +371,8 @@ var mc2 = (function (exports) {
         border: 1px solid #999;
         width: 100%;
         height: 100%;
+        user-select: none;
+        -webkit-user-select: none;
       }
       .MinimalCanvasDisabled {
         ${Style.disabledStyle}
@@ -380,6 +382,8 @@ var mc2 = (function (exports) {
         border: 1px solid #999;
         width: 100%;
         height: 100%;
+        user-select: none;
+        -webkit-user-select: none;
       }
     `;
       this.shadowRoot.append(style);
