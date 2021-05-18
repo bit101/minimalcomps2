@@ -1,3 +1,6 @@
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
 export class TextBox extends Component {
   constructor(parent, x, y, text) {
     super(parent, x, y);

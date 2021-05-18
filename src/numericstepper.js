@@ -1,3 +1,8 @@
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
+import { Button } from "./button.js";
+
 export class NumericStepper extends Component {
   constructor(parent, x, y, value, min, max, defaultHandler) {
     super(parent, x, y);

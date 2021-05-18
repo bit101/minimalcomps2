@@ -26,6 +26,7 @@ var mc2 = (function (exports) {
       fontSize: 10,
     },
   };
+
   const Style = {};
 
   Style.baseStyle = `
@@ -63,6 +64,7 @@ var mc2 = (function (exports) {
   background: #666;
   color: #fff;
 `;
+
   class Component extends HTMLElement {
     constructor(parent, x, y) {
       super();
@@ -202,6 +204,177 @@ var mc2 = (function (exports) {
 
 
   customElements.define("minimal-component", Component);
+
+  class Label extends Component {
+
+    constructor(parent, x, y, text) {
+      super(null, x, y);
+      this._align = "left";
+      this._autosize = true;
+      this._color = "#333";
+      this._bold = false;
+      this._italic = false;
+      this._text = text;
+
+      this.createChildren();
+      this.createStyle();
+      // width will be 0 until it is on the live DOM
+      // so we put it on document.body, get width
+      // then remove it and add it to parent.
+      document.body.appendChild(this);
+      this._width = this.wrapper.offsetWidth;
+      parent && parent.appendChild(this);
+      this.height = Defaults.label.fontSize + 2;
+    }
+
+    //////////////////////////////////
+    // Core
+    //////////////////////////////////
+    
+    createChildren() {
+      this.setWrapperClass("MinimalLabel");
+      this.wrapper.textContent = this._text;
+    }
+
+    createStyle() {
+      const style = document.createElement("style");
+      style.textContent = `
+      .MinimalLabel {
+        ${Style.baseStyle}
+        font-size: ${Defaults.label.fontSize}px;
+        color: #333;
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+        white-space: nowrap;
+      }
+      .MinimalLabelDisabled {
+        ${Style.disabledStyle}
+      }
+    `;
+      this.shadowRoot.append(style);
+    }
+
+    //////////////////////////////////
+    // Getters/Setters
+    // alphabetical. getter first.
+    //////////////////////////////////
+
+    get align() {
+      return this._align;
+    }
+
+    set align(align) {
+      this._align = align;
+      this.wrapper.style.textAlign = align;
+    }
+    
+    get autosize() {
+      return this._autosize;
+    }
+
+    set autosize(autosize) {
+      this._autosize = autosize;
+      if (this._autosize) {
+        this.wrapper.style.width = "auto";
+        this._width = this.wrapper.offsetWidth;
+      } else {
+        this._width = this.wrapper.offsetWidth;
+        this.wrapper.style.width = this._width + "px";
+      }
+    }
+
+    get bold() {
+      return this._bold;
+    }
+
+    set bold(bold) {
+      this._bold = bold;
+      if (this._bold) {
+        this.wrapper.style.fontWeight = "bold";
+      } else {
+        this.wrapper.style.fontWeight = "normal";
+      }
+    }
+
+    get color() {
+      return this._color;
+    }
+
+    set color(color) {
+      this._color = color;
+      this.wrapper.style.color = color;
+    }
+
+    get enabled() {
+      return super.enabled;
+    }
+
+    set enabled(enabled) {
+      super.enabled = enabled;
+      if (this.enabled) {
+        this.setWrapperClass("MinimalLabel");
+      } else {
+        this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+      }
+    }
+
+    get fontSize() {
+      return this._fontSize;
+    }
+
+    set fontSize(fontSize) {
+      this._fontSize = fontSize;
+      this.wrapper.style.fontSize = fontSize + "px";
+    }
+    get height() {
+      return super.height;
+    }
+
+    set height(height) {
+      super.height = height;
+      this.wrapper.style.lineHeight = height + "px";
+    }
+
+    get italic() {
+      return this._italics;
+    }
+
+    set italic(italic) {
+      this._italic = italic;
+      if (this._italic) {
+        this.wrapper.style.fontStyle = "italic";
+      } else {
+        this.wrapper.style.fontStyle = "normal";
+      }
+    }
+
+    get text() {
+      return this._text;
+    }
+
+    set text(text) {
+      this._text = text;
+      this.wrapper.textContent = text;
+      if (this._autosize) {
+        this._width = this.wrapper.offsetWidth;
+      }
+    }
+
+    get width() {
+      return this._width;
+    }
+
+    set width(w) {
+      if (!this.autosize) {
+        this._width = w;      
+        this.wrapper.style.width = w + "px";
+      }
+    }
+  }
+
+  customElements.define("minimal-label", Label);
 
   class Button extends Component {
 
@@ -436,7 +609,6 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-canvas", Canvas);
 
-
   class Checkbox extends Component {
     constructor(parent, x, y, text, checked, defaultHandler) {
       super(parent, x, y);
@@ -601,7 +773,6 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-checkbox", Checkbox);
 
-
   class ColorPicker extends Component {
     constructor(parent, x, y, color, defaultHandler) {
       super(parent, x, y);
@@ -750,6 +921,7 @@ var mc2 = (function (exports) {
   }
 
   customElements.define("minimal-colorpicker", ColorPicker);
+
   class Dropdown extends Component {
     constructor(parent, x, y, items, index, defaultHandler) {
       super(parent, x, y);
@@ -1556,176 +1728,6 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-image", Image);
 
-  class Label extends Component {
-
-    constructor(parent, x, y, text) {
-      super(null, x, y);
-      this._align = "left";
-      this._autosize = true;
-      this._color = "#333";
-      this._bold = false;
-      this._italic = false;
-      this._text = text;
-
-      this.createChildren();
-      this.createStyle();
-      // width will be 0 until it is on the live DOM
-      // so we put it on document.body, get width
-      // then remove it and add it to parent.
-      document.body.appendChild(this);
-      this._width = this.wrapper.offsetWidth;
-      parent && parent.appendChild(this);
-      this.height = Defaults.label.fontSize + 2;
-    }
-
-    //////////////////////////////////
-    // Core
-    //////////////////////////////////
-    
-    createChildren() {
-      this.setWrapperClass("MinimalLabel");
-      this.wrapper.textContent = this._text;
-    }
-
-    createStyle() {
-      const style = document.createElement("style");
-      style.textContent = `
-      .MinimalLabel {
-        ${Style.baseStyle}
-        font-size: ${Defaults.label.fontSize}px;
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        white-space: nowrap;
-      }
-      .MinimalLabelDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
-      this.shadowRoot.append(style);
-    }
-
-    //////////////////////////////////
-    // Getters/Setters
-    // alphabetical. getter first.
-    //////////////////////////////////
-
-    get align() {
-      return this._align;
-    }
-
-    set align(align) {
-      this._align = align;
-      this.wrapper.style.textAlign = align;
-    }
-    
-    get autosize() {
-      return this._autosize;
-    }
-
-    set autosize(autosize) {
-      this._autosize = autosize;
-      if (this._autosize) {
-        this.wrapper.style.width = "auto";
-        this._width = this.wrapper.offsetWidth;
-      } else {
-        this._width = this.wrapper.offsetWidth;
-        this.wrapper.style.width = this._width + "px";
-      }
-    }
-
-    get bold() {
-      return this._bold;
-    }
-
-    set bold(bold) {
-      this._bold = bold;
-      if (this._bold) {
-        this.wrapper.style.fontWeight = "bold";
-      } else {
-        this.wrapper.style.fontWeight = "normal";
-      }
-    }
-
-    get color() {
-      return this._color;
-    }
-
-    set color(color) {
-      this._color = color;
-      this.wrapper.style.color = color;
-    }
-
-    get enabled() {
-      return super.enabled;
-    }
-
-    set enabled(enabled) {
-      super.enabled = enabled;
-      if (this.enabled) {
-        this.setWrapperClass("MinimalLabel");
-      } else {
-        this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
-      }
-    }
-
-    get fontSize() {
-      return this._fontSize;
-    }
-
-    set fontSize(fontSize) {
-      this._fontSize = fontSize;
-      this.wrapper.style.fontSize = fontSize + "px";
-    }
-    get height() {
-      return super.height;
-    }
-
-    set height(height) {
-      super.height = height;
-      this.wrapper.style.lineHeight = height + "px";
-    }
-
-    get italic() {
-      return this._italics;
-    }
-
-    set italic(italic) {
-      this._italic = italic;
-      if (this._italic) {
-        this.wrapper.style.fontStyle = "italic";
-      } else {
-        this.wrapper.style.fontStyle = "normal";
-      }
-    }
-
-    get text() {
-      return this._text;
-    }
-
-    set text(text) {
-      this._text = text;
-      this.wrapper.textContent = text;
-      if (this._autosize) {
-        this._width = this.wrapper.offsetWidth;
-      }
-    }
-
-    get width() {
-      return this._width;
-    }
-
-    set width(w) {
-      if (!this.autosize) {
-        this._width = w;      
-        this.wrapper.style.width = w + "px";
-      }
-    }
-  }
-
-  customElements.define("minimal-label", Label);
   class NumericStepper extends Component {
     constructor(parent, x, y, value, min, max, defaultHandler) {
       super(parent, x, y);
@@ -2185,6 +2187,71 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-progressbar", ProgressBar);
 
+  const RadioButtonGroup = {};
+
+  RadioButtonGroup.groups = {};
+
+  RadioButtonGroup.getValueForGroup = (group) => {
+    const rbGroup = RadioButtonGroup.groups[group];
+    if (!rbGroup) {
+      return null;
+    }
+    for (let i = 0; i < rbGroup.length; i++) {
+      const rb = rbGroup[i];
+      if (rb.checked) {
+        return rb.text;
+      }
+    }
+    return null;
+  };
+
+  RadioButtonGroup.clearGroup = (group) => {
+    const rbGroup = RadioButtonGroup.groups[group];
+    if (!rbGroup) {
+      return;
+    }
+    for (let i = 0; i < rbGroup.length; i++) {
+      const rb = rbGroup[i];
+      rb.checked = false;
+    }
+  };
+
+  RadioButtonGroup.addToGroup = (group, rb) => {
+    if (!RadioButtonGroup.groups[group]) {
+      RadioButtonGroup.groups[group] = [];
+    }
+    RadioButtonGroup.groups[group].push(rb);
+  };
+
+  RadioButtonGroup.getNextInGroup = (group, rb) => {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    var result;
+    if (index >= g.length - 1) {
+      result = g[0];
+    } else {
+      result = g[index + 1];
+    }
+    if (result.enabled) {
+      return result;
+    }
+    return RadioButtonGroup.getNextInGroup(group, result);
+  };
+
+  RadioButtonGroup.getPrevInGroup = (group, rb) => {
+    const g = RadioButtonGroup.groups[group];
+    const index = g.indexOf(rb);
+    var result;
+    if (index <= 0) {
+      result = g[g.length - 1];
+    } else {
+      result = g[index - 1];
+    }
+    if (result.enabled) {
+      return result;
+    }
+    return RadioButtonGroup.getPrevInGroup(group, result);
+  };
 
   class RadioButton extends Component {
     constructor(parent, x, y, group, text, checked, defaultHandler) {
@@ -2370,73 +2437,6 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-radiobutton", RadioButton);
 
-
-  const RadioButtonGroup = {};
-
-  RadioButtonGroup.groups = {};
-
-  RadioButtonGroup.getValueForGroup = (group) => {
-    const rbGroup = RadioButtonGroup.groups[group];
-    if (!rbGroup) {
-      return null;
-    }
-    for (let i = 0; i < rbGroup.length; i++) {
-      const rb = rbGroup[i];
-      if (rb.checked) {
-        return rb.text;
-      }
-    }
-    return null;
-  };
-
-  RadioButtonGroup.clearGroup = (group) => {
-    const rbGroup = RadioButtonGroup.groups[group];
-    if (!rbGroup) {
-      return;
-    }
-    for (let i = 0; i < rbGroup.length; i++) {
-      const rb = rbGroup[i];
-      rb.checked = false;
-    }
-  };
-
-  RadioButtonGroup.addToGroup = (group, rb) => {
-    if (!RadioButtonGroup.groups[group]) {
-      RadioButtonGroup.groups[group] = [];
-    }
-    RadioButtonGroup.groups[group].push(rb);
-  };
-
-  RadioButtonGroup.getNextInGroup = (group, rb) => {
-    const g = RadioButtonGroup.groups[group];
-    const index = g.indexOf(rb);
-    var result;
-    if (index >= g.length - 1) {
-      result = g[0];
-    } else {
-      result = g[index + 1];
-    }
-    if (result.enabled) {
-      return result;
-    }
-    return RadioButtonGroup.getNextInGroup(group, result);
-  };
-
-  RadioButtonGroup.getPrevInGroup = (group, rb) => {
-    const g = RadioButtonGroup.groups[group];
-    const index = g.indexOf(rb);
-    var result;
-    if (index <= 0) {
-      result = g[g.length - 1];
-    } else {
-      result = g[index - 1];
-    }
-    if (result.enabled) {
-      return result;
-    }
-    return RadioButtonGroup.getPrevInGroup(group, result);
-  };
-
   class TextArea extends Component {
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
@@ -2529,6 +2529,7 @@ var mc2 = (function (exports) {
   }
 
   customElements.define("minimal-textarea", TextArea);
+
   class TextBox extends Component {
     constructor(parent, x, y, text) {
       super(parent, x, y);
@@ -2781,6 +2782,7 @@ var mc2 = (function (exports) {
   }
 
   customElements.define("minimal-textinput", TextInput);
+
   class VSlider extends HSlider {
 
     constructor(parent, x, y, text, value, min, max, defaultHandler) {

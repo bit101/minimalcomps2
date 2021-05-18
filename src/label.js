@@ -1,3 +1,7 @@
+import { Defaults } from "./defaults.js";
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
 export class Label extends Component {
 
   constructor(parent, x, y, text) {

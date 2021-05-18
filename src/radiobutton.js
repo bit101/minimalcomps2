@@ -1,3 +1,9 @@
+import { RadioButtonGroup } from "./radiobuttongroup.js";
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
+import { Label } from "./label.js";
+
 export class RadioButton extends Component {
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);

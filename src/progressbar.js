@@ -1,3 +1,6 @@
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
 export class ProgressBar extends Component {
   constructor(parent, x, y, progress, max) {
     super(parent, x, y);

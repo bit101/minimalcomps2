@@ -1,3 +1,7 @@
+import { Defaults } from "./defaults.js";
+import { HSlider } from "./hslider.js";
+import { Style } from "./style.js";
+
 export class VSlider extends HSlider {
 
   constructor(parent, x, y, text, value, min, max, defaultHandler) {

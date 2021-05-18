@@ -1,3 +1,8 @@
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
+import { Label } from "./label.js";
+
 export class Dropdown extends Component {
   constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);

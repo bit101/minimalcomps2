@@ -1,3 +1,6 @@
+import { Component } from "./component.js";
+import { Style } from "./style.js";
+
 export class ColorPicker extends Component {
   constructor(parent, x, y, color, defaultHandler) {
     super(parent, x, y);

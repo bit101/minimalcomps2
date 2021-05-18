@@ -1,3 +1,5 @@
+import { Style } from "./style.js";
+
 export class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
