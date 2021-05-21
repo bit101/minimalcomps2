@@ -2938,4 +2938,6 @@ class VSlider extends HSlider {
 
 customElements.define("minimal-vslider", VSlider);
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider };
+const version = "1.0.0";
+
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider, version };

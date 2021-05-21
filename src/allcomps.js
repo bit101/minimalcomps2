@@ -19,7 +19,10 @@ import { TextBox } from "./textbox.js";
 import { TextInput } from "./textinput.js";
 import { VSlider } from "./vslider.js";
 
+const version = "1.0.0";
+
 export {
+  version,
   Button,
   Canvas,
   Checkbox,

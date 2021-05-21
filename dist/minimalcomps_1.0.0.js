@@ -2941,6 +2941,8 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-vslider", VSlider);
 
+  const version = "1.0.0";
+
   exports.Button = Button;
   exports.Canvas = Canvas;
   exports.Checkbox = Checkbox;
@@ -2961,6 +2963,7 @@ var mc2 = (function (exports) {
   exports.TextBox = TextBox;
   exports.TextInput = TextInput;
   exports.VSlider = VSlider;
+  exports.version = version;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
