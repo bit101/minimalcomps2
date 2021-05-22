@@ -1,8 +1,9 @@
 default:
-	@rollup -c
-	@uglifyjs dist/minimalcomps_1.0.0.js -o dist/minimalcomps_1.0.0.min.js
-	@uglifyjs dist/minimalcomps_1.0.0.mjs -o dist/minimalcomps_1.0.0.min.mjs
+	@npm run build
+	@ffreload
 
+clean:
+	@rm dist/*
+	@rm demos/globaldemo/minimalcomps_1.0.0.min.js
+	@rm demos/moduledemo/minimalcomps_1.0.0.min.mjs
 
-	@cp dist/minimalcomps*.min.js demos/globaldemo/
-	@cp dist/minimalcomps*.min.mjs demos/moduledemo/

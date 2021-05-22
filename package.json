@@ -1,0 +1,27 @@
+{
+  "name": "minimalcomps2",
+  "version": "1.0.0",
+  "description": "minimal ui components",
+  "main": "rollup.config.js",
+  "scripts": {
+    "uglify": "uglifyjs dist/minimalcomps_1.0.0.js -o dist/minimalcomps_1.0.0.min.js",
+    "postuglify": "cp dist/minimalcomps*.min.js demos/globaldemo/",
+    "uglify-mod": "uglifyjs dist/minimalcomps_1.0.0.mjs -o dist/minimalcomps_1.0.0.min.mjs",
+    "postuglify-mod": "cp dist/minimalcomps*.min.mjs demos/moduledemo/",
+    "build": "rollup -c && npm run uglify && npm run uglify-mod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bit101/minimalcomps2.git"
+  },
+  "author": "Keith Peters",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bit101/minimalcomps2/issues"
+  },
+  "homepage": "https://github.com/bit101/minimalcomps2#readme",
+  "devDependencies": {
+    "rollup": "^2.48.0",
+    "uglify-js": "^3.13.7"
+  }
+}
