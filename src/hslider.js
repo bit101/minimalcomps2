@@ -1,8 +1,8 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
-import { Label } from "./label.js";
 
 export class HSlider extends Component {
 

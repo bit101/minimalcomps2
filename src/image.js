@@ -1,5 +1,5 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
 export class Image extends Component {

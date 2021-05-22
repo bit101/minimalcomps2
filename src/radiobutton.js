@@ -1,8 +1,7 @@
-import { RadioButtonGroup } from "./radiobuttongroup.js";
 import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 import { Label } from "./label.js";
+import { RadioButtonGroup } from "./radiobuttongroup.js";
+import { Style } from "./style.js";
 
 export class RadioButton extends Component {
   constructor(parent, x, y, group, text, checked, defaultHandler) {
@@ -187,5 +186,4 @@ export class RadioButton extends Component {
 }
 
 customElements.define("minimal-radiobutton", RadioButton);
-
 

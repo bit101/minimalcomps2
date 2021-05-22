@@ -95,4 +95,3 @@ export class Canvas extends Component {
 
 customElements.define("minimal-canvas", Canvas);
 
-

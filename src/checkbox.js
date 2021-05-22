@@ -1,7 +1,6 @@
 import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 import { Label } from "./label.js";
+import { Style } from "./style.js";
 
 export class Checkbox extends Component {
   constructor(parent, x, y, text, checked, defaultHandler) {
@@ -166,5 +165,4 @@ export class Checkbox extends Component {
 }
 
 customElements.define("minimal-checkbox", Checkbox);
-
 

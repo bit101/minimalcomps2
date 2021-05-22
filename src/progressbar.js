@@ -117,4 +117,3 @@ export class ProgressBar extends Component {
 
 customElements.define("minimal-progressbar", ProgressBar);
 
-
