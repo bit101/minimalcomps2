@@ -144,7 +144,7 @@ export class RadioButton extends Component {
   }
 
   set checked(checked) {
-    if(checked) {
+    if (checked) {
       RadioButtonGroup.clearGroup(this.group);
     }
     this._checked = checked;

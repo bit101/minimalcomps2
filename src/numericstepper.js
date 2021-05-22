@@ -224,7 +224,7 @@ export class NumericStepper extends Component {
     const value = this.roundValue(this.value);
     if (this._value != value) {
       this._value = value;
-      this.input.value= value;
+      this.input.value = value;
       this.dispatchEvent(new Event("change"));
     }
   }

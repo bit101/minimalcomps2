@@ -89,7 +89,7 @@ export class HSlider extends Component {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown)
+    this.wrapper.addEventListener("keydown", this.onKeyDown);
   }
 
   //////////////////////////////////
@@ -123,17 +123,17 @@ export class HSlider extends Component {
     }
     let value = this.value;
 
-    switch(event.keyCode) {
-      case 37:
-      case 40:
-        value -= inc;
-        break;
-      case 38:
-      case 39:
-        value += inc;
-        break
-      default:
-        break;
+    switch (event.keyCode) {
+    case 37:
+    case 40:
+      value -= inc;
+      break;
+    case 38:
+    case 39:
+      value += inc;
+      break;
+    default:
+      break;
     }
     this.updateValue(value);
   }
@@ -280,7 +280,7 @@ export class HSlider extends Component {
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
         this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown)
+        this.wrapper.addEventListener("keydown", this.onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
         this.wrapper.removeEventListener("mousedown", this.onMouseDown);

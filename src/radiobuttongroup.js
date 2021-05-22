@@ -14,7 +14,7 @@ RadioButtonGroup.getValueForGroup = (group) => {
     }
   }
   return null;
-}
+};
 
 RadioButtonGroup.clearGroup = (group) => {
   const rbGroup = RadioButtonGroup.groups[group];
@@ -25,14 +25,14 @@ RadioButtonGroup.clearGroup = (group) => {
     const rb = rbGroup[i];
     rb.checked = false;
   }
-}
+};
 
 RadioButtonGroup.addToGroup = (group, rb) => {
   if (!RadioButtonGroup.groups[group]) {
     RadioButtonGroup.groups[group] = [];
   }
   RadioButtonGroup.groups[group].push(rb);
-}
+};
 
 RadioButtonGroup.getNextInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
@@ -47,7 +47,7 @@ RadioButtonGroup.getNextInGroup = (group, rb) => {
     return result;
   }
   return RadioButtonGroup.getNextInGroup(group, result);
-}
+};
 
 RadioButtonGroup.getPrevInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
@@ -62,5 +62,5 @@ RadioButtonGroup.getPrevInGroup = (group, rb) => {
     return result;
   }
   return RadioButtonGroup.getPrevInGroup(group, result);
-}
+};
 

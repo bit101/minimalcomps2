@@ -276,7 +276,7 @@ export class Dropdown extends Component {
     if (index >= 0 && index < this.items.length) {
       this._index = index;
       this._text = this.items[this._index];
-      this.label.text = this._text
+      this.label.text = this._text;
     }
   }
 

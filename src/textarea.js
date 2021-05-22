@@ -12,7 +12,7 @@ export class TextArea extends Component {
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
- }
+  }
 
   //////////////////////////////////
   // Core
