@@ -81,7 +81,7 @@ export class Checkbox extends Component {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
-      this.dispatchEvent(new Event("click"));
+      this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
     }
   }
 

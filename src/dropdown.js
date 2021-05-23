@@ -157,7 +157,12 @@ export class Dropdown extends Component {
     event.stopPropagation();
     this.index = event.target.getAttribute("data-index");
     this.toggle();
-    this.dispatchEvent(new Event("change"));
+    this.dispatchEvent(new CustomEvent("change", {
+      detail: {
+        text: this.text,
+        index: this.index,
+      },
+    }));
     this.wrapper.focus();
   }
 

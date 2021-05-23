@@ -58,7 +58,7 @@ export class TextInput extends Component {
 
   onInput() {
     this._text = this.input.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////

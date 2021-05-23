@@ -225,7 +225,7 @@ export class HSlider extends Component {
       this._value = value;
       this.updateHandlePosition();
       this.valueLabel.text = this.formatValue();
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 

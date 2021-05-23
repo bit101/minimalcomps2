@@ -58,7 +58,7 @@ export class TextArea extends Component {
 
   onInput() {
     this._text = this.textArea.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////

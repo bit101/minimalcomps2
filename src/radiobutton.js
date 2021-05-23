@@ -86,7 +86,7 @@ export class RadioButton extends Component {
     event.stopPropagation();
     if (this.enabled) {
       this.checked = true;
-      this.dispatchEvent(new Event("click"));
+      this.dispatchEvent(new CustomEvent("click", { detail: this.text }));
     }
   }
 

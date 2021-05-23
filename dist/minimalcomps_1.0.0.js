@@ -685,7 +685,7 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       if (this.enabled) {
         this.toggle();
-        this.dispatchEvent(new Event("click"));
+        this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
       }
     }
 
@@ -860,7 +860,7 @@ var mc2 = (function (exports) {
       if ((color.length === 4 || color.length === 7) && this.color !== color) {
         this._color = color;
         this.preview.style.backgroundColor = this.color;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
       }
     }
 
@@ -1075,7 +1075,12 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       this.index = event.target.getAttribute("data-index");
       this.toggle();
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", {
+        detail: {
+          text: this.text,
+          index: this.index,
+        },
+      }));
       this.wrapper.focus();
     }
 
@@ -1436,9 +1441,7 @@ var mc2 = (function (exports) {
         this._value = value;
         this.updateHandlePosition();
         this.valueLabel.text = this.formatValue();
-        this.dispatchEvent(new CustomEvent("change", {
-          detail: this.value,
-        }));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1802,7 +1805,7 @@ var mc2 = (function (exports) {
       this.input.value = value;
       if (this.value !== value) {
         this._value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1811,7 +1814,7 @@ var mc2 = (function (exports) {
         const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
         if (this.value !== value) {
           this.value = value;
-          this.dispatchEvent(new Event("change"));
+          this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
         }
         this.timeout = setTimeout(() => this.decrement(), this.delay);
         if (this.delay === 500) {
@@ -1825,7 +1828,7 @@ var mc2 = (function (exports) {
         const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
         if (this.value !== value) {
           this.value = value;
-          this.dispatchEvent(new Event("change"));
+          this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
         }
         this.timeout = setTimeout(() => this.increment(), this.delay);
         if (this.delay === 500) {
@@ -1923,7 +1926,7 @@ var mc2 = (function (exports) {
       if (this._value !== value) {
         this._value = value;
         this.input.value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1935,7 +1938,7 @@ var mc2 = (function (exports) {
       this._max = max;
       if (this.max < this.value) {
         this.value = this.max;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1947,7 +1950,7 @@ var mc2 = (function (exports) {
       this._min = min;
       if (this.min > this.value) {
         this.value = this.min;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -2306,7 +2309,7 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       if (this.enabled) {
         this.checked = true;
-        this.dispatchEvent(new Event("click"));
+        this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
       }
     }
 
@@ -2463,7 +2466,7 @@ var mc2 = (function (exports) {
 
     onInput() {
       this._text = this.textArea.value;
-      this.dispatchEvent(new Event("input"));
+      this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
     }
 
     //////////////////////////////////
@@ -2706,7 +2709,7 @@ var mc2 = (function (exports) {
 
     onInput() {
       this._text = this.input.value;
-      this.dispatchEvent(new Event("input"));
+      this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
     }
 
     //////////////////////////////////

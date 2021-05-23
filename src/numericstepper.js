@@ -102,7 +102,7 @@ export class NumericStepper extends Component {
     this.input.value = value;
     if (this.value !== value) {
       this._value = value;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -111,7 +111,7 @@ export class NumericStepper extends Component {
       const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
       this.timeout = setTimeout(() => this.decrement(), this.delay);
       if (this.delay === 500) {
@@ -125,7 +125,7 @@ export class NumericStepper extends Component {
       const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
       this.timeout = setTimeout(() => this.increment(), this.delay);
       if (this.delay === 500) {
@@ -223,7 +223,7 @@ export class NumericStepper extends Component {
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -235,7 +235,7 @@ export class NumericStepper extends Component {
     this._max = max;
     if (this.max < this.value) {
       this.value = this.max;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -247,7 +247,7 @@ export class NumericStepper extends Component {
     this._min = min;
     if (this.min > this.value) {
       this.value = this.min;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 

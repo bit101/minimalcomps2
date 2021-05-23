@@ -91,7 +91,7 @@ export class ColorPicker extends Component {
     if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
     }
   }
 

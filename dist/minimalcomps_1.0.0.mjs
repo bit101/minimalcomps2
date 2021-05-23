@@ -682,7 +682,7 @@ class Checkbox extends Component {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
-      this.dispatchEvent(new Event("click"));
+      this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
     }
   }
 
@@ -857,7 +857,7 @@ class ColorPicker extends Component {
     if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
     }
   }
 
@@ -1072,7 +1072,12 @@ class Dropdown extends Component {
     event.stopPropagation();
     this.index = event.target.getAttribute("data-index");
     this.toggle();
-    this.dispatchEvent(new Event("change"));
+    this.dispatchEvent(new CustomEvent("change", {
+      detail: {
+        text: this.text,
+        index: this.index,
+      },
+    }));
     this.wrapper.focus();
   }
 
@@ -1433,9 +1438,7 @@ class HSlider extends Component {
       this._value = value;
       this.updateHandlePosition();
       this.valueLabel.text = this.formatValue();
-      this.dispatchEvent(new CustomEvent("change", {
-        detail: this.value,
-      }));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -1799,7 +1802,7 @@ class NumericStepper extends Component {
     this.input.value = value;
     if (this.value !== value) {
       this._value = value;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -1808,7 +1811,7 @@ class NumericStepper extends Component {
       const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
       this.timeout = setTimeout(() => this.decrement(), this.delay);
       if (this.delay === 500) {
@@ -1822,7 +1825,7 @@ class NumericStepper extends Component {
       const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
       this.timeout = setTimeout(() => this.increment(), this.delay);
       if (this.delay === 500) {
@@ -1920,7 +1923,7 @@ class NumericStepper extends Component {
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -1932,7 +1935,7 @@ class NumericStepper extends Component {
     this._max = max;
     if (this.max < this.value) {
       this.value = this.max;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -1944,7 +1947,7 @@ class NumericStepper extends Component {
     this._min = min;
     if (this.min > this.value) {
       this.value = this.min;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -2303,7 +2306,7 @@ class RadioButton extends Component {
     event.stopPropagation();
     if (this.enabled) {
       this.checked = true;
-      this.dispatchEvent(new Event("click"));
+      this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
     }
   }
 
@@ -2460,7 +2463,7 @@ class TextArea extends Component {
 
   onInput() {
     this._text = this.textArea.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////
@@ -2703,7 +2706,7 @@ class TextInput extends Component {
 
   onInput() {
     this._text = this.input.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////
