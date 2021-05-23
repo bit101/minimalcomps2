@@ -9,6 +9,7 @@ export class Canvas extends Component {
     this.createStyle();
 
     this.setSize(w, h);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -22,29 +23,7 @@ export class Canvas extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalCanvas {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalCanvasDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-    `;
+    style.textContent = Style.canvas;
     this.shadowRoot.append(style);
   }
 

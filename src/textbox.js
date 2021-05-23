@@ -15,6 +15,7 @@ export class TextBox extends Component {
     this.createStyle();
 
     this.setSize(100, 100);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -28,26 +29,7 @@ export class TextBox extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextBox {
-        ${Style.baseStyle}
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-      .MinimalTextBoxDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-    `;
+    style.textContent = Style.textbox;
     this.shadowRoot.append(style);
   }
 

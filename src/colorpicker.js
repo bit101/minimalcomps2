@@ -13,6 +13,7 @@ export class ColorPicker extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -32,47 +33,7 @@ export class ColorPicker extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalColorPicker {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalColorPickerInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        letter-spacing: 1px;
-        padding: 0 4px;
-        width: 70px;
-        height: 20px;
-        text-transform: uppercase;
-      }
-      .MinimalColorPickerInput:disabled,
-      .MinimalColorPickerInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalColorPickerPreview {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerPreviewDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.colorpicker;
     this.shadowRoot.append(style);
   }
 

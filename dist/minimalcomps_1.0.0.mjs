@@ -1,5 +1,34 @@
+const Defaults = {
+  button: {
+    width: 100,
+    height: 20,
+  },
+  vslider: {
+    decimals: 0,
+    width: 15,
+    height: 150,
+    handleSize: 15,
+  },
+  hslider: {
+    decimals: 0,
+    textPosition: "top",
+    width: 150,
+    height: 15,
+    handleSize: 15,
+  },
+  image: {
+    width: 100,
+  },
+  label: {
+    fontSize: 10,
+  },
+};
+
 const Style = {};
 
+////////////////////
+// Base Styles
+////////////////////
 Style.baseStyle = `
   box-sizing: border-box;
   position: absolute;
@@ -36,19 +65,558 @@ Style.textSelectionStyle = `
   color: #fff;
 `;
 
+Style.buttonStyle = `
+  ${Style.baseStyle}
+  background-color: #f9f9f9;
+  border-radius: 0;
+  border: 1px solid #999;
+  height: 100%;
+  width: 100%;
+`;
+
+////////////////////
+// Button
+////////////////////
+Style.button = `
+  .MinimalButton {
+    ${Style.buttonStyle}
+    cursor: pointer;
+  }
+  .MinimalButton:hover {
+    background-color: #fff;
+  }
+  .MinimalButton:active {
+    background-color: #ccc;
+  }
+  .MinimalButtonDisabled {
+    ${Style.disabledStyle}
+    ${Style.buttonStyle}
+  }
+  .MinimalButton:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// Canvas
+////////////////////
+Style.canvas = `
+  .MinimalCanvas {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .MinimalCanvasDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+`;
+
+////////////////////
+// Checkbox
+////////////////////
+Style.checkbox = `
+  .MinimalCheckbox {
+    ${Style.baseStyle}
+    cursor: pointer;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalCheckboxDisabled {
+    ${Style.baseStyle}
+    cursor: default;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalCheckbox:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalCheckboxCheck {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalCheckboxCheckChecked {
+    ${Style.baseStyle}
+    border: 2px solid #999;
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalCheckboxCheckDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+////////////////////
+// ColorPicker
+////////////////////
+Style.colorpicker = `
+  .MinimalColorPicker {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalColorPickerInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    letter-spacing: 1px;
+    padding: 0 4px;
+    width: 70px;
+    height: 20px;
+    text-transform: uppercase;
+  }
+  .MinimalColorPickerInput:disabled,
+  .MinimalColorPickerInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalColorPickerPreview {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    width: 20px;
+    height: 20px;
+    left: 80px;
+    background-color: #fff;
+  }
+  .MinimalColorPickerPreviewDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    width: 20px;
+    height: 20px;
+    left: 80px;
+    background-color: #fff;
+  }
+  .MinimalColorPickerInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// Component
+////////////////////
+Style.component = `
+  .MinimalWrapper {
+    ${Style.baseStyle}
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+  }
+  :host {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+  }
+`;
+
+////////////////////
+// Dropdown
+////////////////////
+Style.dropdown = `
+  .MinimalDropdown {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalDropdownDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: default;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalDropdown:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalDropdownButton,
+  .MinimalDropdownButtonDisabled {
+    ${Style.baseStyle}
+    line-height: 9px;
+    color: #333;
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+    height: 20px;
+    width: 20px;
+    left: 80px;
+    top: -1px;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .MinimalDropdownButtonDisabled {
+    ${Style.disabledStyle}
+  }
+  .MinimalDropdownItem {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: pointer;
+  }
+  .MinimalDropdownItem:hover {
+    background-color: #f8f8f8;
+  }
+  .MinimalDropdownItem:focus {
+    ${Style.focusStyle}
+    background-color: #f8f8f8;
+  }
+`;
+
+////////////////////
+// HSlider
+////////////////////
+Style.hslider = `
+  .MinimalSlider {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+    width: ${Defaults.hslider.handleSize}px;
+    cursor: pointer;
+  }
+  .MinimalSliderHandleDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+    width: ${Defaults.hslider.handleSize}px;
+    cursor: default;
+  }
+  .MinimalSlider:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// Image
+////////////////////
+Style.image = `
+  .MinimalImage {
+    ${Style.baseStyle}
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+  }
+  .MinimalImageDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+  }
+`;
+
+////////////////////
+// Label
+////////////////////
+Style.label = `
+  .MinimalLabel {
+    ${Style.baseStyle}
+    font-size: ${Defaults.label.fontSize}px;
+    color: #333;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+  }
+  .MinimalLabelDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+////////////////////
+// NumericStepper
+////////////////////
+Style.numericstepper = `
+  .MinimalNumericStepper {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalNumericStepperInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    padding: 0 4px;
+    width: 60px;
+    height: 20px;
+  }
+  .MinimalNumericStepperInput:disabled,
+  .MinimalNumericStepperInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalNumericStepperInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// Panel
+////////////////////
+Style.panel = `
+  .MinimalPanel {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #eee;
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+  .MinimalPanel:disabled,
+  .MinimalPanel[disabled] {
+    ${Style.disabledStyle}
+  }
+  :host {
+    overflow: hidden;
+    position: relative;
+  }
+`;
+
+////////////////////
+// ProgressBar
+////////////////////
+Style.progressbar = `
+  .MinimalProgressBar {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalProgressBarDisabled {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.disabledStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalProgressBarFill {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+  }
+  .MinimalProgressBarFillDisabled {
+    ${Style.baseStyle}
+    ${Style.disabledStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+  }
+`;
+
+////////////////////
+// RadioButton
+////////////////////
+Style.radiobutton = `
+  .MinimalRadioButton {
+    ${Style.baseStyle}
+    cursor: pointer;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalRadioButtonDisabled {
+    ${Style.baseStyle}
+    cursor: default;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalRadioButton:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalRadioButtonCheck {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalRadioButtonCheckChecked {
+    ${Style.baseStyle}
+    border-radius: 5px;
+    border: 2px solid #999;
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalRadioButtonCheckDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+////////////////////
+// TextArea
+////////////////////
+Style.textarea = `
+  .MinimalTextArea {
+    ${Style.baseStyle}
+    ${Style.textStyle}
+    ${Style.shadowStyle}
+    padding: 4px;
+    resize: none;
+  }
+  .MinimalTextArea:disabled,
+  .MinimalTextArea[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalTextArea::selection {
+    ${Style.textSelectionStyle}
+  }
+  .MinimalTextArea:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// TextBox
+////////////////////
+Style.textbox = `
+  .MinimalTextBox {
+    ${Style.baseStyle}
+    color: #333;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100%;
+  }
+  .MinimalTextBoxDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100%;
+  }
+`;
+
+////////////////////
+// TextInput
+////////////////////
+Style.textinput = `
+  .MinimalTextInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    padding: 0 4px;
+  }
+  .MinimalTextInput:disabled,
+  .MinimalTextInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalTextInput::selection {
+    ${Style.textSelectionStyle}
+  }
+  .MinimalTextInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
+// VSlider
+////////////////////
+Style.vslider = `
+  .MinimalSlider {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: ${Defaults.vslider.handleSize}px;
+    width: 100%;
+    cursor: pointer;
+  }
+  .MinimalSliderHandleDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: ${Defaults.vslider.handleSize}px;
+    width: 100%;
+    cursor: default;
+  }
+  .MinimalSlider:focus {
+    ${Style.focusStyle}
+  }
+`;
+
 class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
-    x = x || 0;
-    y = y || 0;
+    this.parent = parent;
     this._enabled = true;
 
     this.attachShadow({mode: "open"});
     this.createWrapper();
     this.createWrapperStyle();
 
-    this.move(x, y);
-    parent && parent.appendChild(this);
+    this.move(x || 0, y || 0);
+  }
+
+  addToParent() {
+    this.parent && this.parent.appendChild(this);
   }
 
   //////////////////////////////////
@@ -82,19 +650,7 @@ class Component extends HTMLElement {
 
   createWrapperStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalWrapper {
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
-      }
-      :host {
-        position: absolute;
-        display: block;
-        box-sizing: border-box;
-      }
-    `;
+    style.textContent = Style.component;
     this.shadowRoot.append(style);
   }
 
@@ -176,35 +732,9 @@ class Component extends HTMLElement {
 
 customElements.define("minimal-component", Component);
 
-const Defaults = {
-  button: {
-    width: 100,
-    height: 20,
-  },
-  vslider: {
-    decimals: 0,
-    width: 15,
-    height: 150,
-    handleSize: 15,
-  },
-  hslider: {
-    decimals: 0,
-    textPosition: "top",
-    width: 150,
-    height: 15,
-    handleSize: 15,
-  },
-  image: {
-    width: 100,
-  },
-  label: {
-    fontSize: 10,
-  },
-};
-
 class Label extends Component {
   constructor(parent, x, y, text) {
-    super(null, x, y);
+    super(parent, x, y);
     this._align = "left";
     this._autosize = true;
     this._color = "#333";
@@ -219,8 +749,8 @@ class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    parent && parent.appendChild(this);
     this.height = Defaults.label.fontSize + 2;
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -234,21 +764,7 @@ class Label extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalLabel {
-        ${Style.baseStyle}
-        font-size: ${Defaults.label.fontSize}px;
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        white-space: nowrap;
-      }
-      .MinimalLabelDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.label;
     this.shadowRoot.append(style);
   }
 
@@ -383,6 +899,7 @@ class Button extends Component {
 
     this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -398,35 +915,8 @@ class Button extends Component {
   }
 
   createStyle() {
-    const buttonStyle = `
-      ${Style.baseStyle}
-      background-color: #f9f9f9;
-      border-radius: 0;
-      border: 1px solid #999;
-      height: 100%;
-      width: 100%;
-    `;
-
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalButton {
-        ${buttonStyle}
-        cursor: pointer;
-      }
-      .MinimalButton:hover {
-        background-color: #fff;
-      }
-      .MinimalButton:active {
-        background-color: #ccc;
-      }
-      .MinimalButtonDisabled {
-        ${Style.disabledStyle}
-        ${buttonStyle}
-      }
-      .MinimalButton:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.button;
     this.shadowRoot.append(style);
   }
 
@@ -517,6 +1007,7 @@ class Canvas extends Component {
     this.createStyle();
 
     this.setSize(w, h);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -530,29 +1021,7 @@ class Canvas extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalCanvas {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalCanvasDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-    `;
+    style.textContent = Style.canvas;
     this.shadowRoot.append(style);
   }
 
@@ -615,6 +1084,7 @@ class Checkbox extends Component {
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -630,40 +1100,7 @@ class Checkbox extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalCheckbox {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckboxDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckbox:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalCheckboxCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckChecked {
-        ${Style.baseStyle}
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.checkbox;
     this.shadowRoot.append(style);
   }
 
@@ -779,6 +1216,7 @@ class ColorPicker extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -798,47 +1236,7 @@ class ColorPicker extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalColorPicker {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalColorPickerInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        letter-spacing: 1px;
-        padding: 0 4px;
-        width: 70px;
-        height: 20px;
-        text-transform: uppercase;
-      }
-      .MinimalColorPickerInput:disabled,
-      .MinimalColorPickerInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalColorPickerPreview {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerPreviewDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.colorpicker;
     this.shadowRoot.append(style);
   }
 
@@ -934,6 +1332,7 @@ class Dropdown extends Component {
     this.createItems();
     this.index = index;
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -976,63 +1375,7 @@ class Dropdown extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalDropdown {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdownDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdown:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalDropdownButton,
-      .MinimalDropdownButtonDisabled {
-        ${Style.baseStyle}
-        line-height: 9px;
-        color: #333;
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-        height: 20px;
-        width: 20px;
-        left: 80px;
-        top: -1px;
-        text-align: center;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalDropdownButtonDisabled {
-        ${Style.disabledStyle}
-      }
-      .MinimalDropdownItem {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-      }
-      .MinimalDropdownItem:hover {
-        background-color: #f8f8f8;
-      }
-      .MinimalDropdownItem:focus {
-        ${Style.focusStyle}
-        background-color: #f8f8f8;
-      }
-    `;
+    style.textContent = Style.dropdown;
     this.shadowRoot.append(style);
   }
 
@@ -1218,6 +1561,43 @@ class Dropdown extends Component {
 
 customElements.define("minimal-dropdown", Dropdown);
 
+class HBox extends Component {
+  constructor(parent, x, y, spacing) {
+    super(parent, x, y);
+    this.spacing = spacing;
+    this.xpos = 0;
+    this.ypos = 0;
+    this.createChildren();
+    this.setSize(0, 0);
+    this.addToParent();
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+
+  createChildren() {
+    this.setWrapperClass("MinimalVbox");
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  appendChild(child) {
+    super.appendChild(child);
+    if (this.xpos > 0) {
+      this.xpos += this.spacing;
+    }
+    child.x = this.xpos;
+    this.height = Math.max(this.height, child.y + child.height);
+    this.xpos += child.width;
+    this.width = this.xpos;
+  }
+}
+
+customElements.define("minimal-hbox", HBox);
+
 class HSlider extends Component {
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -1238,6 +1618,7 @@ class HSlider extends Component {
     this.updateLabelPosition();
     this.updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -1253,45 +1634,7 @@ class HSlider extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.hslider;
     this.shadowRoot.append(style);
   }
 
@@ -1592,6 +1935,7 @@ class Image extends Component {
 
     this.setSize(Defaults.image.width, 100);
     this.load();
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -1604,21 +1948,7 @@ class Image extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalImage {
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-      .MinimalImageDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-    `;
+    style.textContent = Style.image;
     this.shadowRoot.append(style);
   }
 
@@ -1716,6 +2046,7 @@ class NumericStepper extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -1736,28 +2067,7 @@ class NumericStepper extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalNumericStepper {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalNumericStepperInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-        width: 60px;
-        height: 20px;
-      }
-      .MinimalNumericStepperInput:disabled,
-      .MinimalNumericStepperInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalNumericStepperInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.numericstepper;
     this.shadowRoot.append(style);
   }
 
@@ -1983,6 +2293,7 @@ class Panel extends Component {
     this.createChildren();
     this.createStyle();
     this.setSize(w, h);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -1995,24 +2306,7 @@ class Panel extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalPanel {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #eee;
-        height: 100%;
-        position: relative;
-        width: 100%;
-      }
-      .MinimalPanel:disabled,
-      .MinimalPanel[disabled] {
-        ${Style.disabledStyle}
-      }
-      :host {
-        overflow: hidden;
-        position: relative;
-      }
-      `;
+    style.textContent = Style.panel;
     this.shadowRoot.append(style);
   }
 
@@ -2053,6 +2347,7 @@ class ProgressBar extends Component {
 
     this.setSize(100, 15);
     this.updateBar();
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -2066,38 +2361,7 @@ class ProgressBar extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalProgressBar {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalProgressBarDisabled {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.disabledStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalProgressBarFill {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-      }
-      .MinimalProgressBarFillDisabled {
-        ${Style.baseStyle}
-        ${Style.disabledStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-      }
-    `;
+    style.textContent = Style.progressbar;
     this.shadowRoot.append(style);
   }
 
@@ -2237,6 +2501,7 @@ class RadioButton extends Component {
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -2252,42 +2517,7 @@ class RadioButton extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalRadioButton {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButtonDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButton:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalRadioButtonCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        border-radius: 5px;
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckChecked {
-        ${Style.baseStyle}
-        border-radius: 5px;
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.radiobutton;
     this.shadowRoot.append(style);
   }
 
@@ -2306,7 +2536,7 @@ class RadioButton extends Component {
     event.stopPropagation();
     if (this.enabled) {
       this.checked = true;
-      this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
+      this.dispatchEvent(new CustomEvent("click", { detail: this.text }));
     }
   }
 
@@ -2417,6 +2647,7 @@ class TextArea extends Component {
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -2430,25 +2661,7 @@ class TextArea extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextArea {
-        ${Style.baseStyle}
-        ${Style.textStyle}
-        ${Style.shadowStyle}
-        padding: 4px;
-        resize: none;
-      }
-      .MinimalTextArea:disabled,
-      .MinimalTextArea[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextArea::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextArea:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textarea;
     this.shadowRoot.append(style);
   }
 
@@ -2513,6 +2726,7 @@ class TextBox extends Component {
     this.createStyle();
 
     this.setSize(100, 100);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -2526,26 +2740,7 @@ class TextBox extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextBox {
-        ${Style.baseStyle}
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-      .MinimalTextBoxDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-    `;
+    style.textContent = Style.textbox;
     this.shadowRoot.append(style);
   }
 
@@ -2661,6 +2856,7 @@ class TextInput extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("input", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -2674,24 +2870,7 @@ class TextInput extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-      }
-      .MinimalTextInput:disabled,
-      .MinimalTextInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextInput::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textinput;
     this.shadowRoot.append(style);
   }
 
@@ -2751,6 +2930,43 @@ class TextInput extends Component {
 
 customElements.define("minimal-textinput", TextInput);
 
+class VBox extends Component {
+  constructor(parent, x, y, spacing) {
+    super(parent, x, y);
+    this.spacing = spacing;
+    this.xpos = 0;
+    this.ypos = 0;
+    this.createChildren();
+    this.setSize(0, 0);
+    this.addToParent();
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+
+  createChildren() {
+    this.setWrapperClass("MinimalVbox");
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  appendChild(child) {
+    super.appendChild(child);
+    if (this.ypos > 0) {
+      this.ypos += this.spacing;
+    }
+    child.y = this.ypos;
+    this.width = Math.max(this.width, child.x + child.width);
+    this.ypos += child.height;
+    this.height = this.ypos;
+  }
+}
+
+customElements.define("minimal-vbox", VBox);
+
 class VSlider extends HSlider {
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
@@ -2761,45 +2977,7 @@ class VSlider extends HSlider {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: ${this.handleSize}px;
-        width: 100%;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: ${this.handleSize}px;
-        width: 100%;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.vslider;
     this.shadowRoot.append(style);
   }
 
@@ -2909,4 +3087,4 @@ customElements.define("minimal-vslider", VSlider);
 
 const version = "1.0.0";
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VSlider, version };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VBox, VSlider, version };

@@ -17,6 +17,7 @@ export class RadioButton extends Component {
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -32,42 +33,7 @@ export class RadioButton extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalRadioButton {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButtonDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButton:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalRadioButtonCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        border-radius: 5px;
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckChecked {
-        ${Style.baseStyle}
-        border-radius: 5px;
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.radiobutton;
     this.shadowRoot.append(style);
   }
 

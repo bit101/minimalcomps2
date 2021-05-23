@@ -4,7 +4,7 @@ import { Style } from "./style.js";
 
 export class Label extends Component {
   constructor(parent, x, y, text) {
-    super(null, x, y);
+    super(parent, x, y);
     this._align = "left";
     this._autosize = true;
     this._color = "#333";
@@ -19,8 +19,8 @@ export class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    parent && parent.appendChild(this);
     this.height = Defaults.label.fontSize + 2;
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -34,21 +34,7 @@ export class Label extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalLabel {
-        ${Style.baseStyle}
-        font-size: ${Defaults.label.fontSize}px;
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        white-space: nowrap;
-      }
-      .MinimalLabelDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.label;
     this.shadowRoot.append(style);
   }
 

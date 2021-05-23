@@ -14,6 +14,7 @@ export class Button extends Component {
 
     this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -29,35 +30,8 @@ export class Button extends Component {
   }
 
   createStyle() {
-    const buttonStyle = `
-      ${Style.baseStyle}
-      background-color: #f9f9f9;
-      border-radius: 0;
-      border: 1px solid #999;
-      height: 100%;
-      width: 100%;
-    `;
-
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalButton {
-        ${buttonStyle}
-        cursor: pointer;
-      }
-      .MinimalButton:hover {
-        background-color: #fff;
-      }
-      .MinimalButton:active {
-        background-color: #ccc;
-      }
-      .MinimalButtonDisabled {
-        ${Style.disabledStyle}
-        ${buttonStyle}
-      }
-      .MinimalButton:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.button;
     this.shadowRoot.append(style);
   }
 

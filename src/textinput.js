@@ -13,6 +13,7 @@ export class TextInput extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("input", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -26,24 +27,7 @@ export class TextInput extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-      }
-      .MinimalTextInput:disabled,
-      .MinimalTextInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextInput::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textinput;
     this.shadowRoot.append(style);
   }
 

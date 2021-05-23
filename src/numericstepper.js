@@ -16,6 +16,7 @@ export class NumericStepper extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -36,28 +37,7 @@ export class NumericStepper extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalNumericStepper {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalNumericStepperInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-        width: 60px;
-        height: 20px;
-      }
-      .MinimalNumericStepperInput:disabled,
-      .MinimalNumericStepperInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalNumericStepperInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.numericstepper;
     this.shadowRoot.append(style);
   }
 

@@ -23,6 +23,7 @@ export class HSlider extends Component {
     this.updateLabelPosition();
     this.updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -38,45 +39,7 @@ export class HSlider extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.hslider;
     this.shadowRoot.append(style);
   }
 

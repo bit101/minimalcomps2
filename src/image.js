@@ -13,6 +13,7 @@ export class Image extends Component {
 
     this.setSize(Defaults.image.width, 100);
     this.load();
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -25,21 +26,7 @@ export class Image extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalImage {
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-      .MinimalImageDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-    `;
+    style.textContent = Style.image;
     this.shadowRoot.append(style);
   }
 

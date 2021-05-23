@@ -1,12 +1,13 @@
-const { Panel, Button, Checkbox, RadioButton, Label, ProgressBar, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image, TextBox, Canvas } = mc2;
+const { Panel, Button, Checkbox, RadioButton, Label, ProgressBar, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image, TextBox, Canvas, VBox, HBox } = mc2;
 
 const panel = new Panel(document.body, 40, 40, 580, 400);
 
 new Button(panel, 20, 20, "Button");
 new Checkbox(panel, 20, 50, "Checkbox");
-new RadioButton(panel, 20, 80, "group", "RadioButton 1", true);
-new RadioButton(panel, 20, 100, "group", "RadioButton 2", false);
-new RadioButton(panel, 20, 120, "group", "RadioButton 3", false);
+const vbox = new VBox(panel, 20, 80, 10);
+new RadioButton(vbox, 0, 0, "group", "RadioButton 1", true);
+new RadioButton(vbox, 0, 0, "group", "RadioButton 2", false);
+new RadioButton(vbox, 0, 0, "group", "RadioButton 3", false);
 new Label(panel, 20, 150, "Label");
 new ProgressBar(panel, 20, 180, 30, 100);
 new TextInput(panel, 20, 210, "TextInput");
@@ -27,3 +28,9 @@ for (let i = 0; i < 100; i++) {
   canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
 }
 canvas.context.stroke();
+
+const hbox = new VBox(panel, 350, 140, 10);
+new Label(hbox, 0, 0, "one");
+new Label(hbox, 10, 0, "one two");
+new Button(hbox, 20, 0, "hi");
+new Label(hbox, 30, 0, "Label");

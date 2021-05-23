@@ -19,6 +19,7 @@ export class Dropdown extends Component {
     this.createItems();
     this.index = index;
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -61,63 +62,7 @@ export class Dropdown extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalDropdown {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdownDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdown:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalDropdownButton,
-      .MinimalDropdownButtonDisabled {
-        ${Style.baseStyle}
-        line-height: 9px;
-        color: #333;
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-        height: 20px;
-        width: 20px;
-        left: 80px;
-        top: -1px;
-        text-align: center;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalDropdownButtonDisabled {
-        ${Style.disabledStyle}
-      }
-      .MinimalDropdownItem {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-      }
-      .MinimalDropdownItem:hover {
-        background-color: #f8f8f8;
-      }
-      .MinimalDropdownItem:focus {
-        ${Style.focusStyle}
-        background-color: #f8f8f8;
-      }
-    `;
+    style.textContent = Style.dropdown;
     this.shadowRoot.append(style);
   }
 

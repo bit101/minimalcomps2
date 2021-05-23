@@ -12,6 +12,7 @@ export class TextArea extends Component {
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -25,25 +26,7 @@ export class TextArea extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextArea {
-        ${Style.baseStyle}
-        ${Style.textStyle}
-        ${Style.shadowStyle}
-        padding: 4px;
-        resize: none;
-      }
-      .MinimalTextArea:disabled,
-      .MinimalTextArea[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextArea::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextArea:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textarea;
     this.shadowRoot.append(style);
   }
 

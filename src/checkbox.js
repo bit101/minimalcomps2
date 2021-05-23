@@ -14,6 +14,7 @@ export class Checkbox extends Component {
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -29,40 +30,7 @@ export class Checkbox extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalCheckbox {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckboxDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckbox:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalCheckboxCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckChecked {
-        ${Style.baseStyle}
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.checkbox;
     this.shadowRoot.append(style);
   }
 

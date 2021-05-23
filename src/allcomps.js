@@ -5,6 +5,7 @@ import { ColorPicker } from "./colorpicker.js";
 import { Component } from "./component.js";
 import { Defaults } from "./defaults.js";
 import { Dropdown } from "./dropdown.js";
+import { HBox } from "./hbox.js";
 import { HSlider } from "./hslider.js";
 import { Image } from "./image.js";
 import { Label } from "./label.js";
@@ -17,6 +18,7 @@ import { Style } from "./style.js";
 import { TextArea } from "./textarea.js";
 import { TextBox } from "./textbox.js";
 import { TextInput } from "./textinput.js";
+import { VBox } from "./vbox.js";
 import { VSlider } from "./vslider.js";
 
 const version = "1.0.0";
@@ -30,6 +32,7 @@ export {
   Component,
   Defaults,
   Dropdown,
+  HBox,
   HSlider,
   Image,
   Label,
@@ -42,5 +45,6 @@ export {
   TextArea,
   TextBox,
   TextInput,
+  VBox,
   VSlider,
 };
