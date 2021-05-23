@@ -1,4 +1,16 @@
-const { Panel, Button, Checkbox, RadioButton, Label, ProgressBar, TextInput, TextArea, HSlider, VSlider, ColorPicker, NumericStepper, Dropdown, Image, TextBox, Canvas, VBox, HBox } = mc2;
+const {
+  Button,
+  Canvas, Checkbox, ColorPicker,
+  Dropdown,
+  HSlider,
+  Image,
+  Label,
+  NumericStepper,
+  Panel, ProgressBar,
+  RadioButton,
+  TextArea, TextBox, TextInput,
+  VBox, VSlider,
+} = mc2;
 
 const panel = new Panel(document.body, 40, 40, 580, 400);
 
@@ -28,9 +40,3 @@ for (let i = 0; i < 100; i++) {
   canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
 }
 canvas.context.stroke();
-
-const hbox = new VBox(panel, 350, 140, 10);
-new Label(hbox, 0, 0, "one");
-new Label(hbox, 10, 0, "one two");
-new Button(hbox, 20, 0, "hi");
-new Label(hbox, 30, 0, "Label");

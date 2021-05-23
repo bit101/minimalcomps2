@@ -3088,7 +3088,7 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-vslider", VSlider);
 
-  const version = "1.0.0";
+  const version = "1.1.0";
 
   exports.Button = Button;
   exports.Canvas = Canvas;
