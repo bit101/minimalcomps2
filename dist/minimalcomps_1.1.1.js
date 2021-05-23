@@ -3026,7 +3026,9 @@ var mc2 = (function (exports) {
         this.calculateValueFromPos(y);
       }
       document.addEventListener("mousemove", this.onMouseMove);
+      document.addEventListener("touchmove", this.onMouseMove);
       document.addEventListener("mouseup", this.onMouseUp);
+      document.addEventListener("touchend", this.onMouseUp);
     }
 
     onMouseMove(event) {
