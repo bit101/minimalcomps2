@@ -29,6 +29,9 @@ var mc2 = (function (exports) {
 
   const Style = {};
 
+  ////////////////////
+  // Base Styles
+  ////////////////////
   Style.baseStyle = `
   box-sizing: border-box;
   position: absolute;
@@ -65,19 +68,558 @@ var mc2 = (function (exports) {
   color: #fff;
 `;
 
+  Style.buttonStyle = `
+  ${Style.baseStyle}
+  background-color: #f9f9f9;
+  border-radius: 0;
+  border: 1px solid #999;
+  height: 100%;
+  width: 100%;
+`;
+
+  ////////////////////
+  // Button
+  ////////////////////
+  Style.button = `
+  .MinimalButton {
+    ${Style.buttonStyle}
+    cursor: pointer;
+  }
+  .MinimalButton:hover {
+    background-color: #fff;
+  }
+  .MinimalButton:active {
+    background-color: #ccc;
+  }
+  .MinimalButtonDisabled {
+    ${Style.disabledStyle}
+    ${Style.buttonStyle}
+  }
+  .MinimalButton:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // Canvas
+  ////////////////////
+  Style.canvas = `
+  .MinimalCanvas {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .MinimalCanvasDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+`;
+
+  ////////////////////
+  // Checkbox
+  ////////////////////
+  Style.checkbox = `
+  .MinimalCheckbox {
+    ${Style.baseStyle}
+    cursor: pointer;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalCheckboxDisabled {
+    ${Style.baseStyle}
+    cursor: default;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalCheckbox:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalCheckboxCheck {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalCheckboxCheckChecked {
+    ${Style.baseStyle}
+    border: 2px solid #999;
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalCheckboxCheckDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+  ////////////////////
+  // ColorPicker
+  ////////////////////
+  Style.colorpicker = `
+  .MinimalColorPicker {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalColorPickerInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    letter-spacing: 1px;
+    padding: 0 4px;
+    width: 70px;
+    height: 20px;
+    text-transform: uppercase;
+  }
+  .MinimalColorPickerInput:disabled,
+  .MinimalColorPickerInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalColorPickerPreview {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    width: 20px;
+    height: 20px;
+    left: 80px;
+    background-color: #fff;
+  }
+  .MinimalColorPickerPreviewDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    width: 20px;
+    height: 20px;
+    left: 80px;
+    background-color: #fff;
+  }
+  .MinimalColorPickerInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // Component
+  ////////////////////
+  Style.component = `
+  .MinimalWrapper {
+    ${Style.baseStyle}
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+  }
+  :host {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+  }
+`;
+
+  ////////////////////
+  // Dropdown
+  ////////////////////
+  Style.dropdown = `
+  .MinimalDropdown {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalDropdownDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: default;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalDropdown:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalDropdownButton,
+  .MinimalDropdownButtonDisabled {
+    ${Style.baseStyle}
+    line-height: 9px;
+    color: #333;
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+    height: 20px;
+    width: 20px;
+    left: 80px;
+    top: -1px;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .MinimalDropdownButtonDisabled {
+    ${Style.disabledStyle}
+  }
+  .MinimalDropdownItem {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border-radius: 0;
+    border: 1px solid #999;
+    cursor: pointer;
+  }
+  .MinimalDropdownItem:hover {
+    background-color: #f8f8f8;
+  }
+  .MinimalDropdownItem:focus {
+    ${Style.focusStyle}
+    background-color: #f8f8f8;
+  }
+`;
+
+  ////////////////////
+  // HSlider
+  ////////////////////
+  Style.hslider = `
+  .MinimalSlider {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+    width: ${Defaults.hslider.handleSize}px;
+    cursor: pointer;
+  }
+  .MinimalSliderHandleDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+    width: ${Defaults.hslider.handleSize}px;
+    cursor: default;
+  }
+  .MinimalSlider:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // Image
+  ////////////////////
+  Style.image = `
+  .MinimalImage {
+    ${Style.baseStyle}
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+  }
+  .MinimalImageDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #eee;
+    border-radius: 0;
+    border: 1px solid #999;
+  }
+`;
+
+  ////////////////////
+  // Label
+  ////////////////////
+  Style.label = `
+  .MinimalLabel {
+    ${Style.baseStyle}
+    font-size: ${Defaults.label.fontSize}px;
+    color: #333;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+  }
+  .MinimalLabelDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+  ////////////////////
+  // NumericStepper
+  ////////////////////
+  Style.numericstepper = `
+  .MinimalNumericStepper {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalNumericStepperInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    padding: 0 4px;
+    width: 60px;
+    height: 20px;
+  }
+  .MinimalNumericStepperInput:disabled,
+  .MinimalNumericStepperInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalNumericStepperInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // Panel
+  ////////////////////
+  Style.panel = `
+  .MinimalPanel {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #eee;
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+  .MinimalPanel:disabled,
+  .MinimalPanel[disabled] {
+    ${Style.disabledStyle}
+  }
+  :host {
+    overflow: hidden;
+    position: relative;
+  }
+`;
+
+  ////////////////////
+  // ProgressBar
+  ////////////////////
+  Style.progressbar = `
+  .MinimalProgressBar {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalProgressBarDisabled {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.disabledStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalProgressBarFill {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+  }
+  .MinimalProgressBarFillDisabled {
+    ${Style.baseStyle}
+    ${Style.disabledStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: 100%;
+  }
+`;
+
+  ////////////////////
+  // RadioButton
+  ////////////////////
+  Style.radiobutton = `
+  .MinimalRadioButton {
+    ${Style.baseStyle}
+    cursor: pointer;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalRadioButtonDisabled {
+    ${Style.baseStyle}
+    cursor: default;
+    height: 100%;
+    width: auto;
+  }
+  .MinimalRadioButton:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalRadioButtonCheck {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    border-radius: 5px;
+    background-color: #ccc;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalRadioButtonCheckChecked {
+    ${Style.baseStyle}
+    border-radius: 5px;
+    border: 2px solid #999;
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+  }
+  .MinimalRadioButtonCheckDisabled {
+    ${Style.disabledStyle}
+  }
+`;
+
+  ////////////////////
+  // TextArea
+  ////////////////////
+  Style.textarea = `
+  .MinimalTextArea {
+    ${Style.baseStyle}
+    ${Style.textStyle}
+    ${Style.shadowStyle}
+    padding: 4px;
+    resize: none;
+  }
+  .MinimalTextArea:disabled,
+  .MinimalTextArea[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalTextArea::selection {
+    ${Style.textSelectionStyle}
+  }
+  .MinimalTextArea:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // TextBox
+  ////////////////////
+  Style.textbox = `
+  .MinimalTextBox {
+    ${Style.baseStyle}
+    color: #333;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100%;
+  }
+  .MinimalTextBoxDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 100%;
+  }
+`;
+
+  ////////////////////
+  // TextInput
+  ////////////////////
+  Style.textinput = `
+  .MinimalTextInput {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.textStyle}
+    padding: 0 4px;
+  }
+  .MinimalTextInput:disabled,
+  .MinimalTextInput[disabled] {
+    ${Style.disabledStyle}
+  }
+  .MinimalTextInput::selection {
+    ${Style.textSelectionStyle}
+  }
+  .MinimalTextInput:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+  ////////////////////
+  // VSlider
+  ////////////////////
+  Style.vslider = `
+  .MinimalSlider {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalSliderHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: ${Defaults.vslider.handleSize}px;
+    width: 100%;
+    cursor: pointer;
+  }
+  .MinimalSliderHandleDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    height: ${Defaults.vslider.handleSize}px;
+    width: 100%;
+    cursor: default;
+  }
+  .MinimalSlider:focus {
+    ${Style.focusStyle}
+  }
+`;
+
   class Component extends HTMLElement {
     constructor(parent, x, y) {
       super();
-      x = x || 0;
-      y = y || 0;
+      this.parent = parent;
       this._enabled = true;
 
       this.attachShadow({mode: "open"});
       this.createWrapper();
       this.createWrapperStyle();
 
-      this.move(x, y);
-      parent && parent.appendChild(this);
+      this.move(x || 0, y || 0);
+    }
+
+    addToParent() {
+      this.parent && this.parent.appendChild(this);
     }
 
     //////////////////////////////////
@@ -88,12 +630,14 @@ var mc2 = (function (exports) {
       return this.createElement(parent, "div", className);
     }
 
+    /* eslint-disable class-methods-use-this */
     createElement(parent, type, className) {
       const el = document.createElement(type);
       el.setAttribute("class", className);
       parent && parent.appendChild(el);
       return el;
     }
+    /* eslint-enable */
 
     createInput(parent, className) {
       const input = this.createElement(parent, "input", className);
@@ -109,19 +653,7 @@ var mc2 = (function (exports) {
 
     createWrapperStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalWrapper {
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
-      }
-      :host {
-        position: absolute;
-        display: block;
-        box-sizing: border-box;
-      }
-    `;
+      style.textContent = Style.component;
       this.shadowRoot.append(style);
     }
 
@@ -151,7 +683,6 @@ var mc2 = (function (exports) {
       this.wrapper.setAttribute("class", className);
     }
 
-    
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
@@ -164,7 +695,7 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       this._enabled = enabled;
     }
-    
+
     get height() {
       return this._height;
     }
@@ -202,13 +733,11 @@ var mc2 = (function (exports) {
     }
   }
 
-
   customElements.define("minimal-component", Component);
 
   class Label extends Component {
-
     constructor(parent, x, y, text) {
-      super(null, x, y);
+      super(parent, x, y);
       this._align = "left";
       this._autosize = true;
       this._color = "#333";
@@ -223,14 +752,14 @@ var mc2 = (function (exports) {
       // then remove it and add it to parent.
       document.body.appendChild(this);
       this._width = this.wrapper.offsetWidth;
-      parent && parent.appendChild(this);
       this.height = Defaults.label.fontSize + 2;
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalLabel");
       this.wrapper.textContent = this._text;
@@ -238,21 +767,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalLabel {
-        ${Style.baseStyle}
-        font-size: ${Defaults.label.fontSize}px;
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        white-space: nowrap;
-      }
-      .MinimalLabelDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+      style.textContent = Style.label;
       this.shadowRoot.append(style);
     }
 
@@ -269,7 +784,7 @@ var mc2 = (function (exports) {
       this._align = align;
       this.wrapper.style.textAlign = align;
     }
-    
+
     get autosize() {
       return this._autosize;
     }
@@ -368,7 +883,7 @@ var mc2 = (function (exports) {
 
     set width(w) {
       if (!this.autosize) {
-        this._width = w;      
+        this._width = w;
         this.wrapper.style.width = w + "px";
       }
     }
@@ -377,7 +892,6 @@ var mc2 = (function (exports) {
   customElements.define("minimal-label", Label);
 
   class Button extends Component {
-
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
       this._text = text;
@@ -388,12 +902,13 @@ var mc2 = (function (exports) {
 
       this.setSize(Defaults.button.width, Defaults.button.height);
       this.addEventListener("click", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.wrapper.tabIndex = 0;
       this.setWrapperClass("MinimalButton");
@@ -403,35 +918,8 @@ var mc2 = (function (exports) {
     }
 
     createStyle() {
-      const buttonStyle = `
-      ${Style.baseStyle}
-      background-color: #f9f9f9;
-      border-radius: 0;
-      border: 1px solid #999;
-      height: 100%;
-      width: 100%;
-    `;
-
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalButton {
-        ${buttonStyle}
-        cursor: pointer;
-      }
-      .MinimalButton:hover {
-        background-color: #fff;
-      }
-      .MinimalButton:active {
-        background-color: #ccc;
-      }
-      .MinimalButtonDisabled {
-        ${Style.disabledStyle}
-        ${buttonStyle}
-      }
-      .MinimalButton:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.button;
       this.shadowRoot.append(style);
     }
 
@@ -454,7 +942,7 @@ var mc2 = (function (exports) {
     }
 
     onKeyUp(event) {
-      if (event.keyCode == 13 && this.enabled) {
+      if (event.keyCode === 13 && this.enabled) {
         this.wrapper.click();
       }
     }
@@ -462,7 +950,6 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // General
     //////////////////////////////////
-
 
     //////////////////////////////////
     // Getters/Setters
@@ -523,12 +1010,13 @@ var mc2 = (function (exports) {
       this.createStyle();
 
       this.setSize(w, h);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
       this.context = this.canvas.getContext("2d");
@@ -536,29 +1024,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalCanvas {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalCanvasDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-    `;
+      style.textContent = Style.canvas;
       this.shadowRoot.append(style);
     }
 
@@ -621,12 +1087,13 @@ var mc2 = (function (exports) {
       this.setSize(100, 10);
       this.checked = checked;
       this.addEventListener("click", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalCheckbox");
       this.wrapper.tabIndex = 0;
@@ -636,40 +1103,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalCheckbox {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckboxDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalCheckbox:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalCheckboxCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckChecked {
-        ${Style.baseStyle}
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalCheckboxCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+      style.textContent = Style.checkbox;
       this.shadowRoot.append(style);
     }
 
@@ -688,12 +1122,12 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       if (this.enabled) {
         this.toggle();
-        this.dispatchEvent(new Event("click"));
+        this.dispatchEvent(new CustomEvent("click", { detail: this.checked }));
       }
     }
 
     onKeyPress(event) {
-      if (event.keyCode == 13 && this.enabled) {
+      if (event.keyCode === 13 && this.enabled) {
         this.wrapper.click();
       }
     }
@@ -705,7 +1139,7 @@ var mc2 = (function (exports) {
     toggle() {
       this.checked = !this.checked;
     }
-    
+
     updateCheckStyle() {
       let className = this.checked
         ? "MinimalCheckboxCheckChecked "
@@ -741,7 +1175,7 @@ var mc2 = (function (exports) {
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.updateCheckStyle();
         this.label.enabled = enabled;
@@ -785,12 +1219,13 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 20);
       this.addEventListener("change", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalColorPicker");
 
@@ -804,47 +1239,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalColorPicker {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalColorPickerInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        letter-spacing: 1px;
-        padding: 0 4px;
-        width: 70px;
-        height: 20px;
-        text-transform: uppercase;
-      }
-      .MinimalColorPickerInput:disabled,
-      .MinimalColorPickerInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalColorPickerPreview {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerPreviewDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.colorpicker;
       this.shadowRoot.append(style);
     }
 
@@ -856,21 +1251,22 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // Handlers
     //////////////////////////////////
-    
+
     onInput() {
       const color = this.correctColor(this.input.value);
       this.input.value = color;
-      if ((color.length === 4 || color.length === 7) && this.color != color) {
+      if ((color.length === 4 || color.length === 7) && this.color !== color) {
         this._color = color;
         this.preview.style.backgroundColor = this.color;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
       }
     }
 
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
+    /* eslint-disable class-methods-use-this */
     correctColor(color) {
       color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
       return color.toUpperCase();
@@ -882,18 +1278,19 @@ var mc2 = (function (exports) {
       }
       return color;
     }
-    
+    /* eslint-enable */
+
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get enabled() {
       return super.enabled;
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.input.disabled = !this.enabled;
         if (this.enabled) {
@@ -917,7 +1314,6 @@ var mc2 = (function (exports) {
       this.input.value = color;
       this.preview.style.backgroundColor = color;
     }
-
   }
 
   customElements.define("minimal-colorpicker", ColorPicker);
@@ -939,12 +1335,13 @@ var mc2 = (function (exports) {
       this.createItems();
       this.index = index;
       this.addEventListener("change", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalDropdown");
       this.wrapper.tabIndex = 0;
@@ -965,12 +1362,12 @@ var mc2 = (function (exports) {
     }
 
     createItem(index) {
-      let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
+      const item = this.createDiv(this.dropdown, "MinimalDropdownItem");
       item.setAttribute("data-index", index);
       item.addEventListener("click", this.onItemClick);
       item.tabIndex = 0;
 
-      let label = new Label(item, 3, 0, this.items[index]);
+      const label = new Label(item, 3, 0, this.items[index]);
       label.y = (this.height - label.height) / 2;
 
       const itemObj = {item, label};
@@ -981,63 +1378,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalDropdown {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdownDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdown:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalDropdownButton,
-      .MinimalDropdownButtonDisabled {
-        ${Style.baseStyle}
-        line-height: 9px;
-        color: #333;
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-        height: 20px;
-        width: 20px;
-        left: 80px;
-        top: -1px;
-        text-align: center;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalDropdownButtonDisabled {
-        ${Style.disabledStyle}
-      }
-      .MinimalDropdownItem {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-      }
-      .MinimalDropdownItem:hover {
-        background-color: #f8f8f8;
-      }
-      .MinimalDropdownItem:focus {
-        ${Style.focusStyle}
-        background-color: #f8f8f8;
-      }
-    `;
+      style.textContent = Style.dropdown;
       this.shadowRoot.append(style);
     }
 
@@ -1077,7 +1418,12 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       this.index = event.target.getAttribute("data-index");
       this.toggle();
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", {
+        detail: {
+          text: this.text,
+          index: this.index,
+        },
+      }));
       this.wrapper.focus();
     }
 
@@ -1085,10 +1431,10 @@ var mc2 = (function (exports) {
       if (event.keyCode === 13 && this.enabled) {
         // enter
         this.shadowRoot.activeElement.click();
-      } else if (event.keyCode === 27 || event.keyCode == 9) {
+      } else if (event.keyCode === 27 || event.keyCode === 9) {
         // escape || tab
         this.close();
-      } else if (event.keyCode == 40) {
+      } else if (event.keyCode === 40) {
         // down
         if (this.shadowRoot.activeElement === this.wrapper ||
             this.shadowRoot.activeElement === this.dropdown.lastChild) {
@@ -1096,7 +1442,7 @@ var mc2 = (function (exports) {
         } else {
           this.shadowRoot.activeElement.nextSibling.focus();
         }
-      } else if (event.keyCode == 38) {
+      } else if (event.keyCode === 38) {
         // up
         if (this.shadowRoot.activeElement === this.wrapper ||
             this.shadowRoot.activeElement === this.dropdown.firstChild) {
@@ -1214,13 +1560,48 @@ var mc2 = (function (exports) {
         this.updateItem(item);
       });
     }
-
   }
 
   customElements.define("minimal-dropdown", Dropdown);
 
-  class HSlider extends Component {
+  class HBox extends Component {
+    constructor(parent, x, y, spacing) {
+      super(parent, x, y);
+      this.spacing = spacing;
+      this.xpos = 0;
+      this.ypos = 0;
+      this.createChildren();
+      this.setSize(0, 0);
+      this.addToParent();
+    }
 
+    //////////////////////////////////
+    // Core
+    //////////////////////////////////
+
+    createChildren() {
+      this.setWrapperClass("MinimalVbox");
+    }
+
+    //////////////////////////////////
+    // General
+    //////////////////////////////////
+
+    appendChild(child) {
+      super.appendChild(child);
+      if (this.xpos > 0) {
+        this.xpos += this.spacing;
+      }
+      child.x = this.xpos;
+      this.height = Math.max(this.height, child.y + child.height);
+      this.xpos += child.width;
+      this.width = this.xpos;
+    }
+  }
+
+  customElements.define("minimal-hbox", HBox);
+
+  class HSlider extends Component {
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
       this._min = min;
@@ -1231,7 +1612,6 @@ var mc2 = (function (exports) {
       this._showValue = true;
       this._text = text;
 
-
       this.createChildren();
       this.createStyle();
       this.createListeners();
@@ -1241,6 +1621,7 @@ var mc2 = (function (exports) {
       this.updateLabelPosition();
       this.updateValueLabelPosition();
       this.addEventListener("change", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
@@ -1256,45 +1637,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.hslider;
       this.shadowRoot.append(style);
     }
 
@@ -1314,7 +1657,7 @@ var mc2 = (function (exports) {
       this.offsetX = event.clientX - this.getBoundingClientRect().left - this.handle.offsetLeft;
       if (this.offsetX < 0 || this.offsetX > this.handleSize) {
         this.offsetX = this.handleSize / 2;
-        let x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
+        const x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
         this.calculateValueFromPos(x);
       }
       document.addEventListener("mousemove", this.onMouseMove);
@@ -1322,7 +1665,7 @@ var mc2 = (function (exports) {
     }
 
     onMouseMove(event) {
-      let x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
+      const x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
       this.calculateValueFromPos(x);
     }
 
@@ -1338,15 +1681,15 @@ var mc2 = (function (exports) {
       }
       let value = this.value;
 
-      switch(event.keyCode) {
-        case 37:
-        case 40:
-          value -= inc;
-          break;
-        case 38:
-        case 39:
-          value += inc;
-          break
+      switch (event.keyCode) {
+      case 37:
+      case 40:
+        value -= inc;
+        break;
+      case 38:
+      case 39:
+        value += inc;
+        break;
       }
       this.updateValue(value);
     }
@@ -1354,7 +1697,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
     calculateValueFromPos(x) {
       let percent = x / (this.width - this.handleSize);
       if (this.reversed) {
@@ -1390,14 +1733,6 @@ var mc2 = (function (exports) {
       this._handleSize = Defaults.hslider.handleSize;
       this._decimals = Defaults.hslider.decimals;
       this._textPosition = Defaults.hslider.textPosition;
-    }
-
-    showValue(show) {
-      if (show) {
-        this.valueLabel.style.visibility = "visible";
-      } else {
-        this.valueLabel.style.visibility = "hidden";
-      }
     }
 
     updateHandlePosition() {
@@ -1436,19 +1771,6 @@ var mc2 = (function (exports) {
     }
 
     updateValueLabelPosition() {
-      if (this._textPosition === "left") {
-        this.valueLabel.x = this.width + 5;
-        this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-      } else if (this._textPosition === "top") {
-        this.label.x = 0;
-        this.label.y = -this.label.height - 5;
-      } else if (this._textPosition === "bottom") {
-        this.label.x = 0;
-        this.label.y = this.height + 5;
-      }
-    }
-
-    updateValueLabelPosition() {
       this.valueLabel.x = this.width + 5;
       this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
     }
@@ -1458,11 +1780,11 @@ var mc2 = (function (exports) {
     }
 
     updateValue(value) {
-      if (this._value != value) {
+      if (this._value !== value) {
         this._value = value;
         this.updateHandlePosition();
         this.valueLabel.text = this.formatValue();
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1470,7 +1792,7 @@ var mc2 = (function (exports) {
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get decimals() {
       return this._decimals;
     }
@@ -1487,7 +1809,7 @@ var mc2 = (function (exports) {
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.updateEnabledStyle();
         if (this.enabled) {
@@ -1559,7 +1881,6 @@ var mc2 = (function (exports) {
 
     set reversed(reversed) {
       this._reversed = reversed;
-
     }
 
     get showValue() {
@@ -1607,7 +1928,6 @@ var mc2 = (function (exports) {
   customElements.define("minimal-hslider", HSlider);
 
   class Image extends Component {
-
     constructor(parent, x, y, url) {
       super(parent, x, y);
       this._url = url;
@@ -1618,33 +1938,20 @@ var mc2 = (function (exports) {
 
       this.setSize(Defaults.image.width, 100);
       this.load();
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.image = this.createElement(this.wrapper, "img", "MinimalImage");
     }
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalImage {
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-      .MinimalImageDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-    `;
+      style.textContent = Style.image;
       this.shadowRoot.append(style);
     }
 
@@ -1742,12 +2049,13 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 20);
       this.addEventListener("change", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalNumericStepper");
 
@@ -1762,28 +2070,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalNumericStepper {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalNumericStepperInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-        width: 60px;
-        height: 20px;
-      }
-      .MinimalNumericStepperInput:disabled,
-      .MinimalNumericStepperInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalNumericStepperInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.numericstepper;
       this.shadowRoot.append(style);
     }
 
@@ -1815,29 +2102,29 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // Handlers
     //////////////////////////////////
-    
+
     onInput() {
       let value = this.input.value;
       value = value.replace(/[^-.0-9]/g, "");
       this.input.value = value;
     }
-    
+
     onInputChange() {
       let value = parseFloat(this.input.value);
       value = this.roundValue(value);
       this.input.value = value;
-      if (this.value != value) {
+      if (this.value !== value) {
         this._value = value;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
     decrement() {
       if (this.isDecrementing) {
         const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
-        if (this.value != value) {
+        if (this.value !== value) {
           this.value = value;
-          this.dispatchEvent(new Event("change"));
+          this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
         }
         this.timeout = setTimeout(() => this.decrement(), this.delay);
         if (this.delay === 500) {
@@ -1849,9 +2136,9 @@ var mc2 = (function (exports) {
     increment() {
       if (this.isIncrementing) {
         const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
-        if (this.value != value) {
+        if (this.value !== value) {
           this.value = value;
-          this.dispatchEvent(new Event("change"));
+          this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
         }
         this.timeout = setTimeout(() => this.increment(), this.delay);
         if (this.delay === 500) {
@@ -1872,17 +2159,16 @@ var mc2 = (function (exports) {
     }
 
     onMinusKeyDown(event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         this.onMinusDown();
       }
     }
 
     onMinusKeyUp(event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         this.onMinusUp();
       }
     }
-
 
     onPlusDown() {
       clearTimeout(this.timeout);
@@ -1896,13 +2182,13 @@ var mc2 = (function (exports) {
     }
 
     onPlusKeyDown(event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         this.onPlusDown();
       }
     }
 
     onPlusKeyUp(event) {
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
         this.onPlusUp();
       }
     }
@@ -1910,7 +2196,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
     roundValue(value) {
       if (this.max !== null) {
         value = Math.min(value, this.max);
@@ -1921,18 +2207,18 @@ var mc2 = (function (exports) {
       const mult = Math.pow(10, this.decimals);
       return Math.round(value * mult) / mult;
     }
-    
+
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get enabled() {
       return super.enabled;
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.input.disabled = !this.enabled;
         this.plus.enabled = this.enabled;
@@ -1947,10 +2233,10 @@ var mc2 = (function (exports) {
     set decimals(decimals) {
       this._decimals = decimals;
       const value = this.roundValue(this.value);
-      if (this._value != value) {
+      if (this._value !== value) {
         this._value = value;
-        this.input.value= value;
-        this.dispatchEvent(new Event("change"));
+        this.input.value = value;
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1962,7 +2248,7 @@ var mc2 = (function (exports) {
       this._max = max;
       if (this.max < this.value) {
         this.value = this.max;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1974,7 +2260,7 @@ var mc2 = (function (exports) {
       this._min = min;
       if (this.min > this.value) {
         this.value = this.min;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
@@ -1997,7 +2283,6 @@ var mc2 = (function (exports) {
       this.minus.x = w - 40;
       this.plus.x = w - 20;
     }
-    
   }
 
   customElements.define("minimal-numericstepper", NumericStepper);
@@ -2011,43 +2296,27 @@ var mc2 = (function (exports) {
       this.createChildren();
       this.createStyle();
       this.setSize(w, h);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalPanel");
     }
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalPanel {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #eee;
-        height: 100%;
-        position: relative;
-        width: 100%;
-      }
-      .MinimalPanel:disabled,
-      .MinimalPanel[disabled] {
-        ${Style.disabledStyle}
-      }
-      :host {
-        overflow: hidden;
-        position: relative;
-      }
-      `;
+      style.textContent = Style.panel;
       this.shadowRoot.append(style);
     }
 
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
     get x() {
       return super.x;
     }
@@ -2066,7 +2335,6 @@ var mc2 = (function (exports) {
       this._y = y;
       this.style.marginTop = y + "px";
     }
-    
   }
 
   customElements.define("minimal-panel", Panel);
@@ -2082,6 +2350,7 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 15);
       this.updateBar();
+      this.addToParent();
     }
 
     //////////////////////////////////
@@ -2095,45 +2364,14 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalProgressBar {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalProgressBarDisabled {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.disabledStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalProgressBarFill {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-      }
-      .MinimalProgressBarFillDisabled {
-        ${Style.baseStyle}
-        ${Style.disabledStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-      }
-    `;
+      style.textContent = Style.progressbar;
       this.shadowRoot.append(style);
     }
 
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
     updateBar() {
       let percent = this.progress / this.max;
       percent = Math.max(0, percent);
@@ -2160,14 +2398,14 @@ var mc2 = (function (exports) {
         this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
       }
     }
-    
+
     get max() {
       return this._max;
     }
 
     set max(max) {
       this._max = max;
-      let progress = Math.min(this.progress, this.max);
+      const progress = Math.min(this.progress, this.max);
       this.progress = Math.max(progress, 0);
       this.updateBar();
     }
@@ -2182,7 +2420,6 @@ var mc2 = (function (exports) {
       this._progress = progress;
       this.updateBar();
     }
-
   }
 
   customElements.define("minimal-progressbar", ProgressBar);
@@ -2226,7 +2463,7 @@ var mc2 = (function (exports) {
   RadioButtonGroup.getNextInGroup = (group, rb) => {
     const g = RadioButtonGroup.groups[group];
     const index = g.indexOf(rb);
-    var result;
+    let result;
     if (index >= g.length - 1) {
       result = g[0];
     } else {
@@ -2241,7 +2478,7 @@ var mc2 = (function (exports) {
   RadioButtonGroup.getPrevInGroup = (group, rb) => {
     const g = RadioButtonGroup.groups[group];
     const index = g.indexOf(rb);
-    var result;
+    let result;
     if (index <= 0) {
       result = g[g.length - 1];
     } else {
@@ -2267,12 +2504,13 @@ var mc2 = (function (exports) {
       this.setSize(100, 10);
       this.checked = checked;
       this.addEventListener("click", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalRadioButton");
       this.wrapper.tabIndex = 0;
@@ -2282,42 +2520,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalRadioButton {
-        ${Style.baseStyle}
-        cursor: pointer;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButtonDisabled {
-        ${Style.baseStyle}
-        cursor: default;
-        height: 100%;
-        width: auto;
-      }
-      .MinimalRadioButton:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalRadioButtonCheck {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        border-radius: 5px;
-        background-color: #ccc;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckChecked {
-        ${Style.baseStyle}
-        border-radius: 5px;
-        border: 2px solid #999;
-        background-color: #fff;
-        width: 10px;
-        height: 10px;
-      }
-      .MinimalRadioButtonCheckDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+      style.textContent = Style.radiobutton;
       this.shadowRoot.append(style);
     }
 
@@ -2336,30 +2539,29 @@ var mc2 = (function (exports) {
       event.stopPropagation();
       if (this.enabled) {
         this.checked = true;
-        this.dispatchEvent(new Event("click"));
+        this.dispatchEvent(new CustomEvent("click", { detail: this.text }));
       }
     }
 
     onKeyPress(event) {
-      if (event.keyCode == 13 && this.enabled) {
+      if (event.keyCode === 13 && this.enabled) {
         // enter
         this.wrapper.click();
-      } else if (event.keyCode == 40) {
+      } else if (event.keyCode === 40) {
         // down
         event.preventDefault();
         RadioButtonGroup.getNextInGroup(this.group, this).focus();
-      } else if (event.keyCode == 38) {
+      } else if (event.keyCode === 38) {
         // up
         event.preventDefault();
         RadioButtonGroup.getPrevInGroup(this.group, this).focus();
       }
     }
 
-
     //////////////////////////////////
     // General
     //////////////////////////////////
-    
+
     focus() {
       if (this.enabled) {
         this.wrapper.focus();
@@ -2387,13 +2589,13 @@ var mc2 = (function (exports) {
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get checked() {
       return this._checked;
     }
 
     set checked(checked) {
-      if(checked) {
+      if (checked) {
         RadioButtonGroup.clearGroup(this.group);
       }
       this._checked = checked;
@@ -2405,7 +2607,7 @@ var mc2 = (function (exports) {
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.updateCheckStyle();
         this.label.enabled = enabled;
@@ -2448,12 +2650,13 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 100);
       this.addEventListener("input", defaultHandler);
-   }
+      this.addToParent();
+    }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
       this.textArea.value = this._text;
@@ -2461,25 +2664,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalTextArea {
-        ${Style.baseStyle}
-        ${Style.textStyle}
-        ${Style.shadowStyle}
-        padding: 4px;
-        resize: none;
-      }
-      .MinimalTextArea:disabled,
-      .MinimalTextArea[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextArea::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextArea:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.textarea;
       this.shadowRoot.append(style);
     }
 
@@ -2491,23 +2676,23 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // Handlers
     //////////////////////////////////
-    
+
     onInput() {
       this._text = this.textArea.value;
-      this.dispatchEvent(new Event("input"));
+      this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
     }
 
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get enabled() {
       return super.enabled;
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.textArea.disabled = !this.enabled;
         if (this.enabled) {
@@ -2544,12 +2729,13 @@ var mc2 = (function (exports) {
       this.createStyle();
 
       this.setSize(100, 100);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.setWrapperClass("MinimalTextBox");
       this.wrapper.textContent = this._text;
@@ -2557,26 +2743,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalTextBox {
-        ${Style.baseStyle}
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-      .MinimalTextBoxDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        width: 100%;
-      }
-    `;
+      style.textContent = Style.textbox;
       this.shadowRoot.append(style);
     }
 
@@ -2593,7 +2760,7 @@ var mc2 = (function (exports) {
       this._align = align;
       this.wrapper.style.textAlign = align;
     }
-    
+
     get bold() {
       return this._bold;
     }
@@ -2637,7 +2804,7 @@ var mc2 = (function (exports) {
       this._fontSize = fontSize;
       this.wrapper.style.fontSize = fontSize + "px";
     }
-    
+
     get html() {
       return this._html;
     }
@@ -2692,12 +2859,13 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 20);
       this.addEventListener("input", defaultHandler);
+      this.addToParent();
     }
 
     //////////////////////////////////
     // Core
     //////////////////////////////////
-    
+
     createChildren() {
       this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
       this.input.value = this._text;
@@ -2705,24 +2873,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalTextInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-      }
-      .MinimalTextInput:disabled,
-      .MinimalTextInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextInput::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.textinput;
       this.shadowRoot.append(style);
     }
 
@@ -2734,23 +2885,23 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // Handlers
     //////////////////////////////////
-    
+
     onInput() {
       this._text = this.input.value;
-      this.dispatchEvent(new Event("input"));
+      this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
     }
 
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get enabled() {
       return super.enabled;
     }
 
     set enabled(enabled) {
-      if (this.enabled != enabled) {
+      if (this.enabled !== enabled) {
         super.enabled = enabled;
         this.input.disabled = !this.enabled;
         if (this.enabled) {
@@ -2778,13 +2929,48 @@ var mc2 = (function (exports) {
       this._text = text;
       this.input.value = text;
     }
-
   }
 
   customElements.define("minimal-textinput", TextInput);
 
-  class VSlider extends HSlider {
+  class VBox extends Component {
+    constructor(parent, x, y, spacing) {
+      super(parent, x, y);
+      this.spacing = spacing;
+      this.xpos = 0;
+      this.ypos = 0;
+      this.createChildren();
+      this.setSize(0, 0);
+      this.addToParent();
+    }
 
+    //////////////////////////////////
+    // Core
+    //////////////////////////////////
+
+    createChildren() {
+      this.setWrapperClass("MinimalVbox");
+    }
+
+    //////////////////////////////////
+    // General
+    //////////////////////////////////
+
+    appendChild(child) {
+      super.appendChild(child);
+      if (this.ypos > 0) {
+        this.ypos += this.spacing;
+      }
+      child.y = this.ypos;
+      this.width = Math.max(this.width, child.x + child.width);
+      this.ypos += child.height;
+      this.height = this.ypos;
+    }
+  }
+
+  customElements.define("minimal-vbox", VBox);
+
+  class VSlider extends HSlider {
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y, text, value, min, max, defaultHandler);
     }
@@ -2794,45 +2980,7 @@ var mc2 = (function (exports) {
 
     createStyle() {
       const style = document.createElement("style");
-      style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: ${this.handleSize}px;
-        width: 100%;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: ${this.handleSize}px;
-        width: 100%;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+      style.textContent = Style.vslider;
       this.shadowRoot.append(style);
     }
 
@@ -2843,7 +2991,7 @@ var mc2 = (function (exports) {
       this.offsetY = event.clientY - this.getBoundingClientRect().top - this.handle.offsetTop;
       if (this.offsetY < 0 || this.offsetY > this.handleSize) {
         this.offsetY = this.handleSize / 2;
-        let y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
+        const y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
         this.calculateValueFromPos(y);
       }
       document.addEventListener("mousemove", this.onMouseMove);
@@ -2851,7 +2999,7 @@ var mc2 = (function (exports) {
     }
 
     onMouseMove(event) {
-      let y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
+      const y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
       this.calculateValueFromPos(y);
     }
 
@@ -2906,7 +3054,7 @@ var mc2 = (function (exports) {
     // Getters/Setters
     // alphabetical. getter first.
     //////////////////////////////////
-    
+
     get handleSize() {
       return this._handleSize;
     }
@@ -2936,12 +3084,11 @@ var mc2 = (function (exports) {
       this.updateLabelPosition();
       this.updateHandlePosition();
     }
-
   }
 
   customElements.define("minimal-vslider", VSlider);
 
-  const version = "1.0.0";
+  const version = "1.1.0";
 
   exports.Button = Button;
   exports.Canvas = Canvas;
@@ -2950,6 +3097,7 @@ var mc2 = (function (exports) {
   exports.Component = Component;
   exports.Defaults = Defaults;
   exports.Dropdown = Dropdown;
+  exports.HBox = HBox;
   exports.HSlider = HSlider;
   exports.Image = Image;
   exports.Label = Label;
@@ -2962,6 +3110,7 @@ var mc2 = (function (exports) {
   exports.TextArea = TextArea;
   exports.TextBox = TextBox;
   exports.TextInput = TextInput;
+  exports.VBox = VBox;
   exports.VSlider = VSlider;
   exports.version = version;
 

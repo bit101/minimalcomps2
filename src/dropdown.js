@@ -1,7 +1,6 @@
 import { Component } from "./component.js";
-import { Style } from "./style.js";
-
 import { Label } from "./label.js";
+import { Style } from "./style.js";
 
 export class Dropdown extends Component {
   constructor(parent, x, y, items, index, defaultHandler) {
@@ -20,12 +19,13 @@ export class Dropdown extends Component {
     this.createItems();
     this.index = index;
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
@@ -46,12 +46,12 @@ export class Dropdown extends Component {
   }
 
   createItem(index) {
-    let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
+    const item = this.createDiv(this.dropdown, "MinimalDropdownItem");
     item.setAttribute("data-index", index);
     item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
-    let label = new Label(item, 3, 0, this.items[index]);
+    const label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
@@ -62,63 +62,7 @@ export class Dropdown extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalDropdown {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdownDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: default;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalDropdown:focus {
-        ${Style.focusStyle}
-      }
-      .MinimalDropdownButton,
-      .MinimalDropdownButtonDisabled {
-        ${Style.baseStyle}
-        line-height: 9px;
-        color: #333;
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-        height: 20px;
-        width: 20px;
-        left: 80px;
-        top: -1px;
-        text-align: center;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      .MinimalDropdownButtonDisabled {
-        ${Style.disabledStyle}
-      }
-      .MinimalDropdownItem {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border-radius: 0;
-        border: 1px solid #999;
-        cursor: pointer;
-      }
-      .MinimalDropdownItem:hover {
-        background-color: #f8f8f8;
-      }
-      .MinimalDropdownItem:focus {
-        ${Style.focusStyle}
-        background-color: #f8f8f8;
-      }
-    `;
+    style.textContent = Style.dropdown;
     this.shadowRoot.append(style);
   }
 
@@ -158,7 +102,12 @@ export class Dropdown extends Component {
     event.stopPropagation();
     this.index = event.target.getAttribute("data-index");
     this.toggle();
-    this.dispatchEvent(new Event("change"));
+    this.dispatchEvent(new CustomEvent("change", {
+      detail: {
+        text: this.text,
+        index: this.index,
+      },
+    }));
     this.wrapper.focus();
   }
 
@@ -166,10 +115,10 @@ export class Dropdown extends Component {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.shadowRoot.activeElement.click();
-    } else if (event.keyCode === 27 || event.keyCode == 9) {
+    } else if (event.keyCode === 27 || event.keyCode === 9) {
       // escape || tab
       this.close();
-    } else if (event.keyCode == 40) {
+    } else if (event.keyCode === 40) {
       // down
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.lastChild) {
@@ -177,7 +126,7 @@ export class Dropdown extends Component {
       } else {
         this.shadowRoot.activeElement.nextSibling.focus();
       }
-    } else if (event.keyCode == 38) {
+    } else if (event.keyCode === 38) {
       // up
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.firstChild) {
@@ -276,7 +225,7 @@ export class Dropdown extends Component {
     if (index >= 0 && index < this.items.length) {
       this._index = index;
       this._text = this.items[this._index];
-      this.label.text = this._text
+      this.label.text = this._text;
     }
   }
 
@@ -295,7 +244,6 @@ export class Dropdown extends Component {
       this.updateItem(item);
     });
   }
-
 }
 
 customElements.define("minimal-dropdown", Dropdown);

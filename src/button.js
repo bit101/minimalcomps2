@@ -1,11 +1,9 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
-import { Label } from "./label.js";
-
 export class Button extends Component {
-
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -16,12 +14,13 @@ export class Button extends Component {
 
     this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
@@ -31,35 +30,8 @@ export class Button extends Component {
   }
 
   createStyle() {
-    const buttonStyle = `
-      ${Style.baseStyle}
-      background-color: #f9f9f9;
-      border-radius: 0;
-      border: 1px solid #999;
-      height: 100%;
-      width: 100%;
-    `;
-
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalButton {
-        ${buttonStyle}
-        cursor: pointer;
-      }
-      .MinimalButton:hover {
-        background-color: #fff;
-      }
-      .MinimalButton:active {
-        background-color: #ccc;
-      }
-      .MinimalButtonDisabled {
-        ${Style.disabledStyle}
-        ${buttonStyle}
-      }
-      .MinimalButton:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.button;
     this.shadowRoot.append(style);
   }
 
@@ -82,7 +54,7 @@ export class Button extends Component {
   }
 
   onKeyUp(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
   }
@@ -90,7 +62,6 @@ export class Button extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-
 
   //////////////////////////////////
   // Getters/Setters

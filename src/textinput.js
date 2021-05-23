@@ -13,12 +13,13 @@ export class TextInput extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("input", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
     this.input.value = this._text;
@@ -26,24 +27,7 @@ export class TextInput extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        padding: 0 4px;
-      }
-      .MinimalTextInput:disabled,
-      .MinimalTextInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextInput::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textinput;
     this.shadowRoot.append(style);
   }
 
@@ -55,23 +39,23 @@ export class TextInput extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.input.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -99,7 +83,6 @@ export class TextInput extends Component {
     this._text = text;
     this.input.value = text;
   }
-
 }
 
 customElements.define("minimal-textinput", TextInput);

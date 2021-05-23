@@ -1,9 +1,8 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
 export class Image extends Component {
-
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -14,33 +13,20 @@ export class Image extends Component {
 
     this.setSize(Defaults.image.width, 100);
     this.load();
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.image = this.createElement(this.wrapper, "img", "MinimalImage");
   }
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalImage {
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-      .MinimalImageDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #eee;
-        border-radius: 0;
-        border: 1px solid #999;
-      }
-    `;
+    style.textContent = Style.image;
     this.shadowRoot.append(style);
   }
 

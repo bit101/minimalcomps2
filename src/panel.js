@@ -10,43 +10,27 @@ export class Panel extends Component {
     this.createChildren();
     this.createStyle();
     this.setSize(w, h);
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalPanel");
   }
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalPanel {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #eee;
-        height: 100%;
-        position: relative;
-        width: 100%;
-      }
-      .MinimalPanel:disabled,
-      .MinimalPanel[disabled] {
-        ${Style.disabledStyle}
-      }
-      :host {
-        overflow: hidden;
-        position: relative;
-      }
-      `;
+    style.textContent = Style.panel;
     this.shadowRoot.append(style);
   }
 
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   get x() {
     return super.x;
   }
@@ -65,7 +49,6 @@ export class Panel extends Component {
     this._y = y;
     this.style.marginTop = y + "px";
   }
-  
 }
 
 customElements.define("minimal-panel", Panel);
