@@ -21,7 +21,7 @@ import { TextInput } from "./textinput.js";
 import { VBox } from "./vbox.js";
 import { VSlider } from "./vslider.js";
 
-const version = "1.1.1";
+const version = "1.1.2";
 
 export {
   version,

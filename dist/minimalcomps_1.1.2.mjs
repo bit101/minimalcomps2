@@ -1655,7 +1655,7 @@ class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }
@@ -1675,7 +1675,7 @@ class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }
@@ -3012,7 +3012,7 @@ class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }
@@ -3032,7 +3032,7 @@ class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }
@@ -3125,6 +3125,6 @@ class VSlider extends HSlider {
 
 customElements.define("minimal-vslider", VSlider);
 
-const version = "1.1.1";
+const version = "1.1.2";
 
 export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VBox, VSlider, version };
