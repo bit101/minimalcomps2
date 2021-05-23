@@ -49,6 +49,7 @@ export class HSlider extends Component {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.wrapper.addEventListener("mousedown", this.onMouseDown);
+    this.wrapper.addEventListener("touchstart", this.onMouseDown);
     this.wrapper.addEventListener("keydown", this.onKeyDown);
   }
 
@@ -56,24 +57,43 @@ export class HSlider extends Component {
   // Handlers
   //////////////////////////////////
   onMouseDown(event) {
-    this.offsetX = event.clientX - this.getBoundingClientRect().left - this.handle.offsetLeft;
+    event.preventDefault();
+    let mouseX;
+    if (event.changedTouches) {
+      mouseX = event.changedTouches[0].pageX;
+    } else {
+      mouseX = event.clientX;
+    }
+    this.offsetX = mouseX - this.getBoundingClientRect().left - this.handle.offsetLeft;
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
-      const x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
+      const x = mouseX - this.getBoundingClientRect().left - this.handleSize / 2;
       this.calculateValueFromPos(x);
     }
     document.addEventListener("mousemove", this.onMouseMove);
+    document.addEventListener("touchmove", this.onMouseMove);
     document.addEventListener("mouseup", this.onMouseUp);
+    document.addEventListener("touchend", this.onMouseUp);
   }
 
   onMouseMove(event) {
-    const x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
+    event.preventDefault();
+    let mouseX;
+    if (event.changedTouches) {
+      mouseX = event.changedTouches[0].pageX;
+    } else {
+      mouseX = event.clientX;
+    }
+    const x = mouseX - this.getBoundingClientRect().left - this.offsetX;
     this.calculateValueFromPos(x);
   }
 
   onMouseUp() {
+    event.preventDefault();
     document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener("touchmove", this.onMouseMove);
     document.removeEventListener("mouseup", this.onMouseUp);
+    document.removeEventListener("touchend", this.onMouseUp);
   }
 
   onKeyDown(event) {
@@ -219,13 +239,17 @@ export class HSlider extends Component {
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
         this.wrapper.addEventListener("mousedown", this.onMouseDown);
+        this.wrapper.addEventListener("touchstart", this.onMouseDown);
         this.wrapper.addEventListener("keydown", this.onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
         this.wrapper.removeEventListener("mousedown", this.onMouseDown);
+        this.wrapper.removeEventListener("touchstart", this.onMouseDown);
         this.wrapper.removeEventListener("keydown", this.onKeyDown);
         document.removeEventListener("mousemove", this.onMouseMove);
+        document.removeEventListener("touchmove", this.onMouseMove);
         document.removeEventListener("mouseup", this.onMouseUp);
+        document.removeEventListener("touchend", this.onMouseUp);
       }
     }
   }
