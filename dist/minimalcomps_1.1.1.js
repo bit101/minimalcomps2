@@ -1658,7 +1658,7 @@ var mc2 = (function (exports) {
       event.preventDefault();
       let mouseX;
       if (event.changedTouches) {
-        mouseX = event.changedTouches[0].pageX;
+        mouseX = event.changedTouches[0].clientX;
       } else {
         mouseX = event.clientX;
       }
@@ -1678,7 +1678,7 @@ var mc2 = (function (exports) {
       event.preventDefault();
       let mouseX;
       if (event.changedTouches) {
-        mouseX = event.changedTouches[0].pageX;
+        mouseX = event.changedTouches[0].clientX;
       } else {
         mouseX = event.clientX;
       }
@@ -3015,7 +3015,7 @@ var mc2 = (function (exports) {
       event.preventDefault();
       let mouseY;
       if (event.changedTouches) {
-        mouseY = event.changedTouches[0].pageY;
+        mouseY = event.changedTouches[0].clientY;
       } else {
         mouseY = event.clientY;
       }
@@ -3035,7 +3035,7 @@ var mc2 = (function (exports) {
       event.preventDefault();
       let mouseY;
       if (event.changedTouches) {
-        mouseY = event.changedTouches[0].pageY;
+        mouseY = event.changedTouches[0].clientY;
       } else {
         mouseY = event.clientY;
       }

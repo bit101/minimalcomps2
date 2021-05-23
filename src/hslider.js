@@ -60,7 +60,7 @@ export class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }
@@ -80,7 +80,7 @@ export class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }

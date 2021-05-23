@@ -1655,7 +1655,7 @@ class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }
@@ -1675,7 +1675,7 @@ class HSlider extends Component {
     event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
-      mouseX = event.changedTouches[0].pageX;
+      mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
     }
@@ -3012,7 +3012,7 @@ class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }
@@ -3032,7 +3032,7 @@ class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }

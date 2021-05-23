@@ -23,7 +23,7 @@ export class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }
@@ -43,7 +43,7 @@ export class VSlider extends HSlider {
     event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
-      mouseY = event.changedTouches[0].pageY;
+      mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
     }
