@@ -3,7 +3,6 @@ import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
 export class Image extends Component {
-
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -19,7 +18,7 @@ export class Image extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.image = this.createElement(this.wrapper, "img", "MinimalImage");
   }

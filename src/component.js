@@ -23,12 +23,14 @@ export class Component extends HTMLElement {
     return this.createElement(parent, "div", className);
   }
 
+  /* eslint-disable class-methods-use-this */
   createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
     parent && parent.appendChild(el);
     return el;
   }
+  /* eslint-enable */
 
   createInput(parent, className) {
     const input = this.createElement(parent, "input", className);
@@ -86,7 +88,6 @@ export class Component extends HTMLElement {
     this.wrapper.setAttribute("class", className);
   }
 
-  
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -99,7 +100,7 @@ export class Component extends HTMLElement {
   set enabled(enabled) {
     this._enabled = enabled;
   }
-  
+
   get height() {
     return this._height;
   }
@@ -136,7 +137,6 @@ export class Component extends HTMLElement {
     this.style.top = y + "px";
   }
 }
-
 
 customElements.define("minimal-component", Component);
 

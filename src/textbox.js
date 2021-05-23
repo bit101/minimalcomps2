@@ -20,7 +20,7 @@ export class TextBox extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
@@ -64,7 +64,7 @@ export class TextBox extends Component {
     this._align = align;
     this.wrapper.style.textAlign = align;
   }
-  
+
   get bold() {
     return this._bold;
   }
@@ -108,7 +108,7 @@ export class TextBox extends Component {
     this._fontSize = fontSize;
     this.wrapper.style.fontSize = fontSize + "px";
   }
-  
+
   get html() {
     return this._html;
   }

@@ -18,7 +18,7 @@ export class ColorPicker extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalColorPicker");
 
@@ -84,11 +84,11 @@ export class ColorPicker extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     const color = this.correctColor(this.input.value);
     this.input.value = color;
-    if ((color.length === 4 || color.length === 7) && this.color != color) {
+    if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
       this.dispatchEvent(new Event("change"));
@@ -98,7 +98,8 @@ export class ColorPicker extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
+  /* eslint-disable class-methods-use-this */
   correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
@@ -110,18 +111,19 @@ export class ColorPicker extends Component {
     }
     return color;
   }
-  
+  /* eslint-enable */
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -145,7 +147,6 @@ export class ColorPicker extends Component {
     this.input.value = color;
     this.preview.style.backgroundColor = color;
   }
-
 }
 
 customElements.define("minimal-colorpicker", ColorPicker);

@@ -15,7 +15,7 @@ export class Panel extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalPanel");
   }
@@ -46,7 +46,7 @@ export class Panel extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   get x() {
     return super.x;
   }
@@ -65,7 +65,6 @@ export class Panel extends Component {
     this._y = y;
     this.style.marginTop = y + "px";
   }
-  
 }
 
 customElements.define("minimal-panel", Panel);

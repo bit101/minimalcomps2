@@ -17,7 +17,7 @@ export class TextArea extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
@@ -55,7 +55,7 @@ export class TextArea extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.textArea.value;
     this.dispatchEvent(new Event("input"));
@@ -65,13 +65,13 @@ export class TextArea extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.textArea.disabled = !this.enabled;
       if (this.enabled) {

@@ -4,7 +4,6 @@ import { Label } from "./label.js";
 import { Style } from "./style.js";
 
 export class Button extends Component {
-
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -20,7 +19,7 @@ export class Button extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
@@ -81,7 +80,7 @@ export class Button extends Component {
   }
 
   onKeyUp(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
   }

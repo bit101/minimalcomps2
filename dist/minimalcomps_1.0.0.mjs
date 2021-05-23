@@ -1,29 +1,3 @@
-const Defaults = {
-  button: {
-    width: 100,
-    height: 20,
-  },
-  vslider: {
-    decimals: 0,
-    width: 15,
-    height: 150,
-    handleSize: 15,
-  },
-  hslider: {
-    decimals: 0,
-    textPosition: "top",
-    width: 150,
-    height: 15,
-    handleSize: 15,
-  },
-  image: {
-    width: 100,
-  },
-  label: {
-    fontSize: 10,
-  },
-};
-
 const Style = {};
 
 Style.baseStyle = `
@@ -85,12 +59,14 @@ class Component extends HTMLElement {
     return this.createElement(parent, "div", className);
   }
 
+  /* eslint-disable class-methods-use-this */
   createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
     parent && parent.appendChild(el);
     return el;
   }
+  /* eslint-enable */
 
   createInput(parent, className) {
     const input = this.createElement(parent, "input", className);
@@ -148,7 +124,6 @@ class Component extends HTMLElement {
     this.wrapper.setAttribute("class", className);
   }
 
-  
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -161,7 +136,7 @@ class Component extends HTMLElement {
   set enabled(enabled) {
     this._enabled = enabled;
   }
-  
+
   get height() {
     return this._height;
   }
@@ -199,11 +174,35 @@ class Component extends HTMLElement {
   }
 }
 
-
 customElements.define("minimal-component", Component);
 
-class Label extends Component {
+const Defaults = {
+  button: {
+    width: 100,
+    height: 20,
+  },
+  vslider: {
+    decimals: 0,
+    width: 15,
+    height: 150,
+    handleSize: 15,
+  },
+  hslider: {
+    decimals: 0,
+    textPosition: "top",
+    width: 150,
+    height: 15,
+    handleSize: 15,
+  },
+  image: {
+    width: 100,
+  },
+  label: {
+    fontSize: 10,
+  },
+};
 
+class Label extends Component {
   constructor(parent, x, y, text) {
     super(null, x, y);
     this._align = "left";
@@ -227,7 +226,7 @@ class Label extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
@@ -266,7 +265,7 @@ class Label extends Component {
     this._align = align;
     this.wrapper.style.textAlign = align;
   }
-  
+
   get autosize() {
     return this._autosize;
   }
@@ -365,7 +364,7 @@ class Label extends Component {
 
   set width(w) {
     if (!this.autosize) {
-      this._width = w;      
+      this._width = w;
       this.wrapper.style.width = w + "px";
     }
   }
@@ -374,7 +373,6 @@ class Label extends Component {
 customElements.define("minimal-label", Label);
 
 class Button extends Component {
-
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -390,7 +388,7 @@ class Button extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
@@ -451,7 +449,7 @@ class Button extends Component {
   }
 
   onKeyUp(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
   }
@@ -459,7 +457,6 @@ class Button extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-
 
   //////////////////////////////////
   // Getters/Setters
@@ -525,7 +522,7 @@ class Canvas extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
     this.context = this.canvas.getContext("2d");
@@ -623,7 +620,7 @@ class Checkbox extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
@@ -690,7 +687,7 @@ class Checkbox extends Component {
   }
 
   onKeyPress(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
   }
@@ -702,7 +699,7 @@ class Checkbox extends Component {
   toggle() {
     this.checked = !this.checked;
   }
-  
+
   updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
@@ -738,7 +735,7 @@ class Checkbox extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateCheckStyle();
       this.label.enabled = enabled;
@@ -787,7 +784,7 @@ class ColorPicker extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalColorPicker");
 
@@ -853,11 +850,11 @@ class ColorPicker extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     const color = this.correctColor(this.input.value);
     this.input.value = color;
-    if ((color.length === 4 || color.length === 7) && this.color != color) {
+    if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
       this.dispatchEvent(new Event("change"));
@@ -867,7 +864,8 @@ class ColorPicker extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
+  /* eslint-disable class-methods-use-this */
   correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
@@ -879,18 +877,19 @@ class ColorPicker extends Component {
     }
     return color;
   }
-  
+  /* eslint-enable */
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -914,7 +913,6 @@ class ColorPicker extends Component {
     this.input.value = color;
     this.preview.style.backgroundColor = color;
   }
-
 }
 
 customElements.define("minimal-colorpicker", ColorPicker);
@@ -941,7 +939,7 @@ class Dropdown extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
@@ -962,12 +960,12 @@ class Dropdown extends Component {
   }
 
   createItem(index) {
-    let item = this.createDiv(this.dropdown, "MinimalDropdownItem");
+    const item = this.createDiv(this.dropdown, "MinimalDropdownItem");
     item.setAttribute("data-index", index);
     item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
-    let label = new Label(item, 3, 0, this.items[index]);
+    const label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
@@ -1082,10 +1080,10 @@ class Dropdown extends Component {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.shadowRoot.activeElement.click();
-    } else if (event.keyCode === 27 || event.keyCode == 9) {
+    } else if (event.keyCode === 27 || event.keyCode === 9) {
       // escape || tab
       this.close();
-    } else if (event.keyCode == 40) {
+    } else if (event.keyCode === 40) {
       // down
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.lastChild) {
@@ -1093,7 +1091,7 @@ class Dropdown extends Component {
       } else {
         this.shadowRoot.activeElement.nextSibling.focus();
       }
-    } else if (event.keyCode == 38) {
+    } else if (event.keyCode === 38) {
       // up
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.firstChild) {
@@ -1211,13 +1209,11 @@ class Dropdown extends Component {
       this.updateItem(item);
     });
   }
-
 }
 
 customElements.define("minimal-dropdown", Dropdown);
 
 class HSlider extends Component {
-
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
@@ -1227,7 +1223,6 @@ class HSlider extends Component {
     this._value = value;
     this._showValue = true;
     this._text = text;
-
 
     this.createChildren();
     this.createStyle();
@@ -1311,7 +1306,7 @@ class HSlider extends Component {
     this.offsetX = event.clientX - this.getBoundingClientRect().left - this.handle.offsetLeft;
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
-      let x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
+      const x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
       this.calculateValueFromPos(x);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -1319,7 +1314,7 @@ class HSlider extends Component {
   }
 
   onMouseMove(event) {
-    let x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
+    const x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
     this.calculateValueFromPos(x);
   }
 
@@ -1335,15 +1330,15 @@ class HSlider extends Component {
     }
     let value = this.value;
 
-    switch(event.keyCode) {
-      case 37:
-      case 40:
-        value -= inc;
-        break;
-      case 38:
-      case 39:
-        value += inc;
-        break
+    switch (event.keyCode) {
+    case 37:
+    case 40:
+      value -= inc;
+      break;
+    case 38:
+    case 39:
+      value += inc;
+      break;
     }
     this.updateValue(value);
   }
@@ -1351,7 +1346,7 @@ class HSlider extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
@@ -1387,14 +1382,6 @@ class HSlider extends Component {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
-  }
-
-  showValue(show) {
-    if (show) {
-      this.valueLabel.style.visibility = "visible";
-    } else {
-      this.valueLabel.style.visibility = "hidden";
-    }
   }
 
   updateHandlePosition() {
@@ -1433,19 +1420,6 @@ class HSlider extends Component {
   }
 
   updateValueLabelPosition() {
-    if (this._textPosition === "left") {
-      this.valueLabel.x = this.width + 5;
-      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-    } else if (this._textPosition === "top") {
-      this.label.x = 0;
-      this.label.y = -this.label.height - 5;
-    } else if (this._textPosition === "bottom") {
-      this.label.x = 0;
-      this.label.y = this.height + 5;
-    }
-  }
-
-  updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
@@ -1455,11 +1429,13 @@ class HSlider extends Component {
   }
 
   updateValue(value) {
-    if (this._value != value) {
+    if (this._value !== value) {
       this._value = value;
       this.updateHandlePosition();
       this.valueLabel.text = this.formatValue();
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", {
+        detail: this.value,
+      }));
     }
   }
 
@@ -1467,7 +1443,7 @@ class HSlider extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get decimals() {
     return this._decimals;
   }
@@ -1484,7 +1460,7 @@ class HSlider extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateEnabledStyle();
       if (this.enabled) {
@@ -1556,7 +1532,6 @@ class HSlider extends Component {
 
   set reversed(reversed) {
     this._reversed = reversed;
-
   }
 
   get showValue() {
@@ -1604,7 +1579,6 @@ class HSlider extends Component {
 customElements.define("minimal-hslider", HSlider);
 
 class Image extends Component {
-
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -1620,7 +1594,7 @@ class Image extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.image = this.createElement(this.wrapper, "img", "MinimalImage");
   }
@@ -1744,7 +1718,7 @@ class NumericStepper extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalNumericStepper");
 
@@ -1812,18 +1786,18 @@ class NumericStepper extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     let value = this.input.value;
     value = value.replace(/[^-.0-9]/g, "");
     this.input.value = value;
   }
-  
+
   onInputChange() {
     let value = parseFloat(this.input.value);
     value = this.roundValue(value);
     this.input.value = value;
-    if (this.value != value) {
+    if (this.value !== value) {
       this._value = value;
       this.dispatchEvent(new Event("change"));
     }
@@ -1832,7 +1806,7 @@ class NumericStepper extends Component {
   decrement() {
     if (this.isDecrementing) {
       const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
+      if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new Event("change"));
       }
@@ -1846,7 +1820,7 @@ class NumericStepper extends Component {
   increment() {
     if (this.isIncrementing) {
       const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
-      if (this.value != value) {
+      if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new Event("change"));
       }
@@ -1869,17 +1843,16 @@ class NumericStepper extends Component {
   }
 
   onMinusKeyDown(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.onMinusDown();
     }
   }
 
   onMinusKeyUp(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.onMinusUp();
     }
   }
-
 
   onPlusDown() {
     clearTimeout(this.timeout);
@@ -1893,13 +1866,13 @@ class NumericStepper extends Component {
   }
 
   onPlusKeyDown(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.onPlusDown();
     }
   }
 
   onPlusKeyUp(event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.onPlusUp();
     }
   }
@@ -1907,7 +1880,7 @@ class NumericStepper extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   roundValue(value) {
     if (this.max !== null) {
       value = Math.min(value, this.max);
@@ -1918,18 +1891,18 @@ class NumericStepper extends Component {
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
-  
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       this.plus.enabled = this.enabled;
@@ -1944,9 +1917,9 @@ class NumericStepper extends Component {
   set decimals(decimals) {
     this._decimals = decimals;
     const value = this.roundValue(this.value);
-    if (this._value != value) {
+    if (this._value !== value) {
       this._value = value;
-      this.input.value= value;
+      this.input.value = value;
       this.dispatchEvent(new Event("change"));
     }
   }
@@ -1994,7 +1967,6 @@ class NumericStepper extends Component {
     this.minus.x = w - 40;
     this.plus.x = w - 20;
   }
-  
 }
 
 customElements.define("minimal-numericstepper", NumericStepper);
@@ -2013,7 +1985,7 @@ class Panel extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalPanel");
   }
@@ -2044,7 +2016,7 @@ class Panel extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   get x() {
     return super.x;
   }
@@ -2063,7 +2035,6 @@ class Panel extends Component {
     this._y = y;
     this.style.marginTop = y + "px";
   }
-  
 }
 
 customElements.define("minimal-panel", Panel);
@@ -2130,7 +2101,7 @@ class ProgressBar extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   updateBar() {
     let percent = this.progress / this.max;
     percent = Math.max(0, percent);
@@ -2157,14 +2128,14 @@ class ProgressBar extends Component {
       this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
     }
   }
-  
+
   get max() {
     return this._max;
   }
 
   set max(max) {
     this._max = max;
-    let progress = Math.min(this.progress, this.max);
+    const progress = Math.min(this.progress, this.max);
     this.progress = Math.max(progress, 0);
     this.updateBar();
   }
@@ -2179,7 +2150,6 @@ class ProgressBar extends Component {
     this._progress = progress;
     this.updateBar();
   }
-
 }
 
 customElements.define("minimal-progressbar", ProgressBar);
@@ -2223,7 +2193,7 @@ RadioButtonGroup.addToGroup = (group, rb) => {
 RadioButtonGroup.getNextInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
-  var result;
+  let result;
   if (index >= g.length - 1) {
     result = g[0];
   } else {
@@ -2238,7 +2208,7 @@ RadioButtonGroup.getNextInGroup = (group, rb) => {
 RadioButtonGroup.getPrevInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
-  var result;
+  let result;
   if (index <= 0) {
     result = g[g.length - 1];
   } else {
@@ -2269,7 +2239,7 @@ class RadioButton extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
@@ -2338,25 +2308,24 @@ class RadioButton extends Component {
   }
 
   onKeyPress(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       // enter
       this.wrapper.click();
-    } else if (event.keyCode == 40) {
+    } else if (event.keyCode === 40) {
       // down
       event.preventDefault();
       RadioButtonGroup.getNextInGroup(this.group, this).focus();
-    } else if (event.keyCode == 38) {
+    } else if (event.keyCode === 38) {
       // up
       event.preventDefault();
       RadioButtonGroup.getPrevInGroup(this.group, this).focus();
     }
   }
 
-
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   focus() {
     if (this.enabled) {
       this.wrapper.focus();
@@ -2384,13 +2353,13 @@ class RadioButton extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get checked() {
     return this._checked;
   }
 
   set checked(checked) {
-    if(checked) {
+    if (checked) {
       RadioButtonGroup.clearGroup(this.group);
     }
     this._checked = checked;
@@ -2402,7 +2371,7 @@ class RadioButton extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateCheckStyle();
       this.label.enabled = enabled;
@@ -2445,12 +2414,12 @@ class TextArea extends Component {
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
- }
+  }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
@@ -2488,7 +2457,7 @@ class TextArea extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.textArea.value;
     this.dispatchEvent(new Event("input"));
@@ -2498,13 +2467,13 @@ class TextArea extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.textArea.disabled = !this.enabled;
       if (this.enabled) {
@@ -2546,7 +2515,7 @@ class TextBox extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
@@ -2590,7 +2559,7 @@ class TextBox extends Component {
     this._align = align;
     this.wrapper.style.textAlign = align;
   }
-  
+
   get bold() {
     return this._bold;
   }
@@ -2634,7 +2603,7 @@ class TextBox extends Component {
     this._fontSize = fontSize;
     this.wrapper.style.fontSize = fontSize + "px";
   }
-  
+
   get html() {
     return this._html;
   }
@@ -2694,7 +2663,7 @@ class TextInput extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
     this.input.value = this._text;
@@ -2731,7 +2700,7 @@ class TextInput extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.input.value;
     this.dispatchEvent(new Event("input"));
@@ -2741,13 +2710,13 @@ class TextInput extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -2775,13 +2744,11 @@ class TextInput extends Component {
     this._text = text;
     this.input.value = text;
   }
-
 }
 
 customElements.define("minimal-textinput", TextInput);
 
 class VSlider extends HSlider {
-
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
   }
@@ -2840,7 +2807,7 @@ class VSlider extends HSlider {
     this.offsetY = event.clientY - this.getBoundingClientRect().top - this.handle.offsetTop;
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       this.offsetY = this.handleSize / 2;
-      let y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
+      const y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
       this.calculateValueFromPos(y);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -2848,7 +2815,7 @@ class VSlider extends HSlider {
   }
 
   onMouseMove(event) {
-    let y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
+    const y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
     this.calculateValueFromPos(y);
   }
 
@@ -2903,7 +2870,7 @@ class VSlider extends HSlider {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get handleSize() {
     return this._handleSize;
   }
@@ -2933,7 +2900,6 @@ class VSlider extends HSlider {
     this.updateLabelPosition();
     this.updateHandlePosition();
   }
-
 }
 
 customElements.define("minimal-vslider", VSlider);

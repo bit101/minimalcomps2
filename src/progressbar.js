@@ -63,7 +63,7 @@ export class ProgressBar extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   updateBar() {
     let percent = this.progress / this.max;
     percent = Math.max(0, percent);
@@ -90,14 +90,14 @@ export class ProgressBar extends Component {
       this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
     }
   }
-  
+
   get max() {
     return this._max;
   }
 
   set max(max) {
     this._max = max;
-    let progress = Math.min(this.progress, this.max);
+    const progress = Math.min(this.progress, this.max);
     this.progress = Math.max(progress, 0);
     this.updateBar();
   }
@@ -112,7 +112,6 @@ export class ProgressBar extends Component {
     this._progress = progress;
     this.updateBar();
   }
-
 }
 
 customElements.define("minimal-progressbar", ProgressBar);

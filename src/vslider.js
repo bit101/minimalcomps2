@@ -3,7 +3,6 @@ import { HSlider } from "./hslider.js";
 import { Style } from "./style.js";
 
 export class VSlider extends HSlider {
-
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
   }
@@ -62,7 +61,7 @@ export class VSlider extends HSlider {
     this.offsetY = event.clientY - this.getBoundingClientRect().top - this.handle.offsetTop;
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       this.offsetY = this.handleSize / 2;
-      let y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
+      const y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
       this.calculateValueFromPos(y);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -70,7 +69,7 @@ export class VSlider extends HSlider {
   }
 
   onMouseMove(event) {
-    let y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
+    const y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
     this.calculateValueFromPos(y);
   }
 
@@ -125,7 +124,7 @@ export class VSlider extends HSlider {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get handleSize() {
     return this._handleSize;
   }
@@ -155,7 +154,6 @@ export class VSlider extends HSlider {
     this.updateLabelPosition();
     this.updateHandlePosition();
   }
-
 }
 
 customElements.define("minimal-vslider", VSlider);

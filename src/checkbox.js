@@ -19,7 +19,7 @@ export class Checkbox extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
@@ -86,7 +86,7 @@ export class Checkbox extends Component {
   }
 
   onKeyPress(event) {
-    if (event.keyCode == 13 && this.enabled) {
+    if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
   }
@@ -98,7 +98,7 @@ export class Checkbox extends Component {
   toggle() {
     this.checked = !this.checked;
   }
-  
+
   updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
@@ -134,7 +134,7 @@ export class Checkbox extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateCheckStyle();
       this.label.enabled = enabled;

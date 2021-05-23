@@ -3,7 +3,6 @@ import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
 export class Label extends Component {
-
   constructor(parent, x, y, text) {
     super(null, x, y);
     this._align = "left";
@@ -27,7 +26,7 @@ export class Label extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
@@ -66,7 +65,7 @@ export class Label extends Component {
     this._align = align;
     this.wrapper.style.textAlign = align;
   }
-  
+
   get autosize() {
     return this._autosize;
   }
@@ -165,7 +164,7 @@ export class Label extends Component {
 
   set width(w) {
     if (!this.autosize) {
-      this._width = w;      
+      this._width = w;
       this.wrapper.style.width = w + "px";
     }
   }

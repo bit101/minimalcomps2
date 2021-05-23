@@ -37,7 +37,7 @@ RadioButtonGroup.addToGroup = (group, rb) => {
 RadioButtonGroup.getNextInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
-  var result;
+  let result;
   if (index >= g.length - 1) {
     result = g[0];
   } else {
@@ -52,7 +52,7 @@ RadioButtonGroup.getNextInGroup = (group, rb) => {
 RadioButtonGroup.getPrevInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
-  var result;
+  let result;
   if (index <= 0) {
     result = g[g.length - 1];
   } else {

@@ -3,9 +3,7 @@ import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
-
 export class HSlider extends Component {
-
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
@@ -15,7 +13,6 @@ export class HSlider extends Component {
     this._value = value;
     this._showValue = true;
     this._text = text;
-
 
     this.createChildren();
     this.createStyle();
@@ -99,7 +96,7 @@ export class HSlider extends Component {
     this.offsetX = event.clientX - this.getBoundingClientRect().left - this.handle.offsetLeft;
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
-      let x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
+      const x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
       this.calculateValueFromPos(x);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -107,7 +104,7 @@ export class HSlider extends Component {
   }
 
   onMouseMove(event) {
-    let x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
+    const x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
     this.calculateValueFromPos(x);
   }
 
@@ -141,7 +138,7 @@ export class HSlider extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
@@ -177,14 +174,6 @@ export class HSlider extends Component {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
-  }
-
-  showValue(show) {
-    if (show) {
-      this.valueLabel.style.visibility = "visible";
-    } else {
-      this.valueLabel.style.visibility = "hidden";
-    }
   }
 
   updateHandlePosition() {
@@ -223,19 +212,6 @@ export class HSlider extends Component {
   }
 
   updateValueLabelPosition() {
-    if (this._textPosition === "left") {
-      this.valueLabel.x = this.width + 5;
-      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-    } else if (this._textPosition === "top") {
-      this.label.x = 0;
-      this.label.y = -this.label.height - 5;
-    } else if (this._textPosition === "bottom") {
-      this.label.x = 0;
-      this.label.y = this.height + 5;
-    }
-  }
-
-  updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
@@ -245,7 +221,7 @@ export class HSlider extends Component {
   }
 
   updateValue(value) {
-    if (this._value != value) {
+    if (this._value !== value) {
       this._value = value;
       this.updateHandlePosition();
       this.valueLabel.text = this.formatValue();
@@ -257,7 +233,7 @@ export class HSlider extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get decimals() {
     return this._decimals;
   }
@@ -274,7 +250,7 @@ export class HSlider extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateEnabledStyle();
       if (this.enabled) {
@@ -346,7 +322,6 @@ export class HSlider extends Component {
 
   set reversed(reversed) {
     this._reversed = reversed;
-
   }
 
   get showValue() {

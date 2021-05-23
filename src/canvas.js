@@ -14,7 +14,7 @@ export class Canvas extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
     this.context = this.canvas.getContext("2d");

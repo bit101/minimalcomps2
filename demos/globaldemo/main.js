@@ -19,7 +19,7 @@ new NumericStepper(panel, 220, 50, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
 new Dropdown(panel, 220, 80, stuff, 0);
 new Image(panel, 220, 120, "demo.jpg");
-new TextBox(panel, 220, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html=true;
+new TextBox(panel, 220, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html = true;
 const canvas = new Canvas(panel, 350, 20, 200, 100);
 canvas.context.lineWidth = 0.5;
 canvas.context.beginPath();

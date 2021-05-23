@@ -18,7 +18,7 @@ export class TextInput extends Component {
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
     this.input.value = this._text;
@@ -55,7 +55,7 @@ export class TextInput extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.input.value;
     this.dispatchEvent(new Event("input"));
@@ -65,13 +65,13 @@ export class TextInput extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -99,7 +99,6 @@ export class TextInput extends Component {
     this._text = text;
     this.input.value = text;
   }
-
 }
 
 customElements.define("minimal-textinput", TextInput);
