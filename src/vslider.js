@@ -20,10 +20,17 @@ export class VSlider extends HSlider {
   // Handlers
   //////////////////////////////////
   onMouseDown(event) {
-    this.offsetY = event.clientY - this.getBoundingClientRect().top - this.handle.offsetTop;
+    event.preventDefault();
+    let mouseY;
+    if (event.changedTouches) {
+      mouseY = event.changedTouches[0].pageY;
+    } else {
+      mouseY = event.clientY;
+    }
+    this.offsetY = mouseY - this.getBoundingClientRect().top - this.handle.offsetTop;
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       this.offsetY = this.handleSize / 2;
-      const y = event.clientY - this.getBoundingClientRect().top - this.handleSize / 2;
+      const y = mouseY - this.getBoundingClientRect().top - this.handleSize / 2;
       this.calculateValueFromPos(y);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -31,7 +38,14 @@ export class VSlider extends HSlider {
   }
 
   onMouseMove(event) {
-    const y = event.clientY - this.getBoundingClientRect().top - this.offsetY;
+    event.preventDefault();
+    let mouseY;
+    if (event.changedTouches) {
+      mouseY = event.changedTouches[0].pageY;
+    } else {
+      mouseY = event.clientY;
+    }
+    const y = mouseY - this.getBoundingClientRect().top - this.offsetY;
     this.calculateValueFromPos(y);
   }
 
