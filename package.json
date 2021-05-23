@@ -1,12 +1,12 @@
 {
   "name": "minimalcomps2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "minimal ui components",
   "main": "rollup.config.js",
   "scripts": {
-    "uglify": "uglifyjs dist/minimalcomps_1.0.0.js -o dist/minimalcomps_1.0.0.min.js",
+    "uglify": "uglifyjs dist/minimalcomps_1.1.0.js -o dist/minimalcomps_1.1.0.min.js",
     "postuglify": "cp dist/minimalcomps*.min.js demos/globaldemo/",
-    "uglify-mod": "uglifyjs dist/minimalcomps_1.0.0.mjs -o dist/minimalcomps_1.0.0.min.mjs",
+    "uglify-mod": "uglifyjs dist/minimalcomps_1.1.0.mjs -o dist/minimalcomps_1.1.0.min.mjs",
     "postuglify-mod": "cp dist/minimalcomps*.min.mjs demos/moduledemo/",
     "build": "rollup -c && npm run uglify && npm run uglify-mod"
   },

@@ -1,11 +1,9 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
-import { Label } from "./label.js";
-
 export class HSlider extends Component {
-
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
@@ -16,7 +14,6 @@ export class HSlider extends Component {
     this._showValue = true;
     this._text = text;
 
-
     this.createChildren();
     this.createStyle();
     this.createListeners();
@@ -26,6 +23,7 @@ export class HSlider extends Component {
     this.updateLabelPosition();
     this.updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
@@ -41,45 +39,7 @@ export class HSlider extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalSlider {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        background-color: #ccc;
-        border-radius: 0;
-        height: 100%;
-        width: 100%;
-      }
-      .MinimalSliderHandle {
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: pointer;
-      }
-      .MinimalSliderHandleDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        background-color: #fff;
-        border: 1px solid #999;
-        height: 100%;
-        width: ${this.handleSize}px;
-        cursor: default;
-      }
-      .MinimalSlider:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.hslider;
     this.shadowRoot.append(style);
   }
 
@@ -89,7 +49,7 @@ export class HSlider extends Component {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown)
+    this.wrapper.addEventListener("keydown", this.onKeyDown);
   }
 
   //////////////////////////////////
@@ -99,7 +59,7 @@ export class HSlider extends Component {
     this.offsetX = event.clientX - this.getBoundingClientRect().left - this.handle.offsetLeft;
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
-      let x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
+      const x = event.clientX - this.getBoundingClientRect().left - this.handleSize / 2;
       this.calculateValueFromPos(x);
     }
     document.addEventListener("mousemove", this.onMouseMove);
@@ -107,7 +67,7 @@ export class HSlider extends Component {
   }
 
   onMouseMove(event) {
-    let x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
+    const x = event.clientX - this.getBoundingClientRect().left - this.offsetX;
     this.calculateValueFromPos(x);
   }
 
@@ -123,17 +83,17 @@ export class HSlider extends Component {
     }
     let value = this.value;
 
-    switch(event.keyCode) {
-      case 37:
-      case 40:
-        value -= inc;
-        break;
-      case 38:
-      case 39:
-        value += inc;
-        break
-      default:
-        break;
+    switch (event.keyCode) {
+    case 37:
+    case 40:
+      value -= inc;
+      break;
+    case 38:
+    case 39:
+      value += inc;
+      break;
+    default:
+      break;
     }
     this.updateValue(value);
   }
@@ -141,7 +101,7 @@ export class HSlider extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
   calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
@@ -177,14 +137,6 @@ export class HSlider extends Component {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
-  }
-
-  showValue(show) {
-    if (show) {
-      this.valueLabel.style.visibility = "visible";
-    } else {
-      this.valueLabel.style.visibility = "hidden";
-    }
   }
 
   updateHandlePosition() {
@@ -223,19 +175,6 @@ export class HSlider extends Component {
   }
 
   updateValueLabelPosition() {
-    if (this._textPosition === "left") {
-      this.valueLabel.x = this.width + 5;
-      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
-    } else if (this._textPosition === "top") {
-      this.label.x = 0;
-      this.label.y = -this.label.height - 5;
-    } else if (this._textPosition === "bottom") {
-      this.label.x = 0;
-      this.label.y = this.height + 5;
-    }
-  }
-
-  updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
@@ -245,11 +184,11 @@ export class HSlider extends Component {
   }
 
   updateValue(value) {
-    if (this._value != value) {
+    if (this._value !== value) {
       this._value = value;
       this.updateHandlePosition();
       this.valueLabel.text = this.formatValue();
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -257,7 +196,7 @@ export class HSlider extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get decimals() {
     return this._decimals;
   }
@@ -274,13 +213,13 @@ export class HSlider extends Component {
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
         this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown)
+        this.wrapper.addEventListener("keydown", this.onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
         this.wrapper.removeEventListener("mousedown", this.onMouseDown);
@@ -346,7 +285,6 @@ export class HSlider extends Component {
 
   set reversed(reversed) {
     this._reversed = reversed;
-
   }
 
   get showValue() {

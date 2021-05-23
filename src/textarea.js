@@ -12,12 +12,13 @@ export class TextArea extends Component {
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
- }
+    this.addToParent();
+  }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
@@ -25,25 +26,7 @@ export class TextArea extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalTextArea {
-        ${Style.baseStyle}
-        ${Style.textStyle}
-        ${Style.shadowStyle}
-        padding: 4px;
-        resize: none;
-      }
-      .MinimalTextArea:disabled,
-      .MinimalTextArea[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalTextArea::selection {
-        ${Style.textSelectionStyle}
-      }
-      .MinimalTextArea:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.textarea;
     this.shadowRoot.append(style);
   }
 
@@ -55,23 +38,23 @@ export class TextArea extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     this._text = this.textArea.value;
-    this.dispatchEvent(new Event("input"));
+    this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.textArea.disabled = !this.enabled;
       if (this.enabled) {

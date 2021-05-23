@@ -1,11 +1,10 @@
-import { Defaults } from "./defaults.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
 export class Label extends Component {
-
   constructor(parent, x, y, text) {
-    super(null, x, y);
+    super(parent, x, y);
     this._align = "left";
     this._autosize = true;
     this._color = "#333";
@@ -20,14 +19,14 @@ export class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    parent && parent.appendChild(this);
     this.height = Defaults.label.fontSize + 2;
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
@@ -35,21 +34,7 @@ export class Label extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalLabel {
-        ${Style.baseStyle}
-        font-size: ${Defaults.label.fontSize}px;
-        color: #333;
-        height: 100%;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-        white-space: nowrap;
-      }
-      .MinimalLabelDisabled {
-        ${Style.disabledStyle}
-      }
-    `;
+    style.textContent = Style.label;
     this.shadowRoot.append(style);
   }
 
@@ -66,7 +51,7 @@ export class Label extends Component {
     this._align = align;
     this.wrapper.style.textAlign = align;
   }
-  
+
   get autosize() {
     return this._autosize;
   }
@@ -165,7 +150,7 @@ export class Label extends Component {
 
   set width(w) {
     if (!this.autosize) {
-      this._width = w;      
+      this._width = w;
       this.wrapper.style.width = w + "px";
     }
   }

@@ -3,16 +3,18 @@ import { Style } from "./style.js";
 export class Component extends HTMLElement {
   constructor(parent, x, y) {
     super();
-    x = x || 0;
-    y = y || 0;
+    this.parent = parent;
     this._enabled = true;
 
     this.attachShadow({mode: "open"});
     this.createWrapper();
     this.createWrapperStyle();
 
-    this.move(x, y);
-    parent && parent.appendChild(this);
+    this.move(x || 0, y || 0);
+  }
+
+  addToParent() {
+    this.parent && this.parent.appendChild(this);
   }
 
   //////////////////////////////////
@@ -23,12 +25,14 @@ export class Component extends HTMLElement {
     return this.createElement(parent, "div", className);
   }
 
+  /* eslint-disable class-methods-use-this */
   createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
     parent && parent.appendChild(el);
     return el;
   }
+  /* eslint-enable */
 
   createInput(parent, className) {
     const input = this.createElement(parent, "input", className);
@@ -44,19 +48,7 @@ export class Component extends HTMLElement {
 
   createWrapperStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalWrapper {
-        ${Style.baseStyle}
-        height: 100%;
-        overflow: hidden;
-        width: 100%;
-      }
-      :host {
-        position: absolute;
-        display: block;
-        box-sizing: border-box;
-      }
-    `;
+    style.textContent = Style.component;
     this.shadowRoot.append(style);
   }
 
@@ -86,7 +78,6 @@ export class Component extends HTMLElement {
     this.wrapper.setAttribute("class", className);
   }
 
-  
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -99,7 +90,7 @@ export class Component extends HTMLElement {
   set enabled(enabled) {
     this._enabled = enabled;
   }
-  
+
   get height() {
     return this._height;
   }
@@ -136,7 +127,6 @@ export class Component extends HTMLElement {
     this.style.top = y + "px";
   }
 }
-
 
 customElements.define("minimal-component", Component);
 

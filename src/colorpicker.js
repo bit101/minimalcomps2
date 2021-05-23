@@ -13,12 +13,13 @@ export class ColorPicker extends Component {
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
+    this.addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  
+
   createChildren() {
     this.setWrapperClass("MinimalColorPicker");
 
@@ -32,47 +33,7 @@ export class ColorPicker extends Component {
 
   createStyle() {
     const style = document.createElement("style");
-    style.textContent = `
-      .MinimalColorPicker {
-        ${Style.baseStyle}
-        width: 100%;
-        height: 100%;
-      }
-      .MinimalColorPickerInput {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        ${Style.textStyle}
-        letter-spacing: 1px;
-        padding: 0 4px;
-        width: 70px;
-        height: 20px;
-        text-transform: uppercase;
-      }
-      .MinimalColorPickerInput:disabled,
-      .MinimalColorPickerInput[disabled] {
-        ${Style.disabledStyle}
-      }
-      .MinimalColorPickerPreview {
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerPreviewDisabled {
-        ${Style.disabledStyle}
-        ${Style.baseStyle}
-        ${Style.shadowStyle}
-        width: 20px;
-        height: 20px;
-        left: 80px;
-        background-color: #fff;
-      }
-      .MinimalColorPickerInput:focus {
-        ${Style.focusStyle}
-      }
-    `;
+    style.textContent = Style.colorpicker;
     this.shadowRoot.append(style);
   }
 
@@ -84,21 +45,22 @@ export class ColorPicker extends Component {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  
+
   onInput() {
     const color = this.correctColor(this.input.value);
     this.input.value = color;
-    if ((color.length === 4 || color.length === 7) && this.color != color) {
+    if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
-      this.dispatchEvent(new Event("change"));
+      this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
     }
   }
 
   //////////////////////////////////
   // General
   //////////////////////////////////
-  
+
+  /* eslint-disable class-methods-use-this */
   correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
@@ -110,18 +72,19 @@ export class ColorPicker extends Component {
     }
     return color;
   }
-  
+  /* eslint-enable */
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
-  
+
   get enabled() {
     return super.enabled;
   }
 
   set enabled(enabled) {
-    if (this.enabled != enabled) {
+    if (this.enabled !== enabled) {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
@@ -145,7 +108,6 @@ export class ColorPicker extends Component {
     this.input.value = color;
     this.preview.style.backgroundColor = color;
   }
-
 }
 
 customElements.define("minimal-colorpicker", ColorPicker);
