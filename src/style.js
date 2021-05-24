@@ -1,5 +1,3 @@
-import { Defaults } from "./defaults";
-
 export const Style = {};
 
 ////////////////////
@@ -287,7 +285,6 @@ Style.hslider = `
     background-color: #fff;
     border: 1px solid #999;
     height: 100%;
-    width: ${Defaults.hslider.handleSize}px;
     cursor: pointer;
   }
   .MinimalSliderHandleDisabled {
@@ -296,7 +293,6 @@ Style.hslider = `
     background-color: #fff;
     border: 1px solid #999;
     height: 100%;
-    width: ${Defaults.hslider.handleSize}px;
     cursor: default;
   }
   .MinimalSlider:focus {
@@ -329,7 +325,6 @@ Style.image = `
 Style.label = `
   .MinimalLabel {
     ${Style.baseStyle}
-    font-size: ${Defaults.label.fontSize}px;
     color: #333;
     height: 100%;
     overflow: hidden;
@@ -560,7 +555,6 @@ Style.vslider = `
     ${Style.baseStyle}
     background-color: #fff;
     border: 1px solid #999;
-    height: ${Defaults.vslider.handleSize}px;
     width: 100%;
     cursor: pointer;
   }
@@ -569,7 +563,6 @@ Style.vslider = `
     ${Style.baseStyle}
     background-color: #fff;
     border: 1px solid #999;
-    height: ${Defaults.vslider.handleSize}px;
     width: 100%;
     cursor: default;
   }
