@@ -14,6 +14,7 @@ export class VSlider extends HSlider {
     const style = document.createElement("style");
     style.textContent = Style.vslider;
     this.shadowRoot.append(style);
+    this.handleSize = Defaults.vslider.handleSize;
   }
 
   //////////////////////////////////

@@ -14,6 +14,7 @@ export class Label extends Component {
 
     this.createChildren();
     this.createStyle();
+    this.fontSize = Defaults.label.fontSize;
     // width will be 0 until it is on the live DOM
     // so we put it on document.body, get width
     // then remove it and add it to parent.

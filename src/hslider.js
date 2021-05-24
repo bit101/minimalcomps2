@@ -41,6 +41,7 @@ export class HSlider extends Component {
     const style = document.createElement("style");
     style.textContent = Style.hslider;
     this.shadowRoot.append(style);
+    this.handleSize = Defaults.hslider.handleSize;
   }
 
   createListeners() {

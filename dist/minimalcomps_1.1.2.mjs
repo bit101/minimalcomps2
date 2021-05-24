@@ -1,29 +1,3 @@
-const Defaults = {
-  button: {
-    width: 100,
-    height: 20,
-  },
-  vslider: {
-    decimals: 0,
-    width: 15,
-    height: 150,
-    handleSize: 15,
-  },
-  hslider: {
-    decimals: 0,
-    textPosition: "top",
-    width: 150,
-    height: 15,
-    handleSize: 15,
-  },
-  image: {
-    width: 100,
-  },
-  label: {
-    fontSize: 10,
-  },
-};
-
 const Style = {};
 
 ////////////////////
@@ -311,7 +285,6 @@ Style.hslider = `
     background-color: #fff;
     border: 1px solid #999;
     height: 100%;
-    width: ${Defaults.hslider.handleSize}px;
     cursor: pointer;
   }
   .MinimalSliderHandleDisabled {
@@ -320,7 +293,6 @@ Style.hslider = `
     background-color: #fff;
     border: 1px solid #999;
     height: 100%;
-    width: ${Defaults.hslider.handleSize}px;
     cursor: default;
   }
   .MinimalSlider:focus {
@@ -353,7 +325,6 @@ Style.image = `
 Style.label = `
   .MinimalLabel {
     ${Style.baseStyle}
-    font-size: ${Defaults.label.fontSize}px;
     color: #333;
     height: 100%;
     overflow: hidden;
@@ -584,7 +555,6 @@ Style.vslider = `
     ${Style.baseStyle}
     background-color: #fff;
     border: 1px solid #999;
-    height: ${Defaults.vslider.handleSize}px;
     width: 100%;
     cursor: pointer;
   }
@@ -593,7 +563,6 @@ Style.vslider = `
     ${Style.baseStyle}
     background-color: #fff;
     border: 1px solid #999;
-    height: ${Defaults.vslider.handleSize}px;
     width: 100%;
     cursor: default;
   }
@@ -732,6 +701,32 @@ class Component extends HTMLElement {
 
 customElements.define("minimal-component", Component);
 
+const Defaults = {
+  button: {
+    width: 100,
+    height: 20,
+  },
+  vslider: {
+    decimals: 0,
+    width: 15,
+    height: 150,
+    handleSize: 15,
+  },
+  hslider: {
+    decimals: 0,
+    textPosition: "top",
+    width: 150,
+    height: 15,
+    handleSize: 15,
+  },
+  image: {
+    width: 100,
+  },
+  label: {
+    fontSize: 10,
+  },
+};
+
 class Label extends Component {
   constructor(parent, x, y, text) {
     super(parent, x, y);
@@ -744,6 +739,7 @@ class Label extends Component {
 
     this.createChildren();
     this.createStyle();
+    this.fontSize = Defaults.label.fontSize;
     // width will be 0 until it is on the live DOM
     // so we put it on document.body, get width
     // then remove it and add it to parent.
@@ -1636,6 +1632,7 @@ class HSlider extends Component {
     const style = document.createElement("style");
     style.textContent = Style.hslider;
     this.shadowRoot.append(style);
+    this.handleSize = Defaults.hslider.handleSize;
   }
 
   createListeners() {
@@ -3003,6 +3000,7 @@ class VSlider extends HSlider {
     const style = document.createElement("style");
     style.textContent = Style.vslider;
     this.shadowRoot.append(style);
+    this.handleSize = Defaults.vslider.handleSize;
   }
 
   //////////////////////////////////
