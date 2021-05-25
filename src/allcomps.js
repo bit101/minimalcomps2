@@ -8,6 +8,7 @@ import { Dropdown } from "./dropdown.js";
 import { HBox } from "./hbox.js";
 import { HSlider } from "./hslider.js";
 import { Image } from "./image.js";
+import { Knob } from "./knob.js";
 import { Label } from "./label.js";
 import { NumericStepper } from "./numericstepper.js";
 import { Panel } from "./panel.js";
@@ -35,6 +36,7 @@ export {
   HBox,
   HSlider,
   Image,
+  Knob,
   Label,
   NumericStepper,
   Panel,

@@ -3,6 +3,7 @@ const {
   Canvas, Checkbox, ColorPicker,
   Dropdown,
   HSlider,
+  Knob,
   Image,
   Label,
   NumericStepper,
@@ -40,3 +41,7 @@ for (let i = 0; i < 100; i++) {
   canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
 }
 canvas.context.stroke();
+
+new Knob(panel, 350, 200, 50, 0, 100);
+new Knob(panel, 450, 200, 2.8, 2.5, 7.5).decimals = 3;
+

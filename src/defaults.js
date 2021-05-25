@@ -3,6 +3,9 @@ export const Defaults = {
     width: 100,
     height: 20,
   },
+  knob: {
+    decimals: 0,
+  },
   vslider: {
     decimals: 0,
     width: 15,
