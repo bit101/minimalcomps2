@@ -1652,9 +1652,10 @@ var mc2 = (function (exports) {
     // Handlers
     //////////////////////////////////
     onMouseDown(event) {
-      event.preventDefault();
       let mouseX;
       if (event.changedTouches) {
+        event.preventDefault();
+        this.wrapper.focus();
         mouseX = event.changedTouches[0].clientX;
       } else {
         mouseX = event.clientX;
@@ -1672,7 +1673,6 @@ var mc2 = (function (exports) {
     }
 
     onMouseMove(event) {
-      event.preventDefault();
       let mouseX;
       if (event.changedTouches) {
         mouseX = event.changedTouches[0].clientX;
@@ -1684,7 +1684,6 @@ var mc2 = (function (exports) {
     }
 
     onMouseUp() {
-      event.preventDefault();
       document.removeEventListener("mousemove", this.onMouseMove);
       document.removeEventListener("touchmove", this.onMouseMove);
       document.removeEventListener("mouseup", this.onMouseUp);
@@ -3010,9 +3009,10 @@ var mc2 = (function (exports) {
     // Handlers
     //////////////////////////////////
     onMouseDown(event) {
-      event.preventDefault();
       let mouseY;
       if (event.changedTouches) {
+        event.preventDefault();
+        this.wrapper.focus();
         mouseY = event.changedTouches[0].clientY;
       } else {
         mouseY = event.clientY;
@@ -3030,7 +3030,6 @@ var mc2 = (function (exports) {
     }
 
     onMouseMove(event) {
-      event.preventDefault();
       let mouseY;
       if (event.changedTouches) {
         mouseY = event.changedTouches[0].clientY;
