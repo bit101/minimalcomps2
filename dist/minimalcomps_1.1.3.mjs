@@ -1682,6 +1682,8 @@ class HSlider extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.onWheel = this.onWheel.bind(this);
+    this.wrapper.addEventListener("wheel", this.onWheel);
     this.wrapper.addEventListener("mousedown", this.onMouseDown);
     this.wrapper.addEventListener("touchstart", this.onMouseDown);
     this.wrapper.addEventListener("keydown", this.onKeyDown);
@@ -1737,16 +1739,38 @@ class HSlider extends Component {
     let value = this.value;
 
     switch (event.keyCode) {
-    case 37:
-    case 40:
+    case 34: // pagedown
+      value -= inc * 10;
+      break;
+    case 33: // pageup
+      value += inc * 10;
+      break;
+    case 36: // home
+      value = this.min;
+      break;
+    case 35: // end
+      value = this.max;
+      break;
+    case 37: // right
+    case 40: // up
       value -= inc;
       break;
-    case 38:
-    case 39:
+    case 38: // up
+    case 39: // down
       value += inc;
       break;
     }
     this.updateValue(value);
+  }
+
+  onWheel(event) {
+    event.preventDefault();
+    const inc = 1 / Math.pow(10, this._decimals);
+    if (event.deltaY > 0) {
+      this.value += inc;
+    } else if (event.deltaY < 0) {
+      this.value -= inc;
+    }
   }
 
   //////////////////////////////////
@@ -1869,11 +1893,13 @@ class HSlider extends Component {
       this.updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
+        this.wrapper.addEventListener("wheel", this.onWheel);
         this.wrapper.addEventListener("mousedown", this.onMouseDown);
         this.wrapper.addEventListener("touchstart", this.onMouseDown);
         this.wrapper.addEventListener("keydown", this.onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
+        this.wrapper.removeEventListener("wheel", this.onWheel);
         this.wrapper.removeEventListener("mousedown", this.onMouseDown);
         this.wrapper.removeEventListener("touchstart", this.onMouseDown);
         this.wrapper.removeEventListener("keydown", this.onKeyDown);
@@ -2223,7 +2249,7 @@ class Knob extends Component {
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
       this.value += inc;
-    } else {
+    } else if (event.deltaY < 0) {
       this.value -= inc;
     }
   }

@@ -134,7 +134,7 @@ export class Knob extends Component {
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
       this.value += inc;
-    } else {
+    } else if (event.deltaY < 0) {
       this.value -= inc;
     }
   }
