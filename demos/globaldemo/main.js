@@ -2,7 +2,7 @@ const {
   Button,
   Canvas, Checkbox, ColorPicker,
   Dropdown,
-  HSlider,
+  HBox, HSlider,
   Knob,
   Image,
   Label,
@@ -42,6 +42,9 @@ for (let i = 0; i < 100; i++) {
 }
 canvas.context.stroke();
 
-new Knob(panel, 350, 200, 50, 0, 100);
-new Knob(panel, 450, 200, 2.8, 2.5, 7.5).decimals = 3;
+const hbox = new HBox(panel, 350, 150, 10);
+const knob = new Knob(hbox, 0, 0, "Freq.", 50, 0, 100);
+new Knob(hbox, 0, 0, "Amp.", 2.8, 0, 100).decimals = 3;
+new Knob(hbox, 0, 0, "Volume", 0, 0, 11).decimals = 3;
+new Knob(hbox, 0, 0, "Bass", 0, 0, 1).decimals = 3;
 

@@ -2,8 +2,9 @@ import {
   Button,
   Canvas, Checkbox, ColorPicker,
   Dropdown,
-  HSlider,
+  HBox, HSlider,
   Image,
+  Knob,
   Label,
   NumericStepper,
   Panel, ProgressBar,
@@ -40,3 +41,10 @@ for (let i = 0; i < 100; i++) {
   canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
 }
 canvas.context.stroke();
+
+const hbox = new HBox(panel, 350, 150, 10);
+const knob = new Knob(hbox, 0, 0, "Freq.", 50, 0, 100);
+new Knob(hbox, 0, 0, "Amp.", 2.8, 0, 100).decimals = 3;
+new Knob(hbox, 0, 0, "Volume", 0, 0, 11).decimals = 3;
+new Knob(hbox, 0, 0, "Bass", 0, 0, 1).decimals = 3;
+

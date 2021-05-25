@@ -328,6 +328,12 @@ Style.knob = `
     width: 100%;
     height: 100%;
   }
+  .MinimalKnob:focus {
+    ${Style.baseStyle}
+    ${Style.focusStyle}
+    width: 100%;
+    height: 100%;
+  }
   .MinimalKnobDisabled {
     ${Style.disabledStyle}
     ${Style.baseStyle}
@@ -345,9 +351,9 @@ Style.knob = `
   }
   .MinimalKnobZero {
     ${Style.baseStyle}
-    width: 25%;
+    width: 33%;
     height: 2px;
-    background-color: #999;
+    background-color: #bbb;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
