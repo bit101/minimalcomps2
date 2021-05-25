@@ -320,6 +320,44 @@ Style.image = `
 `;
 
 ////////////////////
+// Knob
+////////////////////
+Style.knob = `
+  .MinimalKnob {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalKnob:focus {
+    ${Style.baseStyle}
+    ${Style.focusStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalKnobDisabled {
+    ${Style.disabledStyle}
+    ${Style.baseStyle}
+    width: 100%;
+    height: 100%;
+  }
+  .MinimalKnobHandle {
+    ${Style.baseStyle}
+    border-radius: 50%;
+    border: 1px solid #999;
+    background-color: #fff;
+  }
+  .MinimalKnobZero {
+    ${Style.baseStyle}
+    width: 33%;
+    height: 2px;
+    background-color: #bbb;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+`;
+
+////////////////////
 // Label
 ////////////////////
 Style.label = `

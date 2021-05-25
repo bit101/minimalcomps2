@@ -4,6 +4,7 @@ import {
   Dropdown,
   HSlider,
   Image,
+  Knob,
   Label,
   NumericStepper,
   Panel, ProgressBar,
@@ -40,3 +41,6 @@ for (let i = 0; i < 100; i++) {
   canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
 }
 canvas.context.stroke();
+
+new Knob(panel, 350, 150, "Knob", 50, 0, 100);
+
