@@ -1,4 +1,4 @@
-const tag = "1.1.2";
+const tag = "1.1.3";
 
 export default {
   input: "src/allcomps",
