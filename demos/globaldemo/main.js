@@ -2,7 +2,7 @@ const {
   Button,
   Canvas, Checkbox, ColorPicker,
   Dropdown,
-  HBox, HSlider,
+  HSlider,
   Knob,
   Image,
   Label,
