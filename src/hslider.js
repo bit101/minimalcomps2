@@ -58,9 +58,10 @@ export class HSlider extends Component {
   // Handlers
   //////////////////////////////////
   onMouseDown(event) {
-    event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
+      event.preventDefault();
+      this.wrapper.focus();
       mouseX = event.changedTouches[0].clientX;
     } else {
       mouseX = event.clientX;
@@ -78,7 +79,6 @@ export class HSlider extends Component {
   }
 
   onMouseMove(event) {
-    event.preventDefault();
     let mouseX;
     if (event.changedTouches) {
       mouseX = event.changedTouches[0].clientX;
@@ -90,7 +90,6 @@ export class HSlider extends Component {
   }
 
   onMouseUp() {
-    event.preventDefault();
     document.removeEventListener("mousemove", this.onMouseMove);
     document.removeEventListener("touchmove", this.onMouseMove);
     document.removeEventListener("mouseup", this.onMouseUp);

@@ -21,9 +21,10 @@ export class VSlider extends HSlider {
   // Handlers
   //////////////////////////////////
   onMouseDown(event) {
-    event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
+      event.preventDefault();
+      this.wrapper.focus();
       mouseY = event.changedTouches[0].clientY;
     } else {
       mouseY = event.clientY;
@@ -41,7 +42,6 @@ export class VSlider extends HSlider {
   }
 
   onMouseMove(event) {
-    event.preventDefault();
     let mouseY;
     if (event.changedTouches) {
       mouseY = event.changedTouches[0].clientY;
