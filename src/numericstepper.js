@@ -52,6 +52,10 @@ export class NumericStepper extends Component {
     this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
     this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
     this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
+    this.onWheel = this.onWheel.bind(this);
+
+    this.wrapper.addEventListener("wheel", this.onWheel);
+
     this.input.addEventListener("input", this.onInput);
     this.input.addEventListener("change", this.onInputChange);
 
@@ -160,6 +164,16 @@ export class NumericStepper extends Component {
     }
   }
 
+  onWheel(event) {
+    event.preventDefault();
+    const inc = 1 / Math.pow(10, this._decimals);
+    if (event.deltaY > 0) {
+      this.value += inc;
+    } else if (event.deltaY < 0) {
+      this.value -= inc;
+    }
+  }
+
   //////////////////////////////////
   // General
   //////////////////////////////////
@@ -190,6 +204,11 @@ export class NumericStepper extends Component {
       this.input.disabled = !this.enabled;
       this.plus.enabled = this.enabled;
       this.minus.enabled = this.enabled;
+      if (this.enabled) {
+        this.wrapper.addEventListener("wheel", this.onWheel);
+      } else {
+        this.wrapper.removeEventListener("wheel", this.onWheel);
+      }
     }
   }
 
