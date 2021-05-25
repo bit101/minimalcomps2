@@ -346,9 +346,6 @@ Style.knob = `
     border: 1px solid #999;
     background-color: #fff;
   }
-  .MinimalKnobHandle:focus {
-    ${Style.focusStyle}
-  }
   .MinimalKnobZero {
     ${Style.baseStyle}
     width: 33%;
@@ -749,6 +746,7 @@ const Defaults = {
   },
   knob: {
     decimals: 0,
+    size: 40,
   },
   vslider: {
     decimals: 0,
@@ -2111,7 +2109,7 @@ class Knob extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(40, 40);
+    this.setSize(Defaults.knob.size, Defaults.knob.size);
     this.updateHandleRotation();
 
     this.addEventListener("change", defaultHandler);

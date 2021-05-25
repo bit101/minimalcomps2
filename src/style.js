@@ -346,9 +346,6 @@ Style.knob = `
     border: 1px solid #999;
     background-color: #fff;
   }
-  .MinimalKnobHandle:focus {
-    ${Style.focusStyle}
-  }
   .MinimalKnobZero {
     ${Style.baseStyle}
     width: 33%;

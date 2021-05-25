@@ -5,6 +5,7 @@ export const Defaults = {
   },
   knob: {
     decimals: 0,
+    size: 40,
   },
   vslider: {
     decimals: 0,

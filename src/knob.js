@@ -18,7 +18,7 @@ export class Knob extends Component {
     this.createStyle();
     this.createListeners();
 
-    this.setSize(40, 40);
+    this.setSize(Defaults.knob.size, Defaults.knob.size);
     this.updateHandleRotation();
 
     this.addEventListener("change", defaultHandler);
