@@ -1,15 +1,13 @@
-const tag = "1.2.0";
-
 export default {
   input: "src/allcomps",
   output: [
     {
-      file: `dist/minimalcomps_${tag}.js`,
+      file: `dist/minimalcomps.js`,
       format: 'iife',
       name: "mc2",
     },
     {
-      file: `dist/minimalcomps_${tag}.mjs`,
+      file: `dist/minimalcomps.mjs`,
       format: 'es',
     },
   ],

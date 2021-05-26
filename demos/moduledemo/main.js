@@ -11,7 +11,7 @@ import {
   RadioButton,
   TextArea, TextBox, TextInput,
   VBox, VSlider,
-} from "./minimalcomps_1.2.0.min.mjs";
+} from "./minimalcomps.min.mjs";
 
 const panel = new Panel(document.body, 40, 40, 580, 400);
 
