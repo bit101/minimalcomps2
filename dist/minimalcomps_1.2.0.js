@@ -1743,23 +1743,29 @@ var mc2 = (function (exports) {
 
       switch (event.keyCode) {
       case 34: // pagedown
+        event.preventDefault();
         value -= inc * 10;
         break;
       case 33: // pageup
+        event.preventDefault();
         value += inc * 10;
         break;
       case 36: // home
+        event.preventDefault();
         value = this.min;
         break;
       case 35: // end
+        event.preventDefault();
         value = this.max;
         break;
       case 37: // right
       case 40: // up
+        event.preventDefault();
         value -= inc;
         break;
       case 38: // up
       case 39: // down
+        event.preventDefault();
         value += inc;
         break;
       }
@@ -2224,23 +2230,29 @@ var mc2 = (function (exports) {
 
       switch (event.keyCode) {
       case 34: // pagedown
+        event.preventDefault();
         value -= inc * 10;
         break;
       case 33: // pageup
+        event.preventDefault();
         value += inc * 10;
         break;
       case 36: // home
+        event.preventDefault();
         value = this.min;
         break;
       case 35: // end
+        event.preventDefault();
         value = this.max;
         break;
       case 37: // right
       case 40: // up
+        event.preventDefault();
         value -= inc;
         break;
       case 38: // up
       case 39: // down
+        event.preventDefault();
         value += inc;
         break;
       }
