@@ -19,6 +19,7 @@ import { Style } from "./style.js";
 import { TextArea } from "./textarea.js";
 import { TextBox } from "./textbox.js";
 import { TextInput } from "./textinput.js";
+import { Toggle } from "./toggle.js";
 import { VBox } from "./vbox.js";
 import { VSlider } from "./vslider.js";
 
@@ -47,6 +48,7 @@ export {
   TextArea,
   TextBox,
   TextInput,
+  Toggle,
   VBox,
   VSlider,
 };

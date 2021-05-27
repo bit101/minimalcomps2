@@ -98,6 +98,9 @@ export class Image extends Component {
     return this.image.height;
   }
 
+  set height(h) {
+  }
+
   /**
    * Gets and sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
    */
