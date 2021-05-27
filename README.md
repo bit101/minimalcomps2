@@ -23,14 +23,12 @@ const input = new TextInput(panel, 20, 50, "hello world");
 const label = new Label(panel, 20, 80, "target label");
 ```
 
-![simple demo](images/simpledemo.png)
-
 The general API for each component is 
 
 ```new ComponentName(parent, x, y, <possible other params>, defaultEventHandler);```
 
+Full documentation here: https://www.minimalcomps2.com/documentation/index.html
+
 No need to worry about styles or layout. Just give everything a parent, a position, a prop or two and maybe an event handler.
 
-## Where we are at
-
-![component list](images/simpledemo2.png)
+Lots of demos on the main site: https://www.minimalcomps2.com/demos/
