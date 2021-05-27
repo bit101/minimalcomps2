@@ -2,7 +2,21 @@ import { Component } from "./component.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
+/**
+ * Provides a dropdown list of items when clicked. One of those items can then be selected and be shown in the main component.
+ * <div><img src="https://www.minimalcomps2.com/images/dropdown.png"/></div>
+ * @extends Component
+ */
 export class Dropdown extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this dropdown to.
+   * @param {number} x - The x position of the dropdown.
+   * @param {number} y - The y position of the dropdown.
+   * @param {array} items - An array of strings to populate the dropdown list with.
+   * @param {number} index - The initial selected index of the dropdown.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);
     this.items = items;
@@ -147,11 +161,17 @@ export class Dropdown extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Programatically closes the dropdown if it is open.
+   */
   close() {
     this._open = true;
     this.toggle();
   }
 
+  /**
+   * Programatically opens the dropdown if it is closed.
+   */
   open() {
     this._open = false;
     this.toggle();
@@ -217,6 +237,9 @@ export class Dropdown extends Component {
     this.itemElements.forEach((item, i) => this.updateItem(item, i));
   }
 
+  /**
+   * Reading this property tells you the index of the currently selected item. Setting it caused the new index to be selected and the dropdown to display that item.
+   */
   get index() {
     return this._index;
   }
@@ -229,6 +252,9 @@ export class Dropdown extends Component {
     }
   }
 
+  /**
+   * Get the text of the currently selected item in the dropdown (read only).
+   */
   get text() {
     return this._text;
   }

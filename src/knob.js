@@ -3,7 +3,23 @@ import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
+/**
+ * A rotary knob for selecting numerical values. The knob value can be changed by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/knob.png"/></div>
+ * @extends Component
+ */
 export class Knob extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this knob to.
+   * @param {number} x - The x position of the knob.
+   * @param {number} y - The y position of the knob.
+   * @param {string} text - The text label of the knob.
+   * @param {number} value - The initial value of the knob.
+   * @param {number} min - The minimum value of the knob.
+   * @param {number} max - The maximum value of the knob.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
 
@@ -211,6 +227,9 @@ export class Knob extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -249,6 +268,9 @@ export class Knob extends Component {
     }
   }
 
+  /**
+   * Gets and sets the height of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+   */
   get height() {
     return super.height;
   }
@@ -260,6 +282,9 @@ export class Knob extends Component {
     this.updateLabelPositions();
   }
 
+  /**
+   * Gets and sets the maximum value of the knob.
+   */
   get max() {
     return this._max;
   }
@@ -269,6 +294,9 @@ export class Knob extends Component {
     this.updateValue(this.value);
   }
 
+  /**
+   * Gets and sets the minimum value of the knob.
+   */
   get min() {
     return this._min;
   }
@@ -278,6 +306,9 @@ export class Knob extends Component {
     this.updateValue(this.value);
   }
 
+  /**
+   * Gets and sets the sensitivity of the knob when clicking and dragging to set a value. Default is 100, which means you'll have to drag the mouse 100 pixels to make the knob value go from its minimum value to its maximum. A higher sensitivity means that the knob will rotate a smaller amount for the same amount of vertical mouse movement.
+   */
   get sensitivity() {
     return this._sensitivity;
   }
@@ -286,6 +317,9 @@ export class Knob extends Component {
     this._sensitivity = sensitivity;
   }
 
+  /**
+   * Gets and sets the text of the text label of the knob.
+   */
   get text() {
     return this._text;
   }
@@ -295,6 +329,9 @@ export class Knob extends Component {
     this.label.text = text;
   }
 
+  /**
+   * Gets and sets the value of the knob.
+   */
   get value() {
     return this.roundValue(this._value);
   }
@@ -303,6 +340,9 @@ export class Knob extends Component {
     this.updateValue(value);
   }
 
+  /**
+   * Gets and sets the width of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+   */
   get width() {
     return super.width;
   }

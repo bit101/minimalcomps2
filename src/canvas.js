@@ -1,7 +1,20 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates an HTML Canvas element for dynamically drawn content.
+ * <div><img src="https://www.minimalcomps2.com/images/canvas.png"/></div>
+ * @extends Component
+ */
 export class Canvas extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this canvas to.
+   * @param {number} x - The x position of the canvas.
+   * @param {number} y - The y position of the canvas.
+   * @param {number} w - The width of the canvas.
+   * @param {number} h - The height of the canvas.
+   */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
 
@@ -18,7 +31,7 @@ export class Canvas extends Component {
 
   createChildren() {
     this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
-    this.context = this.canvas.getContext("2d");
+    this._context = this.canvas.getContext("2d");
   }
 
   createStyle() {
@@ -39,6 +52,13 @@ export class Canvas extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  /**
+   * Returns the current 2d drawing context of the canvas (read only).
+   */
+  get context() {
+    return this._context;
+  }
 
   get enabled() {
     return super.enabled;

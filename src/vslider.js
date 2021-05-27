@@ -2,7 +2,23 @@ import { Defaults } from "./defaults.js";
 import { HSlider } from "./hslider.js";
 import { Style } from "./style.js";
 
+/**
+ * A vertical slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/vslider.png"/></div>
+ * @extends HSlider
+ */
 export class VSlider extends HSlider {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this slider to.
+   * @param {number} x - The x position of the slider.
+   * @param {number} y - The y position of the slider.
+   * @param {string} text - The text label of the slider.
+   * @param {number} value - The initial value of the slider.
+   * @param {number} min - The minimum value of the slider.
+   * @param {number} max - The maximum value of the slider.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
   }
@@ -104,6 +120,10 @@ export class VSlider extends HSlider {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the height of the draggable slider handle. If you make the slider thicker by changing its width, you may want to adjust the handle size as well. If handleSize is the same as the slider width, then the handle will be a square.
+   * <div><img src="https://www.minimalcomps2.com/images/vsliderhandlesize.png"/></div>
+   */
   get handleSize() {
     return this._handleSize;
   }

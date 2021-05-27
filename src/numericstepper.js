@@ -2,6 +2,11 @@ import { Button } from "./button.js";
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * An input field with buttons for selecting a numeric value. The value can be changed by entering a value directly, clicking on the plus or minus buttons, or scrolling with a mouse wheel or trackpad.
+ * <div><img src="https://www.minimalcomps2.com/images/numericstepper.png"/></div>
+ * @extends Component
+ */
 export class NumericStepper extends Component {
   constructor(parent, x, y, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -212,6 +217,9 @@ export class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will increment or decrement the stepper's value by the smallest displayed value.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -226,6 +234,9 @@ export class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum value of the stepper.
+   */
   get max() {
     return this._max;
   }
@@ -238,6 +249,9 @@ export class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the minimum value of the stepper.
+   */
   get min() {
     return this._min;
   }
@@ -250,6 +264,9 @@ export class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the value of the stepper.
+   */
   get value() {
     return this._value;
   }

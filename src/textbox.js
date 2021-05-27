@@ -1,7 +1,19 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a static box for multiline text. Accepts HTML text.
+ * <div><img src="https://www.minimalcomps2.com/images/textbox.png"/></div>
+ * @extends Component
+ */
 export class TextBox extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text box to.
+   * @param {number} x - The x position of the text box.
+   * @param {number} y - The y position of the text box.
+   * @param {string} text - The initial text to display in the text box.
+   */
   constructor(parent, x, y, text) {
     super(parent, x, y);
     this._align = "left";
@@ -38,6 +50,9 @@ export class TextBox extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the horizontal alignment of the text in the text box (left, right, center).
+   */
   get align() {
     return this._align;
   }
@@ -47,6 +62,9 @@ export class TextBox extends Component {
     this.wrapper.style.textAlign = align;
   }
 
+  /**
+   * Gets and sets whether or not the text will be bold.
+   */
   get bold() {
     return this._bold;
   }
@@ -60,6 +78,9 @@ export class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the color of the text.
+   */
   get color() {
     return this._color;
   }
@@ -82,6 +103,9 @@ export class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the size of the text.
+   */
   get fontSize() {
     return this._fontSize;
   }
@@ -91,6 +115,9 @@ export class TextBox extends Component {
     this.wrapper.style.fontSize = fontSize + "px";
   }
 
+  /**
+   * Gets and sets a string of HTML text to display. This will accept pretty much any kind of valid HTML markup you can put into a string.
+   */
   get html() {
     return this._html;
   }
@@ -104,6 +131,9 @@ export class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets whether or not the text will be italicized.
+   */
   get italic() {
     return this._italics;
   }
@@ -117,6 +147,9 @@ export class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the plain text to be displayed. Compare with the htmlText property.
+   */
   get text() {
     return this._text;
   }

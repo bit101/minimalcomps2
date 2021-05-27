@@ -3,7 +3,22 @@ import { Label } from "./label.js";
 import { RadioButtonGroup } from "./radiobuttongroup.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a clickable radio button with a label that can be selected by clicking. Radio buttons are assigned to a group and only one radio button in a group will be selected at any one time.
+ * You can get the text of the currently checked radio button in a group by calling RadioButtonGroup.getValueForGroup(group).
+ * <div><img src="https://www.minimalcomps2.com/images/radiobutton.png"/></div>
+ * @extends Component
+ */
 export class RadioButton extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this radio button to.
+   * @param {number} x - The x position of the radio button.
+   * @param {number} y - The y position of the radio button.
+   * @param {string} text - The text label of the radio button.
+   * @param {boolean} checked - The initial checked state of the radio button.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
@@ -103,6 +118,9 @@ export class RadioButton extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the checked state of the radio button.
+   */
   get checked() {
     return this._checked;
   }
@@ -132,6 +150,9 @@ export class RadioButton extends Component {
     }
   }
 
+  /**
+   * Sets and gets the text shown in the radio button's label.
+   */
   get text() {
     return this._text;
   }

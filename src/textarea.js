@@ -1,7 +1,20 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a multi-line scrollable input field for entering text.
+ * <div><img src="https://www.minimalcomps2.com/images/textarea.png"/></div>
+ * @extends Component
+ */
 export class TextArea extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text area to.
+   * @param {number} x - The x position of the text area.
+   * @param {number} y - The y position of the text area.
+   * @param {string} text - The initial text to display in the text area.
+   * @param {function} defaultHandler - A function that will handle the "input" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -65,6 +78,9 @@ export class TextArea extends Component {
     }
   }
 
+  /**
+   * Gets and sets the text in the text area.
+   */
   get text() {
     return this._text;
   }

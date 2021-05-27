@@ -3,7 +3,23 @@ import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
+/**
+ * A horizontal slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/hslider.png"/></div>
+ * @extends Component
+ */
 export class HSlider extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this slider to.
+   * @param {number} x - The x position of the slider.
+   * @param {number} y - The y position of the slider.
+   * @param {string} text - The text label of the slider.
+   * @param {number} value - The initial value of the slider.
+   * @param {number} min - The minimum value of the slider.
+   * @param {number} max - The maximum value of the slider.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
@@ -247,6 +263,9 @@ export class HSlider extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -286,6 +305,10 @@ export class HSlider extends Component {
     }
   }
 
+  /**
+   * Gets and sets the width of the draggable slider handle. If you make the slider thicker by changing its height, you may want to adjust the handle size as well. If handleSize is the same as the slider height, then the handle will be a square.
+   * <div><img src="https://www.minimalcomps2.com/images/hsliderhandlesize.png"/></div>
+   */
   get handleSize() {
     return this._handleSize;
   }
@@ -306,6 +329,9 @@ export class HSlider extends Component {
     this.updateValueLabelPosition();
   }
 
+  /**
+   * Gets and sets the position of the text label displayed on the slider. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
   get textPosition() {
     return this.textPosition;
   }
@@ -315,6 +341,9 @@ export class HSlider extends Component {
     this.updateLabelPosition();
   }
 
+  /**
+   * Gets and sets the maximum value of the slider.
+   */
   get max() {
     return this._max;
   }
@@ -325,6 +354,9 @@ export class HSlider extends Component {
     this.updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the minimum value of the slider.
+   */
   get min() {
     return this._min;
   }
@@ -335,6 +367,9 @@ export class HSlider extends Component {
     this.updateHandlePosition();
   }
 
+  /**
+   * Gets and sets whether the slider is reversed. A reversed HSlider will show its maximum value on the left and minumum on the right. A reversed VSlider will show its maximum value on the bottom and minimum on the top.
+   */
   get reversed() {
     return this._reversed;
   }
@@ -343,6 +378,9 @@ export class HSlider extends Component {
     this._reversed = reversed;
   }
 
+  /**
+   * Gets and sets whether or not the value label will be displayed.
+   */
   get showValue() {
     return this._showValue;
   }
@@ -356,6 +394,9 @@ export class HSlider extends Component {
     }
   }
 
+  /**
+   * Gets and sets the text of the text label of the slider.
+   */
   get text() {
     return this._text;
   }
@@ -366,6 +407,9 @@ export class HSlider extends Component {
     this.updateLabelPosition();
   }
 
+  /**
+   * Gets and sets the value of the slider.
+   */
   get value() {
     return this.roundValue(this._value);
   }

@@ -2,7 +2,19 @@ import { Component } from "./component.js";
 import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
+/**
+ * A component that displays an image loaded from a URL.
+ * <div><img src="https://www.minimalcomps2.com/images/image.png"/></div>
+ * @extends Component
+ */
 export class Image extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this image to.
+   * @param {number} x - The x position of the image.
+   * @param {number} y - The y position of the image.
+   * @param {string} url - The URL of the image to display.
+   */
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -79,14 +91,16 @@ export class Image extends Component {
     }
   }
 
+  /**
+   * Gets and sets the height of the image. This is read only because the height will be set according to the assigned width and the aspect ratio of the loaded image.
+   */
   get height() {
     return this.image.height;
   }
 
-  set height(height) {
-    super.height = height;
-  }
-
+  /**
+   * Gets and sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
+   */
   get url() {
     return this._url;
   }
@@ -96,6 +110,9 @@ export class Image extends Component {
     this.load();
   }
 
+  /**
+   * Gets and sets the width of the image. When the image is loaded, it will be set to the assigned width. The height will be set according to the assigned with and the aspect ratio of the loaded image.
+   */
   get width() {
     return super.width;
   }
