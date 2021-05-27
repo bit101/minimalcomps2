@@ -99,6 +99,7 @@ export class Image extends Component {
   }
 
   set height(h) {
+    super.height = h;
   }
 
   /**

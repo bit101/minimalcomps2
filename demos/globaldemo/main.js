@@ -44,5 +44,5 @@ canvas.context.stroke();
 
 new Knob(panel, 350, 150, "Knob", 50, 0, 100);
 
-new Toggle(panel, 350, 220, false);
+new Toggle(panel, 350, 240, "Toggle", false);
 

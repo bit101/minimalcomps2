@@ -2408,6 +2408,7 @@ var mc2 = (function (exports) {
     }
 
     set height(h) {
+      super.height = h;
     }
 
     /**
@@ -3863,8 +3864,10 @@ var mc2 = (function (exports) {
      * @param {boolean} toggled - The initial toggled state of the toggle.
      * @param {function} defaultHandler - A function that will handle the "click" event.
      */
-    constructor(parent, x, y, toggled, defaultHandler) {
+    constructor(parent, x, y, text, toggled, defaultHandler) {
       super(parent, x, y);
+      this._text = text;
+      this._textPosition = "top";
 
       this.createChildren();
       this.createStyle();
@@ -3872,6 +3875,7 @@ var mc2 = (function (exports) {
 
       this.setSize(50, 20);
       this.toggled = toggled;
+      this.updateLabel();
       this.addEventListener("click", defaultHandler);
       this.addToParent();
     }
@@ -3883,6 +3887,7 @@ var mc2 = (function (exports) {
     createChildren() {
       this.setWrapperClass("MinimalToggle");
       this.wrapper.tabIndex = 0;
+      this.label = new Label(this.wrapper, 0, -15, this._text);
       this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
     }
 
@@ -3922,15 +3927,27 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     /**
-     * Toggles the state of the checkbox between toggled and not toggled.
+     * Toggles the state of the toggle between toggled and not toggled.
      */
     toggle() {
       this.toggled = !this.toggled;
       this.updateToggle();
     }
 
+    updateLabel() {
+      if (this._textPosition === "left") {
+        this.label.x = -this.label.width - 5;
+        this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._textPosition === "top") {
+        this.label.x = 0;
+        this.label.y = -this.label.height - 5;
+      } else {
+        this.label.x = 0;
+        this.label.y = this.height + 5;
+      }
+    }
+
     updateToggle() {
-      console.log(this.toggled);
       if (this.toggled) {
         this.handle.style.left = "50%";
       } else {
@@ -3944,7 +3961,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     /**
-     * Sets and gets the toggled state of the checkbox.
+     * Sets and gets the toggled state of the toggle.
      */
     get toggled() {
       return this._toggled;
@@ -3970,6 +3987,31 @@ var mc2 = (function (exports) {
           this.wrapper.tabIndex = -1;
         }
       }
+    }
+
+    /**
+     * Gets and sets the text of the toggle's text label.
+     */
+    get text() {
+      return this._text;
+    }
+
+    set text(text) {
+      this._text = text;
+      this.label.text = text;
+      this.updateLabel();
+    }
+
+    /**
+     * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+     */
+    get textPosition() {
+      return this._textPosition;
+    }
+
+    set textPosition(pos) {
+      this._textPosition = pos;
+      this.updateLabel();
     }
   }
 
