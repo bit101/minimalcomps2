@@ -1,7 +1,20 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a single line input field for entering text.
+ * <div><img src="https://www.minimalcomps2.com/images/textinput.png"/></div>
+ * @extends Component
+ */
 export class TextInput extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text input to.
+   * @param {number} x - The x position of the text input.
+   * @param {number} y - The y position of the text input.
+   * @param {string} text - The initial text to display in the text input.
+   * @param {function} defaultHandler - A function that will handle the "input" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._maxLength = 0;
@@ -66,6 +79,9 @@ export class TextInput extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum length of the string that can be typed into the input.
+   */
   get maxLength() {
     return this._maxLength;
   }
@@ -75,6 +91,9 @@ export class TextInput extends Component {
     this.input.maxLength = maxLength;
   }
 
+  /**
+   * Gets and sets the text in the input.
+   */
   get text() {
     return this._text;
   }

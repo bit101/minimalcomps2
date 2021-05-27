@@ -662,22 +662,40 @@ class Component extends HTMLElement {
   }
 
   //////////////////////////////////
-  // Creators
+  // General
   //////////////////////////////////
 
+  /**
+   * Moves the component to a specified position.
+   * @param {number} x - The new x position of the component.
+   * @param {number} y - The new y position of the component.
+   */
   move(x, y) {
     this.x = x;
     this.y = y;
   }
 
+  /**
+   * Rotates the component.
+   * @param {number} rad - The number of radians to rotate the component by.
+   */
   rotate(rad) {
     this.style.transform = `rotate(${rad}rad)`;
   }
 
+  /**
+   * Rotates the component.
+   * @param {number} deg - The number of degrees to rotate the component by.
+   */
   rotateDeg(deg) {
     this.style.transform = `rotate(${deg}deg)`;
   }
 
+  /**
+   * Sizes the component.
+   * @param {number} w - The new width of the component.
+   * @param {number} h - The new height of the component.
+   */
   setSize(w, h) {
     this.width = w;
     this.height = h;
@@ -692,6 +710,9 @@ class Component extends HTMLElement {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets whether or not this component is enabled. Non-enabled components will be faded out and not respond to events.
+   */
   get enabled() {
     return this._enabled;
   }
@@ -700,6 +721,9 @@ class Component extends HTMLElement {
     this._enabled = enabled;
   }
 
+  /**
+   * Sets and gets the height of this component.
+   */
   get height() {
     return this._height;
   }
@@ -709,6 +733,9 @@ class Component extends HTMLElement {
     this.style.height = h + "px";
   }
 
+  /**
+   * Sets and gets the width of this component.
+   */
   get width() {
     return this._width;
   }
@@ -718,6 +745,9 @@ class Component extends HTMLElement {
     this.style.width = w + "px";
   }
 
+  /**
+   * Sets and gets the x position of this component.
+   */
   get x() {
     return this._x;
   }
@@ -727,6 +757,9 @@ class Component extends HTMLElement {
     this.style.left = x + "px";
   }
 
+  /**
+   * Sets and gets the y position of this component.
+   */
   get y() {
     return this._y;
   }
@@ -739,21 +772,20 @@ class Component extends HTMLElement {
 
 customElements.define("minimal-component", Component);
 
+/**
+ * Defaults contains default properties for different components.
+ */
 const Defaults = {
+  /**
+   * Default properties for the Button component.
+   */
   button: {
     width: 100,
     height: 20,
   },
-  knob: {
-    decimals: 0,
-    size: 40,
-  },
-  vslider: {
-    decimals: 0,
-    width: 15,
-    height: 150,
-    handleSize: 15,
-  },
+  /**
+   * Default properties for the HSlider component.
+   */
   hslider: {
     decimals: 0,
     textPosition: "top",
@@ -761,11 +793,33 @@ const Defaults = {
     height: 15,
     handleSize: 15,
   },
+  /**
+   * Default properties for the Image component.
+   */
   image: {
     width: 100,
   },
+  /**
+   * Default properties for the knob component.
+   */
+  knob: {
+    decimals: 0,
+    size: 40,
+  },
+  /**
+   * Default properties for the Label component.
+   */
   label: {
     fontSize: 10,
+  },
+  /**
+   * Default properties for the VSlider component.
+   */
+  vslider: {
+    decimals: 0,
+    width: 15,
+    height: 150,
+    handleSize: 15,
   },
 };
 
@@ -926,7 +980,20 @@ class Label extends Component {
 
 customElements.define("minimal-label", Label);
 
+/**
+ * Creates a clickable pushbutton with a text label.
+ * <img src="https://www.minimalcomps2.com/docs/images/button.png"/>
+ * @extends Component
+ */
 class Button extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this button to.
+   * @param {number} x - The x position of the button.
+   * @param {number} y - The y position of the button.
+   * @param {string} text - The text label of the button.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -1016,6 +1083,9 @@ class Button extends Component {
     this.label.height = height;
   }
 
+  /**
+   * Sets and gets the text shown in the button's label.
+   */
   get text() {
     return this._text;
   }
@@ -1037,7 +1107,20 @@ class Button extends Component {
 
 customElements.define("minimal-button", Button);
 
+/**
+ * Canvas class
+ * @extends Component
+ * Creates an HTML Canvas element for dynamically drawn content.
+ */
 class Canvas extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this canvas to.
+   * @param {number} x - The x position of the canvas.
+   * @param {number} y - The y position of the canvas.
+   * @param {number} w - The width of the canvas.
+   * @param {number} h - The height of the canvas.
+   */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
 
@@ -1110,7 +1193,21 @@ class Canvas extends Component {
 
 customElements.define("minimal-canvas", Canvas);
 
+/**
+ * Checkbox class
+ * @extends Component
+ * Creates a clickable checkbox with a label that toggles on and off when clicked.
+ */
 class Checkbox extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this checkbox to.
+   * @param {number} x - The x position of the checkbox.
+   * @param {number} y - The y position of the checkbox.
+   * @param {string} text - The text label of the checkbox.
+   * @param {boolean} checked - The initial checked state of the checkbox.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, text, checked, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -1171,6 +1268,9 @@ class Checkbox extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Toggles the state of the checkbox between checked and not checked.
+   */
   toggle() {
     this.checked = !this.checked;
   }
@@ -1196,6 +1296,9 @@ class Checkbox extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the checked state of the checkbox.
+   */
   get checked() {
     return this._checked;
   }
@@ -1222,6 +1325,9 @@ class Checkbox extends Component {
     }
   }
 
+  /**
+   * Sets and gets the text shown in the button's label.
+   */
   get text() {
     return this._text;
   }
@@ -1242,7 +1348,20 @@ class Checkbox extends Component {
 
 customElements.define("minimal-checkbox", Checkbox);
 
+/**
+ * ColorPicker class
+ * @extends Component
+ * Creates a input for entering color values, with a preview swatch.
+ */
 class ColorPicker extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this color picker to.
+   * @param {number} x - The x position of the color picker.
+   * @param {number} y - The y position of the color picker.
+   * @param {string} color - The initial color value of the color picker.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, color, defaultHandler) {
     super(parent, x, y);
     this._color = this.correctColor(color);
@@ -1338,6 +1457,18 @@ class ColorPicker extends Component {
     }
   }
 
+  /**
+   * Sets and gets the color value of this color picker. Valid inputs are three or six character strings containing hexadecimal digits (0-9 and upper or lower case A-F), optionally preceded by a "#" character.
+   * @example
+   * colorpicker.color = "#f9c";
+   * colorpicker.color = "#F9C";
+   * colorpicker.color = "f9c";
+   * colorpicker.color = "F9C";
+   * colorpicker.color = "#ff99cc";
+   * colorpicker.color = "#FF99CC";
+   * colorpicker.color = "ff99cc";
+   * colorpicker.color = "FF99CC";
+   */
   get color() {
     return this._color;
   }
@@ -1353,7 +1484,20 @@ class ColorPicker extends Component {
 
 customElements.define("minimal-colorpicker", ColorPicker);
 
+/**
+ * Dropdown class
+ * @extends Component
+ */
 class Dropdown extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this dropdown to.
+   * @param {number} x - The x position of the dropdown.
+   * @param {number} y - The y position of the dropdown.
+   * @param {array} items - An array of strings to populate the dropdown list with.
+   * @param {number} index - The initial selected index of the dropdown.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);
     this.items = items;
@@ -1498,11 +1642,17 @@ class Dropdown extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Programatically closes the dropdown if it is open.
+   */
   close() {
     this._open = true;
     this.toggle();
   }
 
+  /**
+   * Programatically opens the dropdown if it is closed.
+   */
   open() {
     this._open = false;
     this.toggle();
@@ -1568,6 +1718,9 @@ class Dropdown extends Component {
     this.itemElements.forEach((item, i) => this.updateItem(item, i));
   }
 
+  /**
+   * Reading this property tells you the index of the currently selected item. Setting it caused the new index to be selected and the dropdown to display that item.
+   */
   get index() {
     return this._index;
   }
@@ -1580,6 +1733,9 @@ class Dropdown extends Component {
     }
   }
 
+  /**
+   * Get the text of the currently selected item in the dropdown (read only).
+   */
   get text() {
     return this._text;
   }
@@ -1599,7 +1755,18 @@ class Dropdown extends Component {
 
 customElements.define("minimal-dropdown", Dropdown);
 
+/**
+ * A container that lays out its children in a horizontal row with a set spacing between each child.
+ * @extends Component
+ */
 class HBox extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this hbox to.
+   * @param {number} x - The x position of the hbox.
+   * @param {number} y - The y position of the hbox.
+   * @param {number} spacing - The space to put in between each element in the box.
+   */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
     this.spacing = spacing;
@@ -1622,6 +1789,9 @@ class HBox extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Overrides the built in appendChild method of an HTMLElement to add some very simple horizontal layout to its children.
+   */
   appendChild(child) {
     super.appendChild(child);
     if (this.xpos > 0) {
@@ -3357,7 +3527,18 @@ class TextInput extends Component {
 
 customElements.define("minimal-textinput", TextInput);
 
+/**
+ * A container that lays out its children in a vertical column with a set spacing between each child.
+ * @extends Component
+ */
 class VBox extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this vbox to.
+   * @param {number} x - The x position of the vbox.
+   * @param {number} y - The y position of the vbox.
+   * @param {number} spacing - The space to put in between each element in the box.
+   */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
     this.spacing = spacing;
@@ -3380,6 +3561,9 @@ class VBox extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Overrides the built in appendChild method of an HTMLElement to add some very simple vertical layout to its children.
+   */
   appendChild(child) {
     super.appendChild(child);
     if (this.ypos > 0) {

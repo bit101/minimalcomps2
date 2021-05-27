@@ -2,7 +2,19 @@ import { Component } from "./component.js";
 import { Defaults } from "./defaults.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a static single line text label.
+ * <div><img src="https://www.minimalcomps2.com/images/label.png"/></div>
+ * @extends Component
+ */
 export class Label extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this label to.
+   * @param {number} x - The x position of the label.
+   * @param {number} y - The y position of the label.
+   * @param {string} text - The initial text to display in the label.
+   */
   constructor(parent, x, y, text) {
     super(parent, x, y);
     this._align = "left";
@@ -44,6 +56,9 @@ export class Label extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the horizontal alignment of the text in the label (left, right, center). This property will be ingored unless autosize is set to false and the label's width is set to a value higher than the actual width of the text.
+   */
   get align() {
     return this._align;
   }
@@ -53,6 +68,9 @@ export class Label extends Component {
     this.wrapper.style.textAlign = align;
   }
 
+  /**
+   * Gets and sets whether or not the size of the label will automatically adjust to fit the text assigned to it. If autosize is true, setting width or align will be ignored.
+   */
   get autosize() {
     return this._autosize;
   }
@@ -68,6 +86,9 @@ export class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets whether or not the text will be bold.
+   */
   get bold() {
     return this._bold;
   }
@@ -81,6 +102,9 @@ export class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the color of the text.
+   */
   get color() {
     return this._color;
   }
@@ -103,6 +127,9 @@ export class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the size of the text.
+   */
   get fontSize() {
     return this._fontSize;
   }
@@ -120,6 +147,9 @@ export class Label extends Component {
     this.wrapper.style.lineHeight = height + "px";
   }
 
+  /**
+   * Gets and sets whether or not the text will be italicized.
+   */
   get italic() {
     return this._italics;
   }
@@ -133,6 +163,9 @@ export class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the plain text to be displayed. Compare with the htmlText property.
+   */
   get text() {
     return this._text;
   }

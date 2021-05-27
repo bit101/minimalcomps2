@@ -1,7 +1,20 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a input for entering color values, with a preview swatch.
+ * <div><img src="https://www.minimalcomps2.com/images/colorpicker.png"/></div>
+ * @extends Component
+ */
 export class ColorPicker extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this color picker to.
+   * @param {number} x - The x position of the color picker.
+   * @param {number} y - The y position of the color picker.
+   * @param {string} color - The initial color value of the color picker.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, color, defaultHandler) {
     super(parent, x, y);
     this._color = this.correctColor(color);
@@ -97,6 +110,18 @@ export class ColorPicker extends Component {
     }
   }
 
+  /**
+   * Sets and gets the color value of this color picker. Valid inputs are three or six character strings containing hexadecimal digits (0-9 and upper or lower case A-F), optionally preceded by a "#" character.
+   * @example
+   * colorpicker.color = "#f9c";
+   * colorpicker.color = "#F9C";
+   * colorpicker.color = "f9c";
+   * colorpicker.color = "F9C";
+   * colorpicker.color = "#ff99cc";
+   * colorpicker.color = "#FF99CC";
+   * colorpicker.color = "ff99cc";
+   * colorpicker.color = "FF99CC";
+   */
   get color() {
     return this._color;
   }

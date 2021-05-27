@@ -1,7 +1,20 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a panel to be used as a parent for other components.
+ * <div><img src="https://www.minimalcomps2.com/images/panel.png"/></div>
+ * @extends Component
+ */
 export class Panel extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this panel to.
+   * @param {number} x - The x position of the panel.
+   * @param {number} y - The y position of the panel.
+   * @param {number} w - The width of the panel.
+   * @param {number} h - The height of the panel.
+   */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
     w = w || window.innerWidth;

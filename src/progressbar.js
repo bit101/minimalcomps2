@@ -1,7 +1,21 @@
 import { Component } from "./component.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a progress bar that tracks a value compared to a potential total.
+ * <div><img src="https://www.minimalcomps2.com/images/progressbar.png"/></div>
+ * @extends Component
+ */
 export class ProgressBar extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this progress bar to.
+   * @param {number} x - The x position of the progress bar.
+   * @param {number} y - The y position of the progress bar.
+   * @param {number} progress - The current progress value of the progress bar.
+   * @param {number} max - The maximum potential value of the progress bar.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, progress, max) {
     super(parent, x, y);
     this._progress = progress;
@@ -61,6 +75,9 @@ export class ProgressBar extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum value of the progress bar.
+   */
   get max() {
     return this._max;
   }
@@ -72,6 +89,9 @@ export class ProgressBar extends Component {
     this.updateBar();
   }
 
+  /**
+   * Gets and sets the progress value of the progress bar.
+   */
   get progress() {
     return this._progress;
   }

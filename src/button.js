@@ -3,7 +3,20 @@ import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
+/**
+ * Creates a clickable pushbutton with a text label.
+ * <div><img src="https://www.minimalcomps2.com/images/button.png"/></div>
+ * @extends Component
+ */
 export class Button extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this button to.
+   * @param {number} x - The x position of the button.
+   * @param {number} y - The y position of the button.
+   * @param {string} text - The text label of the button.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -93,6 +106,9 @@ export class Button extends Component {
     this.label.height = height;
   }
 
+  /**
+   * Sets and gets the text shown in the button's label.
+   */
   get text() {
     return this._text;
   }

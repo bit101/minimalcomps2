@@ -53,22 +53,40 @@ export class Component extends HTMLElement {
   }
 
   //////////////////////////////////
-  // Creators
+  // General
   //////////////////////////////////
 
+  /**
+   * Moves the component to a specified position.
+   * @param {number} x - The new x position of the component.
+   * @param {number} y - The new y position of the component.
+   */
   move(x, y) {
     this.x = x;
     this.y = y;
   }
 
+  /**
+   * Rotates the component.
+   * @param {number} rad - The number of radians to rotate the component by.
+   */
   rotate(rad) {
     this.style.transform = `rotate(${rad}rad)`;
   }
 
+  /**
+   * Rotates the component.
+   * @param {number} deg - The number of degrees to rotate the component by.
+   */
   rotateDeg(deg) {
     this.style.transform = `rotate(${deg}deg)`;
   }
 
+  /**
+   * Sizes the component.
+   * @param {number} w - The new width of the component.
+   * @param {number} h - The new height of the component.
+   */
   setSize(w, h) {
     this.width = w;
     this.height = h;
@@ -83,6 +101,9 @@ export class Component extends HTMLElement {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets whether or not this component is enabled. Non-enabled components will be faded out and not respond to events.
+   */
   get enabled() {
     return this._enabled;
   }
@@ -91,6 +112,9 @@ export class Component extends HTMLElement {
     this._enabled = enabled;
   }
 
+  /**
+   * Sets and gets the height of this component.
+   */
   get height() {
     return this._height;
   }
@@ -100,6 +124,9 @@ export class Component extends HTMLElement {
     this.style.height = h + "px";
   }
 
+  /**
+   * Sets and gets the width of this component.
+   */
   get width() {
     return this._width;
   }
@@ -109,6 +136,9 @@ export class Component extends HTMLElement {
     this.style.width = w + "px";
   }
 
+  /**
+   * Sets and gets the x position of this component.
+   */
   get x() {
     return this._x;
   }
@@ -118,6 +148,9 @@ export class Component extends HTMLElement {
     this.style.left = x + "px";
   }
 
+  /**
+   * Sets and gets the y position of this component.
+   */
   get y() {
     return this._y;
   }
