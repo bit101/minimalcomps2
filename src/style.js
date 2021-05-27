@@ -569,6 +569,40 @@ Style.textinput = `
 `;
 
 ////////////////////
+// Toggle
+////////////////////
+Style.toggle = `
+  .MinimalToggle {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+  }
+  .MinimalToggleDisabled {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.disabledStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalToggleHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    width: 50%;
+    height: 100%;
+  }
+  .MinimalToggle:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
 // VSlider
 ////////////////////
 Style.vslider = `

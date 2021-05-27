@@ -9,7 +9,7 @@ const {
   NumericStepper,
   Panel, ProgressBar,
   RadioButton,
-  TextArea, TextBox, TextInput,
+  TextArea, TextBox, TextInput, Toggle,
   VBox, VSlider,
 } = mc2;
 
@@ -43,4 +43,6 @@ for (let i = 0; i < 100; i++) {
 canvas.context.stroke();
 
 new Knob(panel, 350, 150, "Knob", 50, 0, 100);
+
+new Toggle(panel, 350, 240, "Toggle", false);
 

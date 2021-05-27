@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Knob</title>
+    <title>JSDoc: Class: Toggle</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Knob</h1>
+    <h1 class="page-title">Class: Toggle</h1>
 
     
 
@@ -28,10 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Knob<span class="signature">(parent, x, y, text, value, min, max, defaultHandler)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Toggle<span class="signature">(parent, x, y, toggled, defaultHandler)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">A rotary knob for selecting numerical values. The knob value can be changed by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
-<div><img src="https://www.minimalcomps2.com/images/knob.png"/></div></div>
+            <div class="class-description">Creates a clickable toggle that can be switched off and on.
+<div><img src="https://www.minimalcomps2.com/images/toggle.png"/></div></div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="Knob"><span class="type-signature"></span>new Knob<span class="signature">(parent, x, y, text, value, min, max, defaultHandler)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Toggle"><span class="type-signature"></span>new Toggle<span class="signature">(parent, x, y, toggled, defaultHandler)</span><span class="type-signature"></span></h4>
     
 
     
@@ -106,7 +106,7 @@
 
             
 
-            <td class="description last">The element to add this knob to.</td>
+            <td class="description last">The element to add this toggle to.</td>
         </tr>
 
     
@@ -129,7 +129,7 @@
 
             
 
-            <td class="description last">The x position of the knob.</td>
+            <td class="description last">The x position of the toggle.</td>
         </tr>
 
     
@@ -152,20 +152,20 @@
 
             
 
-            <td class="description last">The y position of the knob.</td>
+            <td class="description last">The y position of the toggle.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>text</code></td>
+                <td class="name"><code>toggled</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -175,76 +175,7 @@
 
             
 
-            <td class="description last">The text label of the knob.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The initial value of the knob.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>min</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The minimum value of the knob.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The maximum value of the knob.</td>
+            <td class="description last">The initial toggled state of the toggle.</td>
         </tr>
 
     
@@ -267,7 +198,7 @@
 
             
 
-            <td class="description last">A function that will handle the "change" event.</td>
+            <td class="description last">A function that will handle the "click" event.</td>
         </tr>
 
     
@@ -308,7 +239,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line11">line 11</a>
+        <a href="toggle.js.html">toggle.js</a>, <a href="toggle.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -360,7 +291,7 @@
         <h3 class="subsection-title">Classes</h3>
 
         <dl>
-            <dt><a href="Knob.html">Knob</a></dt>
+            <dt><a href="Toggle.html">Toggle</a></dt>
             <dd></dd>
         </dl>
     
@@ -373,68 +304,6 @@
 
     
         <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="decimals"><span class="type-signature"></span>decimals<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Sets and gets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line233">line 233</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
         
             
@@ -511,7 +380,7 @@
 
 
 <div class="description">
-    Gets and sets the height of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+    Sets and gets the height of this component.
 </div>
 
 
@@ -554,193 +423,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line274">line 274</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="max"><span class="type-signature"></span>max<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Gets and sets the maximum value of the knob.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line288">line 288</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="min"><span class="type-signature"></span>min<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Gets and sets the minimum value of the knob.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line300">line 300</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="sensitivity"><span class="type-signature"></span>sensitivity<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Gets and sets the sensitivity of the knob when clicking and dragging to set a value. Default is 100, which means you'll have to drag the mouse 100 pixels to make the knob value go from its minimum value to its maximum. A higher sensitivity means that the knob will rotate a smaller amount for the same amount of vertical mouse movement.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line312">line 312</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -764,7 +447,7 @@
 
 
 <div class="description">
-    Gets and sets the text of the text label of the knob.
+    Gets and sets the text of the toggle's text label.
 </div>
 
 
@@ -802,7 +485,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line323">line 323</a>
+        <a href="toggle.js.html">toggle.js</a>, <a href="toggle.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -820,13 +503,13 @@
 
         
             
-<h4 class="name" id="value"><span class="type-signature"></span>value<span class="type-signature"></span></h4>
+<h4 class="name" id="textPosition"><span class="type-signature"></span>textPosition<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    Gets and sets the value of the knob.
+    Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
 </div>
 
 
@@ -864,7 +547,69 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line335">line 335</a>
+        <a href="toggle.js.html">toggle.js</a>, <a href="toggle.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="toggled"><span class="type-signature"></span>toggled<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Sets and gets the toggled state of the toggle.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="toggle.js.html">toggle.js</a>, <a href="toggle.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -888,7 +633,7 @@
 
 
 <div class="description">
-    Gets and sets the width of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+    Sets and gets the width of this component.
 </div>
 
 
@@ -931,7 +676,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="knob.js.html">knob.js</a>, <a href="knob.js.html#line346">line 346</a>
+        <a href="component.js.html">component.js</a>, <a href="component.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -1672,6 +1417,94 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="component.js.html">component.js</a>, <a href="component.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="toggle"><span class="type-signature"></span>toggle<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Toggles the state of the toggle between toggled and not toggled.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="toggle.js.html">toggle.js</a>, <a href="toggle.js.html#line84">line 84</a>
     </li></ul></dd>
     
 

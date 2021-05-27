@@ -569,6 +569,40 @@ Style.textinput = `
 `;
 
 ////////////////////
+// Toggle
+////////////////////
+Style.toggle = `
+  .MinimalToggle {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+  }
+  .MinimalToggleDisabled {
+    ${Style.baseStyle}
+    ${Style.shadowStyle}
+    ${Style.disabledStyle}
+    background-color: #ccc;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .MinimalToggleHandle {
+    ${Style.baseStyle}
+    background-color: #fff;
+    border: 1px solid #999;
+    width: 50%;
+    height: 100%;
+  }
+  .MinimalToggle:focus {
+    ${Style.focusStyle}
+  }
+`;
+
+////////////////////
 // VSlider
 ////////////////////
 Style.vslider = `
@@ -823,7 +857,19 @@ const Defaults = {
   },
 };
 
+/**
+ * Creates a static single line text label.
+ * <div><img src="https://www.minimalcomps2.com/images/label.png"/></div>
+ * @extends Component
+ */
 class Label extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this label to.
+   * @param {number} x - The x position of the label.
+   * @param {number} y - The y position of the label.
+   * @param {string} text - The initial text to display in the label.
+   */
   constructor(parent, x, y, text) {
     super(parent, x, y);
     this._align = "left";
@@ -865,6 +911,9 @@ class Label extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the horizontal alignment of the text in the label (left, right, center). This property will be ingored unless autosize is set to false and the label's width is set to a value higher than the actual width of the text.
+   */
   get align() {
     return this._align;
   }
@@ -874,6 +923,9 @@ class Label extends Component {
     this.wrapper.style.textAlign = align;
   }
 
+  /**
+   * Gets and sets whether or not the size of the label will automatically adjust to fit the text assigned to it. If autosize is true, setting width or align will be ignored.
+   */
   get autosize() {
     return this._autosize;
   }
@@ -889,6 +941,9 @@ class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets whether or not the text will be bold.
+   */
   get bold() {
     return this._bold;
   }
@@ -902,6 +957,9 @@ class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the color of the text.
+   */
   get color() {
     return this._color;
   }
@@ -924,6 +982,9 @@ class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the size of the text.
+   */
   get fontSize() {
     return this._fontSize;
   }
@@ -941,6 +1002,9 @@ class Label extends Component {
     this.wrapper.style.lineHeight = height + "px";
   }
 
+  /**
+   * Gets and sets whether or not the text will be italicized.
+   */
   get italic() {
     return this._italics;
   }
@@ -954,6 +1018,9 @@ class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the plain text to be displayed. Compare with the htmlText property.
+   */
   get text() {
     return this._text;
   }
@@ -982,7 +1049,7 @@ customElements.define("minimal-label", Label);
 
 /**
  * Creates a clickable pushbutton with a text label.
- * <img src="https://www.minimalcomps2.com/docs/images/button.png"/>
+ * <div><img src="https://www.minimalcomps2.com/images/button.png"/></div>
  * @extends Component
  */
 class Button extends Component {
@@ -1108,9 +1175,9 @@ class Button extends Component {
 customElements.define("minimal-button", Button);
 
 /**
- * Canvas class
- * @extends Component
  * Creates an HTML Canvas element for dynamically drawn content.
+ * <div><img src="https://www.minimalcomps2.com/images/canvas.png"/></div>
+ * @extends Component
  */
 class Canvas extends Component {
   /**
@@ -1137,7 +1204,7 @@ class Canvas extends Component {
 
   createChildren() {
     this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
-    this.context = this.canvas.getContext("2d");
+    this._context = this.canvas.getContext("2d");
   }
 
   createStyle() {
@@ -1158,6 +1225,13 @@ class Canvas extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  /**
+   * Returns the current 2d drawing context of the canvas (read only).
+   */
+  get context() {
+    return this._context;
+  }
 
   get enabled() {
     return super.enabled;
@@ -1194,9 +1268,9 @@ class Canvas extends Component {
 customElements.define("minimal-canvas", Canvas);
 
 /**
- * Checkbox class
- * @extends Component
  * Creates a clickable checkbox with a label that toggles on and off when clicked.
+ * <div><img src="https://www.minimalcomps2.com/images/checkbox.png"/></div>
+ * @extends Component
  */
 class Checkbox extends Component {
   /**
@@ -1349,9 +1423,9 @@ class Checkbox extends Component {
 customElements.define("minimal-checkbox", Checkbox);
 
 /**
- * ColorPicker class
- * @extends Component
  * Creates a input for entering color values, with a preview swatch.
+ * <div><img src="https://www.minimalcomps2.com/images/colorpicker.png"/></div>
+ * @extends Component
  */
 class ColorPicker extends Component {
   /**
@@ -1485,7 +1559,8 @@ class ColorPicker extends Component {
 customElements.define("minimal-colorpicker", ColorPicker);
 
 /**
- * Dropdown class
+ * Provides a dropdown list of items when clicked. One of those items can then be selected and be shown in the main component.
+ * <div><img src="https://www.minimalcomps2.com/images/dropdown.png"/></div>
  * @extends Component
  */
 class Dropdown extends Component {
@@ -1757,6 +1832,7 @@ customElements.define("minimal-dropdown", Dropdown);
 
 /**
  * A container that lays out its children in a horizontal row with a set spacing between each child.
+ * <div><img src="https://www.minimalcomps2.com/images/hbox.png"/></div>
  * @extends Component
  */
 class HBox extends Component {
@@ -1806,7 +1882,23 @@ class HBox extends Component {
 
 customElements.define("minimal-hbox", HBox);
 
+/**
+ * A horizontal slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/hslider.png"/></div>
+ * @extends Component
+ */
 class HSlider extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this slider to.
+   * @param {number} x - The x position of the slider.
+   * @param {number} y - The y position of the slider.
+   * @param {string} text - The text label of the slider.
+   * @param {number} value - The initial value of the slider.
+   * @param {number} min - The minimum value of the slider.
+   * @param {number} max - The maximum value of the slider.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     this._min = min;
@@ -2048,6 +2140,9 @@ class HSlider extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -2087,6 +2182,10 @@ class HSlider extends Component {
     }
   }
 
+  /**
+   * Gets and sets the width of the draggable slider handle. If you make the slider thicker by changing its height, you may want to adjust the handle size as well. If handleSize is the same as the slider height, then the handle will be a square.
+   * <div><img src="https://www.minimalcomps2.com/images/hsliderhandlesize.png"/></div>
+   */
   get handleSize() {
     return this._handleSize;
   }
@@ -2107,6 +2206,9 @@ class HSlider extends Component {
     this.updateValueLabelPosition();
   }
 
+  /**
+   * Gets and sets the position of the text label displayed on the slider. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
   get textPosition() {
     return this.textPosition;
   }
@@ -2116,6 +2218,9 @@ class HSlider extends Component {
     this.updateLabelPosition();
   }
 
+  /**
+   * Gets and sets the maximum value of the slider.
+   */
   get max() {
     return this._max;
   }
@@ -2126,6 +2231,9 @@ class HSlider extends Component {
     this.updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the minimum value of the slider.
+   */
   get min() {
     return this._min;
   }
@@ -2136,6 +2244,9 @@ class HSlider extends Component {
     this.updateHandlePosition();
   }
 
+  /**
+   * Gets and sets whether the slider is reversed. A reversed HSlider will show its maximum value on the left and minumum on the right. A reversed VSlider will show its maximum value on the bottom and minimum on the top.
+   */
   get reversed() {
     return this._reversed;
   }
@@ -2144,6 +2255,9 @@ class HSlider extends Component {
     this._reversed = reversed;
   }
 
+  /**
+   * Gets and sets whether or not the value label will be displayed.
+   */
   get showValue() {
     return this._showValue;
   }
@@ -2157,6 +2271,9 @@ class HSlider extends Component {
     }
   }
 
+  /**
+   * Gets and sets the text of the text label of the slider.
+   */
   get text() {
     return this._text;
   }
@@ -2167,6 +2284,9 @@ class HSlider extends Component {
     this.updateLabelPosition();
   }
 
+  /**
+   * Gets and sets the value of the slider.
+   */
   get value() {
     return this.roundValue(this._value);
   }
@@ -2188,7 +2308,19 @@ class HSlider extends Component {
 
 customElements.define("minimal-hslider", HSlider);
 
+/**
+ * A component that displays an image loaded from a URL.
+ * <div><img src="https://www.minimalcomps2.com/images/image.png"/></div>
+ * @extends Component
+ */
 class Image extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this image to.
+   * @param {number} x - The x position of the image.
+   * @param {number} y - The y position of the image.
+   * @param {string} url - The URL of the image to display.
+   */
   constructor(parent, x, y, url) {
     super(parent, x, y);
     this._url = url;
@@ -2265,14 +2397,20 @@ class Image extends Component {
     }
   }
 
+  /**
+   * Gets and sets the height of the image. This is read only because the height will be set according to the assigned width and the aspect ratio of the loaded image.
+   */
   get height() {
     return this.image.height;
   }
 
-  set height(height) {
-    super.height = height;
+  set height(h) {
+    super.height = h;
   }
 
+  /**
+   * Gets and sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
+   */
   get url() {
     return this._url;
   }
@@ -2282,6 +2420,9 @@ class Image extends Component {
     this.load();
   }
 
+  /**
+   * Gets and sets the width of the image. When the image is loaded, it will be set to the assigned width. The height will be set according to the assigned with and the aspect ratio of the loaded image.
+   */
   get width() {
     return super.width;
   }
@@ -2296,7 +2437,23 @@ class Image extends Component {
 
 customElements.define("minimal-image", Image);
 
+/**
+ * A rotary knob for selecting numerical values. The knob value can be changed by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/knob.png"/></div>
+ * @extends Component
+ */
 class Knob extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this knob to.
+   * @param {number} x - The x position of the knob.
+   * @param {number} y - The y position of the knob.
+   * @param {string} text - The text label of the knob.
+   * @param {number} value - The initial value of the knob.
+   * @param {number} min - The minimum value of the knob.
+   * @param {number} max - The maximum value of the knob.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
 
@@ -2502,6 +2659,9 @@ class Knob extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -2540,6 +2700,9 @@ class Knob extends Component {
     }
   }
 
+  /**
+   * Gets and sets the height of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+   */
   get height() {
     return super.height;
   }
@@ -2551,6 +2714,9 @@ class Knob extends Component {
     this.updateLabelPositions();
   }
 
+  /**
+   * Gets and sets the maximum value of the knob.
+   */
   get max() {
     return this._max;
   }
@@ -2560,6 +2726,9 @@ class Knob extends Component {
     this.updateValue(this.value);
   }
 
+  /**
+   * Gets and sets the minimum value of the knob.
+   */
   get min() {
     return this._min;
   }
@@ -2569,6 +2738,9 @@ class Knob extends Component {
     this.updateValue(this.value);
   }
 
+  /**
+   * Gets and sets the sensitivity of the knob when clicking and dragging to set a value. Default is 100, which means you'll have to drag the mouse 100 pixels to make the knob value go from its minimum value to its maximum. A higher sensitivity means that the knob will rotate a smaller amount for the same amount of vertical mouse movement.
+   */
   get sensitivity() {
     return this._sensitivity;
   }
@@ -2577,6 +2749,9 @@ class Knob extends Component {
     this._sensitivity = sensitivity;
   }
 
+  /**
+   * Gets and sets the text of the text label of the knob.
+   */
   get text() {
     return this._text;
   }
@@ -2586,6 +2761,9 @@ class Knob extends Component {
     this.label.text = text;
   }
 
+  /**
+   * Gets and sets the value of the knob.
+   */
   get value() {
     return this.roundValue(this._value);
   }
@@ -2594,6 +2772,9 @@ class Knob extends Component {
     this.updateValue(value);
   }
 
+  /**
+   * Gets and sets the width of the knob container. Of course the knob itself will always be round, so it will be sized according to the minimum of width and height if they are different, and centered within the container rectangle.
+   */
   get width() {
     return super.width;
   }
@@ -2610,6 +2791,11 @@ class Knob extends Component {
 
 customElements.define("minimal-knob", Knob);
 
+/**
+ * An input field with buttons for selecting a numeric value. The value can be changed by entering a value directly, clicking on the plus or minus buttons, or scrolling with a mouse wheel or trackpad.
+ * <div><img src="https://www.minimalcomps2.com/images/numericstepper.png"/></div>
+ * @extends Component
+ */
 class NumericStepper extends Component {
   constructor(parent, x, y, value, min, max, defaultHandler) {
     super(parent, x, y);
@@ -2820,6 +3006,9 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will increment or decrement the stepper's value by the smallest displayed value.
+   */
   get decimals() {
     return this._decimals;
   }
@@ -2834,6 +3023,9 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum value of the stepper.
+   */
   get max() {
     return this._max;
   }
@@ -2846,6 +3038,9 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the minimum value of the stepper.
+   */
   get min() {
     return this._min;
   }
@@ -2858,6 +3053,9 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the value of the stepper.
+   */
   get value() {
     return this._value;
   }
@@ -2881,7 +3079,20 @@ class NumericStepper extends Component {
 
 customElements.define("minimal-numericstepper", NumericStepper);
 
+/**
+ * Creates a panel to be used as a parent for other components.
+ * <div><img src="https://www.minimalcomps2.com/images/panel.png"/></div>
+ * @extends Component
+ */
 class Panel extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this panel to.
+   * @param {number} x - The x position of the panel.
+   * @param {number} y - The y position of the panel.
+   * @param {number} w - The width of the panel.
+   * @param {number} h - The height of the panel.
+   */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
     w = w || window.innerWidth;
@@ -2933,7 +3144,21 @@ class Panel extends Component {
 
 customElements.define("minimal-panel", Panel);
 
+/**
+ * Creates a progress bar that tracks a value compared to a potential total.
+ * <div><img src="https://www.minimalcomps2.com/images/progressbar.png"/></div>
+ * @extends Component
+ */
 class ProgressBar extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this progress bar to.
+   * @param {number} x - The x position of the progress bar.
+   * @param {number} y - The y position of the progress bar.
+   * @param {number} progress - The current progress value of the progress bar.
+   * @param {number} max - The maximum potential value of the progress bar.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, progress, max) {
     super(parent, x, y);
     this._progress = progress;
@@ -2993,6 +3218,9 @@ class ProgressBar extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum value of the progress bar.
+   */
   get max() {
     return this._max;
   }
@@ -3004,6 +3232,9 @@ class ProgressBar extends Component {
     this.updateBar();
   }
 
+  /**
+   * Gets and sets the progress value of the progress bar.
+   */
   get progress() {
     return this._progress;
   }
@@ -3084,7 +3315,22 @@ RadioButtonGroup.getPrevInGroup = (group, rb) => {
   return RadioButtonGroup.getPrevInGroup(group, result);
 };
 
+/**
+ * Creates a clickable radio button with a label that can be selected by clicking. Radio buttons are assigned to a group and only one radio button in a group will be selected at any one time.
+ * You can get the text of the currently checked radio button in a group by calling RadioButtonGroup.getValueForGroup(group).
+ * <div><img src="https://www.minimalcomps2.com/images/radiobutton.png"/></div>
+ * @extends Component
+ */
 class RadioButton extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this radio button to.
+   * @param {number} x - The x position of the radio button.
+   * @param {number} y - The y position of the radio button.
+   * @param {string} text - The text label of the radio button.
+   * @param {boolean} checked - The initial checked state of the radio button.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
@@ -3184,6 +3430,9 @@ class RadioButton extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Sets and gets the checked state of the radio button.
+   */
   get checked() {
     return this._checked;
   }
@@ -3213,6 +3462,9 @@ class RadioButton extends Component {
     }
   }
 
+  /**
+   * Sets and gets the text shown in the radio button's label.
+   */
   get text() {
     return this._text;
   }
@@ -3233,7 +3485,20 @@ class RadioButton extends Component {
 
 customElements.define("minimal-radiobutton", RadioButton);
 
+/**
+ * Creates a multi-line scrollable input field for entering text.
+ * <div><img src="https://www.minimalcomps2.com/images/textarea.png"/></div>
+ * @extends Component
+ */
 class TextArea extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text area to.
+   * @param {number} x - The x position of the text area.
+   * @param {number} y - The y position of the text area.
+   * @param {string} text - The initial text to display in the text area.
+   * @param {function} defaultHandler - A function that will handle the "input" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._text = text;
@@ -3297,6 +3562,9 @@ class TextArea extends Component {
     }
   }
 
+  /**
+   * Gets and sets the text in the text area.
+   */
   get text() {
     return this._text;
   }
@@ -3309,7 +3577,19 @@ class TextArea extends Component {
 
 customElements.define("minimal-textarea", TextArea);
 
+/**
+ * Creates a static box for multiline text. Accepts HTML text.
+ * <div><img src="https://www.minimalcomps2.com/images/textbox.png"/></div>
+ * @extends Component
+ */
 class TextBox extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text box to.
+   * @param {number} x - The x position of the text box.
+   * @param {number} y - The y position of the text box.
+   * @param {string} text - The initial text to display in the text box.
+   */
   constructor(parent, x, y, text) {
     super(parent, x, y);
     this._align = "left";
@@ -3346,6 +3626,9 @@ class TextBox extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the horizontal alignment of the text in the text box (left, right, center).
+   */
   get align() {
     return this._align;
   }
@@ -3355,6 +3638,9 @@ class TextBox extends Component {
     this.wrapper.style.textAlign = align;
   }
 
+  /**
+   * Gets and sets whether or not the text will be bold.
+   */
   get bold() {
     return this._bold;
   }
@@ -3368,6 +3654,9 @@ class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the color of the text.
+   */
   get color() {
     return this._color;
   }
@@ -3390,6 +3679,9 @@ class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the size of the text.
+   */
   get fontSize() {
     return this._fontSize;
   }
@@ -3399,6 +3691,9 @@ class TextBox extends Component {
     this.wrapper.style.fontSize = fontSize + "px";
   }
 
+  /**
+   * Gets and sets a string of HTML text to display. This will accept pretty much any kind of valid HTML markup you can put into a string.
+   */
   get html() {
     return this._html;
   }
@@ -3412,6 +3707,9 @@ class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets whether or not the text will be italicized.
+   */
   get italic() {
     return this._italics;
   }
@@ -3425,6 +3723,9 @@ class TextBox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the plain text to be displayed. Compare with the htmlText property.
+   */
   get text() {
     return this._text;
   }
@@ -3441,7 +3742,20 @@ class TextBox extends Component {
 
 customElements.define("minimal-textbox", TextBox);
 
+/**
+ * Creates a single line input field for entering text.
+ * <div><img src="https://www.minimalcomps2.com/images/textinput.png"/></div>
+ * @extends Component
+ */
 class TextInput extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this text input to.
+   * @param {number} x - The x position of the text input.
+   * @param {number} y - The y position of the text input.
+   * @param {string} text - The initial text to display in the text input.
+   * @param {function} defaultHandler - A function that will handle the "input" event.
+   */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._maxLength = 0;
@@ -3506,6 +3820,9 @@ class TextInput extends Component {
     }
   }
 
+  /**
+   * Gets and sets the maximum length of the string that can be typed into the input.
+   */
   get maxLength() {
     return this._maxLength;
   }
@@ -3515,6 +3832,9 @@ class TextInput extends Component {
     this.input.maxLength = maxLength;
   }
 
+  /**
+   * Gets and sets the text in the input.
+   */
   get text() {
     return this._text;
   }
@@ -3528,7 +3848,175 @@ class TextInput extends Component {
 customElements.define("minimal-textinput", TextInput);
 
 /**
+ * Creates a clickable toggle that can be switched off and on.
+ * <div><img src="https://www.minimalcomps2.com/images/toggle.png"/></div>
+ * @extends Component
+ */
+class Toggle extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this toggle to.
+   * @param {number} x - The x position of the toggle.
+   * @param {number} y - The y position of the toggle.
+   * @param {boolean} toggled - The initial toggled state of the toggle.
+   * @param {function} defaultHandler - A function that will handle the "click" event.
+   */
+  constructor(parent, x, y, text, toggled, defaultHandler) {
+    super(parent, x, y);
+    this._text = text;
+    this._textPosition = "top";
+
+    this.createChildren();
+    this.createStyle();
+    this.createListeners();
+
+    this.setSize(50, 20);
+    this.toggled = toggled;
+    this.updateLabel();
+    this.addEventListener("click", defaultHandler);
+    this.addToParent();
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+
+  createChildren() {
+    this.setWrapperClass("MinimalToggle");
+    this.wrapper.tabIndex = 0;
+    this.label = new Label(this.wrapper, 0, -15, this._text);
+    this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = Style.toggle;
+    this.shadowRoot.append(style);
+  }
+
+  createListeners() {
+    this.onClick = this.onClick.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this.onClick);
+    this.wrapper.addEventListener("keypress", this.onKeyPress);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  onClick(event) {
+    event.stopPropagation();
+    if (this.enabled) {
+      this.toggle();
+      this.dispatchEvent(new CustomEvent("click", { detail: this.toggled }));
+    }
+  }
+
+  onKeyPress(event) {
+    if (event.keyCode === 13 && this.enabled) {
+      this.wrapper.click();
+    }
+  }
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  /**
+   * Toggles the state of the toggle between toggled and not toggled.
+   */
+  toggle() {
+    this.toggled = !this.toggled;
+    this.updateToggle();
+  }
+
+  updateLabel() {
+    if (this._textPosition === "left") {
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
+    }
+  }
+
+  updateToggle() {
+    if (this.toggled) {
+      this.handle.style.left = "50%";
+    } else {
+      this.handle.style.left = 0;
+    }
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  /**
+   * Sets and gets the toggled state of the toggle.
+   */
+  get toggled() {
+    return this._toggled;
+  }
+
+  set toggled(toggled) {
+    this._toggled = toggled;
+    this.updateToggle();
+  }
+
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    if (this.enabled !== enabled) {
+      super.enabled = enabled;
+      if (this.enabled) {
+        this.setWrapperClass("MinimalToggle");
+        this.wrapper.tabIndex = 0;
+      } else {
+        this.setWrapperClass("MinimalToggleDisabled");
+        this.wrapper.tabIndex = -1;
+      }
+    }
+  }
+
+  /**
+   * Gets and sets the text of the toggle's text label.
+   */
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabel();
+  }
+
+  /**
+   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
+  get textPosition() {
+    return this._textPosition;
+  }
+
+  set textPosition(pos) {
+    this._textPosition = pos;
+    this.updateLabel();
+  }
+}
+
+customElements.define("minimal-toggle", Toggle);
+
+/**
  * A container that lays out its children in a vertical column with a set spacing between each child.
+ * <div><img src="https://www.minimalcomps2.com/images/vbox.png"/></div>
  * @extends Component
  */
 class VBox extends Component {
@@ -3578,7 +4066,23 @@ class VBox extends Component {
 
 customElements.define("minimal-vbox", VBox);
 
+/**
+ * A vertical slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
+ * <div><img src="https://www.minimalcomps2.com/images/vslider.png"/></div>
+ * @extends HSlider
+ */
 class VSlider extends HSlider {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this slider to.
+   * @param {number} x - The x position of the slider.
+   * @param {number} y - The y position of the slider.
+   * @param {string} text - The text label of the slider.
+   * @param {number} value - The initial value of the slider.
+   * @param {number} min - The minimum value of the slider.
+   * @param {number} max - The maximum value of the slider.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
   }
@@ -3680,6 +4184,10 @@ class VSlider extends HSlider {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the height of the draggable slider handle. If you make the slider thicker by changing its width, you may want to adjust the handle size as well. If handleSize is the same as the slider width, then the handle will be a square.
+   * <div><img src="https://www.minimalcomps2.com/images/vsliderhandlesize.png"/></div>
+   */
   get handleSize() {
     return this._handleSize;
   }
@@ -3715,4 +4223,4 @@ customElements.define("minimal-vslider", VSlider);
 
 const version = "1.2.1";
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, VBox, VSlider, version };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
