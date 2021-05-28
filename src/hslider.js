@@ -6,6 +6,9 @@ import { Style } from "./style.js";
 /**
  * A horizontal slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
  * <div><img src="https://www.minimalcomps2.com/images/hslider.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new HSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log(event.target.value));
  * @extends Component
  */
 export class HSlider extends Component {

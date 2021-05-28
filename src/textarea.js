@@ -4,6 +4,9 @@ import { Style } from "./style.js";
 /**
  * Creates a multi-line scrollable input field for entering text.
  * <div><img src="https://www.minimalcomps2.com/images/textarea.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new TextArea(panel, 20, 20, "Hello", event => console.log(event.target.text));
  * @extends Component
  */
 export class TextArea extends Component {

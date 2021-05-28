@@ -1050,6 +1050,9 @@ customElements.define("minimal-label", Label);
 /**
  * Creates a clickable pushbutton with a text label.
  * <div><img src="https://www.minimalcomps2.com/images/button.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Button(panel, 20, 20, "Click me", event => console.log("clicked!"));
  * @extends Component
  */
 class Button extends Component {
@@ -1177,6 +1180,14 @@ customElements.define("minimal-button", Button);
 /**
  * Creates an HTML Canvas element for dynamically drawn content.
  * <div><img src="https://www.minimalcomps2.com/images/canvas.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 240, 240);
+ * const canvas = new Canvas(panel, 20, 20, 200, 200);
+ * canvas.context.fillStyle = "red";
+ * canvas.context.beginPath();
+ * canvas.context.arc(100, 100, 100, 0, Math.PI * 2);
+ * canvas.context.fill();
+ *
  * @extends Component
  */
 class Canvas extends Component {
@@ -1270,6 +1281,9 @@ customElements.define("minimal-canvas", Canvas);
 /**
  * Creates a clickable checkbox with a label that toggles on and off when clicked.
  * <div><img src="https://www.minimalcomps2.com/images/checkbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Checkbox(panel, 20, 20, "Check it", false, event => console.log(event.target.checked));
  * @extends Component
  */
 class Checkbox extends Component {
@@ -3850,6 +3864,9 @@ customElements.define("minimal-textinput", TextInput);
 /**
  * Creates a clickable toggle that can be switched off and on.
  * <div><img src="https://www.minimalcomps2.com/images/toggle.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Toggle(panel, 20, 20, "Toggle", false, event => console.log(event.target.toggled));
  * @extends Component
  */
 class Toggle extends Component {
@@ -4017,6 +4034,12 @@ customElements.define("minimal-toggle", Toggle);
 /**
  * A container that lays out its children in a vertical column with a set spacing between each child.
  * <div><img src="https://www.minimalcomps2.com/images/vbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * const vbox = new VBox(panel, 20, 20, 10);
+ * new Button(vbox, 0, 0, "Button 1");
+ * new Button(vbox, 0, 0, "Button 2");
+ * new Button(vbox, 0, 0, "Button 3");
  * @extends Component
  */
 class VBox extends Component {
@@ -4069,6 +4092,9 @@ customElements.define("minimal-vbox", VBox);
 /**
  * A vertical slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
  * <div><img src="https://www.minimalcomps2.com/images/vslider.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new VSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log("clicked!"));
  * @extends HSlider
  */
 class VSlider extends HSlider {

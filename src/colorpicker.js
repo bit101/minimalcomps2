@@ -4,6 +4,9 @@ import { Style } from "./style.js";
 /**
  * Creates a input for entering color values, with a preview swatch.
  * <div><img src="https://www.minimalcomps2.com/images/colorpicker.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Colon(panel, 20, 20, "#f00", event => console.log(event.target.color));
  * @extends Component
  */
 export class ColorPicker extends Component {
