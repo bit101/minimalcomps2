@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
 /**
@@ -15,11 +16,21 @@ export class ColorPicker extends Component {
    * @param {HTMLElement} parent - The element to add this color picker to.
    * @param {number} x - The x position of the color picker.
    * @param {number} y - The y position of the color picker.
+   * @param {string} text - The text shown in the text label of the color picker.
    * @param {string} color - The initial color value of the color picker.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
-  constructor(parent, x, y, color, defaultHandler) {
+  constructor(parent, x, y, text, color, defaultHandler) {
     super(parent, x, y);
+    if (typeof(arguments[4]) !== "string") {
+      // don't break the original signature, which was:
+      // new Label(parent, x, y, color, defaultHandler);
+      text = "";
+      color = arguments[3];
+      defaultHandler = arguments[4];
+    }
+    this._text = text;
+    this._textPosition = "top";
     this._color = this.correctColor(color);
     this._color = this.cropColor(color);
 
@@ -42,6 +53,8 @@ export class ColorPicker extends Component {
     this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
     this.input.value = this._color;
+
+    this.label = new Label(this.wrapper, 0, -15, this._text);
 
     this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
@@ -76,7 +89,6 @@ export class ColorPicker extends Component {
   // General
   //////////////////////////////////
 
-  /* eslint-disable class-methods-use-this */
   correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
@@ -88,7 +100,19 @@ export class ColorPicker extends Component {
     }
     return color;
   }
-  /* eslint-enable */
+
+  updateLabel() {
+    if (this._textPosition === "left") {
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
+    }
+  }
 
   //////////////////////////////////
   // Getters/Setters
@@ -102,6 +126,7 @@ export class ColorPicker extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
+      this.label.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
         this.preview.setAttribute("class", "MinimalColorPickerPreview");
@@ -135,6 +160,31 @@ export class ColorPicker extends Component {
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
+  }
+
+  /**
+   * Gets and sets the text of the color picker's text label.
+   */
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabel();
+  }
+
+  /**
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
+  get textPosition() {
+    return this._textPosition;
+  }
+
+  set textPosition(pos) {
+    this._textPosition = pos;
+    this.updateLabel();
   }
 }
 

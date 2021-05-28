@@ -134,6 +134,7 @@ export class Toggle extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
+      this.label.enable = enabled;
       if (this.enabled) {
         this.setWrapperClass("MinimalToggle");
         this.wrapper.tabIndex = 0;
