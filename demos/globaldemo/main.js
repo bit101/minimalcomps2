@@ -28,12 +28,12 @@ new TextArea(panel, 20, 240, "TextArea");
 new HSlider(panel, 20, 370, "HSlider", 40, 0, 100);
 new VSlider(panel, 160, 180, "VSlider", 40, 0, 100);
 
-new ColorPicker(panel, 220, 30, "Color Picker", "#f00");
-new NumericStepper(panel, 220, 60, 20, 0, 100);
+new ColorPicker(panel, 220, 35, "Color Picker", "#f00");
+new NumericStepper(panel, 220, 65, 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
-new Dropdown(panel, 220, 90, stuff, 0);
-new Image(panel, 220, 130, "demo.jpg");
-new TextBox(panel, 220, 260, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html = true;
+new Dropdown(panel, 220, 95, stuff, 0);
+new Image(panel, 220, 135, "demo.jpg");
+new TextBox(panel, 220, 265, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html = true;
 const canvas = new Canvas(panel, 350, 20, 200, 100);
 canvas.context.lineWidth = 0.5;
 canvas.context.beginPath();

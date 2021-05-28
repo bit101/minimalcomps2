@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
 /**
@@ -15,6 +16,7 @@ export class ColorPicker extends Component {
    * @param {HTMLElement} parent - The element to add this color picker to.
    * @param {number} x - The x position of the color picker.
    * @param {number} y - The y position of the color picker.
+   * @param {string} text - The text shown in the text label of the color picker.
    * @param {string} color - The initial color value of the color picker.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */

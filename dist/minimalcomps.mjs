@@ -865,7 +865,7 @@ const Defaults = {
  * new Label(panel, 20, 20, "I am a label");
  * @extends Component
  */
-class Label$1 extends Component {
+class Label extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this label to.
@@ -1048,7 +1048,7 @@ class Label$1 extends Component {
   }
 }
 
-customElements.define("minimal-label", Label$1);
+customElements.define("minimal-label", Label);
 
 /**
  * Creates a clickable pushbutton with a text label.
@@ -1087,7 +1087,7 @@ class Button extends Component {
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
-    this.label = new Label$1(this.wrapper, 0, 0, this._text);
+    this.label = new Label(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
   }
@@ -1321,7 +1321,7 @@ class Checkbox extends Component {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
-    this.label = new Label$1(this.wrapper, 15, 0, this.text);
+    this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -1453,6 +1453,7 @@ class ColorPicker extends Component {
    * @param {HTMLElement} parent - The element to add this color picker to.
    * @param {number} x - The x position of the color picker.
    * @param {number} y - The y position of the color picker.
+   * @param {string} text - The text shown in the text label of the color picker.
    * @param {string} color - The initial color value of the color picker.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
@@ -1672,7 +1673,7 @@ class Dropdown extends Component {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
-    this.label = new Label$1(this.wrapper, 3, 3);
+    this.label = new Label(this.wrapper, 3, 3);
 
     this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
@@ -1693,7 +1694,7 @@ class Dropdown extends Component {
     item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
-    const label = new Label$1(item, 3, 0, this.items[index]);
+    const label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
@@ -2009,8 +2010,8 @@ class HSlider extends Component {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
-    this.label = new Label$1(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.formatValue());
+    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
   }
 
   createStyle() {
@@ -2571,10 +2572,10 @@ class Knob extends Component {
     this.handle = this.createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this.createDiv(this.handle, "MinimalKnobZero");
-    this.label = new Label$1(this.wrapper, 0, 0, this._text);
+    this.label = new Label(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
-    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.roundValue(this._value));
+    this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
     this.valueLabel.autosize = false;
     this.valueLabel.align = "center";
   }
@@ -3466,7 +3467,7 @@ class RadioButton extends Component {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
-    this.label = new Label$1(this.wrapper, 15, 0, this.text);
+    this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -4007,7 +4008,7 @@ class Toggle extends Component {
   createChildren() {
     this.setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
-    this.label = new Label$1(this.wrapper, 0, -15, this._text);
+    this.label = new Label(this.wrapper, 0, -15, this._text);
     this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
   }
 
@@ -4356,4 +4357,4 @@ customElements.define("minimal-vslider", VSlider);
 
 const version = "1.2.1";
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label$1 as Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
