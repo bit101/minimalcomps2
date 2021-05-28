@@ -5,6 +5,9 @@ import { Style } from "./style.js";
 /**
  * Creates a static single line text label.
  * <div><img src="https://www.minimalcomps2.com/images/label.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Label(panel, 20, 20, "I am a label");
  * @extends Component
  */
 export class Label extends Component {

@@ -5,6 +5,9 @@ import { Style } from "./style.js";
 /**
  * An input field with buttons for selecting a numeric value. The value can be changed by entering a value directly, clicking on the plus or minus buttons, or scrolling with a mouse wheel or trackpad.
  * <div><img src="https://www.minimalcomps2.com/images/numericstepper.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new NumericStepper(panel, 20, 20, 50, 0, 100, event => console.log(event.target.value));
  * @extends Component
  */
 export class NumericStepper extends Component {

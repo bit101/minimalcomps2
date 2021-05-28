@@ -7,7 +7,7 @@ import { Style } from "./style.js";
  * <div><img src="https://www.minimalcomps2.com/images/vslider.png"/></div>
  * @example
  * const panel = new Panel(document.body, 20, 20, 200, 200);
- * new VSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log("clicked!"));
+ * new VSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log(event.target.value));
  * @extends HSlider
  */
 export class VSlider extends HSlider {

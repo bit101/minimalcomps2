@@ -3,6 +3,12 @@ import { Component } from "./component.js";
 /**
  * A container that lays out its children in a horizontal row with a set spacing between each child.
  * <div><img src="https://www.minimalcomps2.com/images/hbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 400, 200);
+ * const hbox = new HBox(panel, 20, 20, 10);
+ * new Button(hbox, 0, 0, "Button 1");
+ * new Button(hbox, 0, 0, "Button 2");
+ * new Button(hbox, 0, 0, "Button 3");
  * @extends Component
  */
 export class HBox extends Component {

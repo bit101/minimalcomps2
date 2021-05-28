@@ -4,6 +4,9 @@ import { Style } from "./style.js";
 /**
  * Creates a static box for multiline text. Accepts HTML text.
  * <div><img src="https://www.minimalcomps2.com/images/textbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new TextBox(panel, 20, 20, "Hello");
  * @extends Component
  */
 export class TextBox extends Component {

@@ -6,6 +6,9 @@ import { Style } from "./style.js";
 /**
  * A rotary knob for selecting numerical values. The knob value can be changed by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
  * <div><img src="https://www.minimalcomps2.com/images/knob.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Knob(panel, 20, 20, "Knob", 50, 0, 100, event => console.log(event.target.value));
  * @extends Component
  */
 export class Knob extends Component {
