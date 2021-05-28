@@ -860,9 +860,12 @@ const Defaults = {
 /**
  * Creates a static single line text label.
  * <div><img src="https://www.minimalcomps2.com/images/label.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Label(panel, 20, 20, "I am a label");
  * @extends Component
  */
-class Label extends Component {
+class Label$1 extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this label to.
@@ -1045,7 +1048,7 @@ class Label extends Component {
   }
 }
 
-customElements.define("minimal-label", Label);
+customElements.define("minimal-label", Label$1);
 
 /**
  * Creates a clickable pushbutton with a text label.
@@ -1084,7 +1087,7 @@ class Button extends Component {
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
   }
@@ -1318,7 +1321,7 @@ class Checkbox extends Component {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
-    this.label = new Label(this.wrapper, 15, 0, this.text);
+    this.label = new Label$1(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -1439,6 +1442,9 @@ customElements.define("minimal-checkbox", Checkbox);
 /**
  * Creates a input for entering color values, with a preview swatch.
  * <div><img src="https://www.minimalcomps2.com/images/colorpicker.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Colon(panel, 20, 20, "#f00", event => console.log(event.target.color));
  * @extends Component
  */
 class ColorPicker extends Component {
@@ -1450,8 +1456,17 @@ class ColorPicker extends Component {
    * @param {string} color - The initial color value of the color picker.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
-  constructor(parent, x, y, color, defaultHandler) {
+  constructor(parent, x, y, text, color, defaultHandler) {
     super(parent, x, y);
+    if (typeof(args[4]) !== "string") {
+      // don't break the original signature, which was:
+      // new Label(parent, x, y, color, defaultHandler);
+      text = "";
+      color = args[3];
+      defaultHandler = args[4];
+    }
+    this._text = text;
+    this._textPosition = "top";
     this._color = this.correctColor(color);
     this._color = this.cropColor(color);
 
@@ -1474,6 +1489,8 @@ class ColorPicker extends Component {
     this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
     this.input.value = this._color;
+
+    this.label = new Label(this.wrapper, 0, -15, this._text);
 
     this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
@@ -1508,7 +1525,6 @@ class ColorPicker extends Component {
   // General
   //////////////////////////////////
 
-  /* eslint-disable class-methods-use-this */
   correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
@@ -1520,7 +1536,19 @@ class ColorPicker extends Component {
     }
     return color;
   }
-  /* eslint-enable */
+
+  updateLabel() {
+    if (this._textPosition === "left") {
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
+    }
+  }
 
   //////////////////////////////////
   // Getters/Setters
@@ -1534,6 +1562,7 @@ class ColorPicker extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
+      this.label.enable = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
         this.preview.setAttribute("class", "MinimalColorPickerPreview");
@@ -1568,6 +1597,31 @@ class ColorPicker extends Component {
     this.input.value = color;
     this.preview.style.backgroundColor = color;
   }
+
+  /**
+   * Gets and sets the text of the color picker's text label.
+   */
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabel();
+  }
+
+  /**
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
+  get textPosition() {
+    return this._textPosition;
+  }
+
+  set textPosition(pos) {
+    this._textPosition = pos;
+    this.updateLabel();
+  }
 }
 
 customElements.define("minimal-colorpicker", ColorPicker);
@@ -1575,6 +1629,10 @@ customElements.define("minimal-colorpicker", ColorPicker);
 /**
  * Provides a dropdown list of items when clicked. One of those items can then be selected and be shown in the main component.
  * <div><img src="https://www.minimalcomps2.com/images/dropdown.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * const items = ["Item 1", "Item 2", "Item 3"];
+ * new Dropdown(panel, 20, 20, items, 0, event => console.log(event.target.text));
  * @extends Component
  */
 class Dropdown extends Component {
@@ -1614,7 +1672,7 @@ class Dropdown extends Component {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
-    this.label = new Label(this.wrapper, 3, 3);
+    this.label = new Label$1(this.wrapper, 3, 3);
 
     this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
@@ -1635,7 +1693,7 @@ class Dropdown extends Component {
     item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
-    const label = new Label(item, 3, 0, this.items[index]);
+    const label = new Label$1(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
@@ -1847,6 +1905,12 @@ customElements.define("minimal-dropdown", Dropdown);
 /**
  * A container that lays out its children in a horizontal row with a set spacing between each child.
  * <div><img src="https://www.minimalcomps2.com/images/hbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 400, 200);
+ * const hbox = new HBox(panel, 20, 20, 10);
+ * new Button(hbox, 0, 0, "Button 1");
+ * new Button(hbox, 0, 0, "Button 2");
+ * new Button(hbox, 0, 0, "Button 3");
  * @extends Component
  */
 class HBox extends Component {
@@ -1899,6 +1963,9 @@ customElements.define("minimal-hbox", HBox);
 /**
  * A horizontal slider for visually selecting a numeric value. The slider can be moved by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
  * <div><img src="https://www.minimalcomps2.com/images/hslider.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new HSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log(event.target.value));
  * @extends Component
  */
 class HSlider extends Component {
@@ -1942,8 +2009,8 @@ class HSlider extends Component {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
+    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.formatValue());
   }
 
   createStyle() {
@@ -2325,6 +2392,9 @@ customElements.define("minimal-hslider", HSlider);
 /**
  * A component that displays an image loaded from a URL.
  * <div><img src="https://www.minimalcomps2.com/images/image.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Image(panel, 20, 20, "http://www.example.com/someimage.png");
  * @extends Component
  */
 class Image extends Component {
@@ -2454,6 +2524,9 @@ customElements.define("minimal-image", Image);
 /**
  * A rotary knob for selecting numerical values. The knob value can be changed by clicking and dragging, scrolling with a mouse wheel or trackpad or the use of the keyboard (arrow keys, page up/down, home/end).
  * <div><img src="https://www.minimalcomps2.com/images/knob.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Knob(panel, 20, 20, "Knob", 50, 0, 100, event => console.log(event.target.value));
  * @extends Component
  */
 class Knob extends Component {
@@ -2498,10 +2571,10 @@ class Knob extends Component {
     this.handle = this.createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this.createDiv(this.handle, "MinimalKnobZero");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
+    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.roundValue(this._value));
     this.valueLabel.autosize = false;
     this.valueLabel.align = "center";
   }
@@ -2808,6 +2881,9 @@ customElements.define("minimal-knob", Knob);
 /**
  * An input field with buttons for selecting a numeric value. The value can be changed by entering a value directly, clicking on the plus or minus buttons, or scrolling with a mouse wheel or trackpad.
  * <div><img src="https://www.minimalcomps2.com/images/numericstepper.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new NumericStepper(panel, 20, 20, 50, 0, 100, event => console.log(event.target.value));
  * @extends Component
  */
 class NumericStepper extends Component {
@@ -3096,6 +3172,9 @@ customElements.define("minimal-numericstepper", NumericStepper);
 /**
  * Creates a panel to be used as a parent for other components.
  * <div><img src="https://www.minimalcomps2.com/images/panel.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Button(panel, 20, 20, "Click");
  * @extends Component
  */
 class Panel extends Component {
@@ -3161,6 +3240,14 @@ customElements.define("minimal-panel", Panel);
 /**
  * Creates a progress bar that tracks a value compared to a potential total.
  * <div><img src="https://www.minimalcomps2.com/images/progressbar.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * const pb = new ProgressBar(panel, 20, 20, 0, 100);
+ * let progress = 0;
+ * setInterval(() => {
+ *   pb.progress = progress;
+ *   progress += 0.1;
+ * }, 100);
  * @extends Component
  */
 class ProgressBar extends Component {
@@ -3333,6 +3420,15 @@ RadioButtonGroup.getPrevInGroup = (group, rb) => {
  * Creates a clickable radio button with a label that can be selected by clicking. Radio buttons are assigned to a group and only one radio button in a group will be selected at any one time.
  * You can get the text of the currently checked radio button in a group by calling RadioButtonGroup.getValueForGroup(group).
  * <div><img src="https://www.minimalcomps2.com/images/radiobutton.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * const vbox = new VBox(panel, 20, 20, 10);
+ * new RadioButton(vbox, 0, 0, "group", "Option 1", true, update);
+ * new RadioButton(vbox, 0, 0, "group", "Option 2", false, update);
+ * new RadioButton(vbox, 0, 0, "group", "Option 3", false, update);
+ * function update() {
+ *   console.log(RadioButtonGroup.getValueForGroup("group"));
+ * }
  * @extends Component
  */
 class RadioButton extends Component {
@@ -3341,6 +3437,7 @@ class RadioButton extends Component {
    * @param {HTMLElement} parent - The element to add this radio button to.
    * @param {number} x - The x position of the radio button.
    * @param {number} y - The y position of the radio button.
+   * @param {string} group - The group this radio button belongs to.
    * @param {string} text - The text label of the radio button.
    * @param {boolean} checked - The initial checked state of the radio button.
    * @param {function} defaultHandler - A function that will handle the "click" event.
@@ -3369,7 +3466,7 @@ class RadioButton extends Component {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
-    this.label = new Label(this.wrapper, 15, 0, this.text);
+    this.label = new Label$1(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -3502,6 +3599,9 @@ customElements.define("minimal-radiobutton", RadioButton);
 /**
  * Creates a multi-line scrollable input field for entering text.
  * <div><img src="https://www.minimalcomps2.com/images/textarea.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new TextArea(panel, 20, 20, "Hello", event => console.log(event.target.text));
  * @extends Component
  */
 class TextArea extends Component {
@@ -3594,6 +3694,9 @@ customElements.define("minimal-textarea", TextArea);
 /**
  * Creates a static box for multiline text. Accepts HTML text.
  * <div><img src="https://www.minimalcomps2.com/images/textbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new TextBox(panel, 20, 20, "Hello");
  * @extends Component
  */
 class TextBox extends Component {
@@ -3759,6 +3862,9 @@ customElements.define("minimal-textbox", TextBox);
 /**
  * Creates a single line input field for entering text.
  * <div><img src="https://www.minimalcomps2.com/images/textinput.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new TextInput(panel, 20, 20, "Hello", event => console.log(event.target.text));
  * @extends Component
  */
 class TextInput extends Component {
@@ -3901,7 +4007,7 @@ class Toggle extends Component {
   createChildren() {
     this.setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
-    this.label = new Label(this.wrapper, 0, -15, this._text);
+    this.label = new Label$1(this.wrapper, 0, -15, this._text);
     this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
   }
 
@@ -3993,6 +4099,7 @@ class Toggle extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
+      this.label.enable = enabled;
       if (this.enabled) {
         this.setWrapperClass("MinimalToggle");
         this.wrapper.tabIndex = 0;
@@ -4094,7 +4201,7 @@ customElements.define("minimal-vbox", VBox);
  * <div><img src="https://www.minimalcomps2.com/images/vslider.png"/></div>
  * @example
  * const panel = new Panel(document.body, 20, 20, 200, 200);
- * new VSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log("clicked!"));
+ * new VSlider(panel, 20, 20, "Volume", 50, 0, 100,  event => console.log(event.target.value));
  * @extends HSlider
  */
 class VSlider extends HSlider {
@@ -4249,4 +4356,4 @@ customElements.define("minimal-vslider", VSlider);
 
 const version = "1.2.1";
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label$1 as Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
