@@ -1461,12 +1461,12 @@ var mc2 = (function (exports) {
      */
     constructor(parent, x, y, text, color, defaultHandler) {
       super(parent, x, y);
-      if (typeof(args[4]) !== "string") {
+      if (typeof(arguments[4]) !== "string") {
         // don't break the original signature, which was:
         // new Label(parent, x, y, color, defaultHandler);
         text = "";
-        color = args[3];
-        defaultHandler = args[4];
+        color = arguments[3];
+        defaultHandler = arguments[4];
       }
       this._text = text;
       this._textPosition = "top";
@@ -1565,7 +1565,7 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       if (this.enabled !== enabled) {
         super.enabled = enabled;
-        this.label.enable = enabled;
+        this.label.enabled = enabled;
         this.input.disabled = !this.enabled;
         if (this.enabled) {
           this.preview.setAttribute("class", "MinimalColorPickerPreview");
