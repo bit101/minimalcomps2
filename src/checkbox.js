@@ -5,6 +5,9 @@ import { Style } from "./style.js";
 /**
  * Creates a clickable checkbox with a label that toggles on and off when clicked.
  * <div><img src="https://www.minimalcomps2.com/images/checkbox.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Checkbox(panel, 20, 20, "Check it", false, event => console.log(event.target.checked));
  * @extends Component
  */
 export class Checkbox extends Component {

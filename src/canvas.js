@@ -4,6 +4,14 @@ import { Style } from "./style.js";
 /**
  * Creates an HTML Canvas element for dynamically drawn content.
  * <div><img src="https://www.minimalcomps2.com/images/canvas.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 240, 240);
+ * const canvas = new Canvas(panel, 20, 20, 200, 200);
+ * canvas.context.fillStyle = "red";
+ * canvas.context.beginPath();
+ * canvas.context.arc(100, 100, 100, 0, Math.PI * 2);
+ * canvas.context.fill();
+ *
  * @extends Component
  */
 export class Canvas extends Component {

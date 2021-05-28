@@ -6,6 +6,9 @@ import { Style } from "./style.js";
 /**
  * Creates a clickable pushbutton with a text label.
  * <div><img src="https://www.minimalcomps2.com/images/button.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 200, 200);
+ * new Button(panel, 20, 20, "Click me", event => console.log("clicked!"));
  * @extends Component
  */
 export class Button extends Component {
