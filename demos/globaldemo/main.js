@@ -5,7 +5,7 @@ const {
   HSlider,
   Knob,
   Image,
-  Label,
+  Label, LED,
   NumericStepper,
   Panel, ProgressBar,
   RadioButton,
@@ -34,15 +34,18 @@ const stuff = ["one", "two", "three", "four", "five"];
 new Dropdown(panel, 220, 110, stuff, 0);
 new Image(panel, 220, 140, "demo.jpg");
 new TextBox(panel, 220, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html = true;
+
 const canvas = new Canvas(panel, 350, 20, 200, 100);
 canvas.context.lineWidth = 0.5;
 canvas.context.beginPath();
-for (let i = 0; i < 100; i++) {
-  canvas.context.lineTo(Math.random() * 200, Math.random() * 100);
+for (let i = 0; i < 30; i++) {
+  canvas.context.beginPath();
+  canvas.context.arc(Math.random() * 200, Math.random() * 100, 5 + Math.random() * 20, 0, Math.PI * 2);
+  canvas.context.stroke();
 }
-canvas.context.stroke();
+canvas.context.font = "24px mono";
+canvas.context.fillText("Canvas", 2, 22);
 
-new Knob(panel, 350, 150, "Knob", 50, 0, 100);
-
+new Knob(panel, 355, 150, "Knob", 50, 0, 100);
 new Toggle(panel, 350, 240, "Toggle", false);
-
+const led = new LED(panel, 365, 300, "LED", "#f00", true);
