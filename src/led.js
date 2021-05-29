@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Label } from "./label.js";
 import { Style } from "./style.js";
 
 /**
