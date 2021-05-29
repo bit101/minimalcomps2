@@ -1729,7 +1729,7 @@ class ColorPicker extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
@@ -1767,7 +1767,6 @@ class Dropdown extends Component {
     this.items = items;
     this._open = false;
     this.itemElements = [];
-    this._index = -1;
     this._text = "";
 
     this.createChildren();
@@ -1990,7 +1989,11 @@ class Dropdown extends Component {
   }
 
   set index(index) {
-    if (index >= 0 && index < this.items.length) {
+    if (index < 0 || index >= this.items.length || index === null || index === undefined) {
+      this._index = -1;
+      this._text = "";
+      this.label.text = "Choose...";
+    } else {
       this._index = index;
       this._text = this.items[this._index];
       this.label.text = this._text;
@@ -3538,7 +3541,7 @@ class NumericStepper extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
@@ -4532,7 +4535,7 @@ class Toggle extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
