@@ -114,10 +114,93 @@ export class ColorPicker extends Component {
     }
   }
 
+  /**
+   * Sets the color value using three values for red, green and blue.
+   * @param {number} r - The value of the red channel (0 - 255).
+   * @param {number} g - The value of the red channel (0 - 255).
+   * @param {number} b - The value of the red channel (0 - 255).
+   */
+  setRGB(r, g, b) {
+    let red = r.toString(16);
+    let green = g.toString(16);
+    let blue = b.toString(16);
+    if (red.length === 1) {
+      red = "0" + red;
+    }
+    if (green.length === 1) {
+      green = "0" + green;
+    }
+    if (blue.length === 1) {
+      blue = "0" + blue;
+    }
+    if ( red.charAt(0) === red.charAt(1) && green.charAt(0) === green.charAt(1) && blue.charAt(0) === blue.charAt(1)) {
+      red = red.charAt(0);
+      green = green.charAt(0);
+      blue = blue.charAt(0);
+    }
+    this.color = red + green + blue;
+  }
+
+  /**
+   * Sets the color value using a single 24-bit number.
+   * @param {number} num - The number to parse into a color value. This would usually be in decimal (e.g. 16777215) or hexadecimal (e.g. 0xffffff).
+   */
+  setNumber(num) {
+    const red = num >> 16;
+    const green = num >> 8 & 255;
+    const blue = num & 255;
+    this.setRGB(red, green, blue);
+  }
+
+  /**
+   * Sets the color value to a random RGB value.
+   */
+  setRandom() {
+    this.setNumber(Math.random() * 0xffffff);
+  }
+
+  /**
+   * Gets the current value of this component as a single 24-bit number from 0 to 16777215 (0x000000 to 0xffffff).
+   */
+  getNumber() {
+    const c = this.color.substring(1);
+    if (c.length === 3) {
+      let r = c.charAt(0);
+      let g = c.charAt(1);
+      let b = c.charAt(2);
+      r += r;
+      g += g;
+      b += b;
+      return parseInt(r + g + b, 16);
+    }
+    return parseInt(c, 16);
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  /**
+   * Gets the red channel of the current color value as a numerical value from 0 to 255.
+   */
+  get red() {
+    return this.getNumber() >> 16;
+  }
+
+  /**
+   * Gets the green channel of the current color value as a numerical value from 0 to 255.
+   */
+  get green() {
+    return this.getNumber() >> 8 & 255;
+  }
+
+  /**
+   * Gets the blue channel of the current color value as a numerical value from 0 to 255.
+   */
+  get blue() {
+    return this.getNumber() & 255;
+  }
 
   get enabled() {
     return super.enabled;
