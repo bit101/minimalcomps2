@@ -1729,7 +1729,7 @@ class ColorPicker extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom". Not applicable to a VSlider.
    */
   get textPosition() {
     return this._textPosition;
@@ -3538,7 +3538,7 @@ class NumericStepper extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom". Not applicable to a VSlider.
    */
   get textPosition() {
     return this._textPosition;

@@ -162,7 +162,7 @@ export class Toggle extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
