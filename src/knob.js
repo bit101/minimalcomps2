@@ -32,6 +32,7 @@ export class Knob extends Component {
     this._decimals = Defaults.knob.decimals;
     this._value = value;
     this._sensitivity = 100;
+    this._labelsSwapped = false;
 
     this.createChildren();
     this.createStyle();
@@ -54,11 +55,7 @@ export class Knob extends Component {
     this.wrapper.tabIndex = 0;
     this.zero = this.createDiv(this.handle, "MinimalKnobZero");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.label.autosize = false;
-    this.label.align = "center";
     this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
-    this.valueLabel.autosize = false;
-    this.valueLabel.align = "center";
   }
 
   createStyle() {
@@ -213,8 +210,15 @@ export class Knob extends Component {
   }
 
   updateLabelPositions() {
-    this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
-    this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    this.label.x = (this.width - this.label.width) / 2;
+    this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
+    if (this._labelsSwapped) {
+      this.label.y = (this.height + this.size) / 2 + 5;
+      this.valueLabel.y = (this.height - this.size) / 2 - this.label.height - 5;
+    } else {
+      this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
+      this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    }
   }
 
   updateValue(value) {
@@ -222,6 +226,7 @@ export class Knob extends Component {
       this._value = value;
       this.updateHandleRotation();
       this.valueLabel.text = this.formatValue();
+      this.updateLabelPositions();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -241,6 +246,7 @@ export class Knob extends Component {
     this._decimals = decimals;
     this.updateHandleRotation();
     this.valueLabel.text = this.formatValue();
+    this.updateLabelPositions();
   }
 
   get enabled() {
@@ -282,6 +288,18 @@ export class Knob extends Component {
     super.height = height;
     this.size = Math.min(this.width, this.height);
     this.updateHandleSize();
+    this.updateLabelPositions();
+  }
+
+  /**
+   * Gets and sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   */
+  get labelsSwapped() {
+    return this._labelsSwapped;
+  }
+
+  set labelsSwapped(swap) {
+    this._labelsSwapped = swap;
     this.updateLabelPositions();
   }
 
@@ -355,8 +373,6 @@ export class Knob extends Component {
     this.size = Math.min(this.width, this.height);
     this.updateHandleSize();
     this.updateLabelPositions();
-    this.label.width = width;
-    this.valueLabel.width = width;
   }
 }
 

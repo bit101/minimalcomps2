@@ -1563,6 +1563,9 @@ var mc2 = (function (exports) {
       if (this._textPosition === "left") {
         this.label.x = -this.label.width - 5;
         this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._textPosition === "right") {
+        this.label.x = this.width + 5;
+        this.label.y = (this.height - this.label.height) / 2;
       } else if (this._textPosition === "top") {
         this.label.x = 0;
         this.label.y = -this.label.height - 5;
@@ -1729,7 +1732,7 @@ var mc2 = (function (exports) {
     }
 
     /**
-     * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+     * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
      */
     get textPosition() {
       return this._textPosition;
@@ -1767,7 +1770,6 @@ var mc2 = (function (exports) {
       this.items = items;
       this._open = false;
       this.itemElements = [];
-      this._index = -1;
       this._text = "";
 
       this.createChildren();
@@ -1990,7 +1992,11 @@ var mc2 = (function (exports) {
     }
 
     set index(index) {
-      if (index >= 0 && index < this.items.length) {
+      if (index < 0 || index >= this.items.length || index === null || index === undefined) {
+        this._index = -1;
+        this._text = "";
+        this.label.text = "Choose...";
+      } else {
         this._index = index;
         this._text = this.items[this._index];
         this.label.text = this._text;
@@ -2667,6 +2673,7 @@ var mc2 = (function (exports) {
       this._decimals = Defaults.knob.decimals;
       this._value = value;
       this._sensitivity = 100;
+      this._labelsSwapped = false;
 
       this.createChildren();
       this.createStyle();
@@ -2689,11 +2696,7 @@ var mc2 = (function (exports) {
       this.wrapper.tabIndex = 0;
       this.zero = this.createDiv(this.handle, "MinimalKnobZero");
       this.label = new Label(this.wrapper, 0, 0, this._text);
-      this.label.autosize = false;
-      this.label.align = "center";
       this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
-      this.valueLabel.autosize = false;
-      this.valueLabel.align = "center";
     }
 
     createStyle() {
@@ -2846,8 +2849,15 @@ var mc2 = (function (exports) {
     }
 
     updateLabelPositions() {
-      this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
-      this.valueLabel.y = (this.height + this.size) / 2 + 5;
+      this.label.x = (this.width - this.label.width) / 2;
+      this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
+      if (this._labelsSwapped) {
+        this.label.y = (this.height + this.size) / 2 + 5;
+        this.valueLabel.y = (this.height - this.size) / 2 - this.label.height - 5;
+      } else {
+        this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
+        this.valueLabel.y = (this.height + this.size) / 2 + 5;
+      }
     }
 
     updateValue(value) {
@@ -2855,6 +2865,7 @@ var mc2 = (function (exports) {
         this._value = value;
         this.updateHandleRotation();
         this.valueLabel.text = this.formatValue();
+        this.updateLabelPositions();
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
@@ -2874,6 +2885,7 @@ var mc2 = (function (exports) {
       this._decimals = decimals;
       this.updateHandleRotation();
       this.valueLabel.text = this.formatValue();
+      this.updateLabelPositions();
     }
 
     get enabled() {
@@ -2915,6 +2927,18 @@ var mc2 = (function (exports) {
       super.height = height;
       this.size = Math.min(this.width, this.height);
       this.updateHandleSize();
+      this.updateLabelPositions();
+    }
+
+    /**
+     * Gets and sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+     */
+    get labelsSwapped() {
+      return this._labelsSwapped;
+    }
+
+    set labelsSwapped(swap) {
+      this._labelsSwapped = swap;
       this.updateLabelPositions();
     }
 
@@ -2988,8 +3012,6 @@ var mc2 = (function (exports) {
       this.size = Math.min(this.width, this.height);
       this.updateHandleSize();
       this.updateLabelPositions();
-      this.label.width = width;
-      this.valueLabel.width = width;
     }
   }
 
@@ -3431,6 +3453,9 @@ var mc2 = (function (exports) {
       if (this._textPosition === "left") {
         this.label.x = -this.label.width - 5;
         this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._textPosition === "right") {
+        this.label.x = this.width + 5;
+        this.label.y = (this.height - this.label.height) / 2;
       } else if (this._textPosition === "top") {
         this.label.x = 0;
         this.label.y = -this.label.height - 5;
@@ -3537,7 +3562,7 @@ var mc2 = (function (exports) {
     }
 
     /**
-     * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+     * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
      */
     get textPosition() {
       return this._textPosition;
@@ -4531,7 +4556,7 @@ var mc2 = (function (exports) {
     }
 
     /**
-     * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+     * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom".
      */
     get textPosition() {
       return this._textPosition;

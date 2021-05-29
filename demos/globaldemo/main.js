@@ -31,7 +31,7 @@ new VSlider(panel, 160, 180, "VSlider", 40, 0, 100);
 new ColorPicker(panel, 220, 35, "Color Picker", "#f00");
 new NumericStepper(panel, 220, 80, "Numeric Stepper", 20, 0, 100);
 const stuff = ["one", "two", "three", "four", "five"];
-new Dropdown(panel, 220, 110, stuff, 0);
+new Dropdown(panel, 220, 110, stuff, -1);
 new Image(panel, 220, 140, "demo.jpg");
 new TextBox(panel, 220, 250, "TextBox - a multiline, fixed size text box for displaying non-editable text, including html.").html = true;
 
@@ -48,4 +48,4 @@ canvas.context.fillText("Canvas", 2, 22);
 
 new Knob(panel, 355, 150, "Knob", 50, 0, 100);
 new Toggle(panel, 350, 240, "Toggle", false);
-const led = new LED(panel, 365, 300, "LED", "#f00", true);
+new LED(panel, 365, 300, "LED", "#f00", true);

@@ -1560,6 +1560,9 @@ class ColorPicker extends Component {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
@@ -1726,7 +1729,7 @@ class ColorPicker extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
@@ -1764,7 +1767,6 @@ class Dropdown extends Component {
     this.items = items;
     this._open = false;
     this.itemElements = [];
-    this._index = -1;
     this._text = "";
 
     this.createChildren();
@@ -1987,7 +1989,11 @@ class Dropdown extends Component {
   }
 
   set index(index) {
-    if (index >= 0 && index < this.items.length) {
+    if (index < 0 || index >= this.items.length || index === null || index === undefined) {
+      this._index = -1;
+      this._text = "";
+      this.label.text = "Choose...";
+    } else {
       this._index = index;
       this._text = this.items[this._index];
       this.label.text = this._text;
@@ -2664,6 +2670,7 @@ class Knob extends Component {
     this._decimals = Defaults.knob.decimals;
     this._value = value;
     this._sensitivity = 100;
+    this._labelsSwapped = false;
 
     this.createChildren();
     this.createStyle();
@@ -2686,11 +2693,7 @@ class Knob extends Component {
     this.wrapper.tabIndex = 0;
     this.zero = this.createDiv(this.handle, "MinimalKnobZero");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.label.autosize = false;
-    this.label.align = "center";
     this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
-    this.valueLabel.autosize = false;
-    this.valueLabel.align = "center";
   }
 
   createStyle() {
@@ -2843,8 +2846,15 @@ class Knob extends Component {
   }
 
   updateLabelPositions() {
-    this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
-    this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    this.label.x = (this.width - this.label.width) / 2;
+    this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
+    if (this._labelsSwapped) {
+      this.label.y = (this.height + this.size) / 2 + 5;
+      this.valueLabel.y = (this.height - this.size) / 2 - this.label.height - 5;
+    } else {
+      this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
+      this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    }
   }
 
   updateValue(value) {
@@ -2852,6 +2862,7 @@ class Knob extends Component {
       this._value = value;
       this.updateHandleRotation();
       this.valueLabel.text = this.formatValue();
+      this.updateLabelPositions();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -2871,6 +2882,7 @@ class Knob extends Component {
     this._decimals = decimals;
     this.updateHandleRotation();
     this.valueLabel.text = this.formatValue();
+    this.updateLabelPositions();
   }
 
   get enabled() {
@@ -2912,6 +2924,18 @@ class Knob extends Component {
     super.height = height;
     this.size = Math.min(this.width, this.height);
     this.updateHandleSize();
+    this.updateLabelPositions();
+  }
+
+  /**
+   * Gets and sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   */
+  get labelsSwapped() {
+    return this._labelsSwapped;
+  }
+
+  set labelsSwapped(swap) {
+    this._labelsSwapped = swap;
     this.updateLabelPositions();
   }
 
@@ -2985,8 +3009,6 @@ class Knob extends Component {
     this.size = Math.min(this.width, this.height);
     this.updateHandleSize();
     this.updateLabelPositions();
-    this.label.width = width;
-    this.valueLabel.width = width;
   }
 }
 
@@ -3428,6 +3450,9 @@ class NumericStepper extends Component {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
@@ -3534,7 +3559,7 @@ class NumericStepper extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
@@ -4528,7 +4553,7 @@ class Toggle extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the toggle. Valid values are "top" (default), "left" and "bottom".
    */
   get textPosition() {
     return this._textPosition;
