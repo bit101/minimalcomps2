@@ -2975,12 +2975,12 @@ var mc2 = (function (exports) {
       this.input.addEventListener("change", this.onInputChange);
 
       this.plus.addEventListener("mousedown", this.onPlusDown);
-      this.plus.addEventListener("mouseup", this.onPlusUp);
+      document.addEventListener("mouseup", this.onPlusUp);
       this.plus.addEventListener("keydown", this.onPlusKeyDown);
       this.plus.addEventListener("keyup", this.onPlusKeyUp);
 
       this.minus.addEventListener("mousedown", this.onMinusDown);
-      this.minus.addEventListener("mouseup", this.onMinusUp);
+      document.addEventListener("mouseup", this.onMinusUp);
       this.minus.addEventListener("keydown", this.onMinusKeyDown);
       this.minus.addEventListener("keyup", this.onMinusKeyUp);
     }
@@ -3084,8 +3084,10 @@ var mc2 = (function (exports) {
       const inc = 1 / Math.pow(10, this._decimals);
       if (event.deltaY > 0) {
         this.value += inc;
+        this.dispatchEvent(new Event("change"));
       } else if (event.deltaY < 0) {
         this.value -= inc;
+        this.dispatchEvent(new Event("change"));
       }
     }
 
