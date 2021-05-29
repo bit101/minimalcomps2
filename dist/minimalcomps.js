@@ -1563,6 +1563,9 @@ var mc2 = (function (exports) {
       if (this._textPosition === "left") {
         this.label.x = -this.label.width - 5;
         this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._textPosition === "right") {
+        this.label.x = this.width + 5;
+        this.label.y = (this.height - this.label.height) / 2;
       } else if (this._textPosition === "top") {
         this.label.x = 0;
         this.label.y = -this.label.height - 5;
@@ -2689,11 +2692,7 @@ var mc2 = (function (exports) {
       this.wrapper.tabIndex = 0;
       this.zero = this.createDiv(this.handle, "MinimalKnobZero");
       this.label = new Label(this.wrapper, 0, 0, this._text);
-      this.label.autosize = false;
-      this.label.align = "center";
       this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
-      this.valueLabel.autosize = false;
-      this.valueLabel.align = "center";
     }
 
     createStyle() {
@@ -2846,7 +2845,9 @@ var mc2 = (function (exports) {
     }
 
     updateLabelPositions() {
+      this.label.x = (this.width - this.label.width) / 2;
       this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
+      this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
       this.valueLabel.y = (this.height + this.size) / 2 + 5;
     }
 
@@ -2855,6 +2856,7 @@ var mc2 = (function (exports) {
         this._value = value;
         this.updateHandleRotation();
         this.valueLabel.text = this.formatValue();
+        this.updateLabelPositions();
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
@@ -2874,6 +2876,7 @@ var mc2 = (function (exports) {
       this._decimals = decimals;
       this.updateHandleRotation();
       this.valueLabel.text = this.formatValue();
+      this.updateLabelPositions();
     }
 
     get enabled() {
@@ -2988,8 +2991,6 @@ var mc2 = (function (exports) {
       this.size = Math.min(this.width, this.height);
       this.updateHandleSize();
       this.updateLabelPositions();
-      this.label.width = width;
-      this.valueLabel.width = width;
     }
   }
 
@@ -3430,6 +3431,9 @@ var mc2 = (function (exports) {
     updateLabel() {
       if (this._textPosition === "left") {
         this.label.x = -this.label.width - 5;
+        this.label.y = (this.height - this.label.height) / 2;
+      } else if (this._textPosition === "right") {
+        this.label.x = this.width + 5;
         this.label.y = (this.height - this.label.height) / 2;
       } else if (this._textPosition === "top") {
         this.label.x = 0;

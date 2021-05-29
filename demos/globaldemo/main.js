@@ -48,4 +48,4 @@ canvas.context.fillText("Canvas", 2, 22);
 
 new Knob(panel, 355, 150, "Knob", 50, 0, 100);
 new Toggle(panel, 350, 240, "Toggle", false);
-const led = new LED(panel, 365, 300, "LED", "#f00", true);
+new LED(panel, 365, 300, "LED", "#f00", true);

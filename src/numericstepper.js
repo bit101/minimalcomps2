@@ -219,6 +219,9 @@ export class NumericStepper extends Component {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
