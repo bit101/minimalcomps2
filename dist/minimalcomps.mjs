@@ -2670,6 +2670,7 @@ class Knob extends Component {
     this._decimals = Defaults.knob.decimals;
     this._value = value;
     this._sensitivity = 100;
+    this._labelsSwapped = false;
 
     this.createChildren();
     this.createStyle();
@@ -2846,9 +2847,14 @@ class Knob extends Component {
 
   updateLabelPositions() {
     this.label.x = (this.width - this.label.width) / 2;
-    this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
     this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
-    this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    if (this._labelsSwapped) {
+      this.label.y = (this.height + this.size) / 2 + 5;
+      this.valueLabel.y = (this.height - this.size) / 2 - this.label.height - 5;
+    } else {
+      this.label.y = (this.height - this.size) / 2 - this.label.height - 5;
+      this.valueLabel.y = (this.height + this.size) / 2 + 5;
+    }
   }
 
   updateValue(value) {
@@ -2918,6 +2924,18 @@ class Knob extends Component {
     super.height = height;
     this.size = Math.min(this.width, this.height);
     this.updateHandleSize();
+    this.updateLabelPositions();
+  }
+
+  /**
+   * Gets and sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   */
+  get labelsSwapped() {
+    return this._labelsSwapped;
+  }
+
+  set labelsSwapped(swap) {
+    this._labelsSwapped = swap;
     this.updateLabelPositions();
   }
 
