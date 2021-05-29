@@ -1461,7 +1461,7 @@ class ColorPicker extends Component {
     super(parent, x, y);
     if (typeof(arguments[4]) !== "string") {
       // don't break the original signature, which was:
-      // new Label(parent, x, y, color, defaultHandler);
+      // new ColorPicker(parent, x, y, color, defaultHandler);
       text = "";
       color = arguments[3];
       defaultHandler = arguments[4];
@@ -1597,6 +1597,18 @@ class ColorPicker extends Component {
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
+  }
+
+  /**
+   * Sets and gets the height of this component.
+   */
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.updateLabel();
   }
 
   /**
@@ -2888,8 +2900,21 @@ customElements.define("minimal-knob", Knob);
  * @extends Component
  */
 class NumericStepper extends Component {
-  constructor(parent, x, y, value, min, max, defaultHandler) {
+  constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
+    if (typeof(arguments[3]) !== "string") {
+      // don't break the original signature, which was:
+      // new NumericStepper(parent, x, y, value, min, max, defaultHandler);
+      text = "";
+      value = arguments[3];
+      min = arguments[4];
+      max = arguments[5];
+      defaultHandler = arguments[6];
+    }
+
+    this._text = text;
+    this._textPosition = "top";
+
     this._min = min;
     this._max = max;
     this._decimals = 0;
@@ -2913,6 +2938,8 @@ class NumericStepper extends Component {
 
     this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
+
+    this.label = new Label(this.wrapper, 0, -15, this._text);
 
     this.minus = new Button(this.wrapper, 60, 0, "-");
     this.minus.setSize(20, 20);
@@ -3074,6 +3101,19 @@ class NumericStepper extends Component {
     return Math.round(value * mult) / mult;
   }
 
+  updateLabel() {
+    if (this._textPosition === "left") {
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = 0;
+      this.label.y = -this.label.height - 5;
+    } else {
+      this.label.x = 0;
+      this.label.y = this.height + 5;
+    }
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -3089,6 +3129,7 @@ class NumericStepper extends Component {
       this.input.disabled = !this.enabled;
       this.plus.enabled = this.enabled;
       this.minus.enabled = this.enabled;
+      this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.addEventListener("wheel", this.onWheel);
       } else {
@@ -3112,6 +3153,18 @@ class NumericStepper extends Component {
       this.input.value = value;
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
+  }
+
+  /**
+   * Sets and gets the height of this component.
+   */
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.updateLabel();
   }
 
   /**
@@ -3144,6 +3197,30 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Gets and sets the text of the color picker's text label.
+   */
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabel();
+  }
+
+  /**
+   * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   */
+  get textPosition() {
+    return this._textPosition;
+  }
+
+  set textPosition(pos) {
+    this._textPosition = pos;
+    this.updateLabel();
+  }
   /**
    * Gets and sets the value of the stepper.
    */

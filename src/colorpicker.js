@@ -24,7 +24,7 @@ export class ColorPicker extends Component {
     super(parent, x, y);
     if (typeof(arguments[4]) !== "string") {
       // don't break the original signature, which was:
-      // new Label(parent, x, y, color, defaultHandler);
+      // new ColorPicker(parent, x, y, color, defaultHandler);
       text = "";
       color = arguments[3];
       defaultHandler = arguments[4];
@@ -160,6 +160,18 @@ export class ColorPicker extends Component {
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
+  }
+
+  /**
+   * Sets and gets the height of this component.
+   */
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.updateLabel();
   }
 
   /**
