@@ -376,6 +376,24 @@ Style.label = `
 `;
 
 ////////////////////
+// LED
+////////////////////
+Style.led = `
+  .MinimalLED {
+    ${Style.baseStyle}
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+  .MinimalLEDDisabled {
+    ${Style.disabledStyle}
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+`;
+
+////////////////////
 // NumericStepper
 ////////////////////
 Style.numericstepper = `
@@ -865,7 +883,7 @@ const Defaults = {
  * new Label(panel, 20, 20, "I am a label");
  * @extends Component
  */
-class Label extends Component {
+class Label$1 extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this label to.
@@ -1048,7 +1066,7 @@ class Label extends Component {
   }
 }
 
-customElements.define("minimal-label", Label);
+customElements.define("minimal-label", Label$1);
 
 /**
  * Creates a clickable pushbutton with a text label.
@@ -1087,7 +1105,7 @@ class Button extends Component {
   createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
   }
@@ -1321,7 +1339,7 @@ class Checkbox extends Component {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
-    this.label = new Label(this.wrapper, 15, 0, this.text);
+    this.label = new Label$1(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -1491,7 +1509,7 @@ class ColorPicker extends Component {
     this.input.maxLength = 7;
     this.input.value = this._color;
 
-    this.label = new Label(this.wrapper, 0, -15, this._text);
+    this.label = new Label$1(this.wrapper, 0, -15, this._text);
 
     this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
@@ -1685,7 +1703,7 @@ class Dropdown extends Component {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
-    this.label = new Label(this.wrapper, 3, 3);
+    this.label = new Label$1(this.wrapper, 3, 3);
 
     this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
@@ -1706,7 +1724,7 @@ class Dropdown extends Component {
     item.addEventListener("click", this.onItemClick);
     item.tabIndex = 0;
 
-    const label = new Label(item, 3, 0, this.items[index]);
+    const label = new Label$1(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
@@ -2022,8 +2040,8 @@ class HSlider extends Component {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
     this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
+    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.formatValue());
   }
 
   createStyle() {
@@ -2584,10 +2602,10 @@ class Knob extends Component {
     this.handle = this.createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this.createDiv(this.handle, "MinimalKnobZero");
-    this.label = new Label(this.wrapper, 0, 0, this._text);
+    this.label = new Label$1(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
+    this.valueLabel = new Label$1(this.wrapper, 0, 0, this.roundValue(this._value));
     this.valueLabel.autosize = false;
     this.valueLabel.align = "center";
   }
@@ -2892,6 +2910,226 @@ class Knob extends Component {
 customElements.define("minimal-knob", Knob);
 
 /**
+ * A representation of a colored LED. It can be set to lit or unlit and be set to blink at any rate. The color of the LED can be set to any valid CSS color. It also has a text label.
+ * <div><img src="https://www.minimalcomps2.com/images/led.png"/></div>
+ * @example
+ * const panel = new Panel(document.body, 20, 20, 240, 240);
+ * const canvas = new LED(panel, 20, 20, "LED", "#f00", true);
+ * @extends Component
+ */
+class LED extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this LED to.
+   * @param {number} x - The x position of the LED.
+   * @param {number} y - The y position of the LED.
+   * @param {string} text - The text of the label of the LED.
+   * @param {string} color - The color of the LED.
+   * @param {boolean} lit - The initial lit state of the LED.
+   */
+  constructor(parent, x, y, text, color, lit) {
+    super(parent, x, y);
+    this._text = text || "";
+    this._color = color || "#f00";
+    this._lit = lit || false;
+    this._textPosition = "top";
+
+    const size = 16;
+
+    this.createChildren();
+    this.setWrapperClass("MinimalLED");
+    this.createStyle();
+
+    this.setSize(size, size);
+    this.updateLED();
+    this.updateLabel();
+    this.addToParent();
+  }
+
+  //////////////////////////////////
+  // Core
+  //////////////////////////////////
+
+  createChildren() {
+    this.label = new Label(this.wrapper, 0, -15, this._text);
+  }
+
+  createStyle() {
+    const style = document.createElement("style");
+    style.textContent = Style.led;
+    this.shadowRoot.append(style);
+  }
+
+  //////////////////////////////////
+  // Handlers
+  //////////////////////////////////
+
+  //////////////////////////////////
+  // General
+  //////////////////////////////////
+
+  updateLED() {
+    if (this.lit) {
+      this.wrapper.style.background = `radial-gradient(circle at 60% 37%, #fff, ${this.color} 50%, #444 100%)`;
+    } else {
+      this.wrapper.style.background = "radial-gradient(circle at 60% 37%, #fff, #999 50%)";
+    }
+  }
+
+  updateLabel() {
+    if (this._textPosition === "left") {
+      this.label.x = -this.label.width - 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "top") {
+      this.label.x = (this.width - this.label.width) / 2;
+      this.label.y = -this.label.height - 5;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
+    } else {
+      this.label.x = (this.width - this.label.width) / 2;
+      this.label.y = this.height + 5;
+    }
+  }
+
+  /**
+   * Starts the LED blinking at a specified or default rate.
+   * @param {number} bps - Blinks per second. Defaults to 2 blinks per second if no parameter is given.
+   */
+  blink(bps) {
+    if (!this.enabled) {
+      return;
+    }
+    bps = bps || 2;
+    clearInterval(this.interval);
+    this.blinking = true;
+    this.interval = setInterval(() => {
+      if (this.blinking) {
+        this.lit = !this.lit;
+      }
+    }, 1 / bps * 1000);
+  }
+
+  /**
+   * Stops the LED blinking and turns it off.
+   */
+  stop() {
+    this.blinking = false;
+    clearInterval(this.interval);
+    this.lit = false;
+  }
+
+  /**
+   * Sets the size of the LED. Because an LED will always be round, if you try to set width and height to different values, they will be set to the smallest value of the two.
+   * @param {number} width - The width of the LED.
+   * @param {number} height - The height of the LED.
+   */
+  setSize(w, h) {
+    const size = Math.min(w, h);
+    super.width = size;
+    super.height = size;
+  }
+
+  //////////////////////////////////
+  // Getters/Setters
+  // alphabetical. getter first.
+  //////////////////////////////////
+
+  /**
+   * Gets and sets the color of the LED.
+   */
+  get color() {
+    return this._color;
+  }
+
+  set color(color) {
+    this._color = color;
+    this.updateLED();
+  }
+
+  /**
+   * Gets and sets the enabled state of the LED. A disabled LED will not be lit and will not blink.
+   */
+  get enabled() {
+    return super.enabled;
+  }
+
+  set enabled(enabled) {
+    super.enabled = enabled;
+    this.label.enabled = enabled;
+    if (this._enabled) {
+      this.wrapper.setAttribute("class", "MinimalLED");
+    } else {
+      this.stop();
+      this.wrapper.setAttribute("class", "MinimalLEDDisabled");
+    }
+  }
+
+  /**
+   * Sets and gets the height of this component.
+   */
+  get height() {
+    return super.height;
+  }
+
+  set height(height) {
+    super.height = height;
+    super.width = height;
+  }
+
+  /**
+   * Gets and sets whether or not this LED is lit.
+   */
+  get lit() {
+    return this._lit;
+  }
+
+  set lit(lit) {
+    this._lit = lit;
+    this.updateLED();
+  }
+
+  /**
+   * Gets and sets the text of the LED's text label.
+   */
+  get text() {
+    return this._text;
+  }
+
+  set text(text) {
+    this._text = text;
+    this.label.text = text;
+    this.updateLabel();
+  }
+
+  /**
+   * Gets and sets the position of the text label displayed on the LED. Valid values are "top" (default), "left", "right" and "bottom".
+   */
+  get textPosition() {
+    return this._textPosition;
+  }
+
+  set textPosition(pos) {
+    this._textPosition = pos;
+    this.updateLabel();
+  }
+
+  /**
+   * Sets and gets the width of this component.
+   */
+  get width() {
+    return super.width;
+  }
+
+  set width(width) {
+    super.width = width;
+    super.height = width;
+  }
+}
+
+customElements.define("minimal-led", LED);
+
+/**
  * An input field with buttons for selecting a numeric value. The value can be changed by entering a value directly, clicking on the plus or minus buttons, or scrolling with a mouse wheel or trackpad.
  * <div><img src="https://www.minimalcomps2.com/images/numericstepper.png"/></div>
  * @example
@@ -2939,7 +3177,7 @@ class NumericStepper extends Component {
     this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
 
-    this.label = new Label(this.wrapper, 0, -15, this._text);
+    this.label = new Label$1(this.wrapper, 0, -15, this._text);
 
     this.minus = new Button(this.wrapper, 60, 0, "-");
     this.minus.setSize(20, 20);
@@ -3546,7 +3784,7 @@ class RadioButton extends Component {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
-    this.label = new Label(this.wrapper, 15, 0, this.text);
+    this.label = new Label$1(this.wrapper, 15, 0, this.text);
   }
 
   createStyle() {
@@ -4087,7 +4325,7 @@ class Toggle extends Component {
   createChildren() {
     this.setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
-    this.label = new Label(this.wrapper, 0, -15, this._text);
+    this.label = new Label$1(this.wrapper, 0, -15, this._text);
     this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
   }
 
@@ -4141,6 +4379,9 @@ class Toggle extends Component {
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else {
       this.label.x = 0;
       this.label.y = this.height + 5;
@@ -4436,4 +4677,4 @@ customElements.define("minimal-vslider", VSlider);
 
 const version = "1.2.1";
 
-export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };
+export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, LED, Label$1 as Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, version };

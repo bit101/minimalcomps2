@@ -96,6 +96,9 @@ export class Toggle extends Component {
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else {
       this.label.x = 0;
       this.label.y = this.height + 5;

@@ -376,6 +376,24 @@ Style.label = `
 `;
 
 ////////////////////
+// LED
+////////////////////
+Style.led = `
+  .MinimalLED {
+    ${Style.baseStyle}
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+  .MinimalLEDDisabled {
+    ${Style.disabledStyle}
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+`;
+
+////////////////////
 // NumericStepper
 ////////////////////
 Style.numericstepper = `

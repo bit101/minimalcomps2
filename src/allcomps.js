@@ -9,6 +9,7 @@ import { HBox } from "./hbox.js";
 import { HSlider } from "./hslider.js";
 import { Image } from "./image.js";
 import { Knob } from "./knob.js";
+import { LED } from "./led.js";
 import { Label } from "./label.js";
 import { NumericStepper } from "./numericstepper.js";
 import { Panel } from "./panel.js";
@@ -39,6 +40,7 @@ export {
   Image,
   Knob,
   Label,
+  LED,
   NumericStepper,
   Panel,
   ProgressBar,
