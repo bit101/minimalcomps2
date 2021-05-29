@@ -3,7 +3,6 @@ default:
 	@ffreload
 
 clean:
-	@rm dist/*
 	@rm out
 
 deploy:
