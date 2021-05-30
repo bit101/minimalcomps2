@@ -675,6 +675,14 @@ var mc2 = (function (exports) {
     box-shadow: 2px 2px 2px #999;
     overflow: hidden;
   }
+  .MinimalWindowDisabled {
+    ${Style.baseStyle}
+    ${Style.disabledStyle}
+    height: 100%;
+    width: 100%;
+    box-shadow: 2px 2px 2px #999;
+    overflow: hidden;
+  }
   .MinimalWindowTitleBar {
     ${Style.baseStyle}
     height: 30px;
@@ -4897,6 +4905,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     onMouseDown(event) {
+      this.style.zIndex = 1000000;
       let mouseX;
       let mouseY;
       if (event.changedTouches) {
@@ -4925,8 +4934,8 @@ var mc2 = (function (exports) {
         mouseX = event.clientX;
         mouseY = event.clientY;
       }
-      const x = mouseX - this.offsetX;
-      const y = mouseY - this.offsetY;
+      const x = mouseX - this.offsetParent.getBoundingClientRect().left - this.offsetX;
+      const y = mouseY - this.offsetParent.getBoundingClientRect().top - this.offsetY;
       this.move(x, y);
     }
 
@@ -4975,6 +4984,34 @@ var mc2 = (function (exports) {
     }
 
     /**
+     * Gets and sets the enabled state of this window. A disabled window will be faded and non-draggable. It will be minimized to prevent its contents from being active and will not be able to be unminimized.
+     */
+    get enabled() {
+      return super.enabled;
+    }
+
+    set enabled(enabled) {
+      if (this.enabled === enabled) {
+        return;
+      }
+      super.enabled = enabled;
+      if (this.enabled) {
+        this.minimized = true;
+        this.onMinimize();
+        this.minimizable = this.enabledMinimizable;
+        this.draggable = this.enabledDraggable;
+        this.wrapper.setAttribute("class", "MinimalWindow");
+      } else {
+        this.minimized = false;
+        this.onMinimize();
+        this.enabledMinimizable = this.minimizable;
+        this.enabledDraggable = this.draggable;
+        this.minimizable = false;
+        this.draggable = false;
+        this.wrapper.setAttribute("class", "MinimalWindowDisabled");
+      }
+    }
+    /**
      * Gets and sets the height of the window.
      */
     get height() {
@@ -4991,7 +5028,7 @@ var mc2 = (function (exports) {
      * Gets and sets whether the window has a minimize button.
      */
     get minimizable() {
-      return this.m_inimizable;
+      return this._minimizable;
     }
 
     set minimizable(minimizable) {
@@ -5001,6 +5038,18 @@ var mc2 = (function (exports) {
       } else {
         this.button.style.visibility = "hidden";
       }
+    }
+
+    /**
+     * Sets and gets the text shown in the window's title bar.
+     */
+    get text() {
+      return this._text;
+    }
+
+    set text(text) {
+      this._text = text;
+      this.label.text = text;
     }
 
     /**
