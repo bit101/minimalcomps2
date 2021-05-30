@@ -3493,10 +3493,10 @@ var mc2 = (function (exports) {
       const inc = 1 / Math.pow(10, this._decimals);
       if (event.deltaY > 0) {
         this.value += inc;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       } else if (event.deltaY < 0) {
         this.value -= inc;
-        this.dispatchEvent(new Event("change"));
+        this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
     }
 
