@@ -26,23 +26,23 @@ export class TextBox extends Component {
     this._html = false;
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(100, 100);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textbox;
     this.shadowRoot.append(style);

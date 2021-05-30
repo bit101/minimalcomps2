@@ -23,40 +23,40 @@ export class TextInput extends Component {
     this._maxLength = 0;
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("input", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
+  _createChildren() {
+    this.input = this._createInput(this.shadowRoot, "MinimalTextInput");
     this.input.value = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textinput;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.input.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.input.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     this._text = this.input.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -75,9 +75,9 @@ export class TextInput extends Component {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
-        this.input.addEventListener("input", this.onInput);
+        this.input.addEventListener("input", this._onInput);
       } else {
-        this.input.removeEventListener("input", this.onInput);
+        this.input.removeEventListener("input", this._onInput);
       }
     }
   }

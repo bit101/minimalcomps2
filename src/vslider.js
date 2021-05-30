@@ -29,7 +29,7 @@ export class VSlider extends HSlider {
   // Core
   //////////////////////////////////
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.vslider;
     this.shadowRoot.append(style);
@@ -39,7 +39,7 @@ export class VSlider extends HSlider {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  onMouseDown(event) {
+  _onMouseDown(event) {
     let mouseY;
     if (event.changedTouches) {
       event.preventDefault();
@@ -52,15 +52,15 @@ export class VSlider extends HSlider {
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       this.offsetY = this.handleSize / 2;
       const y = mouseY - this.getBoundingClientRect().top - this.handleSize / 2;
-      this.calculateValueFromPos(y);
+      this._calculateValueFromPos(y);
     }
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseY;
     if (event.changedTouches) {
       mouseY = event.changedTouches[0].clientY;
@@ -68,28 +68,28 @@ export class VSlider extends HSlider {
       mouseY = event.clientY;
     }
     const y = mouseY - this.getBoundingClientRect().top - this.offsetY;
-    this.calculateValueFromPos(y);
+    this._calculateValueFromPos(y);
   }
 
   //////////////////////////////////
   // General
   //////////////////////////////////
 
-  calculateValueFromPos(y) {
+  _calculateValueFromPos(y) {
     let percent = 1 - y / (this.height - this.handleSize);
     if (this.reversed) {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  setDefaults() {
+  _setDefaults() {
     this._decimals = Defaults.vslider.decimals;
     this._handleSize = Defaults.vslider.handleSize;
   }
 
-  updateHandlePosition() {
+  _updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     if (this.reversed) {
       percent = 1 - percent;
@@ -99,23 +99,23 @@ export class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
-  updateLabelPosition() {
+  _updateLabelPosition() {
     this.label.x = -(this.label.width - this.width) / 2;
     this.label.y = -this.label.height - 5;
   }
 
-  updateValueLabelPosition() {
+  _updateValueLabelPosition() {
     this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
     this.valueLabel.y = this.height + 5;
   }
 
-  setSliderSize() {
+  _setSliderSize() {
     this.setSize(Defaults.vslider.width, Defaults.vslider.height);
   }
 
-  updateValue(value) {
-    super.updateValue(value);
-    this.updateValueLabelPosition();
+  _updateValue(value) {
+    super._updateValue(value);
+    this._updateValueLabelPosition();
   }
 
   //////////////////////////////////
@@ -134,27 +134,33 @@ export class VSlider extends HSlider {
   set handleSize(handleSize) {
     this._handleSize = handleSize;
     this.handle.style.height = handleSize + "px";
-    this.updateHandlePosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
 
   set height(height) {
     super.height = height;
-    this.updateLabelPosition();
-    this.updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return super.width;
   }
 
   set width(width) {
     super.width = width;
-    this.updateLabelPosition();
-    this.updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateHandlePosition();
   }
 }
 

@@ -26,23 +26,23 @@ export class Canvas extends Component {
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(w || 200, h || 100);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
+  _createChildren() {
+    this.canvas = this._createElement(this.wrapper, "canvas", "MinimalCanvas");
     this._context = this.canvas.getContext("2d");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.canvas;
     this.shadowRoot.append(style);

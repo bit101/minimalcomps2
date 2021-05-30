@@ -7,13 +7,13 @@ export class Component extends HTMLElement {
     this._enabled = true;
 
     this.attachShadow({mode: "open"});
-    this.createWrapper();
-    this.createWrapperStyle();
+    this._createWrapper();
+    this._createWrapperStyle();
 
     this.move(x || 0, y || 0);
   }
 
-  addToParent() {
+  _addToParent() {
     this.parent && this.parent.appendChild(this);
   }
 
@@ -21,12 +21,12 @@ export class Component extends HTMLElement {
   // Creators
   //////////////////////////////////
 
-  createDiv(parent, className) {
-    return this.createElement(parent, "div", className);
+  _createDiv(parent, className) {
+    return this._createElement(parent, "div", className);
   }
 
   /* eslint-disable class-methods-use-this */
-  createElement(parent, type, className) {
+  _createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
     parent && parent.appendChild(el);
@@ -34,19 +34,19 @@ export class Component extends HTMLElement {
   }
   /* eslint-enable */
 
-  createInput(parent, className) {
-    const input = this.createElement(parent, "input", className);
+  _createInput(parent, className) {
+    const input = this._createElement(parent, "input", className);
     input.type = "text";
     return input;
   }
 
-  createWrapper() {
-    this.wrapper = this.createDiv(null, "MinimalWrapper");
+  _createWrapper() {
+    this.wrapper = this._createDiv(null, "MinimalWrapper");
     this.shadowRoot.appendChild(this.wrapper);
     this.shadowRoot.appendChild(document.createElement("slot"));
   }
 
-  createWrapperStyle() {
+  _createWrapperStyle() {
     const style = document.createElement("style");
     style.textContent = Style.component;
     this.shadowRoot.append(style);

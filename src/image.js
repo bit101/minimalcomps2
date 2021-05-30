@@ -22,42 +22,42 @@ export class Image extends Component {
     super(parent, x, y);
     this._url = url || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.image.width, 100);
-    this.load();
-    this.addToParent();
+    this._load();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.image = this.createElement(this.wrapper, "img", "MinimalImage");
+  _createChildren() {
+    this.image = this._createElement(this.wrapper, "img", "MinimalImage");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.image;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onLoad = this.onLoad.bind(this);
-    this.image.addEventListener("load", this.onLoad);
+  _createListeners() {
+    this._onLoad = this._onLoad.bind(this);
+    this.image.addEventListener("load", this._onLoad);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onLoad() {
+  _onLoad() {
     this.origWidth = this.image.width;
     this.origHeight = this.image.height;
-    this.updateImageSize();
+    this._updateImageSize();
     this.image.style.visibility = "visible";
   }
 
@@ -65,12 +65,12 @@ export class Image extends Component {
   // General
   //////////////////////////////////
 
-  load() {
+  _load() {
     this.image.style.visibility = "hidden";
     this.image.setAttribute("src", this._url);
   }
 
-  updateImageSize() {
+  _updateImageSize() {
     const aspectRatio = this.origWidth / this.origHeight;
     this.image.width = this.width;
     this.image.height = this.height = this.width / aspectRatio;
@@ -114,7 +114,7 @@ export class Image extends Component {
 
   set url(url) {
     this._url = url;
-    this.load();
+    this._load();
   }
 
   /**
@@ -127,7 +127,7 @@ export class Image extends Component {
   set width(width) {
     super.width = width;
     if (this.image.width) {
-      this.updateImageSize();
+      this._updateImageSize();
     }
   }
 }

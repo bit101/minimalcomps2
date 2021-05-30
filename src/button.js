@@ -24,20 +24,20 @@ export class Button extends Component {
     super(parent, x, y);
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
     this.label = new Label(this.wrapper, 0, 0, this._text);
@@ -45,31 +45,31 @@ export class Button extends Component {
     this.label.align = "center";
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.button;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keyup", this.onKeyUp);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyUp = this._onKeyUp.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keyup", this._onKeyUp);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.dispatchEvent(new Event("click"));
     }
   }
 
-  onKeyUp(event) {
+  _onKeyUp(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }

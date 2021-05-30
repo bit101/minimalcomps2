@@ -23,21 +23,21 @@ export class Panel extends Component {
     w = w || window.innerWidth;
     h = h || window.innerHeight;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
     this.setSize(w, h);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalPanel");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.panel;
     this.shadowRoot.append(style);
@@ -47,6 +47,9 @@ export class Panel extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Gets and sets the x position of this component.
+   */
   get x() {
     return super.x;
   }
@@ -57,6 +60,9 @@ export class Panel extends Component {
     this.style.marginLeft = x + "px";
   }
 
+  /**
+   * Gets and sets the y position of this component.
+   */
   get y() {
     return super.y;
   }

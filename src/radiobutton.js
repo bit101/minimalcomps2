@@ -31,50 +31,50 @@ export class RadioButton extends Component {
    */
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
-    RadioButtonGroup.addToGroup(group, this);
+    RadioButtonGroup._addToGroup(group, this);
     this.group = group || "group";
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 10);
     this.checked = checked || false;
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
-    this.updateWidth();
+    this._addToParent();
+    this._updateWidth();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
-    this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
+    this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.radiobutton;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keydown", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keydown", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.checked = true;
@@ -82,18 +82,18 @@ export class RadioButton extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.wrapper.click();
     } else if (event.keyCode === 40) {
       // down
       event.preventDefault();
-      RadioButtonGroup.getNextInGroup(this.group, this).focus();
+      RadioButtonGroup._getNextInGroup(this.group, this).focus();
     } else if (event.keyCode === 38) {
       // up
       event.preventDefault();
-      RadioButtonGroup.getPrevInGroup(this.group, this).focus();
+      RadioButtonGroup._getPrevInGroup(this.group, this).focus();
     }
   }
 
@@ -107,7 +107,7 @@ export class RadioButton extends Component {
     }
   }
 
-  updateCheckStyle() {
+  _updateCheckStyle() {
     let className = this.checked
       ? "MinimalRadioButtonCheckChecked "
       : "MinimalRadioButtonCheck ";
@@ -124,7 +124,7 @@ export class RadioButton extends Component {
     }
   }
 
-  updateWidth() {
+  _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
@@ -155,10 +155,10 @@ export class RadioButton extends Component {
 
   set checked(checked) {
     if (checked) {
-      RadioButtonGroup.clearGroup(this.group);
+      RadioButtonGroup._clearGroup(this.group);
     }
     this._checked = checked;
-    this.updateCheckStyle();
+    this._updateCheckStyle();
   }
 
   get enabled() {
@@ -168,7 +168,7 @@ export class RadioButton extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateCheckStyle();
+      this._updateCheckStyle();
       this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
@@ -188,7 +188,7 @@ export class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateWidth();
+    this._updateWidth();
   }
 
   /**
