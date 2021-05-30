@@ -68,6 +68,7 @@ export class Window extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMinimize = this.onMinimize.bind(this);
     this.titleBar.addEventListener("mousedown", this.onMouseDown);
+    this.titleBar.addEventListener("touchstart", this.onMouseDown);
     this.button.addEventListener("click", this.onMinimize);
   }
 

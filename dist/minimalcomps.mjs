@@ -1484,6 +1484,9 @@ class Checkbox extends Component {
     }
   }
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
@@ -1507,6 +1510,9 @@ class Checkbox extends Component {
     this.updateWidth();
   }
 
+  /**
+   * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+   */
   get width() {
     return this.label.x + this.label.width;
   }
@@ -4032,6 +4038,9 @@ class RadioButton extends Component {
   // alphabetical. getter first.
   //////////////////////////////////
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
@@ -4087,6 +4096,9 @@ class RadioButton extends Component {
     this.updateWidth();
   }
 
+  /**
+   * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+   */
   get width() {
     return this.label.x + this.label.width;
   }
@@ -4924,6 +4936,7 @@ class Window extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMinimize = this.onMinimize.bind(this);
     this.titleBar.addEventListener("mousedown", this.onMouseDown);
+    this.titleBar.addEventListener("touchstart", this.onMouseDown);
     this.button.addEventListener("click", this.onMinimize);
   }
 
