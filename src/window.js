@@ -148,9 +148,11 @@ export class Window extends Component {
       if (draggable) {
         this.titleBar.style.cursor = "pointer";
         this.titleBar.addEventListener("mousedown", this.onMouseDown);
+        this.titleBar.addEventListener("touchstart", this.onMouseDown);
       } else {
         this.titleBar.style.cursor = "default";
         this.titleBar.removeEventListener("mousedown", this.onMouseDown);
+        this.titleBar.removeEventListener("touchstart", this.onMouseDown);
       }
     }
   }
