@@ -14,11 +14,11 @@ export class LED extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this LED to.
-   * @param {number} x - The x position of the LED.
-   * @param {number} y - The y position of the LED.
-   * @param {string} text - The text of the label of the LED.
-   * @param {string} color - The color of the LED.
-   * @param {boolean} lit - The initial lit state of the LED.
+   * @param {number} x - The x position of the LED. Default 0.
+   * @param {number} y - The y position of the LED. Default 0.
+   * @param {string} text - The text of the label of the LED. Default empty string.
+   * @param {string} color - The color of the LED. Default #f00.
+   * @param {boolean} lit - The initial lit state of the LED. Default false.
    */
   constructor(parent, x, y, text, color, lit) {
     super(parent, x, y);

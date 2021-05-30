@@ -14,13 +14,13 @@ export class Image extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this image to.
-   * @param {number} x - The x position of the image.
-   * @param {number} y - The y position of the image.
-   * @param {string} url - The URL of the image to display.
+   * @param {number} x - The x position of the image. Default 0.
+   * @param {number} y - The y position of the image. Default 0.
+   * @param {string} url - The URL of the image to display. Default empty string.
    */
   constructor(parent, x, y, url) {
     super(parent, x, y);
-    this._url = url;
+    this._url = url || "";
 
     this.createChildren();
     this.createStyle();

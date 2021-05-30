@@ -14,12 +14,12 @@ export class VSlider extends HSlider {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this slider to.
-   * @param {number} x - The x position of the slider.
-   * @param {number} y - The y position of the slider.
-   * @param {string} text - The text label of the slider.
-   * @param {number} value - The initial value of the slider.
-   * @param {number} min - The minimum value of the slider.
-   * @param {number} max - The maximum value of the slider.
+   * @param {number} x - The x position of the slider. Default 0.
+   * @param {number} y - The y position of the slider. Default 0.
+   * @param {string} text - The text label of the slider. Default empty string.
+   * @param {number} value - The initial value of the slider. Default 0.
+   * @param {number} min - The minimum value of the slider. Default 0.
+   * @param {number} max - The maximum value of the slider. Default 100.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {

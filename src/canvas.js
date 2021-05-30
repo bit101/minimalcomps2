@@ -18,10 +18,10 @@ export class Canvas extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this canvas to.
-   * @param {number} x - The x position of the canvas.
-   * @param {number} y - The y position of the canvas.
-   * @param {number} w - The width of the canvas.
-   * @param {number} h - The height of the canvas.
+   * @param {number} x - The x position of the canvas. Default 0.
+   * @param {number} y - The y position of the canvas. Default 0.
+   * @param {number} w - The width of the canvas. Default 200.
+   * @param {number} h - The height of the canvas. Default 100.
    */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
@@ -29,7 +29,7 @@ export class Canvas extends Component {
     this.createChildren();
     this.createStyle();
 
-    this.setSize(w, h);
+    this.setSize(w || 200, h || 100);
     this.addToParent();
   }
 

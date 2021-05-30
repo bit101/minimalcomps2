@@ -14,9 +14,9 @@ export class Label extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this label to.
-   * @param {number} x - The x position of the label.
-   * @param {number} y - The y position of the label.
-   * @param {string} text - The initial text to display in the label.
+   * @param {number} x - The x position of the label. Default 0.
+   * @param {number} y - The y position of the label. Default 0.
+   * @param {string} text - The initial text to display in the label. Default empty string.
    */
   constructor(parent, x, y, text) {
     super(parent, x, y);
@@ -34,7 +34,7 @@ export class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    this.text = text;
+    this.text = text || "";
     this.height = Defaults.label.fontSize + 2;
     this.addToParent();
   }

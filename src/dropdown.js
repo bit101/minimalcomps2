@@ -15,10 +15,10 @@ export class Dropdown extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this dropdown to.
-   * @param {number} x - The x position of the dropdown.
-   * @param {number} y - The y position of the dropdown.
-   * @param {array} items - An array of strings to populate the dropdown list with.
-   * @param {number} index - The initial selected index of the dropdown.
+   * @param {number} x - The x position of the dropdown. Default 0.
+   * @param {number} y - The y position of the dropdown. Default 0.
+   * @param {array} items - An array of strings to populate the dropdown list with. Default empty array.
+   * @param {number} index - The initial selected index of the dropdown. default -1.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
   constructor(parent, x, y, items, index, defaultHandler) {
@@ -34,7 +34,7 @@ export class Dropdown extends Component {
 
     this.setSize(100, 20);
     this.createItems();
-    this.index = index;
+    this.index = index || -1;
     this.addEventListener("change", defaultHandler);
     this.addToParent();
   }

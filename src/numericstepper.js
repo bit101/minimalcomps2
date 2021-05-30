@@ -12,6 +12,17 @@ import { Style } from "./style.js";
  * @extends Component
  */
 export class NumericStepper extends Component {
+  /**
+   * Constructor
+   * @param {HTMLElement} parent - The element to add this numeric stepper to.
+   * @param {number} x - The x position of the numeric stepper. Default 0.
+   * @param {number} y - The y position of the numeric stepper. Default 0.
+   * @param {string} text - The text label of the numeric stepper. Default empty string.
+   * @param {number} value - The initial value of the numeric stepper. Default 0.
+   * @param {number} min - The minimum value of the numeric stepper. Default 0.
+   * @param {number} max - The maximum value of the numeric stepper. Default 100.
+   * @param {function} defaultHandler - A function that will handle the "change" event.
+   */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
     if (typeof(arguments[3]) !== "string") {
@@ -24,12 +35,13 @@ export class NumericStepper extends Component {
       defaultHandler = arguments[6];
     }
 
-    this._text = text;
+    this._text = text || "";
     this._textPosition = "top";
 
-    this._min = min;
-    this._max = max;
+    this._min = min || 0;
+    this._max = max || 0;
     this._decimals = 0;
+    value = value || 0;
     this._value = this.roundValue(value);
 
     this.createChildren();

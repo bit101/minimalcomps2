@@ -15,22 +15,22 @@ export class Knob extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this knob to.
-   * @param {number} x - The x position of the knob.
-   * @param {number} y - The y position of the knob.
-   * @param {string} text - The text label of the knob.
-   * @param {number} value - The initial value of the knob.
-   * @param {number} min - The minimum value of the knob.
-   * @param {number} max - The maximum value of the knob.
+   * @param {number} x - The x position of the knob. Default 0.
+   * @param {number} y - The y position of the knob. Default 0.
+   * @param {string} text - The text label of the knob. Default empty string.
+   * @param {number} value - The initial value of the knob. Default 0.
+   * @param {number} min - The minimum value of the knob. Default 0.
+   * @param {number} max - The maximum value of the knob. Default 100.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y);
 
-    this._text = text;
-    this._min = min;
-    this._max = max;
+    this._text = text || "";
+    this._min = min || 0;
+    this._max = max || 100;
     this._decimals = Defaults.knob.decimals;
-    this._value = value;
+    this._value = value || 0;
     this._sensitivity = 100;
     this._labelsSwapped = false;
 

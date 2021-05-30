@@ -14,10 +14,10 @@ export class ColorPicker extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this color picker to.
-   * @param {number} x - The x position of the color picker.
-   * @param {number} y - The y position of the color picker.
-   * @param {string} text - The text shown in the text label of the color picker.
-   * @param {string} color - The initial color value of the color picker.
+   * @param {number} x - The x position of the color picker. Default 0.
+   * @param {number} y - The y position of the color picker. Default 0.
+   * @param {string} text - The text shown in the text label of the color picker. Default empty string.
+   * @param {string} color - The initial color value of the color picker. Default #f00.
    * @param {function} defaultHandler - A function that will handle the "change" event.
    */
   constructor(parent, x, y, text, color, defaultHandler) {
@@ -29,7 +29,8 @@ export class ColorPicker extends Component {
       color = arguments[3];
       defaultHandler = arguments[4];
     }
-    this._text = text;
+    color = color || "#f00";
+    this._text = text || "";
     this._textPosition = "top";
     this._color = this.correctColor(color);
     this._color = this.cropColor(color);

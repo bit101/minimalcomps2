@@ -13,9 +13,9 @@ export class TextBox extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this text box to.
-   * @param {number} x - The x position of the text box.
-   * @param {number} y - The y position of the text box.
-   * @param {string} text - The initial text to display in the text box.
+   * @param {number} x - The x position of the text box. Default 0.
+   * @param {number} y - The y position of the text box. Default 0.
+   * @param {string} text - The initial text to display in the text box. Default empty string.
    */
   constructor(parent, x, y, text) {
     super(parent, x, y);
@@ -24,7 +24,7 @@ export class TextBox extends Component {
     this._bold = false;
     this._italic = false;
     this._html = false;
-    this._text = text;
+    this._text = text || "";
 
     this.createChildren();
     this.createStyle();

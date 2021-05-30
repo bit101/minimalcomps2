@@ -13,15 +13,15 @@ export class TextInput extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this text input to.
-   * @param {number} x - The x position of the text input.
-   * @param {number} y - The y position of the text input.
-   * @param {string} text - The initial text to display in the text input.
+   * @param {number} x - The x position of the text input. Default 0.
+   * @param {number} y - The y position of the text input. Default 0.
+   * @param {string} text - The initial text to display in the text input. Default empty string.
    * @param {function} defaultHandler - A function that will handle the "input" event.
    */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
     this._maxLength = 0;
-    this._text = text;
+    this._text = text || "";
 
     this.createStyle();
     this.createChildren();
