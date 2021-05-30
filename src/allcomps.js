@@ -23,6 +23,7 @@ import { TextInput } from "./textinput.js";
 import { Toggle } from "./toggle.js";
 import { VBox } from "./vbox.js";
 import { VSlider } from "./vslider.js";
+import { Window } from "./window.js";
 
 const version = "1.2.1";
 
@@ -53,4 +54,5 @@ export {
   Toggle,
   VBox,
   VSlider,
+  Window,
 };

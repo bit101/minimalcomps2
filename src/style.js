@@ -660,3 +660,40 @@ Style.vslider = `
     ${Style.focusStyle}
   }
 `;
+
+////////////////////
+// Window
+////////////////////
+Style.window = `
+  .MinimalWindow {
+    ${Style.baseStyle}
+    height: 100%;
+    width: 100%;
+    box-shadow: 2px 2px 2px #999;
+    overflow: hidden;
+  }
+  .MinimalWindowTitleBar {
+    ${Style.baseStyle}
+    height: 30px;
+    background-color: #ddd;
+    border: 1px solid #999;
+    cursor: pointer;
+  } 
+  .MinimalWindowContent {
+    ${Style.baseStyle}
+    border: 1px solid #999;
+    background-color: #eee;
+    top: 30px;
+    overflow: hidden;
+  }
+  .MinimalWindowButton {
+    ${Style.baseStyle}
+    border: 1px solid #999;
+    background-color: #ccc;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    right: 7px;
+    top: 7px;
+  }
+`;
