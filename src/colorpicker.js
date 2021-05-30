@@ -32,52 +32,52 @@ export class ColorPicker extends Component {
     color = color || "#f00";
     this._text = text || "";
     this._textPosition = "top";
-    this._color = this.correctColor(color);
-    this._color = this.cropColor(color);
+    this._color = this._correctColor(color);
+    this._color = this._cropColor(color);
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalColorPicker");
 
-    this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
+    this.input = this._createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
     this.input.value = this._color;
 
     this.label = new Label(this.wrapper, 0, -15, this._text);
 
-    this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
+    this.preview = this._createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.colorpicker;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.input.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.input.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
-    const color = this.correctColor(this.input.value);
+  _onInput() {
+    const color = this._correctColor(this.input.value);
     this.input.value = color;
     if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
@@ -90,19 +90,19 @@ export class ColorPicker extends Component {
   // General
   //////////////////////////////////
 
-  correctColor(color) {
+  _correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
   }
 
-  cropColor(color) {
+  _cropColor(color) {
     if (color.length > 7) {
       color = color.substring(0, 7);
     }
     return color;
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -217,10 +217,10 @@ export class ColorPicker extends Component {
       this.input.disabled = !this.enabled;
       if (this.enabled) {
         this.preview.setAttribute("class", "MinimalColorPickerPreview");
-        this.input.addEventListener("input", this.onInput);
+        this.input.addEventListener("input", this._onInput);
       } else {
         this.preview.setAttribute("class", "MinimalColorPickerPreviewDisabled");
-        this.input.removeEventListener("input", this.onInput);
+        this.input.removeEventListener("input", this._onInput);
       }
     }
   }
@@ -242,8 +242,8 @@ export class ColorPicker extends Component {
   }
 
   set color(color) {
-    color = this.correctColor(color);
-    color = this.cropColor(color);
+    color = this._correctColor(color);
+    color = this._cropColor(color);
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
@@ -258,7 +258,7 @@ export class ColorPicker extends Component {
 
   set height(h) {
     super.height = h;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -271,7 +271,7 @@ export class ColorPicker extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -283,7 +283,7 @@ export class ColorPicker extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 }
 

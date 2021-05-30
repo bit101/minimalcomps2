@@ -34,53 +34,53 @@ export class Knob extends Component {
     this._sensitivity = 100;
     this._labelsSwapped = false;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.knob.size, Defaults.knob.size);
-    this.updateHandleRotation();
+    this._updateHandleRotation();
 
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalKnob");
-    this.handle = this.createDiv(this.wrapper, "MinimalKnobHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
-    this.zero = this.createDiv(this.handle, "MinimalKnobZero");
+    this.zero = this._createDiv(this.handle, "MinimalKnobZero");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
+    this.valueLabel = new Label(this.wrapper, 0, 0, this._roundValue(this._value));
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.knob;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onWheel = this.onWheel.bind(this);
-    this.handle.addEventListener("wheel", this.onWheel);
-    this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("touchstart", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onWheel = this._onWheel.bind(this);
+    this.handle.addEventListener("wheel", this._onWheel);
+    this.wrapper.addEventListener("mousedown", this._onMouseDown);
+    this.wrapper.addEventListener("touchstart", this._onMouseDown);
+    this.wrapper.addEventListener("keydown", this._onKeyDown);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onMouseDown(event) {
+  _onMouseDown(event) {
     event.preventDefault();
     this.wrapper.focus();
     if (event.changedTouches) {
@@ -89,13 +89,13 @@ export class Knob extends Component {
       this.startY = event.clientY;
     }
     this.startValue = this.value;
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     const mult = (this.max - this.min) / this.sensitivity;
     let mouseY;
     if (event.changedTouches) {
@@ -107,14 +107,14 @@ export class Knob extends Component {
     this.value = this.startValue + -y * mult;
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onKeyDown(event) {
+  _onKeyDown(event) {
     const inc = 1 / Math.pow(10, this._decimals);
     let value = this.value;
 
@@ -148,10 +148,10 @@ export class Knob extends Component {
     default:
       break;
     }
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -165,7 +165,7 @@ export class Knob extends Component {
   // General
   //////////////////////////////////
 
-  formatValue() {
+  _formatValue() {
     let valStr = this.value.toString();
     if (this.decimals <= 0) {
       return valStr;
@@ -180,26 +180,26 @@ export class Knob extends Component {
     return valStr;
   }
 
-  roundValue(value) {
+  _roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
 
-  updateHandleSize() {
+  _updateHandleSize() {
     this.handle.style.top = (this.height - this.size) / 2 + "px";
     this.handle.style.left = (this.width - this.size) / 2 + "px";
     this.handle.style.width = this.size + "px";
     this.handle.style.height = this.size + "px";
   }
 
-  updateHandleRotation() {
+  _updateHandleRotation() {
     const percent = (this.value - this.min) / (this.max - this.min);
     this.handle.style.transform = `rotate(${-240 + percent * 300}deg`;
   }
 
-  updateEnabledStyle() {
+  _updateEnabledStyle() {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
@@ -209,7 +209,7 @@ export class Knob extends Component {
     }
   }
 
-  updateLabelPositions() {
+  _updateLabelPositions() {
     this.label.x = (this.width - this.label.width) / 2;
     this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
     if (this._labelsSwapped) {
@@ -221,12 +221,12 @@ export class Knob extends Component {
     }
   }
 
-  updateValue(value) {
+  _updateValue(value) {
     if (this._value !== value) {
       this._value = value;
-      this.updateHandleRotation();
-      this.valueLabel.text = this.formatValue();
-      this.updateLabelPositions();
+      this._updateHandleRotation();
+      this.valueLabel.text = this._formatValue();
+      this._updateLabelPositions();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -244,9 +244,9 @@ export class Knob extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this.updateHandleRotation();
-    this.valueLabel.text = this.formatValue();
-    this.updateLabelPositions();
+    this._updateHandleRotation();
+    this.valueLabel.text = this._formatValue();
+    this._updateLabelPositions();
   }
 
   get enabled() {
@@ -256,23 +256,23 @@ export class Knob extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateEnabledStyle();
+      this._updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
-        this.handle.addEventListener("wheel", this.onWheel);
-        this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("touchstart", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown);
+        this.handle.addEventListener("wheel", this._onWheel);
+        this.wrapper.addEventListener("mousedown", this._onMouseDown);
+        this.wrapper.addEventListener("touchstart", this._onMouseDown);
+        this.wrapper.addEventListener("keydown", this._onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
-        this.handle.removeEventListener("wheel", this.onWheel);
-        this.wrapper.removeEventListener("mousedown", this.onMouseDown);
-        this.wrapper.removeEventListener("touchstart", this.onMouseDown);
-        this.wrapper.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("mousemove", this.onMouseMove);
-        document.removeEventListener("touchmove", this.onMouseMove);
-        document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
+        this.handle.removeEventListener("wheel", this._onWheel);
+        this.wrapper.removeEventListener("mousedown", this._onMouseDown);
+        this.wrapper.removeEventListener("touchstart", this._onMouseDown);
+        this.wrapper.removeEventListener("keydown", this._onKeyDown);
+        document.removeEventListener("mousemove", this._onMouseMove);
+        document.removeEventListener("touchmove", this._onMouseMove);
+        document.removeEventListener("mouseup", this._onMouseUp);
+        document.removeEventListener("touchend", this._onMouseUp);
       }
     }
   }
@@ -287,8 +287,8 @@ export class Knob extends Component {
   set height(height) {
     super.height = height;
     this.size = Math.min(this.width, this.height);
-    this.updateHandleSize();
-    this.updateLabelPositions();
+    this._updateHandleSize();
+    this._updateLabelPositions();
   }
 
   /**
@@ -300,7 +300,7 @@ export class Knob extends Component {
 
   set labelsSwapped(swap) {
     this._labelsSwapped = swap;
-    this.updateLabelPositions();
+    this._updateLabelPositions();
   }
 
   /**
@@ -312,7 +312,7 @@ export class Knob extends Component {
 
   set max(max) {
     this._max = max;
-    this.updateValue(this.value);
+    this._updateValue(this.value);
   }
 
   /**
@@ -324,7 +324,7 @@ export class Knob extends Component {
 
   set min(min) {
     this._min = min;
-    this.updateValue(this.value);
+    this._updateValue(this.value);
   }
 
   /**
@@ -354,11 +354,11 @@ export class Knob extends Component {
    * Gets and sets the value of the knob.
    */
   get value() {
-    return this.roundValue(this._value);
+    return this._roundValue(this._value);
   }
 
   set value(value) {
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
   /**
@@ -371,8 +371,8 @@ export class Knob extends Component {
   set width(width) {
     super.width = width;
     this.size = Math.min(this.width, this.height);
-    this.updateHandleSize();
-    this.updateLabelPositions();
+    this._updateHandleSize();
+    this._updateLabelPositions();
   }
 }
 

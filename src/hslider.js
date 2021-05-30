@@ -27,58 +27,58 @@ export class HSlider extends Component {
     super(parent, x, y);
     this._min = min || 0;
     this._max = max || 100;
-    this.setDefaults();
+    this._setDefaults();
     this._reversed = false;
     this._value = value || 0;
     this._showValue = true;
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
-    this.setSliderSize();
-    this.updateHandlePosition();
-    this.updateLabelPosition();
-    this.updateValueLabelPosition();
+    this._setSliderSize();
+    this._updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  createChildren() {
+  _createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
-    this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalSliderHandle");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
+    this.valueLabel = new Label(this.wrapper, 0, 0, this._formatValue());
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.hslider;
     this.shadowRoot.append(style);
     this.handleSize = Defaults.hslider.handleSize;
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onWheel = this.onWheel.bind(this);
-    this.wrapper.addEventListener("wheel", this.onWheel);
-    this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("touchstart", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onWheel = this._onWheel.bind(this);
+    this.wrapper.addEventListener("wheel", this._onWheel);
+    this.wrapper.addEventListener("mousedown", this._onMouseDown);
+    this.wrapper.addEventListener("touchstart", this._onMouseDown);
+    this.wrapper.addEventListener("keydown", this._onKeyDown);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  onMouseDown(event) {
+  _onMouseDown(event) {
     let mouseX;
     if (event.changedTouches) {
       event.preventDefault();
@@ -91,15 +91,15 @@ export class HSlider extends Component {
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
       const x = mouseX - this.getBoundingClientRect().left - this.handleSize / 2;
-      this.calculateValueFromPos(x);
+      this._calculateValueFromPos(x);
     }
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseX;
     if (event.changedTouches) {
       mouseX = event.changedTouches[0].clientX;
@@ -107,17 +107,17 @@ export class HSlider extends Component {
       mouseX = event.clientX;
     }
     const x = mouseX - this.getBoundingClientRect().left - this.offsetX;
-    this.calculateValueFromPos(x);
+    this._calculateValueFromPos(x);
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onKeyDown(event) {
+  _onKeyDown(event) {
     let inc = 1 / Math.pow(10, this._decimals);
     if (this.reversed) {
       inc = -inc;
@@ -154,10 +154,10 @@ export class HSlider extends Component {
     default:
       break;
     }
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -171,16 +171,16 @@ export class HSlider extends Component {
   // General
   //////////////////////////////////
 
-  calculateValueFromPos(x) {
+  _calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  formatValue() {
+  _formatValue() {
     let valStr = this.value.toString();
     if (this.decimals <= 0) {
       return valStr;
@@ -195,20 +195,20 @@ export class HSlider extends Component {
     return valStr;
   }
 
-  roundValue(value) {
+  _roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
 
-  setDefaults() {
+  _setDefaults() {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
   }
 
-  updateHandlePosition() {
+  _updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     if (this.reversed) {
       percent = 1 - percent;
@@ -218,7 +218,7 @@ export class HSlider extends Component {
     this.handle.style.left = percent * (this.width - this._handleSize) + "px";
   }
 
-  updateEnabledStyle() {
+  _updateEnabledStyle() {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
@@ -230,7 +230,7 @@ export class HSlider extends Component {
     }
   }
 
-  updateLabelPosition() {
+  _updateLabelPosition() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -243,20 +243,20 @@ export class HSlider extends Component {
     }
   }
 
-  updateValueLabelPosition() {
+  _updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
 
-  setSliderSize() {
+  _setSliderSize() {
     this.setSize(Defaults.hslider.width, Defaults.hslider.height);
   }
 
-  updateValue(value) {
+  _updateValue(value) {
     if (this._value !== value) {
       this._value = value;
-      this.updateHandlePosition();
-      this.valueLabel.text = this.formatValue();
+      this._updateHandlePosition();
+      this.valueLabel.text = this._formatValue();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -275,9 +275,9 @@ export class HSlider extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this.valueLabel.text = this.formatValue();
-    this.updateValueLabelPosition();
-    this.updateHandlePosition();
+    this.valueLabel.text = this._formatValue();
+    this._updateValueLabelPosition();
+    this._updateHandlePosition();
   }
 
   get enabled() {
@@ -287,23 +287,23 @@ export class HSlider extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateEnabledStyle();
+      this._updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
-        this.wrapper.addEventListener("wheel", this.onWheel);
-        this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("touchstart", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown);
+        this.wrapper.addEventListener("wheel", this._onWheel);
+        this.wrapper.addEventListener("mousedown", this._onMouseDown);
+        this.wrapper.addEventListener("touchstart", this._onMouseDown);
+        this.wrapper.addEventListener("keydown", this._onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
-        this.wrapper.removeEventListener("wheel", this.onWheel);
-        this.wrapper.removeEventListener("mousedown", this.onMouseDown);
-        this.wrapper.removeEventListener("touchstart", this.onMouseDown);
-        this.wrapper.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("mousemove", this.onMouseMove);
-        document.removeEventListener("touchmove", this.onMouseMove);
-        document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
+        this.wrapper.removeEventListener("wheel", this._onWheel);
+        this.wrapper.removeEventListener("mousedown", this._onMouseDown);
+        this.wrapper.removeEventListener("touchstart", this._onMouseDown);
+        this.wrapper.removeEventListener("keydown", this._onKeyDown);
+        document.removeEventListener("mousemove", this._onMouseMove);
+        document.removeEventListener("touchmove", this._onMouseMove);
+        document.removeEventListener("mouseup", this._onMouseUp);
+        document.removeEventListener("touchend", this._onMouseUp);
       }
     }
   }
@@ -319,17 +319,20 @@ export class HSlider extends Component {
   set handleSize(handleSize) {
     this._handleSize = handleSize;
     this.handle.style.width = handleSize + "px";
-    this.updateHandlePosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
 
   set height(height) {
     super.height = height;
-    this.updateLabelPosition();
-    this.updateValueLabelPosition();
+    this._updateLabelPosition();
+    this._updateValueLabelPosition();
   }
 
   /**
@@ -341,7 +344,7 @@ export class HSlider extends Component {
 
   set textPosition(position) {
     this._textPosition = position;
-    this.updateLabelPosition();
+    this._updateLabelPosition();
   }
 
   /**
@@ -353,8 +356,8 @@ export class HSlider extends Component {
 
   set max(max) {
     this._max = max;
-    this.updateValue(this.value);
-    this.updateHandlePosition();
+    this._updateValue(this.value);
+    this._updateHandlePosition();
   }
 
   /**
@@ -366,8 +369,8 @@ export class HSlider extends Component {
 
   set min(min) {
     this._min = min;
-    this.updateValue(this.value);
-    this.updateHandlePosition();
+    this._updateValue(this.value);
+    this._updateHandlePosition();
   }
 
   /**
@@ -407,28 +410,31 @@ export class HSlider extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabelPosition();
+    this._updateLabelPosition();
   }
 
   /**
    * Gets and sets the value of the slider.
    */
   get value() {
-    return this.roundValue(this._value);
+    return this._roundValue(this._value);
   }
 
   set value(value) {
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return super.width;
   }
 
   set width(width) {
     super.width = width;
-    this.updateValueLabelPosition();
-    this.updateHandlePosition();
+    this._updateValueLabelPosition();
+    this._updateHandlePosition();
   }
 }
 

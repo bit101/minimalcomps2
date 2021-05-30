@@ -24,16 +24,16 @@ export class VBox extends Component {
     this.spacing = spacing || 0;
     this.xpos = 0;
     this.ypos = 0;
-    this.createChildren();
+    this._createChildren();
     this.setSize(0, 0);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalVbox");
   }
 

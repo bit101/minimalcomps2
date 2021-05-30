@@ -22,40 +22,40 @@ export class TextArea extends Component {
     super(parent, x, y);
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
+  _createChildren() {
+    this.textArea = this._createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textarea;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.textArea.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.textArea.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     this._text = this.textArea.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -74,9 +74,9 @@ export class TextArea extends Component {
       super.enabled = enabled;
       this.textArea.disabled = !this.enabled;
       if (this.enabled) {
-        this.textArea.addEventListener("input", this.onInput);
+        this.textArea.addEventListener("input", this._onInput);
       } else {
-        this.textArea.removeEventListener("input", this.onInput);
+        this.textArea.removeEventListener("input", this._onInput);
       }
     }
   }

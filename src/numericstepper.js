@@ -42,25 +42,25 @@ export class NumericStepper extends Component {
     this._max = max || 0;
     this._decimals = 0;
     value = value || 0;
-    this._value = this.roundValue(value);
+    this._value = this._roundValue(value);
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalNumericStepper");
 
-    this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
+    this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
 
     this.label = new Label(this.wrapper, 0, -15, this._text);
@@ -71,54 +71,54 @@ export class NumericStepper extends Component {
     this.plus.setSize(20, 20);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.numericstepper;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onInput = this.onInput.bind(this);
-    this.onPlusDown = this.onPlusDown.bind(this);
-    this.onMinusDown = this.onMinusDown.bind(this);
-    this.onPlusUp = this.onPlusUp.bind(this);
-    this.onMinusUp = this.onMinusUp.bind(this);
-    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
-    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
-    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
-    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
-    this.onWheel = this.onWheel.bind(this);
+  _createListeners() {
+    this._onInputChange = this._onInputChange.bind(this);
+    this._onInput = this._onInput.bind(this);
+    this._onPlusDown = this._onPlusDown.bind(this);
+    this._onMinusDown = this._onMinusDown.bind(this);
+    this._onPlusUp = this._onPlusUp.bind(this);
+    this._onMinusUp = this._onMinusUp.bind(this);
+    this._onPlusKeyDown = this._onPlusKeyDown.bind(this);
+    this._onMinusKeyDown = this._onMinusKeyDown.bind(this);
+    this._onPlusKeyUp = this._onPlusKeyUp.bind(this);
+    this._onMinusKeyUp = this._onMinusKeyUp.bind(this);
+    this._onWheel = this._onWheel.bind(this);
 
-    this.wrapper.addEventListener("wheel", this.onWheel);
+    this.wrapper.addEventListener("wheel", this._onWheel);
 
-    this.input.addEventListener("input", this.onInput);
-    this.input.addEventListener("change", this.onInputChange);
+    this.input.addEventListener("input", this._onInput);
+    this.input.addEventListener("change", this._onInputChange);
 
-    this.plus.addEventListener("mousedown", this.onPlusDown);
-    document.addEventListener("mouseup", this.onPlusUp);
-    this.plus.addEventListener("keydown", this.onPlusKeyDown);
-    this.plus.addEventListener("keyup", this.onPlusKeyUp);
+    this.plus.addEventListener("mousedown", this._onPlusDown);
+    document.addEventListener("mouseup", this._onPlusUp);
+    this.plus.addEventListener("keydown", this._onPlusKeyDown);
+    this.plus.addEventListener("keyup", this._onPlusKeyUp);
 
-    this.minus.addEventListener("mousedown", this.onMinusDown);
-    document.addEventListener("mouseup", this.onMinusUp);
-    this.minus.addEventListener("keydown", this.onMinusKeyDown);
-    this.minus.addEventListener("keyup", this.onMinusKeyUp);
+    this.minus.addEventListener("mousedown", this._onMinusDown);
+    document.addEventListener("mouseup", this._onMinusUp);
+    this.minus.addEventListener("keydown", this._onMinusKeyDown);
+    this.minus.addEventListener("keyup", this._onMinusKeyUp);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     let value = this.input.value;
     value = value.replace(/[^-.0-9]/g, "");
     this.input.value = value;
   }
 
-  onInputChange() {
+  _onInputChange() {
     let value = parseFloat(this.input.value);
-    value = this.roundValue(value);
+    value = this._roundValue(value);
     this.input.value = value;
     if (this.value !== value) {
       this._value = value;
@@ -126,81 +126,81 @@ export class NumericStepper extends Component {
     }
   }
 
-  decrement() {
+  _decrement() {
     if (this.isDecrementing) {
-      const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
+      const value = this._roundValue(this.value - 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
-      this.timeout = setTimeout(() => this.decrement(), this.delay);
+      this.timeout = setTimeout(() => this._decrement(), this.delay);
       if (this.delay === 500) {
         this.delay = 50;
       }
     }
   }
 
-  increment() {
+  _increment() {
     if (this.isIncrementing) {
-      const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
+      const value = this._roundValue(this.value + 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
-      this.timeout = setTimeout(() => this.increment(), this.delay);
+      this.timeout = setTimeout(() => this._increment(), this.delay);
       if (this.delay === 500) {
         this.delay = 50;
       }
     }
   }
 
-  onMinusDown() {
+  _onMinusDown() {
     clearTimeout(this.timeout);
     this.isDecrementing = true;
     this.delay = 500;
-    this.decrement();
+    this._decrement();
   }
 
-  onMinusUp() {
+  _onMinusUp() {
     this.isDecrementing = false;
   }
 
-  onMinusKeyDown(event) {
+  _onMinusKeyDown(event) {
     if (event.keyCode === 13) {
-      this.onMinusDown();
+      this._onMinusDown();
     }
   }
 
-  onMinusKeyUp(event) {
+  _onMinusKeyUp(event) {
     if (event.keyCode === 13) {
-      this.onMinusUp();
+      this._onMinusUp();
     }
   }
 
-  onPlusDown() {
+  _onPlusDown() {
     clearTimeout(this.timeout);
     this.isIncrementing = true;
     this.delay = 500;
-    this.increment();
+    this._increment();
   }
 
-  onPlusUp() {
+  _onPlusUp() {
     this.isIncrementing = false;
   }
 
-  onPlusKeyDown(event) {
+  _onPlusKeyDown(event) {
     if (event.keyCode === 13) {
-      this.onPlusDown();
+      this._onPlusDown();
     }
   }
 
-  onPlusKeyUp(event) {
+  _onPlusKeyUp(event) {
     if (event.keyCode === 13) {
-      this.onPlusUp();
+      this._onPlusUp();
     }
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -216,7 +216,7 @@ export class NumericStepper extends Component {
   // General
   //////////////////////////////////
 
-  roundValue(value) {
+  _roundValue(value) {
     if (this.max !== null) {
       value = Math.min(value, this.max);
     }
@@ -227,7 +227,7 @@ export class NumericStepper extends Component {
     return Math.round(value * mult) / mult;
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -260,15 +260,15 @@ export class NumericStepper extends Component {
       this.minus.enabled = this.enabled;
       this.label.enabled = enabled;
       if (this.enabled) {
-        this.wrapper.addEventListener("wheel", this.onWheel);
+        this.wrapper.addEventListener("wheel", this._onWheel);
       } else {
-        this.wrapper.removeEventListener("wheel", this.onWheel);
+        this.wrapper.removeEventListener("wheel", this._onWheel);
       }
     }
   }
 
   /**
-   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will increment or decrement the stepper's value by the smallest displayed value.
+   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will _increment or _decrement the stepper's value by the smallest displayed value.
    */
   get decimals() {
     return this._decimals;
@@ -276,7 +276,7 @@ export class NumericStepper extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    const value = this.roundValue(this.value);
+    const value = this._roundValue(this.value);
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
@@ -293,7 +293,7 @@ export class NumericStepper extends Component {
 
   set height(h) {
     super.height = h;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -336,7 +336,7 @@ export class NumericStepper extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -348,7 +348,7 @@ export class NumericStepper extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
   /**
    * Gets and sets the value of the stepper.
@@ -358,10 +358,13 @@ export class NumericStepper extends Component {
   }
 
   set value(value) {
-    this._value = this.roundValue(value);
+    this._value = this._roundValue(value);
     this.input.value = this._value;
   }
 
+  /**
+   * Sets and gets the width of this component.
+   */
   get width() {
     return super.width;
   }

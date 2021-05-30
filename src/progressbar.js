@@ -28,24 +28,24 @@ export class ProgressBar extends Component {
     this._progress = progress || 0;
     this._max = max || 100;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(100, 15);
-    this.updateBar();
-    this.addToParent();
+    this._updateBar();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalProgressBar");
-    this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
+    this.fill = this._createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.progressbar;
     this.shadowRoot.append(style);
@@ -55,7 +55,7 @@ export class ProgressBar extends Component {
   // General
   //////////////////////////////////
 
-  updateBar() {
+  _updateBar() {
     let percent = this.progress / this.max;
     percent = Math.max(0, percent);
     percent = Math.min(1, percent);
@@ -93,7 +93,7 @@ export class ProgressBar extends Component {
     this._max = max;
     const progress = Math.min(this.progress, this.max);
     this.progress = Math.max(progress, 0);
-    this.updateBar();
+    this._updateBar();
   }
 
   /**
@@ -107,7 +107,7 @@ export class ProgressBar extends Component {
     progress = Math.min(progress, this.max);
     progress = Math.max(progress, 0);
     this._progress = progress;
-    this.updateBar();
+    this._updateBar();
   }
 }
 

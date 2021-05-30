@@ -29,25 +29,25 @@ export class LED extends Component {
 
     const size = 16;
 
-    this.createChildren();
+    this._createChildren();
     this.setWrapperClass("MinimalLED");
-    this.createStyle();
+    this._createStyle();
 
     this.setSize(size, size);
-    this.updateLED();
-    this.updateLabel();
-    this.addToParent();
+    this._updateLED();
+    this._updateLabel();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.label = new Label(this.wrapper, 0, -15, this._text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.led;
     this.shadowRoot.append(style);
@@ -61,7 +61,7 @@ export class LED extends Component {
   // General
   //////////////////////////////////
 
-  updateLED() {
+  _updateLED() {
     if (this.lit) {
       this.wrapper.style.background = `radial-gradient(circle at 60% 37%, #fff, ${this.color} 50%, #444 100%)`;
     } else {
@@ -69,7 +69,7 @@ export class LED extends Component {
     }
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -137,7 +137,7 @@ export class LED extends Component {
 
   set color(color) {
     this._color = color;
-    this.updateLED();
+    this._updateLED();
   }
 
   /**
@@ -179,7 +179,7 @@ export class LED extends Component {
 
   set lit(lit) {
     this._lit = lit;
-    this.updateLED();
+    this._updateLED();
   }
 
   /**
@@ -192,7 +192,7 @@ export class LED extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -204,7 +204,7 @@ export class LED extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**

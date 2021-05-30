@@ -24,46 +24,46 @@ export class Toggle extends Component {
     this._text = text;
     this._textPosition = "top";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(50, 20);
     this.toggled = toggled || false;
-    this.updateLabel();
+    this._updateLabel();
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
     this.label = new Label(this.wrapper, 0, -15, this._text);
-    this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.toggle;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keypress", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
@@ -71,7 +71,7 @@ export class Toggle extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
@@ -86,10 +86,10 @@ export class Toggle extends Component {
    */
   toggle() {
     this.toggled = !this.toggled;
-    this.updateToggle();
+    this._updateToggle();
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -105,7 +105,7 @@ export class Toggle extends Component {
     }
   }
 
-  updateToggle() {
+  _updateToggle() {
     if (this.toggled) {
       this.handle.style.left = "50%";
     } else {
@@ -127,7 +127,7 @@ export class Toggle extends Component {
 
   set toggled(toggled) {
     this._toggled = toggled;
-    this.updateToggle();
+    this._updateToggle();
   }
 
   get enabled() {
@@ -158,7 +158,7 @@ export class Toggle extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -170,7 +170,7 @@ export class Toggle extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 }
 

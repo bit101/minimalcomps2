@@ -24,46 +24,46 @@ export class Checkbox extends Component {
     super(parent, x, y);
     this._text = text;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
-    this.updateWidth();
+    this._addToParent();
+    this._updateWidth();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
-    this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
+    this.check = this._createDiv(this.wrapper, "MinimalCheckboxCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.checkbox;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keypress", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
@@ -71,7 +71,7 @@ export class Checkbox extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
@@ -88,7 +88,7 @@ export class Checkbox extends Component {
     this.checked = !this.checked;
   }
 
-  updateCheckStyle() {
+  _updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
       : "MinimalCheckboxCheck ";
@@ -104,7 +104,7 @@ export class Checkbox extends Component {
     }
   }
 
-  updateWidth() {
+  _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
@@ -122,7 +122,7 @@ export class Checkbox extends Component {
 
   set checked(checked) {
     this._checked = checked;
-    this.updateCheckStyle();
+    this._updateCheckStyle();
   }
 
   get enabled() {
@@ -132,7 +132,7 @@ export class Checkbox extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateCheckStyle();
+      this._updateCheckStyle();
       this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
@@ -165,7 +165,7 @@ export class Checkbox extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateWidth();
+    this._updateWidth();
   }
 
   /**

@@ -713,13 +713,13 @@ class Component extends HTMLElement {
     this._enabled = true;
 
     this.attachShadow({mode: "open"});
-    this.createWrapper();
-    this.createWrapperStyle();
+    this._createWrapper();
+    this._createWrapperStyle();
 
     this.move(x || 0, y || 0);
   }
 
-  addToParent() {
+  _addToParent() {
     this.parent && this.parent.appendChild(this);
   }
 
@@ -727,12 +727,12 @@ class Component extends HTMLElement {
   // Creators
   //////////////////////////////////
 
-  createDiv(parent, className) {
-    return this.createElement(parent, "div", className);
+  _createDiv(parent, className) {
+    return this._createElement(parent, "div", className);
   }
 
   /* eslint-disable class-methods-use-this */
-  createElement(parent, type, className) {
+  _createElement(parent, type, className) {
     const el = document.createElement(type);
     el.setAttribute("class", className);
     parent && parent.appendChild(el);
@@ -740,19 +740,19 @@ class Component extends HTMLElement {
   }
   /* eslint-enable */
 
-  createInput(parent, className) {
-    const input = this.createElement(parent, "input", className);
+  _createInput(parent, className) {
+    const input = this._createElement(parent, "input", className);
     input.type = "text";
     return input;
   }
 
-  createWrapper() {
-    this.wrapper = this.createDiv(null, "MinimalWrapper");
+  _createWrapper() {
+    this.wrapper = this._createDiv(null, "MinimalWrapper");
     this.shadowRoot.appendChild(this.wrapper);
     this.shadowRoot.appendChild(document.createElement("slot"));
   }
 
-  createWrapperStyle() {
+  _createWrapperStyle() {
     const style = document.createElement("style");
     style.textContent = Style.component;
     this.shadowRoot.append(style);
@@ -944,8 +944,8 @@ class Label extends Component {
     this._bold = false;
     this._italic = false;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
     this.fontSize = Defaults.label.fontSize;
     // width will be 0 until it is on the live DOM
     // so we put it on document.body, get width
@@ -954,19 +954,19 @@ class Label extends Component {
     this._width = this.wrapper.offsetWidth;
     this.text = text || "";
     this.height = Defaults.label.fontSize + 2;
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.label;
     this.shadowRoot.append(style);
@@ -1059,6 +1059,10 @@ class Label extends Component {
     this._fontSize = fontSize;
     this.wrapper.style.fontSize = fontSize + "px";
   }
+
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
@@ -1099,6 +1103,9 @@ class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return this._width;
   }
@@ -1134,20 +1141,20 @@ class Button extends Component {
     super(parent, x, y);
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.button.width, Defaults.button.height);
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalButton");
     this.label = new Label(this.wrapper, 0, 0, this._text);
@@ -1155,31 +1162,31 @@ class Button extends Component {
     this.label.align = "center";
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.button;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keyup", this.onKeyUp);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyUp = this._onKeyUp.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keyup", this._onKeyUp);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.dispatchEvent(new Event("click"));
     }
   }
 
-  onKeyUp(event) {
+  _onKeyUp(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
@@ -1268,23 +1275,23 @@ class Canvas extends Component {
   constructor(parent, x, y, w, h) {
     super(parent, x, y);
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(w || 200, h || 100);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.canvas = this.createElement(this.wrapper, "canvas", "MinimalCanvas");
+  _createChildren() {
+    this.canvas = this._createElement(this.wrapper, "canvas", "MinimalCanvas");
     this._context = this.canvas.getContext("2d");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.canvas;
     this.shadowRoot.append(style);
@@ -1366,46 +1373,46 @@ class Checkbox extends Component {
     super(parent, x, y);
     this._text = text;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 10);
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
-    this.updateWidth();
+    this._addToParent();
+    this._updateWidth();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
-    this.check = this.createDiv(this.wrapper, "MinimalCheckboxCheck");
+    this.check = this._createDiv(this.wrapper, "MinimalCheckboxCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.checkbox;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keypress", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
@@ -1413,7 +1420,7 @@ class Checkbox extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
@@ -1430,7 +1437,7 @@ class Checkbox extends Component {
     this.checked = !this.checked;
   }
 
-  updateCheckStyle() {
+  _updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
       : "MinimalCheckboxCheck ";
@@ -1446,7 +1453,7 @@ class Checkbox extends Component {
     }
   }
 
-  updateWidth() {
+  _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
@@ -1464,7 +1471,7 @@ class Checkbox extends Component {
 
   set checked(checked) {
     this._checked = checked;
-    this.updateCheckStyle();
+    this._updateCheckStyle();
   }
 
   get enabled() {
@@ -1474,7 +1481,7 @@ class Checkbox extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateCheckStyle();
+      this._updateCheckStyle();
       this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
@@ -1507,7 +1514,7 @@ class Checkbox extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateWidth();
+    this._updateWidth();
   }
 
   /**
@@ -1553,52 +1560,52 @@ class ColorPicker extends Component {
     color = color || "#f00";
     this._text = text || "";
     this._textPosition = "top";
-    this._color = this.correctColor(color);
-    this._color = this.cropColor(color);
+    this._color = this._correctColor(color);
+    this._color = this._cropColor(color);
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalColorPicker");
 
-    this.input = this.createInput(this.wrapper, "MinimalColorPickerInput");
+    this.input = this._createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
     this.input.value = this._color;
 
     this.label = new Label(this.wrapper, 0, -15, this._text);
 
-    this.preview = this.createDiv(this.wrapper, "MinimalColorPickerPreview");
+    this.preview = this._createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.colorpicker;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.input.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.input.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
-    const color = this.correctColor(this.input.value);
+  _onInput() {
+    const color = this._correctColor(this.input.value);
     this.input.value = color;
     if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
@@ -1611,19 +1618,19 @@ class ColorPicker extends Component {
   // General
   //////////////////////////////////
 
-  correctColor(color) {
+  _correctColor(color) {
     color = "#" + color.replace(/[^0-9a-fA-F]/g, "");
     return color.toUpperCase();
   }
 
-  cropColor(color) {
+  _cropColor(color) {
     if (color.length > 7) {
       color = color.substring(0, 7);
     }
     return color;
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -1738,10 +1745,10 @@ class ColorPicker extends Component {
       this.input.disabled = !this.enabled;
       if (this.enabled) {
         this.preview.setAttribute("class", "MinimalColorPickerPreview");
-        this.input.addEventListener("input", this.onInput);
+        this.input.addEventListener("input", this._onInput);
       } else {
         this.preview.setAttribute("class", "MinimalColorPickerPreviewDisabled");
-        this.input.removeEventListener("input", this.onInput);
+        this.input.removeEventListener("input", this._onInput);
       }
     }
   }
@@ -1763,8 +1770,8 @@ class ColorPicker extends Component {
   }
 
   set color(color) {
-    color = this.correctColor(color);
-    color = this.cropColor(color);
+    color = this._correctColor(color);
+    color = this._cropColor(color);
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
@@ -1779,7 +1786,7 @@ class ColorPicker extends Component {
 
   set height(h) {
     super.height = h;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -1792,7 +1799,7 @@ class ColorPicker extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -1804,7 +1811,7 @@ class ColorPicker extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 }
 
@@ -1836,97 +1843,97 @@ class Dropdown extends Component {
     this.itemElements = [];
     this._text = "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 20);
-    this.createItems();
+    this._createItems();
     this.index = index || -1;
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
     this.label = new Label(this.wrapper, 3, 3);
 
-    this.button = this.createDiv(this.wrapper, "MinimalDropdownButton");
+    this.button = this._createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
 
-    this.dropdown = this.createDiv(this.wrapper, null);
+    this.dropdown = this._createDiv(this.wrapper, null);
     this.dropdown.style.display = "none";
   }
 
-  createItems() {
+  _createItems() {
     for (let i = 0; i < this.items.length; i++) {
-      this.createItem(i);
+      this._createItem(i);
     }
   }
 
-  createItem(index) {
-    const item = this.createDiv(this.dropdown, "MinimalDropdownItem");
+  _createItem(index) {
+    const item = this._createDiv(this.dropdown, "MinimalDropdownItem");
     item.setAttribute("data-index", index);
-    item.addEventListener("click", this.onItemClick);
+    item.addEventListener("click", this._onItemClick);
     item.tabIndex = 0;
 
     const label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
 
     const itemObj = {item, label};
-    this.updateItem(itemObj, index);
+    this._updateItem(itemObj, index);
     this.itemElements.push(itemObj);
     return item;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.dropdown;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.toggle = this.toggle.bind(this);
-    this.onItemClick = this.onItemClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.onDocumentClick = this.onDocumentClick.bind(this);
+  _createListeners() {
+    this._toggle = this._toggle.bind(this);
+    this._onItemClick = this._onItemClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this._onDocumentClick = this._onDocumentClick.bind(this);
 
-    this.wrapper.addEventListener("click", this.toggle);
+    this.wrapper.addEventListener("click", this._toggle);
     for (let i = 0; i < this.itemElements.length; i++) {
-      this.itemElements[i].addEventListener("click", this.onItemClick);
+      this.itemElements[i].addEventListener("click", this._onItemClick);
     }
-    this.addEventListener("keydown", this.onKeyPress);
+    this.addEventListener("keydown", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  toggle(event) {
+  _toggle(event) {
     event && event.stopPropagation();
     this._open = !this._open;
     if (this._open) {
       this.initialZ = this.style.zIndex;
       this.style.zIndex = 1000000;
       this.dropdown.style.display = "block";
-      document.addEventListener("click", this.onDocumentClick);
+      document.addEventListener("click", this._onDocumentClick);
     } else {
       this.style.zIndex = this.initialZ;
       this.dropdown.style.display = "none";
-      document.removeEventListener("click", this.onDocumentClick);
+      document.removeEventListener("click", this._onDocumentClick);
     }
   }
 
-  onItemClick(event) {
+  _onItemClick(event) {
     event.stopPropagation();
     this.index = event.target.getAttribute("data-index");
-    this.toggle();
+    this._toggle();
     this.dispatchEvent(new CustomEvent("change", {
       detail: {
         text: this.text,
@@ -1936,7 +1943,7 @@ class Dropdown extends Component {
     this.wrapper.focus();
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.shadowRoot.activeElement.click();
@@ -1962,7 +1969,7 @@ class Dropdown extends Component {
     }
   }
 
-  onDocumentClick(event) {
+  _onDocumentClick(event) {
     if (event.target.className !== "MinimalDropdownItem") {
       this.close();
     }
@@ -1977,7 +1984,7 @@ class Dropdown extends Component {
    */
   close() {
     this._open = true;
-    this.toggle();
+    this._toggle();
   }
 
   /**
@@ -1985,17 +1992,17 @@ class Dropdown extends Component {
    */
   open() {
     this._open = false;
-    this.toggle();
+    this._toggle();
   }
 
-  updateButton() {
+  _updateButton() {
     this.button.style.left = this.width - this.height + "px";
     this.button.style.width = this.height + "px";
     this.button.style.height = this.height + "px";
     this.button.style.lineHeight = this.height - 1 + "px";
   }
 
-  updateItem(itemObj, i) {
+  _updateItem(itemObj, i) {
     const { item, label } = itemObj;
 
     const h = this.height - 1;
@@ -2022,12 +2029,12 @@ class Dropdown extends Component {
     }
     super.enabled = enabled;
     if (this.enabled) {
-      this.wrapper.addEventListener("click", this.toggle);
+      this.wrapper.addEventListener("click", this._toggle);
       this.wrapper.setAttribute("class", "MinimalDropdown");
       this.button.setAttribute("class", "MinimalDropdownButton");
       this.tabIndex = 0;
     } else {
-      this.wrapper.removeEventListener("click", this.toggle);
+      this.wrapper.removeEventListener("click", this._toggle);
       this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
       this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
       this.tabIndex = -1;
@@ -2044,8 +2051,8 @@ class Dropdown extends Component {
   set height(height) {
     super.height = height;
     this.label.y = (this.height - this.label.height) / 2;
-    this.updateButton();
-    this.itemElements.forEach((item, i) => this.updateItem(item, i));
+    this._updateButton();
+    this.itemElements.forEach((item, i) => this._updateItem(item, i));
   }
 
   /**
@@ -2080,9 +2087,9 @@ class Dropdown extends Component {
 
   set width(width) {
     super.width = width;
-    this.updateButton();
+    this._updateButton();
     this.itemElements.forEach(item => {
-      this.updateItem(item);
+      this._updateItem(item);
     });
   }
 }
@@ -2113,16 +2120,16 @@ class HBox extends Component {
     this.spacing = spacing || 0;
     this.xpos = 0;
     this.ypos = 0;
-    this.createChildren();
+    this._createChildren();
     this.setSize(0, 0);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalVbox");
   }
 
@@ -2171,58 +2178,58 @@ class HSlider extends Component {
     super(parent, x, y);
     this._min = min || 0;
     this._max = max || 100;
-    this.setDefaults();
+    this._setDefaults();
     this._reversed = false;
     this._value = value || 0;
     this._showValue = true;
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
-    this.setSliderSize();
-    this.updateHandlePosition();
-    this.updateLabelPosition();
-    this.updateValueLabelPosition();
+    this._setSliderSize();
+    this._updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateValueLabelPosition();
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
-  createChildren() {
+  _createChildren() {
     this.wrapper.tabIndex = 0;
     this.setWrapperClass("MinimalSlider");
-    this.handle = this.createDiv(this.wrapper, "MinimalSliderHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalSliderHandle");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.formatValue());
+    this.valueLabel = new Label(this.wrapper, 0, 0, this._formatValue());
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.hslider;
     this.shadowRoot.append(style);
     this.handleSize = Defaults.hslider.handleSize;
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onWheel = this.onWheel.bind(this);
-    this.wrapper.addEventListener("wheel", this.onWheel);
-    this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("touchstart", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onWheel = this._onWheel.bind(this);
+    this.wrapper.addEventListener("wheel", this._onWheel);
+    this.wrapper.addEventListener("mousedown", this._onMouseDown);
+    this.wrapper.addEventListener("touchstart", this._onMouseDown);
+    this.wrapper.addEventListener("keydown", this._onKeyDown);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  onMouseDown(event) {
+  _onMouseDown(event) {
     let mouseX;
     if (event.changedTouches) {
       event.preventDefault();
@@ -2235,15 +2242,15 @@ class HSlider extends Component {
     if (this.offsetX < 0 || this.offsetX > this.handleSize) {
       this.offsetX = this.handleSize / 2;
       const x = mouseX - this.getBoundingClientRect().left - this.handleSize / 2;
-      this.calculateValueFromPos(x);
+      this._calculateValueFromPos(x);
     }
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseX;
     if (event.changedTouches) {
       mouseX = event.changedTouches[0].clientX;
@@ -2251,17 +2258,17 @@ class HSlider extends Component {
       mouseX = event.clientX;
     }
     const x = mouseX - this.getBoundingClientRect().left - this.offsetX;
-    this.calculateValueFromPos(x);
+    this._calculateValueFromPos(x);
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onKeyDown(event) {
+  _onKeyDown(event) {
     let inc = 1 / Math.pow(10, this._decimals);
     if (this.reversed) {
       inc = -inc;
@@ -2296,10 +2303,10 @@ class HSlider extends Component {
       value += inc;
       break;
     }
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -2313,16 +2320,16 @@ class HSlider extends Component {
   // General
   //////////////////////////////////
 
-  calculateValueFromPos(x) {
+  _calculateValueFromPos(x) {
     let percent = x / (this.width - this.handleSize);
     if (this.reversed) {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  formatValue() {
+  _formatValue() {
     let valStr = this.value.toString();
     if (this.decimals <= 0) {
       return valStr;
@@ -2337,20 +2344,20 @@ class HSlider extends Component {
     return valStr;
   }
 
-  roundValue(value) {
+  _roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
 
-  setDefaults() {
+  _setDefaults() {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
   }
 
-  updateHandlePosition() {
+  _updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     if (this.reversed) {
       percent = 1 - percent;
@@ -2360,7 +2367,7 @@ class HSlider extends Component {
     this.handle.style.left = percent * (this.width - this._handleSize) + "px";
   }
 
-  updateEnabledStyle() {
+  _updateEnabledStyle() {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
@@ -2372,7 +2379,7 @@ class HSlider extends Component {
     }
   }
 
-  updateLabelPosition() {
+  _updateLabelPosition() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -2385,20 +2392,20 @@ class HSlider extends Component {
     }
   }
 
-  updateValueLabelPosition() {
+  _updateValueLabelPosition() {
     this.valueLabel.x = this.width + 5;
     this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
   }
 
-  setSliderSize() {
+  _setSliderSize() {
     this.setSize(Defaults.hslider.width, Defaults.hslider.height);
   }
 
-  updateValue(value) {
+  _updateValue(value) {
     if (this._value !== value) {
       this._value = value;
-      this.updateHandlePosition();
-      this.valueLabel.text = this.formatValue();
+      this._updateHandlePosition();
+      this.valueLabel.text = this._formatValue();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -2417,9 +2424,9 @@ class HSlider extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this.valueLabel.text = this.formatValue();
-    this.updateValueLabelPosition();
-    this.updateHandlePosition();
+    this.valueLabel.text = this._formatValue();
+    this._updateValueLabelPosition();
+    this._updateHandlePosition();
   }
 
   get enabled() {
@@ -2429,23 +2436,23 @@ class HSlider extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateEnabledStyle();
+      this._updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
-        this.wrapper.addEventListener("wheel", this.onWheel);
-        this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("touchstart", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown);
+        this.wrapper.addEventListener("wheel", this._onWheel);
+        this.wrapper.addEventListener("mousedown", this._onMouseDown);
+        this.wrapper.addEventListener("touchstart", this._onMouseDown);
+        this.wrapper.addEventListener("keydown", this._onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
-        this.wrapper.removeEventListener("wheel", this.onWheel);
-        this.wrapper.removeEventListener("mousedown", this.onMouseDown);
-        this.wrapper.removeEventListener("touchstart", this.onMouseDown);
-        this.wrapper.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("mousemove", this.onMouseMove);
-        document.removeEventListener("touchmove", this.onMouseMove);
-        document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
+        this.wrapper.removeEventListener("wheel", this._onWheel);
+        this.wrapper.removeEventListener("mousedown", this._onMouseDown);
+        this.wrapper.removeEventListener("touchstart", this._onMouseDown);
+        this.wrapper.removeEventListener("keydown", this._onKeyDown);
+        document.removeEventListener("mousemove", this._onMouseMove);
+        document.removeEventListener("touchmove", this._onMouseMove);
+        document.removeEventListener("mouseup", this._onMouseUp);
+        document.removeEventListener("touchend", this._onMouseUp);
       }
     }
   }
@@ -2461,17 +2468,20 @@ class HSlider extends Component {
   set handleSize(handleSize) {
     this._handleSize = handleSize;
     this.handle.style.width = handleSize + "px";
-    this.updateHandlePosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
 
   set height(height) {
     super.height = height;
-    this.updateLabelPosition();
-    this.updateValueLabelPosition();
+    this._updateLabelPosition();
+    this._updateValueLabelPosition();
   }
 
   /**
@@ -2483,7 +2493,7 @@ class HSlider extends Component {
 
   set textPosition(position) {
     this._textPosition = position;
-    this.updateLabelPosition();
+    this._updateLabelPosition();
   }
 
   /**
@@ -2495,8 +2505,8 @@ class HSlider extends Component {
 
   set max(max) {
     this._max = max;
-    this.updateValue(this.value);
-    this.updateHandlePosition();
+    this._updateValue(this.value);
+    this._updateHandlePosition();
   }
 
   /**
@@ -2508,8 +2518,8 @@ class HSlider extends Component {
 
   set min(min) {
     this._min = min;
-    this.updateValue(this.value);
-    this.updateHandlePosition();
+    this._updateValue(this.value);
+    this._updateHandlePosition();
   }
 
   /**
@@ -2549,28 +2559,31 @@ class HSlider extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabelPosition();
+    this._updateLabelPosition();
   }
 
   /**
    * Gets and sets the value of the slider.
    */
   get value() {
-    return this.roundValue(this._value);
+    return this._roundValue(this._value);
   }
 
   set value(value) {
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return super.width;
   }
 
   set width(width) {
     super.width = width;
-    this.updateValueLabelPosition();
-    this.updateHandlePosition();
+    this._updateValueLabelPosition();
+    this._updateHandlePosition();
   }
 }
 
@@ -2596,42 +2609,42 @@ class Image extends Component {
     super(parent, x, y);
     this._url = url || "";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.image.width, 100);
-    this.load();
-    this.addToParent();
+    this._load();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.image = this.createElement(this.wrapper, "img", "MinimalImage");
+  _createChildren() {
+    this.image = this._createElement(this.wrapper, "img", "MinimalImage");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.image;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onLoad = this.onLoad.bind(this);
-    this.image.addEventListener("load", this.onLoad);
+  _createListeners() {
+    this._onLoad = this._onLoad.bind(this);
+    this.image.addEventListener("load", this._onLoad);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onLoad() {
+  _onLoad() {
     this.origWidth = this.image.width;
     this.origHeight = this.image.height;
-    this.updateImageSize();
+    this._updateImageSize();
     this.image.style.visibility = "visible";
   }
 
@@ -2639,12 +2652,12 @@ class Image extends Component {
   // General
   //////////////////////////////////
 
-  load() {
+  _load() {
     this.image.style.visibility = "hidden";
     this.image.setAttribute("src", this._url);
   }
 
-  updateImageSize() {
+  _updateImageSize() {
     const aspectRatio = this.origWidth / this.origHeight;
     this.image.width = this.width;
     this.image.height = this.height = this.width / aspectRatio;
@@ -2688,7 +2701,7 @@ class Image extends Component {
 
   set url(url) {
     this._url = url;
-    this.load();
+    this._load();
   }
 
   /**
@@ -2701,7 +2714,7 @@ class Image extends Component {
   set width(width) {
     super.width = width;
     if (this.image.width) {
-      this.updateImageSize();
+      this._updateImageSize();
     }
   }
 }
@@ -2739,53 +2752,53 @@ class Knob extends Component {
     this._sensitivity = 100;
     this._labelsSwapped = false;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(Defaults.knob.size, Defaults.knob.size);
-    this.updateHandleRotation();
+    this._updateHandleRotation();
 
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalKnob");
-    this.handle = this.createDiv(this.wrapper, "MinimalKnobHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
-    this.zero = this.createDiv(this.handle, "MinimalKnobZero");
+    this.zero = this._createDiv(this.handle, "MinimalKnobZero");
     this.label = new Label(this.wrapper, 0, 0, this._text);
-    this.valueLabel = new Label(this.wrapper, 0, 0, this.roundValue(this._value));
+    this.valueLabel = new Label(this.wrapper, 0, 0, this._roundValue(this._value));
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.knob;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onWheel = this.onWheel.bind(this);
-    this.handle.addEventListener("wheel", this.onWheel);
-    this.wrapper.addEventListener("mousedown", this.onMouseDown);
-    this.wrapper.addEventListener("touchstart", this.onMouseDown);
-    this.wrapper.addEventListener("keydown", this.onKeyDown);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onWheel = this._onWheel.bind(this);
+    this.handle.addEventListener("wheel", this._onWheel);
+    this.wrapper.addEventListener("mousedown", this._onMouseDown);
+    this.wrapper.addEventListener("touchstart", this._onMouseDown);
+    this.wrapper.addEventListener("keydown", this._onKeyDown);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onMouseDown(event) {
+  _onMouseDown(event) {
     event.preventDefault();
     this.wrapper.focus();
     if (event.changedTouches) {
@@ -2794,13 +2807,13 @@ class Knob extends Component {
       this.startY = event.clientY;
     }
     this.startValue = this.value;
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     const mult = (this.max - this.min) / this.sensitivity;
     let mouseY;
     if (event.changedTouches) {
@@ -2812,14 +2825,14 @@ class Knob extends Component {
     this.value = this.startValue + -y * mult;
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onKeyDown(event) {
+  _onKeyDown(event) {
     const inc = 1 / Math.pow(10, this._decimals);
     let value = this.value;
 
@@ -2851,10 +2864,10 @@ class Knob extends Component {
       value += inc;
       break;
     }
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -2868,7 +2881,7 @@ class Knob extends Component {
   // General
   //////////////////////////////////
 
-  formatValue() {
+  _formatValue() {
     let valStr = this.value.toString();
     if (this.decimals <= 0) {
       return valStr;
@@ -2883,26 +2896,26 @@ class Knob extends Component {
     return valStr;
   }
 
-  roundValue(value) {
+  _roundValue(value) {
     value = Math.min(value, this.max);
     value = Math.max(value, this.min);
     const mult = Math.pow(10, this.decimals);
     return Math.round(value * mult) / mult;
   }
 
-  updateHandleSize() {
+  _updateHandleSize() {
     this.handle.style.top = (this.height - this.size) / 2 + "px";
     this.handle.style.left = (this.width - this.size) / 2 + "px";
     this.handle.style.width = this.size + "px";
     this.handle.style.height = this.size + "px";
   }
 
-  updateHandleRotation() {
+  _updateHandleRotation() {
     const percent = (this.value - this.min) / (this.max - this.min);
     this.handle.style.transform = `rotate(${-240 + percent * 300}deg`;
   }
 
-  updateEnabledStyle() {
+  _updateEnabledStyle() {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
@@ -2912,7 +2925,7 @@ class Knob extends Component {
     }
   }
 
-  updateLabelPositions() {
+  _updateLabelPositions() {
     this.label.x = (this.width - this.label.width) / 2;
     this.valueLabel.x = (this.width - this.valueLabel.width) / 2;
     if (this._labelsSwapped) {
@@ -2924,12 +2937,12 @@ class Knob extends Component {
     }
   }
 
-  updateValue(value) {
+  _updateValue(value) {
     if (this._value !== value) {
       this._value = value;
-      this.updateHandleRotation();
-      this.valueLabel.text = this.formatValue();
-      this.updateLabelPositions();
+      this._updateHandleRotation();
+      this.valueLabel.text = this._formatValue();
+      this._updateLabelPositions();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
@@ -2947,9 +2960,9 @@ class Knob extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    this.updateHandleRotation();
-    this.valueLabel.text = this.formatValue();
-    this.updateLabelPositions();
+    this._updateHandleRotation();
+    this.valueLabel.text = this._formatValue();
+    this._updateLabelPositions();
   }
 
   get enabled() {
@@ -2959,23 +2972,23 @@ class Knob extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateEnabledStyle();
+      this._updateEnabledStyle();
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
-        this.handle.addEventListener("wheel", this.onWheel);
-        this.wrapper.addEventListener("mousedown", this.onMouseDown);
-        this.wrapper.addEventListener("touchstart", this.onMouseDown);
-        this.wrapper.addEventListener("keydown", this.onKeyDown);
+        this.handle.addEventListener("wheel", this._onWheel);
+        this.wrapper.addEventListener("mousedown", this._onMouseDown);
+        this.wrapper.addEventListener("touchstart", this._onMouseDown);
+        this.wrapper.addEventListener("keydown", this._onKeyDown);
       } else {
         this.wrapper.tabIndex = -1;
-        this.handle.removeEventListener("wheel", this.onWheel);
-        this.wrapper.removeEventListener("mousedown", this.onMouseDown);
-        this.wrapper.removeEventListener("touchstart", this.onMouseDown);
-        this.wrapper.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("mousemove", this.onMouseMove);
-        document.removeEventListener("touchmove", this.onMouseMove);
-        document.removeEventListener("mouseup", this.onMouseUp);
-        document.removeEventListener("touchend", this.onMouseUp);
+        this.handle.removeEventListener("wheel", this._onWheel);
+        this.wrapper.removeEventListener("mousedown", this._onMouseDown);
+        this.wrapper.removeEventListener("touchstart", this._onMouseDown);
+        this.wrapper.removeEventListener("keydown", this._onKeyDown);
+        document.removeEventListener("mousemove", this._onMouseMove);
+        document.removeEventListener("touchmove", this._onMouseMove);
+        document.removeEventListener("mouseup", this._onMouseUp);
+        document.removeEventListener("touchend", this._onMouseUp);
       }
     }
   }
@@ -2990,8 +3003,8 @@ class Knob extends Component {
   set height(height) {
     super.height = height;
     this.size = Math.min(this.width, this.height);
-    this.updateHandleSize();
-    this.updateLabelPositions();
+    this._updateHandleSize();
+    this._updateLabelPositions();
   }
 
   /**
@@ -3003,7 +3016,7 @@ class Knob extends Component {
 
   set labelsSwapped(swap) {
     this._labelsSwapped = swap;
-    this.updateLabelPositions();
+    this._updateLabelPositions();
   }
 
   /**
@@ -3015,7 +3028,7 @@ class Knob extends Component {
 
   set max(max) {
     this._max = max;
-    this.updateValue(this.value);
+    this._updateValue(this.value);
   }
 
   /**
@@ -3027,7 +3040,7 @@ class Knob extends Component {
 
   set min(min) {
     this._min = min;
-    this.updateValue(this.value);
+    this._updateValue(this.value);
   }
 
   /**
@@ -3057,11 +3070,11 @@ class Knob extends Component {
    * Gets and sets the value of the knob.
    */
   get value() {
-    return this.roundValue(this._value);
+    return this._roundValue(this._value);
   }
 
   set value(value) {
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
   /**
@@ -3074,8 +3087,8 @@ class Knob extends Component {
   set width(width) {
     super.width = width;
     this.size = Math.min(this.width, this.height);
-    this.updateHandleSize();
-    this.updateLabelPositions();
+    this._updateHandleSize();
+    this._updateLabelPositions();
   }
 }
 
@@ -3108,25 +3121,25 @@ class LED extends Component {
 
     const size = 16;
 
-    this.createChildren();
+    this._createChildren();
     this.setWrapperClass("MinimalLED");
-    this.createStyle();
+    this._createStyle();
 
     this.setSize(size, size);
-    this.updateLED();
-    this.updateLabel();
-    this.addToParent();
+    this._updateLED();
+    this._updateLabel();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.label = new Label(this.wrapper, 0, -15, this._text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.led;
     this.shadowRoot.append(style);
@@ -3140,7 +3153,7 @@ class LED extends Component {
   // General
   //////////////////////////////////
 
-  updateLED() {
+  _updateLED() {
     if (this.lit) {
       this.wrapper.style.background = `radial-gradient(circle at 60% 37%, #fff, ${this.color} 50%, #444 100%)`;
     } else {
@@ -3148,7 +3161,7 @@ class LED extends Component {
     }
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -3216,7 +3229,7 @@ class LED extends Component {
 
   set color(color) {
     this._color = color;
-    this.updateLED();
+    this._updateLED();
   }
 
   /**
@@ -3258,7 +3271,7 @@ class LED extends Component {
 
   set lit(lit) {
     this._lit = lit;
-    this.updateLED();
+    this._updateLED();
   }
 
   /**
@@ -3271,7 +3284,7 @@ class LED extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -3283,7 +3296,7 @@ class LED extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -3340,25 +3353,25 @@ class NumericStepper extends Component {
     this._max = max || 0;
     this._decimals = 0;
     value = value || 0;
-    this._value = this.roundValue(value);
+    this._value = this._roundValue(value);
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalNumericStepper");
 
-    this.input = this.createInput(this.wrapper, "MinimalNumericStepperInput");
+    this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
 
     this.label = new Label(this.wrapper, 0, -15, this._text);
@@ -3369,54 +3382,54 @@ class NumericStepper extends Component {
     this.plus.setSize(20, 20);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.numericstepper;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onInput = this.onInput.bind(this);
-    this.onPlusDown = this.onPlusDown.bind(this);
-    this.onMinusDown = this.onMinusDown.bind(this);
-    this.onPlusUp = this.onPlusUp.bind(this);
-    this.onMinusUp = this.onMinusUp.bind(this);
-    this.onPlusKeyDown = this.onPlusKeyDown.bind(this);
-    this.onMinusKeyDown = this.onMinusKeyDown.bind(this);
-    this.onPlusKeyUp = this.onPlusKeyUp.bind(this);
-    this.onMinusKeyUp = this.onMinusKeyUp.bind(this);
-    this.onWheel = this.onWheel.bind(this);
+  _createListeners() {
+    this._onInputChange = this._onInputChange.bind(this);
+    this._onInput = this._onInput.bind(this);
+    this._onPlusDown = this._onPlusDown.bind(this);
+    this._onMinusDown = this._onMinusDown.bind(this);
+    this._onPlusUp = this._onPlusUp.bind(this);
+    this._onMinusUp = this._onMinusUp.bind(this);
+    this._onPlusKeyDown = this._onPlusKeyDown.bind(this);
+    this._onMinusKeyDown = this._onMinusKeyDown.bind(this);
+    this._onPlusKeyUp = this._onPlusKeyUp.bind(this);
+    this._onMinusKeyUp = this._onMinusKeyUp.bind(this);
+    this._onWheel = this._onWheel.bind(this);
 
-    this.wrapper.addEventListener("wheel", this.onWheel);
+    this.wrapper.addEventListener("wheel", this._onWheel);
 
-    this.input.addEventListener("input", this.onInput);
-    this.input.addEventListener("change", this.onInputChange);
+    this.input.addEventListener("input", this._onInput);
+    this.input.addEventListener("change", this._onInputChange);
 
-    this.plus.addEventListener("mousedown", this.onPlusDown);
-    document.addEventListener("mouseup", this.onPlusUp);
-    this.plus.addEventListener("keydown", this.onPlusKeyDown);
-    this.plus.addEventListener("keyup", this.onPlusKeyUp);
+    this.plus.addEventListener("mousedown", this._onPlusDown);
+    document.addEventListener("mouseup", this._onPlusUp);
+    this.plus.addEventListener("keydown", this._onPlusKeyDown);
+    this.plus.addEventListener("keyup", this._onPlusKeyUp);
 
-    this.minus.addEventListener("mousedown", this.onMinusDown);
-    document.addEventListener("mouseup", this.onMinusUp);
-    this.minus.addEventListener("keydown", this.onMinusKeyDown);
-    this.minus.addEventListener("keyup", this.onMinusKeyUp);
+    this.minus.addEventListener("mousedown", this._onMinusDown);
+    document.addEventListener("mouseup", this._onMinusUp);
+    this.minus.addEventListener("keydown", this._onMinusKeyDown);
+    this.minus.addEventListener("keyup", this._onMinusKeyUp);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     let value = this.input.value;
     value = value.replace(/[^-.0-9]/g, "");
     this.input.value = value;
   }
 
-  onInputChange() {
+  _onInputChange() {
     let value = parseFloat(this.input.value);
-    value = this.roundValue(value);
+    value = this._roundValue(value);
     this.input.value = value;
     if (this.value !== value) {
       this._value = value;
@@ -3424,81 +3437,81 @@ class NumericStepper extends Component {
     }
   }
 
-  decrement() {
+  _decrement() {
     if (this.isDecrementing) {
-      const value = this.roundValue(this.value - 1 / Math.pow(10, this._decimals));
+      const value = this._roundValue(this.value - 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
-      this.timeout = setTimeout(() => this.decrement(), this.delay);
+      this.timeout = setTimeout(() => this._decrement(), this.delay);
       if (this.delay === 500) {
         this.delay = 50;
       }
     }
   }
 
-  increment() {
+  _increment() {
     if (this.isIncrementing) {
-      const value = this.roundValue(this.value + 1 / Math.pow(10, this._decimals));
+      const value = this._roundValue(this.value + 1 / Math.pow(10, this._decimals));
       if (this.value !== value) {
         this.value = value;
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
-      this.timeout = setTimeout(() => this.increment(), this.delay);
+      this.timeout = setTimeout(() => this._increment(), this.delay);
       if (this.delay === 500) {
         this.delay = 50;
       }
     }
   }
 
-  onMinusDown() {
+  _onMinusDown() {
     clearTimeout(this.timeout);
     this.isDecrementing = true;
     this.delay = 500;
-    this.decrement();
+    this._decrement();
   }
 
-  onMinusUp() {
+  _onMinusUp() {
     this.isDecrementing = false;
   }
 
-  onMinusKeyDown(event) {
+  _onMinusKeyDown(event) {
     if (event.keyCode === 13) {
-      this.onMinusDown();
+      this._onMinusDown();
     }
   }
 
-  onMinusKeyUp(event) {
+  _onMinusKeyUp(event) {
     if (event.keyCode === 13) {
-      this.onMinusUp();
+      this._onMinusUp();
     }
   }
 
-  onPlusDown() {
+  _onPlusDown() {
     clearTimeout(this.timeout);
     this.isIncrementing = true;
     this.delay = 500;
-    this.increment();
+    this._increment();
   }
 
-  onPlusUp() {
+  _onPlusUp() {
     this.isIncrementing = false;
   }
 
-  onPlusKeyDown(event) {
+  _onPlusKeyDown(event) {
     if (event.keyCode === 13) {
-      this.onPlusDown();
+      this._onPlusDown();
     }
   }
 
-  onPlusKeyUp(event) {
+  _onPlusKeyUp(event) {
     if (event.keyCode === 13) {
-      this.onPlusUp();
+      this._onPlusUp();
     }
   }
 
-  onWheel(event) {
+  _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
     if (event.deltaY > 0) {
@@ -3514,7 +3527,7 @@ class NumericStepper extends Component {
   // General
   //////////////////////////////////
 
-  roundValue(value) {
+  _roundValue(value) {
     if (this.max !== null) {
       value = Math.min(value, this.max);
     }
@@ -3525,7 +3538,7 @@ class NumericStepper extends Component {
     return Math.round(value * mult) / mult;
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -3558,15 +3571,15 @@ class NumericStepper extends Component {
       this.minus.enabled = this.enabled;
       this.label.enabled = enabled;
       if (this.enabled) {
-        this.wrapper.addEventListener("wheel", this.onWheel);
+        this.wrapper.addEventListener("wheel", this._onWheel);
       } else {
-        this.wrapper.removeEventListener("wheel", this.onWheel);
+        this.wrapper.removeEventListener("wheel", this._onWheel);
       }
     }
   }
 
   /**
-   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will increment or decrement the stepper's value by the smallest displayed value.
+   * Sets and gets the number of decimals of precision to be used for the stepper. This will effect what is shown in the value label as well as the value property of the stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10. Clicking the plus and minus button will _increment or _decrement the stepper's value by the smallest displayed value.
    */
   get decimals() {
     return this._decimals;
@@ -3574,7 +3587,7 @@ class NumericStepper extends Component {
 
   set decimals(decimals) {
     this._decimals = decimals;
-    const value = this.roundValue(this.value);
+    const value = this._roundValue(this.value);
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
@@ -3591,7 +3604,7 @@ class NumericStepper extends Component {
 
   set height(h) {
     super.height = h;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -3634,7 +3647,7 @@ class NumericStepper extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -3646,7 +3659,7 @@ class NumericStepper extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
   /**
    * Gets and sets the value of the stepper.
@@ -3656,10 +3669,13 @@ class NumericStepper extends Component {
   }
 
   set value(value) {
-    this._value = this.roundValue(value);
+    this._value = this._roundValue(value);
     this.input.value = this._value;
   }
 
+  /**
+   * Sets and gets the width of this component.
+   */
   get width() {
     return super.width;
   }
@@ -3696,21 +3712,21 @@ class Panel extends Component {
     w = w || window.innerWidth;
     h = h || window.innerHeight;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
     this.setSize(w, h);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalPanel");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.panel;
     this.shadowRoot.append(style);
@@ -3720,6 +3736,9 @@ class Panel extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Gets and sets the x position of this component.
+   */
   get x() {
     return super.x;
   }
@@ -3730,6 +3749,9 @@ class Panel extends Component {
     this.style.marginLeft = x + "px";
   }
 
+  /**
+   * Gets and sets the y position of this component.
+   */
   get y() {
     return super.y;
   }
@@ -3769,24 +3791,24 @@ class ProgressBar extends Component {
     this._progress = progress || 0;
     this._max = max || 100;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(100, 15);
-    this.updateBar();
-    this.addToParent();
+    this._updateBar();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalProgressBar");
-    this.fill = this.createDiv(this.wrapper, "MinimalProgressBarFill");
+    this.fill = this._createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.progressbar;
     this.shadowRoot.append(style);
@@ -3796,7 +3818,7 @@ class ProgressBar extends Component {
   // General
   //////////////////////////////////
 
-  updateBar() {
+  _updateBar() {
     let percent = this.progress / this.max;
     percent = Math.max(0, percent);
     percent = Math.min(1, percent);
@@ -3834,7 +3856,7 @@ class ProgressBar extends Component {
     this._max = max;
     const progress = Math.min(this.progress, this.max);
     this.progress = Math.max(progress, 0);
-    this.updateBar();
+    this._updateBar();
   }
 
   /**
@@ -3848,7 +3870,7 @@ class ProgressBar extends Component {
     progress = Math.min(progress, this.max);
     progress = Math.max(progress, 0);
     this._progress = progress;
-    this.updateBar();
+    this._updateBar();
   }
 }
 
@@ -3872,7 +3894,7 @@ RadioButtonGroup.getValueForGroup = (group) => {
   return null;
 };
 
-RadioButtonGroup.clearGroup = (group) => {
+RadioButtonGroup._clearGroup = (group) => {
   const rbGroup = RadioButtonGroup.groups[group];
   if (!rbGroup) {
     return;
@@ -3883,14 +3905,14 @@ RadioButtonGroup.clearGroup = (group) => {
   }
 };
 
-RadioButtonGroup.addToGroup = (group, rb) => {
+RadioButtonGroup._addToGroup = (group, rb) => {
   if (!RadioButtonGroup.groups[group]) {
     RadioButtonGroup.groups[group] = [];
   }
   RadioButtonGroup.groups[group].push(rb);
 };
 
-RadioButtonGroup.getNextInGroup = (group, rb) => {
+RadioButtonGroup._getNextInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
   let result;
@@ -3905,7 +3927,7 @@ RadioButtonGroup.getNextInGroup = (group, rb) => {
   return RadioButtonGroup.getNextInGroup(group, result);
 };
 
-RadioButtonGroup.getPrevInGroup = (group, rb) => {
+RadioButtonGroup._getPrevInGroup = (group, rb) => {
   const g = RadioButtonGroup.groups[group];
   const index = g.indexOf(rb);
   let result;
@@ -3948,50 +3970,50 @@ class RadioButton extends Component {
    */
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
-    RadioButtonGroup.addToGroup(group, this);
+    RadioButtonGroup._addToGroup(group, this);
     this.group = group || "group";
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 10);
     this.checked = checked || false;
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
-    this.updateWidth();
+    this._addToParent();
+    this._updateWidth();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
-    this.check = this.createDiv(this.wrapper, "MinimalRadioButtonCheck");
+    this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.radiobutton;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keydown", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keydown", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.checked = true;
@@ -3999,18 +4021,18 @@ class RadioButton extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.wrapper.click();
     } else if (event.keyCode === 40) {
       // down
       event.preventDefault();
-      RadioButtonGroup.getNextInGroup(this.group, this).focus();
+      RadioButtonGroup._getNextInGroup(this.group, this).focus();
     } else if (event.keyCode === 38) {
       // up
       event.preventDefault();
-      RadioButtonGroup.getPrevInGroup(this.group, this).focus();
+      RadioButtonGroup._getPrevInGroup(this.group, this).focus();
     }
   }
 
@@ -4024,7 +4046,7 @@ class RadioButton extends Component {
     }
   }
 
-  updateCheckStyle() {
+  _updateCheckStyle() {
     let className = this.checked
       ? "MinimalRadioButtonCheckChecked "
       : "MinimalRadioButtonCheck ";
@@ -4041,7 +4063,7 @@ class RadioButton extends Component {
     }
   }
 
-  updateWidth() {
+  _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
@@ -4072,10 +4094,10 @@ class RadioButton extends Component {
 
   set checked(checked) {
     if (checked) {
-      RadioButtonGroup.clearGroup(this.group);
+      RadioButtonGroup._clearGroup(this.group);
     }
     this._checked = checked;
-    this.updateCheckStyle();
+    this._updateCheckStyle();
   }
 
   get enabled() {
@@ -4085,7 +4107,7 @@ class RadioButton extends Component {
   set enabled(enabled) {
     if (this.enabled !== enabled) {
       super.enabled = enabled;
-      this.updateCheckStyle();
+      this._updateCheckStyle();
       this.label.enabled = enabled;
       if (this.enabled) {
         this.wrapper.tabIndex = 0;
@@ -4105,7 +4127,7 @@ class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateWidth();
+    this._updateWidth();
   }
 
   /**
@@ -4142,40 +4164,40 @@ class TextArea extends Component {
     super(parent, x, y);
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 100);
     this.addEventListener("input", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.textArea = this.createElement(this.shadowRoot, "textArea", "MinimalTextArea");
+  _createChildren() {
+    this.textArea = this._createElement(this.shadowRoot, "textArea", "MinimalTextArea");
     this.textArea.value = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textarea;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.textArea.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.textArea.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     this._text = this.textArea.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -4194,9 +4216,9 @@ class TextArea extends Component {
       super.enabled = enabled;
       this.textArea.disabled = !this.enabled;
       if (this.enabled) {
-        this.textArea.addEventListener("input", this.onInput);
+        this.textArea.addEventListener("input", this._onInput);
       } else {
-        this.textArea.removeEventListener("input", this.onInput);
+        this.textArea.removeEventListener("input", this._onInput);
       }
     }
   }
@@ -4241,23 +4263,23 @@ class TextBox extends Component {
     this._html = false;
     this._text = text || "";
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
 
     this.setSize(100, 100);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textbox;
     this.shadowRoot.append(style);
@@ -4406,40 +4428,40 @@ class TextInput extends Component {
     this._maxLength = 0;
     this._text = text || "";
 
-    this.createStyle();
-    this.createChildren();
-    this.createListeners();
+    this._createStyle();
+    this._createChildren();
+    this._createListeners();
 
     this.setSize(100, 20);
     this.addEventListener("input", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
-    this.input = this.createInput(this.shadowRoot, "MinimalTextInput");
+  _createChildren() {
+    this.input = this._createInput(this.shadowRoot, "MinimalTextInput");
     this.input.value = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.textinput;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onInput = this.onInput.bind(this);
-    this.input.addEventListener("input", this.onInput);
+  _createListeners() {
+    this._onInput = this._onInput.bind(this);
+    this.input.addEventListener("input", this._onInput);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onInput() {
+  _onInput() {
     this._text = this.input.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -4458,9 +4480,9 @@ class TextInput extends Component {
       super.enabled = enabled;
       this.input.disabled = !this.enabled;
       if (this.enabled) {
-        this.input.addEventListener("input", this.onInput);
+        this.input.addEventListener("input", this._onInput);
       } else {
-        this.input.removeEventListener("input", this.onInput);
+        this.input.removeEventListener("input", this._onInput);
       }
     }
   }
@@ -4514,46 +4536,46 @@ class Toggle extends Component {
     this._text = text;
     this._textPosition = "top";
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(50, 20);
     this.toggled = toggled || false;
-    this.updateLabel();
+    this._updateLabel();
     this.addEventListener("click", defaultHandler);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
     this.label = new Label(this.wrapper, 0, -15, this._text);
-    this.handle = this.createDiv(this.wrapper, "MinimalToggleHandle");
+    this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.toggle;
     this.shadowRoot.append(style);
   }
 
-  createListeners() {
-    this.onClick = this.onClick.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.wrapper.addEventListener("click", this.onClick);
-    this.wrapper.addEventListener("keypress", this.onKeyPress);
+  _createListeners() {
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+    this.wrapper.addEventListener("click", this._onClick);
+    this.wrapper.addEventListener("keypress", this._onKeyPress);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onClick(event) {
+  _onClick(event) {
     event.stopPropagation();
     if (this.enabled) {
       this.toggle();
@@ -4561,7 +4583,7 @@ class Toggle extends Component {
     }
   }
 
-  onKeyPress(event) {
+  _onKeyPress(event) {
     if (event.keyCode === 13 && this.enabled) {
       this.wrapper.click();
     }
@@ -4576,10 +4598,10 @@ class Toggle extends Component {
    */
   toggle() {
     this.toggled = !this.toggled;
-    this.updateToggle();
+    this._updateToggle();
   }
 
-  updateLabel() {
+  _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
@@ -4595,7 +4617,7 @@ class Toggle extends Component {
     }
   }
 
-  updateToggle() {
+  _updateToggle() {
     if (this.toggled) {
       this.handle.style.left = "50%";
     } else {
@@ -4617,7 +4639,7 @@ class Toggle extends Component {
 
   set toggled(toggled) {
     this._toggled = toggled;
-    this.updateToggle();
+    this._updateToggle();
   }
 
   get enabled() {
@@ -4648,7 +4670,7 @@ class Toggle extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
-    this.updateLabel();
+    this._updateLabel();
   }
 
   /**
@@ -4660,7 +4682,7 @@ class Toggle extends Component {
 
   set textPosition(pos) {
     this._textPosition = pos;
-    this.updateLabel();
+    this._updateLabel();
   }
 }
 
@@ -4690,16 +4712,16 @@ class VBox extends Component {
     this.spacing = spacing || 0;
     this.xpos = 0;
     this.ypos = 0;
-    this.createChildren();
+    this._createChildren();
     this.setSize(0, 0);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalVbox");
   }
 
@@ -4751,7 +4773,7 @@ class VSlider extends HSlider {
   // Core
   //////////////////////////////////
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.vslider;
     this.shadowRoot.append(style);
@@ -4761,7 +4783,7 @@ class VSlider extends HSlider {
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
-  onMouseDown(event) {
+  _onMouseDown(event) {
     let mouseY;
     if (event.changedTouches) {
       event.preventDefault();
@@ -4774,15 +4796,15 @@ class VSlider extends HSlider {
     if (this.offsetY < 0 || this.offsetY > this.handleSize) {
       this.offsetY = this.handleSize / 2;
       const y = mouseY - this.getBoundingClientRect().top - this.handleSize / 2;
-      this.calculateValueFromPos(y);
+      this._calculateValueFromPos(y);
     }
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseY;
     if (event.changedTouches) {
       mouseY = event.changedTouches[0].clientY;
@@ -4790,28 +4812,28 @@ class VSlider extends HSlider {
       mouseY = event.clientY;
     }
     const y = mouseY - this.getBoundingClientRect().top - this.offsetY;
-    this.calculateValueFromPos(y);
+    this._calculateValueFromPos(y);
   }
 
   //////////////////////////////////
   // General
   //////////////////////////////////
 
-  calculateValueFromPos(y) {
+  _calculateValueFromPos(y) {
     let percent = 1 - y / (this.height - this.handleSize);
     if (this.reversed) {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this.updateValue(value);
+    this._updateValue(value);
   }
 
-  setDefaults() {
+  _setDefaults() {
     this._decimals = Defaults.vslider.decimals;
     this._handleSize = Defaults.vslider.handleSize;
   }
 
-  updateHandlePosition() {
+  _updateHandlePosition() {
     let percent = (this.value - this.min) / (this.max - this.min);
     if (this.reversed) {
       percent = 1 - percent;
@@ -4821,23 +4843,23 @@ class VSlider extends HSlider {
     this.handle.style.top = this.height - this.handleSize - percent * (this.height - this._handleSize) + "px";
   }
 
-  updateLabelPosition() {
+  _updateLabelPosition() {
     this.label.x = -(this.label.width - this.width) / 2;
     this.label.y = -this.label.height - 5;
   }
 
-  updateValueLabelPosition() {
+  _updateValueLabelPosition() {
     this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
     this.valueLabel.y = this.height + 5;
   }
 
-  setSliderSize() {
+  _setSliderSize() {
     this.setSize(Defaults.vslider.width, Defaults.vslider.height);
   }
 
-  updateValue(value) {
-    super.updateValue(value);
-    this.updateValueLabelPosition();
+  _updateValue(value) {
+    super._updateValue(value);
+    this._updateValueLabelPosition();
   }
 
   //////////////////////////////////
@@ -4856,27 +4878,33 @@ class VSlider extends HSlider {
   set handleSize(handleSize) {
     this._handleSize = handleSize;
     this.handle.style.height = handleSize + "px";
-    this.updateHandlePosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
 
   set height(height) {
     super.height = height;
-    this.updateLabelPosition();
-    this.updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateHandlePosition();
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return super.width;
   }
 
   set width(width) {
     super.width = width;
-    this.updateLabelPosition();
-    this.updateHandlePosition();
+    this._updateLabelPosition();
+    this._updateHandlePosition();
   }
 }
 
@@ -4909,54 +4937,54 @@ class Window extends Component {
     this._minimizable = true;
     this.minimized = false;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(w, h);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalWindow");
-    this.titleBar = this.createDiv(this.wrapper, "MinimalWindowTitleBar");
+    this.titleBar = this._createDiv(this.wrapper, "MinimalWindowTitleBar");
     this.label = new Label(this.titleBar, 5, 0, this._text);
     this.label.height = 30;
-    this.button = this.createDiv(this.titleBar, "MinimalWindowButton");
-    this.content = this.createDiv(this.wrapper, "MinimalWindowContent");
+    this.button = this._createDiv(this.titleBar, "MinimalWindowButton");
+    this.content = this._createDiv(this.wrapper, "MinimalWindowContent");
     this.content.appendChild(document.createElement("slot"));
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.window;
     this.shadowRoot.append(style);
   }
 
-  createWrapper() {
-    this.wrapper = this.createDiv(null, "MinimalWrapper");
+  _createWrapper() {
+    this.wrapper = this._createDiv(null, "MinimalWrapper");
     this.shadowRoot.appendChild(this.wrapper);
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMinimize = this.onMinimize.bind(this);
-    this.titleBar.addEventListener("mousedown", this.onMouseDown);
-    this.titleBar.addEventListener("touchstart", this.onMouseDown);
-    this.button.addEventListener("click", this.onMinimize);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMinimize = this._onMinimize.bind(this);
+    this.titleBar.addEventListener("mousedown", this._onMouseDown);
+    this.titleBar.addEventListener("touchstart", this._onMouseDown);
+    this.button.addEventListener("click", this._onMinimize);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onMouseDown(event) {
+  _onMouseDown(event) {
     this.style.zIndex = 1000000;
     let mouseX;
     let mouseY;
@@ -4970,13 +4998,13 @@ class Window extends Component {
     }
     this.offsetX = mouseX - this.getBoundingClientRect().left;
     this.offsetY = mouseY - this.getBoundingClientRect().top;
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseX;
     let mouseY;
     if (event.changedTouches) {
@@ -4991,14 +5019,14 @@ class Window extends Component {
     this.move(x, y);
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onMinimize() {
+  _onMinimize() {
     this.minimized = !this.minimized;
     if (this.minimized) {
       super.height = 30;
@@ -5027,12 +5055,12 @@ class Window extends Component {
       this._draggable = draggable;
       if (draggable) {
         this.titleBar.style.cursor = "pointer";
-        this.titleBar.addEventListener("mousedown", this.onMouseDown);
-        this.titleBar.addEventListener("touchstart", this.onMouseDown);
+        this.titleBar.addEventListener("mousedown", this._onMouseDown);
+        this.titleBar.addEventListener("touchstart", this._onMouseDown);
       } else {
         this.titleBar.style.cursor = "default";
-        this.titleBar.removeEventListener("mousedown", this.onMouseDown);
-        this.titleBar.removeEventListener("touchstart", this.onMouseDown);
+        this.titleBar.removeEventListener("mousedown", this._onMouseDown);
+        this.titleBar.removeEventListener("touchstart", this._onMouseDown);
       }
     }
   }
@@ -5051,13 +5079,13 @@ class Window extends Component {
     super.enabled = enabled;
     if (this.enabled) {
       this.minimized = true;
-      this.onMinimize();
+      this._onMinimize();
       this.minimizable = this.enabledMinimizable;
       this.draggable = this.enabledDraggable;
       this.wrapper.setAttribute("class", "MinimalWindow");
     } else {
       this.minimized = false;
-      this.onMinimize();
+      this._onMinimize();
       this.enabledMinimizable = this.minimizable;
       this.enabledDraggable = this.draggable;
       this.minimizable = false;

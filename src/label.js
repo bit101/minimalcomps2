@@ -26,8 +26,8 @@ export class Label extends Component {
     this._bold = false;
     this._italic = false;
 
-    this.createChildren();
-    this.createStyle();
+    this._createChildren();
+    this._createStyle();
     this.fontSize = Defaults.label.fontSize;
     // width will be 0 until it is on the live DOM
     // so we put it on document.body, get width
@@ -36,19 +36,19 @@ export class Label extends Component {
     this._width = this.wrapper.offsetWidth;
     this.text = text || "";
     this.height = Defaults.label.fontSize + 2;
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.label;
     this.shadowRoot.append(style);
@@ -141,6 +141,10 @@ export class Label extends Component {
     this._fontSize = fontSize;
     this.wrapper.style.fontSize = fontSize + "px";
   }
+
+  /**
+   * Gets and sets the height of this component.
+   */
   get height() {
     return super.height;
   }
@@ -181,6 +185,9 @@ export class Label extends Component {
     }
   }
 
+  /**
+   * Gets and sets the width of this component.
+   */
   get width() {
     return this._width;
   }

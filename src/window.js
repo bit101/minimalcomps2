@@ -29,54 +29,54 @@ export class Window extends Component {
     this._minimizable = true;
     this.minimized = false;
 
-    this.createChildren();
-    this.createStyle();
-    this.createListeners();
+    this._createChildren();
+    this._createStyle();
+    this._createListeners();
 
     this.setSize(w, h);
-    this.addToParent();
+    this._addToParent();
   }
 
   //////////////////////////////////
   // Core
   //////////////////////////////////
 
-  createChildren() {
+  _createChildren() {
     this.setWrapperClass("MinimalWindow");
-    this.titleBar = this.createDiv(this.wrapper, "MinimalWindowTitleBar");
+    this.titleBar = this._createDiv(this.wrapper, "MinimalWindowTitleBar");
     this.label = new Label(this.titleBar, 5, 0, this._text);
     this.label.height = 30;
-    this.button = this.createDiv(this.titleBar, "MinimalWindowButton");
-    this.content = this.createDiv(this.wrapper, "MinimalWindowContent");
+    this.button = this._createDiv(this.titleBar, "MinimalWindowButton");
+    this.content = this._createDiv(this.wrapper, "MinimalWindowContent");
     this.content.appendChild(document.createElement("slot"));
   }
 
-  createStyle() {
+  _createStyle() {
     const style = document.createElement("style");
     style.textContent = Style.window;
     this.shadowRoot.append(style);
   }
 
-  createWrapper() {
-    this.wrapper = this.createDiv(null, "MinimalWrapper");
+  _createWrapper() {
+    this.wrapper = this._createDiv(null, "MinimalWrapper");
     this.shadowRoot.appendChild(this.wrapper);
   }
 
-  createListeners() {
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMinimize = this.onMinimize.bind(this);
-    this.titleBar.addEventListener("mousedown", this.onMouseDown);
-    this.titleBar.addEventListener("touchstart", this.onMouseDown);
-    this.button.addEventListener("click", this.onMinimize);
+  _createListeners() {
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onMouseMove = this._onMouseMove.bind(this);
+    this._onMinimize = this._onMinimize.bind(this);
+    this.titleBar.addEventListener("mousedown", this._onMouseDown);
+    this.titleBar.addEventListener("touchstart", this._onMouseDown);
+    this.button.addEventListener("click", this._onMinimize);
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  onMouseDown(event) {
+  _onMouseDown(event) {
     this.style.zIndex = 1000000;
     let mouseX;
     let mouseY;
@@ -90,13 +90,13 @@ export class Window extends Component {
     }
     this.offsetX = mouseX - this.getBoundingClientRect().left;
     this.offsetY = mouseY - this.getBoundingClientRect().top;
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("touchmove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-    document.addEventListener("touchend", this.onMouseUp);
+    document.addEventListener("mousemove", this._onMouseMove);
+    document.addEventListener("touchmove", this._onMouseMove);
+    document.addEventListener("mouseup", this._onMouseUp);
+    document.addEventListener("touchend", this._onMouseUp);
   }
 
-  onMouseMove(event) {
+  _onMouseMove(event) {
     let mouseX;
     let mouseY;
     if (event.changedTouches) {
@@ -111,14 +111,14 @@ export class Window extends Component {
     this.move(x, y);
   }
 
-  onMouseUp() {
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("touchmove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-    document.removeEventListener("touchend", this.onMouseUp);
+  _onMouseUp() {
+    document.removeEventListener("mousemove", this._onMouseMove);
+    document.removeEventListener("touchmove", this._onMouseMove);
+    document.removeEventListener("mouseup", this._onMouseUp);
+    document.removeEventListener("touchend", this._onMouseUp);
   }
 
-  onMinimize() {
+  _onMinimize() {
     this.minimized = !this.minimized;
     if (this.minimized) {
       super.height = 30;
@@ -147,12 +147,12 @@ export class Window extends Component {
       this._draggable = draggable;
       if (draggable) {
         this.titleBar.style.cursor = "pointer";
-        this.titleBar.addEventListener("mousedown", this.onMouseDown);
-        this.titleBar.addEventListener("touchstart", this.onMouseDown);
+        this.titleBar.addEventListener("mousedown", this._onMouseDown);
+        this.titleBar.addEventListener("touchstart", this._onMouseDown);
       } else {
         this.titleBar.style.cursor = "default";
-        this.titleBar.removeEventListener("mousedown", this.onMouseDown);
-        this.titleBar.removeEventListener("touchstart", this.onMouseDown);
+        this.titleBar.removeEventListener("mousedown", this._onMouseDown);
+        this.titleBar.removeEventListener("touchstart", this._onMouseDown);
       }
     }
   }
@@ -171,13 +171,13 @@ export class Window extends Component {
     super.enabled = enabled;
     if (this.enabled) {
       this.minimized = true;
-      this.onMinimize();
+      this._onMinimize();
       this.minimizable = this.enabledMinimizable;
       this.draggable = this.enabledDraggable;
       this.wrapper.setAttribute("class", "MinimalWindow");
     } else {
       this.minimized = false;
-      this.onMinimize();
+      this._onMinimize();
       this.enabledMinimizable = this.minimizable;
       this.enabledDraggable = this.draggable;
       this.minimizable = false;
