@@ -690,12 +690,6 @@ var mc2 = (function (exports) {
     border: 1px solid #999;
     cursor: pointer;
   } 
-  .MinimalWindowTitleBarDisabled {
-    ${Style.baseStyle}
-    height: 30px;
-    background-color: #ddd;
-    border: 1px solid #999;
-  } 
   .MinimalWindowContent {
     ${Style.baseStyle}
     border: 1px solid #999;
