@@ -672,12 +672,26 @@ Style.window = `
     box-shadow: 2px 2px 2px #999;
     overflow: hidden;
   }
+  .MinimalWindowDisabled {
+    ${Style.baseStyle}
+    ${Style.disabledStyle}
+    height: 100%;
+    width: 100%;
+    box-shadow: 2px 2px 2px #999;
+    overflow: hidden;
+  }
   .MinimalWindowTitleBar {
     ${Style.baseStyle}
     height: 30px;
     background-color: #ddd;
     border: 1px solid #999;
     cursor: pointer;
+  } 
+  .MinimalWindowTitleBarDisabled {
+    ${Style.baseStyle}
+    height: 30px;
+    background-color: #ddd;
+    border: 1px solid #999;
   } 
   .MinimalWindowContent {
     ${Style.baseStyle}

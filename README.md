@@ -31,4 +31,3 @@ Full documentation here: https://www.minimalcomps2.com/documentation/index.html
 
 No need to worry about styles or layout. Just give everything a parent, a position, a prop or two and maybe an event handler.
 
-Lots of demos on the main site: https://www.minimalcomps2.com/demos/
