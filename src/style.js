@@ -686,4 +686,14 @@ Style.window = `
     top: 30px;
     overflow: hidden;
   }
+  .MinimalWindowButton {
+    ${Style.baseStyle}
+    border: 1px solid #999;
+    background-color: #ccc;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    right: 7px;
+    top: 7px;
+  }
 `;

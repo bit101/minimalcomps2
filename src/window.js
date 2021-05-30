@@ -1,4 +1,3 @@
-import { Button } from "./button.js";
 import { Component } from "./component.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
@@ -26,6 +25,8 @@ export class Window extends Component {
     w = w || 400;
     h = h || 400;
     this._text = text;
+    this._draggable = true;
+    this._minimizable = true;
     this.minimized = false;
 
     this.createChildren();
@@ -45,8 +46,7 @@ export class Window extends Component {
     this.titleBar = this.createDiv(this.wrapper, "MinimalWindowTitleBar");
     this.label = new Label(this.titleBar, 5, 0, this._text);
     this.label.height = 30;
-    this.button = new Button(this.titleBar, 0, 4, "-");
-    this.button.setSize(20, 20);
+    this.button = this.createDiv(this.titleBar, "MinimalWindowButton");
     this.content = this.createDiv(this.wrapper, "MinimalWindowContent");
     this.content.appendChild(document.createElement("slot"));
   }
@@ -134,6 +134,26 @@ export class Window extends Component {
   //////////////////////////////////
 
   /**
+   * Gets and sets whether the window can be dragged by its title bar.
+   */
+  get draggable() {
+    return this._draggable;
+  }
+
+  set draggable(draggable) {
+    if (this._draggable !== draggable) {
+      this._draggable = draggable;
+      if (draggable) {
+        this.titleBar.style.cursor = "pointer";
+        this.titleBar.addEventListener("mousedown", this.onMouseDown);
+      } else {
+        this.titleBar.style.cursor = "default";
+        this.titleBar.removeEventListener("mousedown", this.onMouseDown);
+      }
+    }
+  }
+
+  /**
    * Gets and sets the height of the window.
    */
   get height() {
@@ -147,6 +167,22 @@ export class Window extends Component {
   }
 
   /**
+   * Gets and sets whether the window has a minimize button.
+   */
+  get minimizable() {
+    return this.m_inimizable;
+  }
+
+  set minimizable(minimizable) {
+    this._minimizable = minimizable;
+    if (minimizable) {
+      this.button.style.visibility = "visible";
+    } else {
+      this.button.style.visibility = "hidden";
+    }
+  }
+
+  /**
    * Gets and sets the width of the window.
    */
   get width() {
@@ -155,7 +191,6 @@ export class Window extends Component {
 
   set width(w) {
     super.width = w;
-    this.button.x = this.width - 25;
     this.titleBar.style.width = w + "px";
     this.content.style.width = w + "px";
   }

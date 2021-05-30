@@ -689,6 +689,16 @@ var mc2 = (function (exports) {
     top: 30px;
     overflow: hidden;
   }
+  .MinimalWindowButton {
+    ${Style.baseStyle}
+    border: 1px solid #999;
+    background-color: #ccc;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    right: 7px;
+    top: 7px;
+  }
 `;
 
   class Component extends HTMLElement {
@@ -4836,6 +4846,8 @@ var mc2 = (function (exports) {
       w = w || 400;
       h = h || 400;
       this._text = text;
+      this._draggable = true;
+      this._minimizable = true;
       this.minimized = false;
 
       this.createChildren();
@@ -4855,8 +4867,7 @@ var mc2 = (function (exports) {
       this.titleBar = this.createDiv(this.wrapper, "MinimalWindowTitleBar");
       this.label = new Label(this.titleBar, 5, 0, this._text);
       this.label.height = 30;
-      this.button = new Button(this.titleBar, 0, 4, "-");
-      this.button.setSize(20, 20);
+      this.button = this.createDiv(this.titleBar, "MinimalWindowButton");
       this.content = this.createDiv(this.wrapper, "MinimalWindowContent");
       this.content.appendChild(document.createElement("slot"));
     }
@@ -4944,6 +4955,26 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     /**
+     * Gets and sets whether the window can be dragged by its title bar.
+     */
+    get draggable() {
+      return this._draggable;
+    }
+
+    set draggable(draggable) {
+      if (this._draggable !== draggable) {
+        this._draggable = draggable;
+        if (draggable) {
+          this.titleBar.style.cursor = "pointer";
+          this.titleBar.addEventListener("mousedown", this.onMouseDown);
+        } else {
+          this.titleBar.style.cursor = "default";
+          this.titleBar.removeEventListener("mousedown", this.onMouseDown);
+        }
+      }
+    }
+
+    /**
      * Gets and sets the height of the window.
      */
     get height() {
@@ -4957,6 +4988,22 @@ var mc2 = (function (exports) {
     }
 
     /**
+     * Gets and sets whether the window has a minimize button.
+     */
+    get minimizable() {
+      return this.m_inimizable;
+    }
+
+    set minimizable(minimizable) {
+      this._minimizable = minimizable;
+      if (minimizable) {
+        this.button.style.visibility = "visible";
+      } else {
+        this.button.style.visibility = "hidden";
+      }
+    }
+
+    /**
      * Gets and sets the width of the window.
      */
     get width() {
@@ -4965,7 +5012,6 @@ var mc2 = (function (exports) {
 
     set width(w) {
       super.width = w;
-      this.button.x = this.width - 25;
       this.titleBar.style.width = w + "px";
       this.content.style.width = w + "px";
     }
