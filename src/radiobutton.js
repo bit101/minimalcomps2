@@ -22,25 +22,25 @@ export class RadioButton extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this radio button to.
-   * @param {number} x - The x position of the radio button.
-   * @param {number} y - The y position of the radio button.
-   * @param {string} group - The group this radio button belongs to.
-   * @param {string} text - The text label of the radio button.
-   * @param {boolean} checked - The initial checked state of the radio button.
+   * @param {number} x - The x position of the radio button. Default 0.
+   * @param {number} y - The y position of the radio button. Default 0.
+   * @param {string} group - The group this radio button belongs to. Default "group".
+   * @param {string} text - The text label of the radio button. Default empty string.
+   * @param {boolean} checked - The initial checked state of the radio button. Default false.
    * @param {function} defaultHandler - A function that will handle the "click" event.
    */
   constructor(parent, x, y, group, text, checked, defaultHandler) {
     super(parent, x, y);
     RadioButtonGroup.addToGroup(group, this);
-    this.group = group;
-    this._text = text;
+    this.group = group || "group";
+    this._text = text || "";
 
     this.createStyle();
     this.createChildren();
     this.createListeners();
 
     this.setSize(100, 10);
-    this.checked = checked;
+    this.checked = checked || false;
     this.addEventListener("click", defaultHandler);
     this.addToParent();
     this.updateWidth();

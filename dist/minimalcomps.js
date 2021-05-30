@@ -935,9 +935,9 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this label to.
-     * @param {number} x - The x position of the label.
-     * @param {number} y - The y position of the label.
-     * @param {string} text - The initial text to display in the label.
+     * @param {number} x - The x position of the label. Default 0.
+     * @param {number} y - The y position of the label. Default 0.
+     * @param {string} text - The initial text to display in the label. Default empty string.
      */
     constructor(parent, x, y, text) {
       super(parent, x, y);
@@ -955,7 +955,7 @@ var mc2 = (function (exports) {
       // then remove it and add it to parent.
       document.body.appendChild(this);
       this._width = this.wrapper.offsetWidth;
-      this.text = text;
+      this.text = text || "";
       this.height = Defaults.label.fontSize + 2;
       this.addToParent();
     }
@@ -1128,14 +1128,14 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this button to.
-     * @param {number} x - The x position of the button.
-     * @param {number} y - The y position of the button.
-     * @param {string} text - The text label of the button.
+     * @param {number} x - The x position of the button. Default 0.
+     * @param {number} y - The y position of the button. Default 0.
+     * @param {string} text - The text label of the button. Default empty string.
      * @param {function} defaultHandler - A function that will handle the "click" event.
      */
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
-      this._text = text;
+      this._text = text || "";
 
       this.createChildren();
       this.createStyle();
@@ -1263,10 +1263,10 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this canvas to.
-     * @param {number} x - The x position of the canvas.
-     * @param {number} y - The y position of the canvas.
-     * @param {number} w - The width of the canvas.
-     * @param {number} h - The height of the canvas.
+     * @param {number} x - The x position of the canvas. Default 0.
+     * @param {number} y - The y position of the canvas. Default 0.
+     * @param {number} w - The width of the canvas. Default 200.
+     * @param {number} h - The height of the canvas. Default 100.
      */
     constructor(parent, x, y, w, h) {
       super(parent, x, y);
@@ -1274,7 +1274,7 @@ var mc2 = (function (exports) {
       this.createChildren();
       this.createStyle();
 
-      this.setSize(w, h);
+      this.setSize(w || 200, h || 100);
       this.addToParent();
     }
 
@@ -1538,10 +1538,10 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this color picker to.
-     * @param {number} x - The x position of the color picker.
-     * @param {number} y - The y position of the color picker.
-     * @param {string} text - The text shown in the text label of the color picker.
-     * @param {string} color - The initial color value of the color picker.
+     * @param {number} x - The x position of the color picker. Default 0.
+     * @param {number} y - The y position of the color picker. Default 0.
+     * @param {string} text - The text shown in the text label of the color picker. Default empty string.
+     * @param {string} color - The initial color value of the color picker. Default #f00.
      * @param {function} defaultHandler - A function that will handle the "change" event.
      */
     constructor(parent, x, y, text, color, defaultHandler) {
@@ -1553,7 +1553,8 @@ var mc2 = (function (exports) {
         color = arguments[3];
         defaultHandler = arguments[4];
       }
-      this._text = text;
+      color = color || "#f00";
+      this._text = text || "";
       this._textPosition = "top";
       this._color = this.correctColor(color);
       this._color = this.cropColor(color);
@@ -1825,10 +1826,10 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this dropdown to.
-     * @param {number} x - The x position of the dropdown.
-     * @param {number} y - The y position of the dropdown.
-     * @param {array} items - An array of strings to populate the dropdown list with.
-     * @param {number} index - The initial selected index of the dropdown.
+     * @param {number} x - The x position of the dropdown. Default 0.
+     * @param {number} y - The y position of the dropdown. Default 0.
+     * @param {array} items - An array of strings to populate the dropdown list with. Default empty array.
+     * @param {number} index - The initial selected index of the dropdown. default -1.
      * @param {function} defaultHandler - A function that will handle the "change" event.
      */
     constructor(parent, x, y, items, index, defaultHandler) {
@@ -1844,7 +1845,7 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 20);
       this.createItems();
-      this.index = index;
+      this.index = index || -1;
       this.addEventListener("change", defaultHandler);
       this.addToParent();
     }
@@ -2106,13 +2107,13 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this hbox to.
-     * @param {number} x - The x position of the hbox.
-     * @param {number} y - The y position of the hbox.
-     * @param {number} spacing - The space to put in between each element in the box.
+     * @param {number} x - The x position of the hbox. Default 0.
+     * @param {number} y - The y position of the hbox. Default 0.
+     * @param {number} spacing - The space to put in between each element in the box. Default 0.
      */
     constructor(parent, x, y, spacing) {
       super(parent, x, y);
-      this.spacing = spacing;
+      this.spacing = spacing || 0;
       this.xpos = 0;
       this.ypos = 0;
       this.createChildren();
@@ -2161,23 +2162,23 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this slider to.
-     * @param {number} x - The x position of the slider.
-     * @param {number} y - The y position of the slider.
-     * @param {string} text - The text label of the slider.
-     * @param {number} value - The initial value of the slider.
-     * @param {number} min - The minimum value of the slider.
-     * @param {number} max - The maximum value of the slider.
+     * @param {number} x - The x position of the slider. Default 0.
+     * @param {number} y - The y position of the slider. Default 0.
+     * @param {string} text - The text label of the slider. Default empty string.
+     * @param {number} value - The initial value of the slider. Default 0.
+     * @param {number} min - The minimum value of the slider. Default 0.
+     * @param {number} max - The maximum value of the slider. Default 100.
      * @param {function} defaultHandler - A function that will handle the "change" event.
      */
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
-      this._min = min;
-      this._max = max;
+      this._min = min || 0;
+      this._max = max || 100;
       this.setDefaults();
       this._reversed = false;
-      this._value = value;
+      this._value = value || 0;
       this._showValue = true;
-      this._text = text;
+      this._text = text || "";
 
       this.createChildren();
       this.createStyle();
@@ -2590,13 +2591,13 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this image to.
-     * @param {number} x - The x position of the image.
-     * @param {number} y - The y position of the image.
-     * @param {string} url - The URL of the image to display.
+     * @param {number} x - The x position of the image. Default 0.
+     * @param {number} y - The y position of the image. Default 0.
+     * @param {string} url - The URL of the image to display. Default empty string.
      */
     constructor(parent, x, y, url) {
       super(parent, x, y);
-      this._url = url;
+      this._url = url || "";
 
       this.createChildren();
       this.createStyle();
@@ -2722,22 +2723,22 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this knob to.
-     * @param {number} x - The x position of the knob.
-     * @param {number} y - The y position of the knob.
-     * @param {string} text - The text label of the knob.
-     * @param {number} value - The initial value of the knob.
-     * @param {number} min - The minimum value of the knob.
-     * @param {number} max - The maximum value of the knob.
+     * @param {number} x - The x position of the knob. Default 0.
+     * @param {number} y - The y position of the knob. Default 0.
+     * @param {string} text - The text label of the knob. Default empty string.
+     * @param {number} value - The initial value of the knob. Default 0.
+     * @param {number} min - The minimum value of the knob. Default 0.
+     * @param {number} max - The maximum value of the knob. Default 100.
      * @param {function} defaultHandler - A function that will handle the "change" event.
      */
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
 
-      this._text = text;
-      this._min = min;
-      this._max = max;
+      this._text = text || "";
+      this._min = min || 0;
+      this._max = max || 100;
       this._decimals = Defaults.knob.decimals;
-      this._value = value;
+      this._value = value || 0;
       this._sensitivity = 100;
       this._labelsSwapped = false;
 
@@ -3095,11 +3096,11 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this LED to.
-     * @param {number} x - The x position of the LED.
-     * @param {number} y - The y position of the LED.
-     * @param {string} text - The text of the label of the LED.
-     * @param {string} color - The color of the LED.
-     * @param {boolean} lit - The initial lit state of the LED.
+     * @param {number} x - The x position of the LED. Default 0.
+     * @param {number} y - The y position of the LED. Default 0.
+     * @param {string} text - The text of the label of the LED. Default empty string.
+     * @param {string} color - The color of the LED. Default #f00.
+     * @param {boolean} lit - The initial lit state of the LED. Default false.
      */
     constructor(parent, x, y, text, color, lit) {
       super(parent, x, y);
@@ -3312,6 +3313,17 @@ var mc2 = (function (exports) {
    * @extends Component
    */
   class NumericStepper extends Component {
+    /**
+     * Constructor
+     * @param {HTMLElement} parent - The element to add this numeric stepper to.
+     * @param {number} x - The x position of the numeric stepper. Default 0.
+     * @param {number} y - The y position of the numeric stepper. Default 0.
+     * @param {string} text - The text label of the numeric stepper. Default empty string.
+     * @param {number} value - The initial value of the numeric stepper. Default 0.
+     * @param {number} min - The minimum value of the numeric stepper. Default 0.
+     * @param {number} max - The maximum value of the numeric stepper. Default 100.
+     * @param {function} defaultHandler - A function that will handle the "change" event.
+     */
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
       super(parent, x, y);
       if (typeof(arguments[3]) !== "string") {
@@ -3324,12 +3336,13 @@ var mc2 = (function (exports) {
         defaultHandler = arguments[6];
       }
 
-      this._text = text;
+      this._text = text || "";
       this._textPosition = "top";
 
-      this._min = min;
-      this._max = max;
+      this._min = min || 0;
+      this._max = max || 0;
       this._decimals = 0;
+      value = value || 0;
       this._value = this.roundValue(value);
 
       this.createChildren();
@@ -3676,10 +3689,10 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this panel to.
-     * @param {number} x - The x position of the panel.
-     * @param {number} y - The y position of the panel.
-     * @param {number} w - The width of the panel.
-     * @param {number} h - The height of the panel.
+     * @param {number} x - The x position of the panel. Default 0.
+     * @param {number} y - The y position of the panel. Default 0.
+     * @param {number} w - The width of the panel. Default window.innerWidth.
+     * @param {number} h - The height of the panel. Default window.innerHeight.
      */
     constructor(parent, x, y, w, h) {
       super(parent, x, y);
@@ -3749,16 +3762,15 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this progress bar to.
-     * @param {number} x - The x position of the progress bar.
-     * @param {number} y - The y position of the progress bar.
-     * @param {number} progress - The current progress value of the progress bar.
-     * @param {number} max - The maximum potential value of the progress bar.
-     * @param {function} defaultHandler - A function that will handle the "click" event.
+     * @param {number} x - The x position of the progress bar. Default 0.
+     * @param {number} y - The y position of the progress bar. Default 0.
+     * @param {number} progress - The current progress value of the progress bar. Default 0.
+     * @param {number} max - The maximum potential value of the progress bar. Default 100.
      */
     constructor(parent, x, y, progress, max) {
       super(parent, x, y);
-      this._progress = progress;
-      this._max = max;
+      this._progress = progress || 0;
+      this._max = max || 100;
 
       this.createChildren();
       this.createStyle();
@@ -3930,25 +3942,25 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this radio button to.
-     * @param {number} x - The x position of the radio button.
-     * @param {number} y - The y position of the radio button.
-     * @param {string} group - The group this radio button belongs to.
-     * @param {string} text - The text label of the radio button.
-     * @param {boolean} checked - The initial checked state of the radio button.
+     * @param {number} x - The x position of the radio button. Default 0.
+     * @param {number} y - The y position of the radio button. Default 0.
+     * @param {string} group - The group this radio button belongs to. Default "group".
+     * @param {string} text - The text label of the radio button. Default empty string.
+     * @param {boolean} checked - The initial checked state of the radio button. Default false.
      * @param {function} defaultHandler - A function that will handle the "click" event.
      */
     constructor(parent, x, y, group, text, checked, defaultHandler) {
       super(parent, x, y);
       RadioButtonGroup.addToGroup(group, this);
-      this.group = group;
-      this._text = text;
+      this.group = group || "group";
+      this._text = text || "";
 
       this.createStyle();
       this.createChildren();
       this.createListeners();
 
       this.setSize(100, 10);
-      this.checked = checked;
+      this.checked = checked || false;
       this.addEventListener("click", defaultHandler);
       this.addToParent();
       this.updateWidth();
@@ -4124,14 +4136,14 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this text area to.
-     * @param {number} x - The x position of the text area.
-     * @param {number} y - The y position of the text area.
-     * @param {string} text - The initial text to display in the text area.
+     * @param {number} x - The x position of the text area. Default 0.
+     * @param {number} y - The y position of the text area. Default 0.
+     * @param {string} text - The initial text to display in the text area. Default empty string.
      * @param {function} defaultHandler - A function that will handle the "input" event.
      */
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
-      this._text = text;
+      this._text = text || "";
 
       this.createStyle();
       this.createChildren();
@@ -4219,9 +4231,9 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this text box to.
-     * @param {number} x - The x position of the text box.
-     * @param {number} y - The y position of the text box.
-     * @param {string} text - The initial text to display in the text box.
+     * @param {number} x - The x position of the text box. Default 0.
+     * @param {number} y - The y position of the text box. Default 0.
+     * @param {string} text - The initial text to display in the text box. Default empty string.
      */
     constructor(parent, x, y, text) {
       super(parent, x, y);
@@ -4230,7 +4242,7 @@ var mc2 = (function (exports) {
       this._bold = false;
       this._italic = false;
       this._html = false;
-      this._text = text;
+      this._text = text || "";
 
       this.createChildren();
       this.createStyle();
@@ -4387,15 +4399,15 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this text input to.
-     * @param {number} x - The x position of the text input.
-     * @param {number} y - The y position of the text input.
-     * @param {string} text - The initial text to display in the text input.
+     * @param {number} x - The x position of the text input. Default 0.
+     * @param {number} y - The y position of the text input. Default 0.
+     * @param {string} text - The initial text to display in the text input. Default empty string.
      * @param {function} defaultHandler - A function that will handle the "input" event.
      */
     constructor(parent, x, y, text, defaultHandler) {
       super(parent, x, y);
       this._maxLength = 0;
-      this._text = text;
+      this._text = text || "";
 
       this.createStyle();
       this.createChildren();
@@ -4495,9 +4507,9 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this toggle to.
-     * @param {number} x - The x position of the toggle.
-     * @param {number} y - The y position of the toggle.
-     * @param {boolean} toggled - The initial toggled state of the toggle.
+     * @param {number} x - The x position of the toggle. Default 0.
+     * @param {number} y - The y position of the toggle. Default 0.
+     * @param {boolean} toggled - The initial toggled state of the toggle. Default false.
      * @param {function} defaultHandler - A function that will handle the "click" event.
      */
     constructor(parent, x, y, text, toggled, defaultHandler) {
@@ -4510,7 +4522,7 @@ var mc2 = (function (exports) {
       this.createListeners();
 
       this.setSize(50, 20);
-      this.toggled = toggled;
+      this.toggled = toggled || false;
       this.updateLabel();
       this.addEventListener("click", defaultHandler);
       this.addToParent();
@@ -4672,13 +4684,13 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this vbox to.
-     * @param {number} x - The x position of the vbox.
-     * @param {number} y - The y position of the vbox.
-     * @param {number} spacing - The space to put in between each element in the box.
+     * @param {number} x - The x position of the vbox. Default 0.
+     * @param {number} y - The y position of the vbox. Default 0.
+     * @param {number} spacing - The space to put in between each element in the box. Default 0.
      */
     constructor(parent, x, y, spacing) {
       super(parent, x, y);
-      this.spacing = spacing;
+      this.spacing = spacing || 0;
       this.xpos = 0;
       this.ypos = 0;
       this.createChildren();
@@ -4727,12 +4739,12 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this slider to.
-     * @param {number} x - The x position of the slider.
-     * @param {number} y - The y position of the slider.
-     * @param {string} text - The text label of the slider.
-     * @param {number} value - The initial value of the slider.
-     * @param {number} min - The minimum value of the slider.
-     * @param {number} max - The maximum value of the slider.
+     * @param {number} x - The x position of the slider. Default 0.
+     * @param {number} y - The y position of the slider. Default 0.
+     * @param {string} text - The text label of the slider. Default empty string.
+     * @param {number} value - The initial value of the slider. Default 0.
+     * @param {number} min - The minimum value of the slider. Default 0.
+     * @param {number} max - The maximum value of the slider. Default 100.
      * @param {function} defaultHandler - A function that will handle the "change" event.
      */
     constructor(parent, x, y, text, value, min, max, defaultHandler) {
@@ -4885,11 +4897,11 @@ var mc2 = (function (exports) {
     /**
      * Constructor
      * @param {HTMLElement} parent - The element to add this window to.
-     * @param {number} text - The text to put in the title bar.
-     * @param {number} x - The x position of the window.
-     * @param {number} y - The y position of the window.
-     * @param {number} w - The width of the window.
-     * @param {number} h - The height of the window.
+     * @param {number} text - The text to put in the title bar. Default 0.
+     * @param {number} x - The x position of the window. Default 0.
+     * @param {number} y - The y position of the window. Default 0.
+     * @param {number} w - The width of the window. Default 400.
+     * @param {number} h - The height of the window. Default 400.
      */
     constructor(parent, text, x, y, w, h) {
       super(parent, x, y);

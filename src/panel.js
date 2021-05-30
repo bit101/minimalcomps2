@@ -13,10 +13,10 @@ export class Panel extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this panel to.
-   * @param {number} x - The x position of the panel.
-   * @param {number} y - The y position of the panel.
-   * @param {number} w - The width of the panel.
-   * @param {number} h - The height of the panel.
+   * @param {number} x - The x position of the panel. Default 0.
+   * @param {number} y - The y position of the panel. Default 0.
+   * @param {number} w - The width of the panel. Default window.innerWidth.
+   * @param {number} h - The height of the panel. Default window.innerHeight.
    */
   constructor(parent, x, y, w, h) {
     super(parent, x, y);

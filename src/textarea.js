@@ -13,14 +13,14 @@ export class TextArea extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this text area to.
-   * @param {number} x - The x position of the text area.
-   * @param {number} y - The y position of the text area.
-   * @param {string} text - The initial text to display in the text area.
+   * @param {number} x - The x position of the text area. Default 0.
+   * @param {number} y - The y position of the text area. Default 0.
+   * @param {string} text - The initial text to display in the text area. Default empty string.
    * @param {function} defaultHandler - A function that will handle the "input" event.
    */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
-    this._text = text;
+    this._text = text || "";
 
     this.createStyle();
     this.createChildren();

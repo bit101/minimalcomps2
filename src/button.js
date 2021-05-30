@@ -15,14 +15,14 @@ export class Button extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this button to.
-   * @param {number} x - The x position of the button.
-   * @param {number} y - The y position of the button.
-   * @param {string} text - The text label of the button.
+   * @param {number} x - The x position of the button. Default 0.
+   * @param {number} y - The y position of the button. Default 0.
+   * @param {string} text - The text label of the button. Default empty string.
    * @param {function} defaultHandler - A function that will handle the "click" event.
    */
   constructor(parent, x, y, text, defaultHandler) {
     super(parent, x, y);
-    this._text = text;
+    this._text = text || "";
 
     this.createChildren();
     this.createStyle();

@@ -14,9 +14,9 @@ export class Toggle extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this toggle to.
-   * @param {number} x - The x position of the toggle.
-   * @param {number} y - The y position of the toggle.
-   * @param {boolean} toggled - The initial toggled state of the toggle.
+   * @param {number} x - The x position of the toggle. Default 0.
+   * @param {number} y - The y position of the toggle. Default 0.
+   * @param {boolean} toggled - The initial toggled state of the toggle. Default false.
    * @param {function} defaultHandler - A function that will handle the "click" event.
    */
   constructor(parent, x, y, text, toggled, defaultHandler) {
@@ -29,7 +29,7 @@ export class Toggle extends Component {
     this.createListeners();
 
     this.setSize(50, 20);
-    this.toggled = toggled;
+    this.toggled = toggled || false;
     this.updateLabel();
     this.addEventListener("click", defaultHandler);
     this.addToParent();

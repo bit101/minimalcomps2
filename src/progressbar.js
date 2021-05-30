@@ -18,16 +18,15 @@ export class ProgressBar extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this progress bar to.
-   * @param {number} x - The x position of the progress bar.
-   * @param {number} y - The y position of the progress bar.
-   * @param {number} progress - The current progress value of the progress bar.
-   * @param {number} max - The maximum potential value of the progress bar.
-   * @param {function} defaultHandler - A function that will handle the "click" event.
+   * @param {number} x - The x position of the progress bar. Default 0.
+   * @param {number} y - The y position of the progress bar. Default 0.
+   * @param {number} progress - The current progress value of the progress bar. Default 0.
+   * @param {number} max - The maximum potential value of the progress bar. Default 100.
    */
   constructor(parent, x, y, progress, max) {
     super(parent, x, y);
-    this._progress = progress;
-    this._max = max;
+    this._progress = progress || 0;
+    this._max = max || 100;
 
     this.createChildren();
     this.createStyle();

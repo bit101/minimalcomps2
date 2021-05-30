@@ -15,13 +15,13 @@ export class VBox extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this vbox to.
-   * @param {number} x - The x position of the vbox.
-   * @param {number} y - The y position of the vbox.
-   * @param {number} spacing - The space to put in between each element in the box.
+   * @param {number} x - The x position of the vbox. Default 0.
+   * @param {number} y - The y position of the vbox. Default 0.
+   * @param {number} spacing - The space to put in between each element in the box. Default 0.
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing;
+    this.spacing = spacing || 0;
     this.xpos = 0;
     this.ypos = 0;
     this.createChildren();
