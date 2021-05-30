@@ -485,13 +485,13 @@ Style.radiobutton = `
     ${Style.baseStyle}
     cursor: pointer;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalRadioButtonDisabled {
     ${Style.baseStyle}
     cursor: default;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalRadioButton:focus {
     ${Style.focusStyle}

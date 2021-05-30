@@ -43,6 +43,7 @@ export class RadioButton extends Component {
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
     this.addToParent();
+    this.updateWidth();
   }
 
   //////////////////////////////////
@@ -123,10 +124,27 @@ export class RadioButton extends Component {
     }
   }
 
+  updateWidth() {
+    this.style.width = this.label.x + this.label.width + "px";
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  /**
+   * Gets and sets the height of this component.
+   */
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.label.height = h;
+    this.check.style.top = Math.round((this.height - 10) / 2) + "px";
+  }
 
   /**
    * Sets and gets the checked state of the radio button.
@@ -170,14 +188,18 @@ export class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
+    this.updateWidth();
   }
 
+  /**
+   * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+   */
   get width() {
-    return super.width;
+    return this.label.x + this.label.width;
   }
 
   set width(w) {
-    this.wrapper.style.width = this.label.width + 15 + "px";
+    w = w; // noop
   }
 }
 
