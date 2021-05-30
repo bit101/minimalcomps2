@@ -485,13 +485,13 @@ Style.radiobutton = `
     ${Style.baseStyle}
     cursor: pointer;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalRadioButtonDisabled {
     ${Style.baseStyle}
     cursor: default;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalRadioButton:focus {
     ${Style.focusStyle}
@@ -943,7 +943,6 @@ class Label extends Component {
     this._color = "#333";
     this._bold = false;
     this._italic = false;
-    this._text = text;
 
     this.createChildren();
     this.createStyle();
@@ -953,6 +952,7 @@ class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
+    this.text = text;
     this.height = Defaults.label.fontSize + 2;
     this.addToParent();
   }
@@ -1095,7 +1095,7 @@ class Label extends Component {
     this._text = text;
     this.wrapper.textContent = text;
     if (this._autosize) {
-      this._width = this.wrapper.offsetWidth;
+      super.width = this.wrapper.offsetWidth;
     }
   }
 
@@ -1374,6 +1374,7 @@ class Checkbox extends Component {
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
     this.addToParent();
+    this.updateWidth();
   }
 
   //////////////////////////////////
@@ -1445,6 +1446,10 @@ class Checkbox extends Component {
     }
   }
 
+  updateWidth() {
+    this.style.width = this.label.x + this.label.width + "px";
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -1479,6 +1484,16 @@ class Checkbox extends Component {
     }
   }
 
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.label.height = h;
+    this.check.style.top = Math.round((this.height - 10) / 2) + "px";
+  }
+
   /**
    * Sets and gets the text shown in the button's label.
    */
@@ -1489,14 +1504,14 @@ class Checkbox extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
+    this.updateWidth();
   }
 
   get width() {
-    return super.width;
+    return this.label.x + this.label.width;
   }
 
   set width(w) {
-    this.wrapper.style.width = this.label.width + 15 + "px";
   }
 }
 
@@ -3927,6 +3942,7 @@ class RadioButton extends Component {
     this.checked = checked;
     this.addEventListener("click", defaultHandler);
     this.addToParent();
+    this.updateWidth();
   }
 
   //////////////////////////////////
@@ -4007,10 +4023,24 @@ class RadioButton extends Component {
     }
   }
 
+  updateWidth() {
+    this.style.width = this.label.x + this.label.width + "px";
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  get height() {
+    return super.height;
+  }
+
+  set height(h) {
+    super.height = h;
+    this.label.height = h;
+    this.check.style.top = Math.round((this.height - 10) / 2) + "px";
+  }
 
   /**
    * Sets and gets the checked state of the radio button.
@@ -4054,14 +4084,14 @@ class RadioButton extends Component {
   set text(text) {
     this._text = text;
     this.label.text = text;
+    this.updateWidth();
   }
 
   get width() {
-    return super.width;
+    return this.label.x + this.label.width;
   }
 
   set width(w) {
-    this.wrapper.style.width = this.label.width + 15 + "px";
   }
 }
 
@@ -5065,6 +5095,6 @@ class Window extends Component {
 
 customElements.define("minimal-window", Window);
 
-const version = "1.2.1";
+const version = "1.3.0";
 
 export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, LED, Label, NumericStepper, Panel, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, Window, version };
