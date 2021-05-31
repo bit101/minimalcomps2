@@ -87,6 +87,7 @@ export class TextInput extends Component {
    */
   setMaxLength(maxLength) {
     this.maxLength = maxLength;
+    return this;
   }
 
   //////////////////////////////////

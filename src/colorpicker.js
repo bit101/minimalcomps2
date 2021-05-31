@@ -186,6 +186,7 @@ export class ColorPicker extends Component {
    */
   setRandom() {
     this.setNumber(Math.random() * 0xffffff);
+    return this;
   }
 
   /**
