@@ -106,6 +106,16 @@ export class Toggle extends Component {
   }
 
   /**
+   * Adds a handler function for the "click" event on this toggle.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets whether or not this toggle will be toggled (on).
    * @params {boolean} toggle - Whether this toggle will be toggled on or off.
    * @returns This instance, suitable for chaining.

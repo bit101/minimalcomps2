@@ -102,6 +102,16 @@ export class Checkbox extends Component {
   }
 
   /**
+   * Adds a handler function for the "click" event on this checkbox.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets the checked state of this checkbox.
    * @params {boolean} checked - Whether or not this checkbox will be checked.
    * @returns This instance, suitable for chaining.

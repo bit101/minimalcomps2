@@ -184,6 +184,16 @@ export class Dropdown extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this dropdown.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
    * Programatically closes the dropdown if it is open.
    * @returns This instance, suitable for chaining.
    */

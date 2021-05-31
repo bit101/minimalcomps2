@@ -129,6 +129,16 @@ export class RadioButton extends Component {
   }
 
   /**
+   * Adds a handler function for the "click" event on this radio button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets the checked state of this radio button.
    * @params {boolean} checked - Whether or not this radio button will be checked.
    * @returns This instance, suitable for chaining.

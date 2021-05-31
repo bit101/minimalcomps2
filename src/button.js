@@ -80,6 +80,16 @@ export class Button extends Component {
   //////////////////////////////////
 
   /**
+   * Adds a handler function for the "click" event on this button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets the text of this button.
    * @param {string} text - The text to set on this button.
    * @returns this instance, suitable for chaining.

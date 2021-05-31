@@ -270,6 +270,7 @@ export class HSlider extends Component {
     this.addEventListener("change", handler);
     return this;
   }
+
   /**
    * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.

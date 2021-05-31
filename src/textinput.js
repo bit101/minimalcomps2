@@ -62,6 +62,16 @@ export class TextInput extends Component {
   }
 
   /**
+   * Adds a handler function for the "input" event on this component.
+   * @param {function} handler - A function that will handle the "input" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
    * Sets the text of this text input.
    * @param {string} text - The text of this text input.
    * @returns This instance, suitable for chaining.

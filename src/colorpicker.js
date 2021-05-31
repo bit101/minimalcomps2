@@ -119,6 +119,16 @@ export class ColorPicker extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this color picker.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
    * Sets the color of this component.
    * @param {string} color - The color to set.
    * @returns This instance, suitable for chaining.
