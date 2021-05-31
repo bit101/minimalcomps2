@@ -58,7 +58,7 @@ export class NumericStepper extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalNumericStepper");
+    this._setWrapperClass("MinimalNumericStepper");
 
     this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
@@ -241,6 +241,90 @@ export class NumericStepper extends Component {
       this.label.x = 0;
       this.label.y = this.height + 5;
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this numeric stepper.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the numeric stepper. This will effect what is shown in the value label as well as the value property of the numeric stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this numeric stepper.
+   * @param {string} text - The text to set on this numeric stepper.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////

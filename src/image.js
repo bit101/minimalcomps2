@@ -76,6 +76,16 @@ export class Image extends Component {
     this.image.height = this.height = this.width / aspectRatio;
   }
 
+  /**
+   * Sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
+   * @param {string} url - The url of the image to load.
+   * @returns This instance, suitable for chaining.
+   */
+  setURL(url) {
+    this.url = url;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.

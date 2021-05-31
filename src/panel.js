@@ -34,7 +34,7 @@ export class Panel extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalPanel");
+    this._setWrapperClass("MinimalPanel");
   }
 
   _createStyle() {

@@ -51,7 +51,7 @@ export class RadioButton extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalRadioButton");
+    this._setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -118,14 +118,44 @@ export class RadioButton extends Component {
     this.check.setAttribute("class", className);
     this.check.setAttribute("class", className);
     if (this.enabled) {
-      this.setWrapperClass("MinimalRadioButton");
+      this._setWrapperClass("MinimalRadioButton");
     } else {
-      this.setWrapperClass("MinimalRadioButtonDisabled");
+      this._setWrapperClass("MinimalRadioButtonDisabled");
     }
   }
 
   _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this radio button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets the checked state of this radio button.
+   * @params {boolean} checked - Whether or not this radio button will be checked.
+   * @returns This instance, suitable for chaining.
+   */
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this radio button.
+   * @param {string} text - The text to set on this radio button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////

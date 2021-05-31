@@ -50,7 +50,7 @@ export class Knob extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalKnob");
+    this._setWrapperClass("MinimalKnob");
     this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this._createDiv(this.handle, "MinimalKnobZero");
@@ -230,6 +230,101 @@ export class Knob extends Component {
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
+
+  /**
+   * Adds a handler function for the "change" event on this knob.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this knob.
+   * @param {number} value - The value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this knob.
+   * @param {number} value - The value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this knob.
+   * @param {string} text - The text to set on this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets whether the text and value labels will be swapped (value on top, text on bottom).
+   * @param {boolean} swapped - Whether the labels will be swapped.
+   * @return This instance, suitable for chaining.
+   */
+  setLabelSwapped(swapped) {
+    this.labelsSwapped = swapped;
+    return this;
+  }
+
+  /**
+   * Sets the mouse drag sensitivity.
+   * @param {number} sensitivity - How many pixels of mouse motion are required to move the value between min and max.
+   * @return This instance, suitable for chaining.
+   */
+  setSensitivity(sensitivity) {
+    this.sensitivity = sensitivity;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.

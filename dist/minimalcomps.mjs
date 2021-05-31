@@ -762,44 +762,102 @@ class Component extends HTMLElement {
   // General
   //////////////////////////////////
 
+  _setWrapperClass(className) {
+    this.wrapper.setAttribute("class", className);
+  }
+
   /**
    * Moves the component to a specified position.
    * @param {number} x - The new x position of the component.
    * @param {number} y - The new y position of the component.
+   * @returns This instance, suitable for chaining.
    */
   move(x, y) {
     this.x = x;
     this.y = y;
+    return this;
   }
 
   /**
    * Rotates the component.
    * @param {number} rad - The number of radians to rotate the component by.
+   * @returns This instance, suitable for chaining.
    */
   rotate(rad) {
     this.style.transform = `rotate(${rad}rad)`;
+    return this;
   }
 
   /**
    * Rotates the component.
    * @param {number} deg - The number of degrees to rotate the component by.
+   * @returns This instance, suitable for chaining.
    */
   rotateDeg(deg) {
     this.style.transform = `rotate(${deg}deg)`;
+    return this;
   }
 
   /**
    * Sizes the component.
    * @param {number} w - The new width of the component.
    * @param {number} h - The new height of the component.
+   * @returns This instance, suitable for chaining.
    */
   setSize(w, h) {
     this.width = w;
     this.height = h;
+    return this;
   }
 
-  setWrapperClass(className) {
-    this.wrapper.setAttribute("class", className);
+  /**
+   * Sets the enabled state of this component.
+   * @param {boolean} enabled - Whether or not the component will be enabled.
+   * @returns This instance, suitable for chaining.
+   */
+  setEnabled(enabled) {
+    this.enabled = enabled;
+    return this;
+  }
+
+  /**
+   * Sets the height of this component.
+   * @param {number} height - The height of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setHeight(h) {
+    this.height = h;
+    return this;
+  }
+
+  /**
+   * Sets the width of this component.
+   * @param {number} width - The width of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setWidth(w) {
+    this.width = w;
+    return this;
+  }
+
+  /**
+   * Sets the x position of this component.
+   * @param {number} x - The x position of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setX(x) {
+    this.x = x;
+    return this;
+  }
+
+  /**
+   * Sets the y position of this component.
+   * @param {number} y - The y position of this component.
+   * @returns this instance, suitable for chaining.
+   */
+  setY(y) {
+    this.y = y;
+    return this;
   }
 
   //////////////////////////////////
@@ -962,7 +1020,7 @@ class Label extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalLabel");
+    this._setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
   }
 
@@ -970,6 +1028,76 @@ class Label extends Component {
     const style = document.createElement("style");
     style.textContent = Style.label;
     this.shadowRoot.append(style);
+  }
+
+  /**
+   * Sets the alignment of the label's text - "left" (default), "right" or "center".
+   * @param {string} align - The alignment of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setAlign(align) {
+    this.align = align;
+    return this;
+  }
+
+  /**
+   * Sets whether the label will be automatically sized to fit its text.
+   * @param {boolean} autosize - Whether the label will be auto-sized.
+   * @returns This instance, suitable for chaining.
+   */
+  setAutosize(autosize) {
+    this.autosize = autosize;
+    return this;
+  }
+
+  /**
+   * Sets wheter or not the text will be bold.
+   * @param {boolean} bold - Whether or not the text will be bold.
+   * @returns This instance, suitable for chaining.
+   */
+  setBold(bold) {
+    this.bold = bold;
+    return this;
+  }
+
+  /**
+   * Sets the color of the text.
+   * @param {string} color - The color of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
+   * Sets the font size of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setFontSize(fontSize) {
+    this.fontSize = fontSize;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the text will be italicized.
+   * @param {boolean} italics - Whether or not the text will be italicized.
+   * @returns This instance, suitable for chaining.
+   */
+  setItalic(italic) {
+    this.italic = italic;
+    return this;
+  }
+
+  /**
+   * Sets the label's text.
+   * @param {string} text - The text of the label.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////
@@ -1042,9 +1170,9 @@ class Label extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalLabel");
+      this._setWrapperClass("MinimalLabel");
     } else {
-      this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+      this._setWrapperClass("MinimalLabel MinimalLabelDisabled");
     }
   }
 
@@ -1156,7 +1284,7 @@ class Button extends Component {
 
   _createChildren() {
     this.wrapper.tabIndex = 0;
-    this.setWrapperClass("MinimalButton");
+    this._setWrapperClass("MinimalButton");
     this.label = new Label(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
@@ -1195,6 +1323,26 @@ class Button extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
+
+  /**
+   * Adds a handler function for the "click" event on this button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets the text of this button.
+   * @param {string} text - The text to set on this button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
 
   //////////////////////////////////
   // Getters/Setters
@@ -1389,7 +1537,7 @@ class Checkbox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalCheckbox");
+    this._setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
     this.check = this._createDiv(this.wrapper, "MinimalCheckboxCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -1430,13 +1578,6 @@ class Checkbox extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the checkbox between checked and not checked.
-   */
-  toggle() {
-    this.checked = !this.checked;
-  }
-
   _updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
@@ -1447,14 +1588,53 @@ class Checkbox extends Component {
     }
     this.check.setAttribute("class", className);
     if (this.enabled) {
-      this.setWrapperClass("MinimalCheckbox");
+      this._setWrapperClass("MinimalCheckbox");
     } else {
-      this.setWrapperClass("MinimalCheckboxDisabled");
+      this._setWrapperClass("MinimalCheckboxDisabled");
     }
   }
 
   _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this checkbox.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets the checked state of this checkbox.
+   * @params {boolean} checked - Whether or not this checkbox will be checked.
+   * @returns This instance, suitable for chaining.
+   */
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this checkbox.
+   * @param {string} text - The text to set on this checkbox.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Toggles the state of the checkbox between checked and not checked.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.checked = !this.checked;
+    return this;
   }
 
   //////////////////////////////////
@@ -1518,7 +1698,7 @@ class Checkbox extends Component {
   }
 
   /**
-   * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+   * Gets the width of this checkbox. Setting the width does nothing because it is automatically determined by the width of the label.
    */
   get width() {
     return this.label.x + this.label.width;
@@ -1577,7 +1757,7 @@ class ColorPicker extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalColorPicker");
+    this._setWrapperClass("MinimalColorPicker");
 
     this.input = this._createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
@@ -1647,10 +1827,31 @@ class ColorPicker extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this color picker.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the color of this component.
+   * @param {string} color - The color to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
    * Sets the color value using three values for red, green and blue.
    * @param {number} r - The value of the red channel (0 - 255).
    * @param {number} g - The value of the red channel (0 - 255).
    * @param {number} b - The value of the red channel (0 - 255).
+   * @returns This instance, suitable for chaining.
    */
   setRGB(r, g, b) {
     let red = r.toString(16);
@@ -1671,28 +1872,53 @@ class ColorPicker extends Component {
       blue = blue.charAt(0);
     }
     this.color = red + green + blue;
+    return this;
   }
 
   /**
    * Sets the color value using a single 24-bit number.
    * @param {number} num - The number to parse into a color value. This would usually be in decimal (e.g. 16777215) or hexadecimal (e.g. 0xffffff).
+   * @returns This instance, suitable for chaining.
    */
   setNumber(num) {
     const red = num >> 16;
     const green = num >> 8 & 255;
     const blue = num & 255;
     this.setRGB(red, green, blue);
+    return this;
   }
 
   /**
    * Sets the color value to a random RGB value.
+   * @returns This instance, suitable for chaining.
    */
   setRandom() {
     this.setNumber(Math.random() * 0xffffff);
   }
 
   /**
+   * Sets the text of this color picker.
+   * @param {string} text - The text to set on this color picker.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
+  }
+
+  /**
    * Gets the current value of this component as a single 24-bit number from 0 to 16777215 (0x000000 to 0xffffff).
+   * @returns {number} The numeric representation of this color picker's color.
    */
   getNumber() {
     const c = this.color.substring(1);
@@ -1859,7 +2085,7 @@ class Dropdown extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalDropdown");
+    this._setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
     this.label = new Label(this.wrapper, 3, 3);
@@ -1979,22 +2205,6 @@ class Dropdown extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Programatically closes the dropdown if it is open.
-   */
-  close() {
-    this._open = true;
-    this._toggle();
-  }
-
-  /**
-   * Programatically opens the dropdown if it is closed.
-   */
-  open() {
-    this._open = false;
-    this._toggle();
-  }
-
   _updateButton() {
     this.button.style.left = this.width - this.height + "px";
     this.button.style.width = this.height + "px";
@@ -2012,6 +2222,46 @@ class Dropdown extends Component {
     if (item.firstChild) {
       label.y = (this.height - label.height) / 2;
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this dropdown.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Programatically closes the dropdown if it is open.
+   * @returns This instance, suitable for chaining.
+   */
+  close() {
+    this._open = true;
+    this._toggle();
+    return this;
+  }
+
+  /**
+   * Programatically opens the dropdown if it is closed.
+   * @returns This instance, suitable for chaining.
+   */
+  open() {
+    this._open = false;
+    this._toggle();
+    return this;
+  }
+
+  /**
+   * Sets the selected index of this dropdown.
+   * @param {number} index - The index to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setIndex(index) {
+    this.index = index;
+    return this;
   }
 
   //////////////////////////////////
@@ -2117,9 +2367,8 @@ class HBox extends Component {
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._spacing = spacing || 0;
+    this._xpos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -2130,7 +2379,7 @@ class HBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalVbox");
+    this._setWrapperClass("MinimalVbox");
   }
 
   //////////////////////////////////
@@ -2142,13 +2391,34 @@ class HBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.xpos > 0) {
-      this.xpos += this.spacing;
+    if (this._xpos > 0) {
+      this._xpos += this.spacing;
     }
-    child.x = this.xpos;
+    child.x = this._xpos;
     this.height = Math.max(this.height, child.y + child.height);
-    this.xpos += child.width;
-    this.width = this.xpos;
+    this._xpos += child.width;
+    this.width = this._xpos;
+  }
+
+  /**
+   * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   * @param {number} spacing - How much spacing to put between each element.
+   * @returns This instance, suitable for chaining.
+   */
+  setSpacing(spacing) {
+    this.spacing = spacing;
+    return this;
+  }
+
+  /**
+   * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   */
+  get spacing() {
+    return this._spacing;
+  }
+
+  set spacing(spacing) {
+    this._spacing = spacing;
   }
 }
 
@@ -2201,7 +2471,7 @@ class HSlider extends Component {
   //////////////////////////////////
   _createChildren() {
     this.wrapper.tabIndex = 0;
-    this.setWrapperClass("MinimalSlider");
+    this._setWrapperClass("MinimalSlider");
     this.handle = this._createDiv(this.wrapper, "MinimalSliderHandle");
     this.label = new Label(this.wrapper, 0, 0, this._text);
     this.valueLabel = new Label(this.wrapper, 0, 0, this._formatValue());
@@ -2371,10 +2641,10 @@ class HSlider extends Component {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalSlider");
+      this._setWrapperClass("MinimalSlider");
       this.handle.setAttribute("class", "MinimalSliderHandle");
     } else {
-      this.setWrapperClass("MinimalSliderDisabled");
+      this._setWrapperClass("MinimalSliderDisabled");
       this.handle.setAttribute("class", "MinimalSliderHandleDisabled");
     }
   }
@@ -2408,6 +2678,120 @@ class HSlider extends Component {
       this.valueLabel.text = this._formatValue();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this slider.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Gets and sets the width of the draggable slider handle. If you make the slider thicker by changing its height, you may want to adjust the handle size as well. If handleSize is the same as the slider height, then the handle will be a square.
+   * @param {number} handleSize - The size of the handle.
+   * @returns This instance, suitable for chaining.
+   */
+  setHandleSize(handleSize) {
+    this.handleSize = handleSize;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this slider.
+   * @param {number} value - The value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this slider.
+   * @param {number} value - The value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets whether the slider is reversed. A reversed HSlider will show its maximum value on the left and minumum on the right. A reversed VSlider will show its maximum value on the bottom and minimum on the top.
+   * @param {boolean} reversed - Whether or not this slider will be reversed.
+   * @returns This instance, suitable for chaining.
+   */
+  setReversed(reversed) {
+    this.reversed = reversed;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the value of this slider will be shown.
+   * @param {boolean} showValue - Whether or not the value will be shown.
+   * @returns This instance, suitable for chaining.
+   */
+  setShowValue(showValue) {
+    this.showValue = showValue;
+    return this;
+  }
+
+  /**
+   * Sets the text of this slider.
+   * @param {string} text - The text to set on this slider.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
@@ -2663,6 +3047,16 @@ class Image extends Component {
     this.image.height = this.height = this.width / aspectRatio;
   }
 
+  /**
+   * Sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
+   * @param {string} url - The url of the image to load.
+   * @returns This instance, suitable for chaining.
+   */
+  setURL(url) {
+    this.url = url;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -2768,7 +3162,7 @@ class Knob extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalKnob");
+    this._setWrapperClass("MinimalKnob");
     this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this._createDiv(this.handle, "MinimalKnobZero");
@@ -2946,6 +3340,101 @@ class Knob extends Component {
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
+
+  /**
+   * Adds a handler function for the "change" event on this knob.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this knob.
+   * @param {number} value - The value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this knob.
+   * @param {number} value - The value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this knob.
+   * @param {string} text - The text to set on this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets whether the text and value labels will be swapped (value on top, text on bottom).
+   * @param {boolean} swapped - Whether the labels will be swapped.
+   * @return This instance, suitable for chaining.
+   */
+  setLabelSwapped(swapped) {
+    this.labelsSwapped = swapped;
+    return this;
+  }
+
+  /**
+   * Sets the mouse drag sensitivity.
+   * @param {number} sensitivity - How many pixels of mouse motion are required to move the value between min and max.
+   * @return This instance, suitable for chaining.
+   */
+  setSensitivity(sensitivity) {
+    this.sensitivity = sensitivity;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -3122,7 +3611,7 @@ class LED extends Component {
     const size = 16;
 
     this._createChildren();
-    this.setWrapperClass("MinimalLED");
+    this._setWrapperClass("MinimalLED");
     this._createStyle();
 
     this.setSize(size, size);
@@ -3180,6 +3669,7 @@ class LED extends Component {
   /**
    * Starts the LED blinking at a specified or default rate.
    * @param {number} bps - Blinks per second. Defaults to 2 blinks per second if no parameter is given.
+   * @returns This instance, suitable for chaining.
    */
   blink(bps) {
     if (!this.enabled) {
@@ -3193,26 +3683,71 @@ class LED extends Component {
         this.lit = !this.lit;
       }
     }, 1 / bps * 1000);
+    return this;
   }
 
   /**
    * Stops the LED blinking and turns it off.
+   * @returns This instance, suitable for chaining.
    */
   stop() {
     this.blinking = false;
     clearInterval(this.interval);
     this.lit = false;
+    return this;
+  }
+
+  /**
+   * Sets whether this LED is lit up.
+   * @param {boolean} lit - Whether or not the LED is lit.
+   * @returns This instance, suitable for chaining.
+   */
+  setLit(lit) {
+    this.lit = lit;
+    return this;
+  }
+
+  /**
+   * Sets the color of this LED.
+   * @param {string} color - The color to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
   }
 
   /**
    * Sets the size of the LED. Because an LED will always be round, if you try to set width and height to different values, they will be set to the smallest value of the two.
    * @param {number} width - The width of the LED.
    * @param {number} height - The height of the LED.
+   * @returns This instance, suitable for chaining.
    */
   setSize(w, h) {
     const size = Math.min(w, h);
     super.width = size;
     super.height = size;
+    return this;
+  }
+
+  /**
+   * Sets the text of this LED.
+   * @param {string} text - The text to set on this LED.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
@@ -3369,7 +3904,7 @@ class NumericStepper extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalNumericStepper");
+    this._setWrapperClass("MinimalNumericStepper");
 
     this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;
@@ -3554,6 +4089,90 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Adds a handler function for the "change" event on this numeric stepper.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the numeric stepper. This will effect what is shown in the value label as well as the value property of the numeric stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this numeric stepper.
+   * @param {string} text - The text to set on this numeric stepper.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -3723,7 +4342,7 @@ class Panel extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalPanel");
+    this._setWrapperClass("MinimalPanel");
   }
 
   _createStyle() {
@@ -3804,7 +4423,7 @@ class ProgressBar extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalProgressBar");
+    this._setWrapperClass("MinimalProgressBar");
     this.fill = this._createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
@@ -3825,6 +4444,26 @@ class ProgressBar extends Component {
     this.fill.style.width = percent * this.width + "px";
   }
 
+  /**
+   * Sets the maximum value of this progress bar.
+   * @param {number} max - The maximum value.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the current progress value of this progress bar.
+   * @param {number} max - The current progress value.
+   * @returns This instance, suitable for chaining.
+   */
+  setProgress(progress) {
+    this.progress = progress;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -3837,10 +4476,10 @@ class ProgressBar extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this._enabled) {
-      this.setWrapperClass("MinimalProgressBar");
+      this._setWrapperClass("MinimalProgressBar");
       this.fill.setAttribute("class", "MinimalProgressBarFill");
     } else {
-      this.setWrapperClass("MinimalProgressBarDisabled");
+      this._setWrapperClass("MinimalProgressBarDisabled");
       this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
     }
   }
@@ -3990,7 +4629,7 @@ class RadioButton extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalRadioButton");
+    this._setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -4057,14 +4696,44 @@ class RadioButton extends Component {
     this.check.setAttribute("class", className);
     this.check.setAttribute("class", className);
     if (this.enabled) {
-      this.setWrapperClass("MinimalRadioButton");
+      this._setWrapperClass("MinimalRadioButton");
     } else {
-      this.setWrapperClass("MinimalRadioButtonDisabled");
+      this._setWrapperClass("MinimalRadioButtonDisabled");
     }
   }
 
   _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this radio button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets the checked state of this radio button.
+   * @params {boolean} checked - Whether or not this radio button will be checked.
+   * @returns This instance, suitable for chaining.
+   */
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this radio button.
+   * @param {string} text - The text to set on this radio button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////
@@ -4202,6 +4871,25 @@ class TextArea extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Adds a handler function for the "input" event on this component.
+   * @param {function} handler - A function that will handle the "input" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Sets the text of this text area.
+   * @param {string} text - The text of this text area.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4275,7 +4963,7 @@ class TextBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalTextBox");
+    this.__setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
   }
 
@@ -4283,6 +4971,78 @@ class TextBox extends Component {
     const style = document.createElement("style");
     style.textContent = Style.textbox;
     this.shadowRoot.append(style);
+  }
+
+  /**
+   * Sets the alignment of the text box's text - "left" (default), "right" or "center".
+   * @param {string} align - The alignment of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setAlign(align) {
+    this.align = align;
+    return this;
+  }
+
+  /**
+   * Sets wheter or not the text will be bold.
+   * @param {boolean} bold - Whether or not the text will be bold.
+   * @returns This instance, suitable for chaining.
+   */
+  setBold(bold) {
+    this.bold = bold;
+    return this;
+  }
+
+  /**
+   * Sets the color of the text.
+   * @param {string} color - The color of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
+   * Sets the font size of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setFontSize(fontSize) {
+    this.fontSize = fontSize;
+    return this;
+  }
+
+  
+  /**
+   * Sets the 
+   * Sets a string of HTML text to display. This will accept pretty much any kind of valid HTML markup you can put into a string.
+   * @param {string} html - The HTML to set.
+   * @returns This instance, suitable for chaining.
+   */
+   setHtml(html) {
+    this.html = html;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the text will be italicized.
+   * @param {boolean} italics - Whether or not the text will be italicized.
+   * @returns This instance, suitable for chaining.
+   */
+  setItalic(italic) {
+    this.italic = italic;
+    return this;
+  }
+
+  /**
+   * Sets the text box's text.
+   * @param {string} text - The text of the text box.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////
@@ -4337,9 +5097,9 @@ class TextBox extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalTextBox");
+      this._setWrapperClass("MinimalTextBox");
     } else {
-      this.setWrapperClass("MinimalTextBoxDisabled");
+      this._setWrapperClass("MinimalTextBoxDisabled");
     }
   }
 
@@ -4466,6 +5226,34 @@ class TextInput extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Adds a handler function for the "input" event on this component.
+   * @param {function} handler - A function that will handle the "input" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Sets the text of this text input.
+   * @param {string} text - The text of this text input.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
+  /**
+   * Sets the maximum number of characters in this text input.
+   * @param {number} maxLength - The max number of chars.
+   * @returns This instance, suitable for chaining.
+   */
+  setMaxLength(maxLength) {
+    this.maxLength = maxLength;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4552,7 +5340,7 @@ class Toggle extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalToggle");
+    this._setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
     this.label = new Label(this.wrapper, 0, -15, this._text);
     this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
@@ -4593,14 +5381,6 @@ class Toggle extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the toggle between toggled and not toggled.
-   */
-  toggle() {
-    this.toggled = !this.toggled;
-    this._updateToggle();
-  }
-
   _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
@@ -4623,6 +5403,56 @@ class Toggle extends Component {
     } else {
       this.handle.style.left = 0;
     }
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this toggle.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets whether or not this toggle will be toggled (on).
+   * @params {boolean} toggle - Whether this toggle will be toggled on or off.
+   * @returns This instance, suitable for chaining.
+   */
+  setToggled(toggled) {
+    this.toggled = toggled; 
+    return this;
+  }
+
+  /**
+   * Toggles the state of the toggle between toggled and not toggled.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.toggled = !this.toggled;
+    this._updateToggle();
+    return this;
+  }
+
+  /**
+   * Sets the text of this toggle.
+   * @param {string} text - The text to set on this toggle.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
@@ -4651,10 +5481,10 @@ class Toggle extends Component {
       super.enabled = enabled;
       this.label.enable = enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalToggle");
+        this._setWrapperClass("MinimalToggle");
         this.wrapper.tabIndex = 0;
       } else {
-        this.setWrapperClass("MinimalToggleDisabled");
+        this._setWrapperClass("MinimalToggleDisabled");
         this.wrapper.tabIndex = -1;
       }
     }
@@ -4709,9 +5539,8 @@ class VBox extends Component {
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._spacing = spacing || 0;
+    this._ypos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -4722,7 +5551,7 @@ class VBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalVbox");
+    this._setWrapperClass("MinimalVbox");
   }
 
   //////////////////////////////////
@@ -4734,13 +5563,34 @@ class VBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.ypos > 0) {
-      this.ypos += this.spacing;
+    if (this._ypos > 0) {
+      this.yp_os += this.spacing;
     }
-    child.y = this.ypos;
+    child.y = this._ypos;
     this.width = Math.max(this.width, child.x + child.width);
-    this.ypos += child.height;
-    this.height = this.ypos;
+    this._ypos += child.height;
+    this.height = this._ypos;
+  }
+
+  /**
+   * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   * @param {number} spacing - How much spacing to put between each element.
+   * @returns This instance, suitable for chaining.
+   */
+  setSpacing(spacing) {
+    this.spacing = spacing;
+    return this;
+  }
+
+  /**
+   * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   */
+  get spacing() {
+    return this._spacing;
+  }
+
+  set spacing(spacing) {
+    this._spacing = spacing;
   }
 }
 
@@ -4950,7 +5800,7 @@ class Window extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalWindow");
+    this._setWrapperClass("MinimalWindow");
     this.titleBar = this._createDiv(this.wrapper, "MinimalWindowTitleBar");
     this.label = new Label(this.titleBar, 5, 0, this._text);
     this.label.height = 30;
@@ -5038,6 +5888,36 @@ class Window extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
+
+  /**
+   * Sets whether or not this window can be dragged by its title bar.
+   * @param {boolean} draggable - Whether this window can be dragged.
+   * @returns This instance, suitable for chaining.
+   */
+  setDraggable(draggable) {
+    this.draggable = draggable;
+    return this;
+  }
+
+  /**
+   * Sets whether or not this window can be minimized.
+   * @param {boolean} minimizable - Whether this window can be minimized.
+   * @returns This instance, suitable for chaining.
+   */
+  setMinimizable(minimizable) {
+    this.minimizable = minimizable;
+    return this;
+  }
+
+  /**
+   * Sets the test shown in this window's title bar.
+   * @param {string} text - The text in the title bar.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
 
   //////////////////////////////////
   // Getters and Setters

@@ -21,9 +21,8 @@ export class HBox extends Component {
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._spacing = spacing || 0;
+    this._xpos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -34,7 +33,7 @@ export class HBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalVbox");
+    this._setWrapperClass("MinimalVbox");
   }
 
   //////////////////////////////////
@@ -46,13 +45,34 @@ export class HBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.xpos > 0) {
-      this.xpos += this.spacing;
+    if (this._xpos > 0) {
+      this._xpos += this.spacing;
     }
-    child.x = this.xpos;
+    child.x = this._xpos;
     this.height = Math.max(this.height, child.y + child.height);
-    this.xpos += child.width;
-    this.width = this.xpos;
+    this._xpos += child.width;
+    this.width = this._xpos;
+  }
+
+  /**
+   * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   * @param {number} spacing - How much spacing to put between each element.
+   * @returns This instance, suitable for chaining.
+   */
+  setSpacing(spacing) {
+    this.spacing = spacing;
+    return this;
+  }
+
+  /**
+   * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   */
+  get spacing() {
+    return this._spacing;
+  }
+
+  set spacing(spacing) {
+    this._spacing = spacing;
   }
 }
 

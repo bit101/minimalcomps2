@@ -40,7 +40,7 @@ export class Toggle extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalToggle");
+    this._setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
     this.label = new Label(this.wrapper, 0, -15, this._text);
     this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
@@ -81,14 +81,6 @@ export class Toggle extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the toggle between toggled and not toggled.
-   */
-  toggle() {
-    this.toggled = !this.toggled;
-    this._updateToggle();
-  }
-
   _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
@@ -111,6 +103,56 @@ export class Toggle extends Component {
     } else {
       this.handle.style.left = 0;
     }
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this toggle.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets whether or not this toggle will be toggled (on).
+   * @params {boolean} toggle - Whether this toggle will be toggled on or off.
+   * @returns This instance, suitable for chaining.
+   */
+  setToggled(toggled) {
+    this.toggled = toggled; 
+    return this;
+  }
+
+  /**
+   * Toggles the state of the toggle between toggled and not toggled.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.toggled = !this.toggled;
+    this._updateToggle();
+    return this;
+  }
+
+  /**
+   * Sets the text of this toggle.
+   * @param {string} text - The text to set on this toggle.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
@@ -139,10 +181,10 @@ export class Toggle extends Component {
       super.enabled = enabled;
       this.label.enable = enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalToggle");
+        this._setWrapperClass("MinimalToggle");
         this.wrapper.tabIndex = 0;
       } else {
-        this.setWrapperClass("MinimalToggleDisabled");
+        this._setWrapperClass("MinimalToggleDisabled");
         this.wrapper.tabIndex = -1;
       }
     }

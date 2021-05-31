@@ -44,7 +44,7 @@ export class Label extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalLabel");
+    this._setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
   }
 
@@ -52,6 +52,76 @@ export class Label extends Component {
     const style = document.createElement("style");
     style.textContent = Style.label;
     this.shadowRoot.append(style);
+  }
+
+  /**
+   * Sets the alignment of the label's text - "left" (default), "right" or "center".
+   * @param {string} align - The alignment of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setAlign(align) {
+    this.align = align;
+    return this;
+  }
+
+  /**
+   * Sets whether the label will be automatically sized to fit its text.
+   * @param {boolean} autosize - Whether the label will be auto-sized.
+   * @returns This instance, suitable for chaining.
+   */
+  setAutosize(autosize) {
+    this.autosize = autosize;
+    return this;
+  }
+
+  /**
+   * Sets wheter or not the text will be bold.
+   * @param {boolean} bold - Whether or not the text will be bold.
+   * @returns This instance, suitable for chaining.
+   */
+  setBold(bold) {
+    this.bold = bold;
+    return this;
+  }
+
+  /**
+   * Sets the color of the text.
+   * @param {string} color - The color of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
+   * Sets the font size of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setFontSize(fontSize) {
+    this.fontSize = fontSize;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the text will be italicized.
+   * @param {boolean} italics - Whether or not the text will be italicized.
+   * @returns This instance, suitable for chaining.
+   */
+  setItalic(italic) {
+    this.italic = italic;
+    return this;
+  }
+
+  /**
+   * Sets the label's text.
+   * @param {string} text - The text of the label.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////
@@ -124,9 +194,9 @@ export class Label extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalLabel");
+      this._setWrapperClass("MinimalLabel");
     } else {
-      this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+      this._setWrapperClass("MinimalLabel MinimalLabelDisabled");
     }
   }
 

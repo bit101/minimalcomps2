@@ -44,7 +44,7 @@ export class Dropdown extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalDropdown");
+    this._setWrapperClass("MinimalDropdown");
     this.wrapper.tabIndex = 0;
 
     this.label = new Label(this.wrapper, 3, 3);
@@ -164,22 +164,6 @@ export class Dropdown extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Programatically closes the dropdown if it is open.
-   */
-  close() {
-    this._open = true;
-    this._toggle();
-  }
-
-  /**
-   * Programatically opens the dropdown if it is closed.
-   */
-  open() {
-    this._open = false;
-    this._toggle();
-  }
-
   _updateButton() {
     this.button.style.left = this.width - this.height + "px";
     this.button.style.width = this.height + "px";
@@ -197,6 +181,46 @@ export class Dropdown extends Component {
     if (item.firstChild) {
       label.y = (this.height - label.height) / 2;
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this dropdown.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Programatically closes the dropdown if it is open.
+   * @returns This instance, suitable for chaining.
+   */
+  close() {
+    this._open = true;
+    this._toggle();
+    return this;
+  }
+
+  /**
+   * Programatically opens the dropdown if it is closed.
+   * @returns This instance, suitable for chaining.
+   */
+  open() {
+    this._open = false;
+    this._toggle();
+    return this;
+  }
+
+  /**
+   * Sets the selected index of this dropdown.
+   * @param {number} index - The index to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setIndex(index) {
+    this.index = index;
+    return this;
   }
 
   //////////////////////////////////

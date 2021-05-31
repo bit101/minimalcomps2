@@ -21,9 +21,8 @@ export class VBox extends Component {
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._spacing = spacing || 0;
+    this._ypos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -34,7 +33,7 @@ export class VBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalVbox");
+    this._setWrapperClass("MinimalVbox");
   }
 
   //////////////////////////////////
@@ -46,13 +45,34 @@ export class VBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.ypos > 0) {
-      this.ypos += this.spacing;
+    if (this._ypos > 0) {
+      this.yp_os += this.spacing;
     }
-    child.y = this.ypos;
+    child.y = this._ypos;
     this.width = Math.max(this.width, child.x + child.width);
-    this.ypos += child.height;
-    this.height = this.ypos;
+    this._ypos += child.height;
+    this.height = this._ypos;
+  }
+
+  /**
+   * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   * @param {number} spacing - How much spacing to put between each element.
+   * @returns This instance, suitable for chaining.
+   */
+  setSpacing(spacing) {
+    this.spacing = spacing;
+    return this;
+  }
+
+  /**
+   * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   */
+  get spacing() {
+    return this._spacing;
+  }
+
+  set spacing(spacing) {
+    this._spacing = spacing;
   }
 }
 

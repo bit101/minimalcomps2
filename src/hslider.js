@@ -50,7 +50,7 @@ export class HSlider extends Component {
   //////////////////////////////////
   _createChildren() {
     this.wrapper.tabIndex = 0;
-    this.setWrapperClass("MinimalSlider");
+    this._setWrapperClass("MinimalSlider");
     this.handle = this._createDiv(this.wrapper, "MinimalSliderHandle");
     this.label = new Label(this.wrapper, 0, 0, this._text);
     this.valueLabel = new Label(this.wrapper, 0, 0, this._formatValue());
@@ -222,10 +222,10 @@ export class HSlider extends Component {
     this.label.enabled = this.enabled;
     this.valueLabel.enabled = this.enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalSlider");
+      this._setWrapperClass("MinimalSlider");
       this.handle.setAttribute("class", "MinimalSliderHandle");
     } else {
-      this.setWrapperClass("MinimalSliderDisabled");
+      this._setWrapperClass("MinimalSliderDisabled");
       this.handle.setAttribute("class", "MinimalSliderHandleDisabled");
     }
   }
@@ -259,6 +259,120 @@ export class HSlider extends Component {
       this.valueLabel.text = this._formatValue();
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this slider.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Gets and sets the width of the draggable slider handle. If you make the slider thicker by changing its height, you may want to adjust the handle size as well. If handleSize is the same as the slider height, then the handle will be a square.
+   * @param {number} handleSize - The size of the handle.
+   * @returns This instance, suitable for chaining.
+   */
+  setHandleSize(handleSize) {
+    this.handleSize = handleSize;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this slider.
+   * @param {number} value - The value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this slider.
+   * @param {number} value - The value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets whether the slider is reversed. A reversed HSlider will show its maximum value on the left and minumum on the right. A reversed VSlider will show its maximum value on the bottom and minimum on the top.
+   * @param {boolean} reversed - Whether or not this slider will be reversed.
+   * @returns This instance, suitable for chaining.
+   */
+  setReversed(reversed) {
+    this.reversed = reversed;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the value of this slider will be shown.
+   * @param {boolean} showValue - Whether or not the value will be shown.
+   * @returns This instance, suitable for chaining.
+   */
+  setShowValue(showValue) {
+    this.showValue = showValue;
+    return this;
+  }
+
+  /**
+   * Sets the text of this slider.
+   * @param {string} text - The text to set on this slider.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
