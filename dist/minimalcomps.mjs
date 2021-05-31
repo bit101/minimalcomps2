@@ -1325,6 +1325,16 @@ class Button extends Component {
   //////////////////////////////////
 
   /**
+   * Adds a handler function for the "click" event on this button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets the text of this button.
    * @param {string} text - The text to set on this button.
    * @returns this instance, suitable for chaining.
@@ -1589,9 +1599,20 @@ class Checkbox extends Component {
   }
 
   /**
+   * Adds a handler function for the "click" event on this checkbox.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
    * Sets the checked state of this checkbox.
    * @params {boolean} checked - Whether or not this checkbox will be checked.
    * @returns This instance, suitable for chaining.
+   */
   setChecked(checked) {
     this.checked = checked;
     return this;
@@ -1803,6 +1824,16 @@ class ColorPicker extends Component {
       this.label.x = 0;
       this.label.y = this.height + 5;
     }
+  }
+
+  /**
+   * Adds a handler function for the "change" event on this color picker.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
   }
 
   /**
@@ -2194,6 +2225,16 @@ class Dropdown extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this dropdown.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
    * Programatically closes the dropdown if it is open.
    * @returns This instance, suitable for chaining.
    */
@@ -2327,8 +2368,7 @@ class HBox extends Component {
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
     this._spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._xpos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -2351,13 +2391,13 @@ class HBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.xpos > 0) {
-      this.xpos += this.spacing;
+    if (this._xpos > 0) {
+      this._xpos += this.spacing;
     }
-    child.x = this.xpos;
+    child.x = this._xpos;
     this.height = Math.max(this.height, child.y + child.height);
-    this.xpos += child.width;
-    this.width = this.xpos;
+    this._xpos += child.width;
+    this.width = this._xpos;
   }
 
   /**
@@ -2649,6 +2689,7 @@ class HSlider extends Component {
     this.addEventListener("change", handler);
     return this;
   }
+
   /**
    * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.
@@ -4048,6 +4089,90 @@ class NumericStepper extends Component {
     }
   }
 
+  /**
+   * Adds a handler function for the "change" event on this numeric stepper.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the numeric stepper. This will effect what is shown in the value label as well as the value property of the numeric stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this numeric stepper.
+   * @param {number} value - The value of this numeric stepper.
+   * @param {number} min - The minimum value of this numeric stepper.
+   * @param {number} max - The maximum value of this numeric stepper.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this numeric stepper.
+   * @param {string} text - The text to set on this numeric stepper.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4319,6 +4444,26 @@ class ProgressBar extends Component {
     this.fill.style.width = percent * this.width + "px";
   }
 
+  /**
+   * Sets the maximum value of this progress bar.
+   * @param {number} max - The maximum value.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the current progress value of this progress bar.
+   * @param {number} max - The current progress value.
+   * @returns This instance, suitable for chaining.
+   */
+  setProgress(progress) {
+    this.progress = progress;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4561,6 +4706,36 @@ class RadioButton extends Component {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
+  /**
+   * Adds a handler function for the "click" event on this radio button.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets the checked state of this radio button.
+   * @params {boolean} checked - Whether or not this radio button will be checked.
+   * @returns This instance, suitable for chaining.
+   */
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this radio button.
+   * @param {string} text - The text to set on this radio button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4696,6 +4871,25 @@ class TextArea extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Adds a handler function for the "input" event on this component.
+   * @param {function} handler - A function that will handle the "input" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Sets the text of this text area.
+   * @param {string} text - The text of this text area.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -4777,6 +4971,78 @@ class TextBox extends Component {
     const style = document.createElement("style");
     style.textContent = Style.textbox;
     this.shadowRoot.append(style);
+  }
+
+  /**
+   * Sets the alignment of the text box's text - "left" (default), "right" or "center".
+   * @param {string} align - The alignment of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setAlign(align) {
+    this.align = align;
+    return this;
+  }
+
+  /**
+   * Sets wheter or not the text will be bold.
+   * @param {boolean} bold - Whether or not the text will be bold.
+   * @returns This instance, suitable for chaining.
+   */
+  setBold(bold) {
+    this.bold = bold;
+    return this;
+  }
+
+  /**
+   * Sets the color of the text.
+   * @param {string} color - The color of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
+   * Sets the font size of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setFontSize(fontSize) {
+    this.fontSize = fontSize;
+    return this;
+  }
+
+  
+  /**
+   * Sets the 
+   * Sets a string of HTML text to display. This will accept pretty much any kind of valid HTML markup you can put into a string.
+   * @param {string} html - The HTML to set.
+   * @returns This instance, suitable for chaining.
+   */
+   setHtml(html) {
+    this.html = html;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the text will be italicized.
+   * @param {boolean} italics - Whether or not the text will be italicized.
+   * @returns This instance, suitable for chaining.
+   */
+  setItalic(italic) {
+    this.italic = italic;
+    return this;
+  }
+
+  /**
+   * Sets the text box's text.
+   * @param {string} text - The text of the text box.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
   //////////////////////////////////
@@ -4960,6 +5226,34 @@ class TextInput extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Adds a handler function for the "input" event on this component.
+   * @param {function} handler - A function that will handle the "input" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Sets the text of this text input.
+   * @param {string} text - The text of this text input.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
+  /**
+   * Sets the maximum number of characters in this text input.
+   * @param {number} maxLength - The max number of chars.
+   * @returns This instance, suitable for chaining.
+   */
+  setMaxLength(maxLength) {
+    this.maxLength = maxLength;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -5087,14 +5381,6 @@ class Toggle extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the toggle between toggled and not toggled.
-   */
-  toggle() {
-    this.toggled = !this.toggled;
-    this._updateToggle();
-  }
-
   _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
@@ -5117,6 +5403,56 @@ class Toggle extends Component {
     } else {
       this.handle.style.left = 0;
     }
+  }
+
+  /**
+   * Adds a handler function for the "click" event on this toggle.
+   * @param {function} handler - A function that will handle the "click" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("click", handler);
+    return this;
+  }
+
+  /**
+   * Sets whether or not this toggle will be toggled (on).
+   * @params {boolean} toggle - Whether this toggle will be toggled on or off.
+   * @returns This instance, suitable for chaining.
+   */
+  setToggled(toggled) {
+    this.toggled = toggled; 
+    return this;
+  }
+
+  /**
+   * Toggles the state of the toggle between toggled and not toggled.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.toggled = !this.toggled;
+    this._updateToggle();
+    return this;
+  }
+
+  /**
+   * Sets the text of this toggle.
+   * @param {string} text - The text to set on this toggle.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////
@@ -5203,9 +5539,8 @@ class VBox extends Component {
    */
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
-    this.spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._spacing = spacing || 0;
+    this._ypos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -5228,13 +5563,34 @@ class VBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.ypos > 0) {
-      this.ypos += this.spacing;
+    if (this._ypos > 0) {
+      this.yp_os += this.spacing;
     }
-    child.y = this.ypos;
+    child.y = this._ypos;
     this.width = Math.max(this.width, child.x + child.width);
-    this.ypos += child.height;
-    this.height = this.ypos;
+    this._ypos += child.height;
+    this.height = this._ypos;
+  }
+
+  /**
+   * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   * @param {number} spacing - How much spacing to put between each element.
+   * @returns This instance, suitable for chaining.
+   */
+  setSpacing(spacing) {
+    this.spacing = spacing;
+    return this;
+  }
+
+  /**
+   * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+   */
+  get spacing() {
+    return this._spacing;
+  }
+
+  set spacing(spacing) {
+    this._spacing = spacing;
   }
 }
 
@@ -5532,6 +5888,36 @@ class Window extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
+
+  /**
+   * Sets whether or not this window can be dragged by its title bar.
+   * @param {boolean} draggable - Whether this window can be dragged.
+   * @returns This instance, suitable for chaining.
+   */
+  setDraggable(draggable) {
+    this.draggable = draggable;
+    return this;
+  }
+
+  /**
+   * Sets whether or not this window can be minimized.
+   * @param {boolean} minimizable - Whether this window can be minimized.
+   * @returns This instance, suitable for chaining.
+   */
+  setMinimizable(minimizable) {
+    this.minimizable = minimizable;
+    return this;
+  }
+
+  /**
+   * Sets the test shown in this window's title bar.
+   * @param {string} text - The text in the title bar.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
 
   //////////////////////////////////
   // Getters and Setters
