@@ -39,7 +39,7 @@ export class Button extends Component {
 
   _createChildren() {
     this.wrapper.tabIndex = 0;
-    this.setWrapperClass("MinimalButton");
+    this._setWrapperClass("MinimalButton");
     this.label = new Label(this.wrapper, 0, 0, this._text);
     this.label.autosize = false;
     this.label.align = "center";
@@ -78,6 +78,16 @@ export class Button extends Component {
   //////////////////////////////////
   // General
   //////////////////////////////////
+
+  /**
+   * Sets the text of this button.
+   * @param {string} text - The text to set on this button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
 
   //////////////////////////////////
   // Getters/Setters

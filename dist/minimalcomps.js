@@ -765,44 +765,102 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
 
+    _setWrapperClass(className) {
+      this.wrapper.setAttribute("class", className);
+    }
+
     /**
      * Moves the component to a specified position.
      * @param {number} x - The new x position of the component.
      * @param {number} y - The new y position of the component.
+     * @returns This instance, suitable for chaining.
      */
     move(x, y) {
       this.x = x;
       this.y = y;
+      return this;
     }
 
     /**
      * Rotates the component.
      * @param {number} rad - The number of radians to rotate the component by.
+     * @returns This instance, suitable for chaining.
      */
     rotate(rad) {
       this.style.transform = `rotate(${rad}rad)`;
+      return this;
     }
 
     /**
      * Rotates the component.
      * @param {number} deg - The number of degrees to rotate the component by.
+     * @returns This instance, suitable for chaining.
      */
     rotateDeg(deg) {
       this.style.transform = `rotate(${deg}deg)`;
+      return this;
     }
 
     /**
      * Sizes the component.
      * @param {number} w - The new width of the component.
      * @param {number} h - The new height of the component.
+     * @returns This instance, suitable for chaining.
      */
     setSize(w, h) {
       this.width = w;
       this.height = h;
+      return this;
     }
 
-    setWrapperClass(className) {
-      this.wrapper.setAttribute("class", className);
+    /**
+     * Sets the enabled state of this component.
+     * @param {boolean} enabled - Whether or not the component will be enabled.
+     * @returns This instance, suitable for chaining.
+     */
+    setEnabled(enabled) {
+      this.enabled = enabled;
+      return this;
+    }
+
+    /**
+     * Sets the height of this component.
+     * @param {number} height - The height of this component.
+     * @returns This instance, suitable for chaining.
+     */
+    setHeight(h) {
+      this.height = h;
+      return this;
+    }
+
+    /**
+     * Sets the width of this component.
+     * @param {number} width - The width of this component.
+     * @returns This instance, suitable for chaining.
+     */
+    setWidth(w) {
+      this.width = w;
+      return this;
+    }
+
+    /**
+     * Sets the x position of this component.
+     * @param {number} x - The x position of this component.
+     * @returns This instance, suitable for chaining.
+     */
+    setX(x) {
+      this.x = x;
+      return this;
+    }
+
+    /**
+     * Sets the y position of this component.
+     * @param {number} y - The y position of this component.
+     * @returns this instance, suitable for chaining.
+     */
+    setY(y) {
+      this.y = y;
+      return this;
     }
 
     //////////////////////////////////
@@ -965,7 +1023,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalLabel");
+      this._setWrapperClass("MinimalLabel");
       this.wrapper.textContent = this._text;
     }
 
@@ -1045,9 +1103,9 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       super.enabled = enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalLabel");
+        this._setWrapperClass("MinimalLabel");
       } else {
-        this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+        this._setWrapperClass("MinimalLabel MinimalLabelDisabled");
       }
     }
 
@@ -1159,7 +1217,7 @@ var mc2 = (function (exports) {
 
     _createChildren() {
       this.wrapper.tabIndex = 0;
-      this.setWrapperClass("MinimalButton");
+      this._setWrapperClass("MinimalButton");
       this.label = new Label(this.wrapper, 0, 0, this._text);
       this.label.autosize = false;
       this.label.align = "center";
@@ -1198,6 +1256,16 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     // General
     //////////////////////////////////
+
+    /**
+     * Sets the text of this button.
+     * @param {string} text - The text to set on this button.
+     * @returns this instance, suitable for chaining.
+     */
+    setText(text) {
+      this.text = text;
+      return this;
+    }
 
     //////////////////////////////////
     // Getters/Setters
@@ -1392,7 +1460,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalCheckbox");
+      this._setWrapperClass("MinimalCheckbox");
       this.wrapper.tabIndex = 0;
       this.check = this._createDiv(this.wrapper, "MinimalCheckboxCheck");
       this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -1433,13 +1501,6 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
 
-    /**
-     * Toggles the state of the checkbox between checked and not checked.
-     */
-    toggle() {
-      this.checked = !this.checked;
-    }
-
     _updateCheckStyle() {
       let className = this.checked
         ? "MinimalCheckboxCheckChecked "
@@ -1450,14 +1511,42 @@ var mc2 = (function (exports) {
       }
       this.check.setAttribute("class", className);
       if (this.enabled) {
-        this.setWrapperClass("MinimalCheckbox");
+        this._setWrapperClass("MinimalCheckbox");
       } else {
-        this.setWrapperClass("MinimalCheckboxDisabled");
+        this._setWrapperClass("MinimalCheckboxDisabled");
       }
     }
 
     _updateWidth() {
       this.style.width = this.label.x + this.label.width + "px";
+    }
+
+    /**
+     * Sets the checked state of this checkbox.
+     * @params {boolean} checked - Whether or not this checkbox will be checked.
+     * @returns This instance, suitable for chaining.
+    setChecked(checked) {
+      this.checked = checked;
+      return this;
+    }
+
+    /**
+     * Sets the text of this checkbox.
+     * @param {string} text - The text to set on this checkbox.
+     * @returns this instance, suitable for chaining.
+     */
+    setText(text) {
+      this.text = text;
+      return this;
+    }
+
+    /**
+     * Toggles the state of the checkbox between checked and not checked.
+     * @returns This instance, suitable for chaining.
+     */
+    toggle() {
+      this.checked = !this.checked;
+      return this;
     }
 
     //////////////////////////////////
@@ -1521,7 +1610,7 @@ var mc2 = (function (exports) {
     }
 
     /**
-     * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+     * Gets the width of this checkbox. Setting the width does nothing because it is automatically determined by the width of the label.
      */
     get width() {
       return this.label.x + this.label.width;
@@ -1580,7 +1669,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalColorPicker");
+      this._setWrapperClass("MinimalColorPicker");
 
       this.input = this._createInput(this.wrapper, "MinimalColorPickerInput");
       this.input.maxLength = 7;
@@ -1650,10 +1739,21 @@ var mc2 = (function (exports) {
     }
 
     /**
+     * Sets the color of this component.
+     * @param {string} color - The color to set.
+     * @returns This instance, suitable for chaining.
+     */
+    setColor(color) {
+      this.color = color;
+      return this;
+    }
+
+    /**
      * Sets the color value using three values for red, green and blue.
      * @param {number} r - The value of the red channel (0 - 255).
      * @param {number} g - The value of the red channel (0 - 255).
      * @param {number} b - The value of the red channel (0 - 255).
+     * @returns This instance, suitable for chaining.
      */
     setRGB(r, g, b) {
       let red = r.toString(16);
@@ -1674,28 +1774,53 @@ var mc2 = (function (exports) {
         blue = blue.charAt(0);
       }
       this.color = red + green + blue;
+      return this;
     }
 
     /**
      * Sets the color value using a single 24-bit number.
      * @param {number} num - The number to parse into a color value. This would usually be in decimal (e.g. 16777215) or hexadecimal (e.g. 0xffffff).
+     * @returns This instance, suitable for chaining.
      */
     setNumber(num) {
       const red = num >> 16;
       const green = num >> 8 & 255;
       const blue = num & 255;
       this.setRGB(red, green, blue);
+      return this;
     }
 
     /**
      * Sets the color value to a random RGB value.
+     * @returns This instance, suitable for chaining.
      */
     setRandom() {
       this.setNumber(Math.random() * 0xffffff);
     }
 
     /**
+     * Sets the text of this color picker.
+     * @param {string} text - The text to set on this color picker.
+     * @returns this instance, suitable for chaining.
+     */
+    setText(text) {
+      this.text = text;
+      return this;
+    }
+
+    /**
+     * Sets the text position of the text label.
+     * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+     * @returns this instance, suitable for chaining.
+     */
+    setTextPosition(position) {
+      this.textPosition = position;
+      return this;
+    }
+
+    /**
      * Gets the current value of this component as a single 24-bit number from 0 to 16777215 (0x000000 to 0xffffff).
+     * @returns {number} The numeric representation of this color picker's color.
      */
     getNumber() {
       const c = this.color.substring(1);
@@ -1862,7 +1987,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalDropdown");
+      this._setWrapperClass("MinimalDropdown");
       this.wrapper.tabIndex = 0;
 
       this.label = new Label(this.wrapper, 3, 3);
@@ -1982,22 +2107,6 @@ var mc2 = (function (exports) {
     // General
     //////////////////////////////////
 
-    /**
-     * Programatically closes the dropdown if it is open.
-     */
-    close() {
-      this._open = true;
-      this._toggle();
-    }
-
-    /**
-     * Programatically opens the dropdown if it is closed.
-     */
-    open() {
-      this._open = false;
-      this._toggle();
-    }
-
     _updateButton() {
       this.button.style.left = this.width - this.height + "px";
       this.button.style.width = this.height + "px";
@@ -2015,6 +2124,36 @@ var mc2 = (function (exports) {
       if (item.firstChild) {
         label.y = (this.height - label.height) / 2;
       }
+    }
+
+    /**
+     * Programatically closes the dropdown if it is open.
+     * @returns This instance, suitable for chaining.
+     */
+    close() {
+      this._open = true;
+      this._toggle();
+      return this;
+    }
+
+    /**
+     * Programatically opens the dropdown if it is closed.
+     * @returns This instance, suitable for chaining.
+     */
+    open() {
+      this._open = false;
+      this._toggle();
+      return this;
+    }
+
+    /**
+     * Sets the selected index of this dropdown.
+     * @param {number} index - The index to set.
+     * @returns This instance, suitable for chaining.
+     */
+    setIndex(index) {
+      this.index = index;
+      return this;
     }
 
     //////////////////////////////////
@@ -2120,7 +2259,7 @@ var mc2 = (function (exports) {
      */
     constructor(parent, x, y, spacing) {
       super(parent, x, y);
-      this.spacing = spacing || 0;
+      this._spacing = spacing || 0;
       this.xpos = 0;
       this.ypos = 0;
       this._createChildren();
@@ -2133,7 +2272,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalVbox");
+      this._setWrapperClass("MinimalVbox");
     }
 
     //////////////////////////////////
@@ -2152,6 +2291,27 @@ var mc2 = (function (exports) {
       this.height = Math.max(this.height, child.y + child.height);
       this.xpos += child.width;
       this.width = this.xpos;
+    }
+
+    /**
+     * Sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+     * @param {number} spacing - How much spacing to put between each element.
+     * @returns This instance, suitable for chaining.
+     */
+    setSpacing(spacing) {
+      this.spacing = spacing;
+      return this;
+    }
+
+    /**
+     * Gets and sets the spacing between items in this box. Setting this value will not change the layout of existing elements, but will affect the spacing of future elements added.
+     */
+    get spacing() {
+      return this._spacing;
+    }
+
+    set spacing(spacing) {
+      this._spacing = spacing;
     }
   }
 
@@ -2204,7 +2364,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
     _createChildren() {
       this.wrapper.tabIndex = 0;
-      this.setWrapperClass("MinimalSlider");
+      this._setWrapperClass("MinimalSlider");
       this.handle = this._createDiv(this.wrapper, "MinimalSliderHandle");
       this.label = new Label(this.wrapper, 0, 0, this._text);
       this.valueLabel = new Label(this.wrapper, 0, 0, this._formatValue());
@@ -2374,10 +2534,10 @@ var mc2 = (function (exports) {
       this.label.enabled = this.enabled;
       this.valueLabel.enabled = this.enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalSlider");
+        this._setWrapperClass("MinimalSlider");
         this.handle.setAttribute("class", "MinimalSliderHandle");
       } else {
-        this.setWrapperClass("MinimalSliderDisabled");
+        this._setWrapperClass("MinimalSliderDisabled");
         this.handle.setAttribute("class", "MinimalSliderHandleDisabled");
       }
     }
@@ -2411,6 +2571,96 @@ var mc2 = (function (exports) {
         this.valueLabel.text = this._formatValue();
         this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
       }
+    }
+
+    /**
+     * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+     * @param {number} decimals - The decimals of precision to use.
+     * @returns This instance, suitable for chaining.
+     */
+    setDecimals(decimals) {
+      this.decimals = decimals;
+      return this;
+    }
+
+    /**
+     * Gets and sets the width of the draggable slider handle. If you make the slider thicker by changing its height, you may want to adjust the handle size as well. If handleSize is the same as the slider height, then the handle will be a square.
+     * @param {number} handleSize - The size of the handle.
+     * @returns This instance, suitable for chaining.
+     */
+    setHandleSize(handleSize) {
+      this.handleSize = handleSize;
+      return this;
+    }
+
+    /**
+     * Sets the maximum value of this slider.
+     * @param {number} max - The maximum value of this slider.
+     * @returns This instance, suitable for chaining.
+     */
+    setMax(max) {
+      this.max = max;
+      return this;
+    }
+
+    /**
+     * Sets the minimum value of this slider.
+     * @param {number} min - The minimum value of this slider.
+     * @returns This instance, suitable for chaining.
+     */
+    setMin(min) {
+      this.min = min;
+      return this;
+    }
+
+    /**
+     * Sets the value of this slider.
+     * @param {number} value - The value of this slider.
+     * @returns This instance, suitable for chaining.
+     */
+    setvalue(value) {
+      this.value = value;
+      return this;
+    }
+
+    /**
+     * Sets whether the slider is reversed. A reversed HSlider will show its maximum value on the left and minumum on the right. A reversed VSlider will show its maximum value on the bottom and minimum on the top.
+     * @param {boolean} reversed - Whether or not this slider will be reversed.
+     * @returns This instance, suitable for chaining.
+     */
+    setReversed(reversed) {
+      this.reversed = reversed;
+      return this;
+    }
+
+    /**
+     * Sets whether or not the value of this slider will be shown.
+     * @param {boolean} showValue - Whether or not the value will be shown.
+     * @returns This instance, suitable for chaining.
+     */
+    setShowValue(showValue) {
+      this.showValue = showValue;
+      return this;
+    }
+
+    /**
+     * Sets the text of this slider.
+     * @param {string} text - The text to set on this slider.
+     * @returns this instance, suitable for chaining.
+     */
+    setText(text) {
+      this.text = text;
+      return this;
+    }
+
+    /**
+     * Sets the text position of the text label.
+     * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+     * @returns this instance, suitable for chaining.
+     */
+    setTextPosition(position) {
+      this.textPosition = position;
+      return this;
     }
 
     //////////////////////////////////
@@ -2666,6 +2916,16 @@ var mc2 = (function (exports) {
       this.image.height = this.height = this.width / aspectRatio;
     }
 
+    /**
+     * Sets the url of the image to be displayed. Setting this value will trigger the load of the new image.
+     * @param {string} url - The url of the image to load.
+     * @returns This instance, suitable for chaining.
+     */
+    setURL(url) {
+      this.url = url;
+      return this;
+    }
+
     //////////////////////////////////
     // Getters/Setters
     // alphabetical. getter first.
@@ -2771,7 +3031,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalKnob");
+      this._setWrapperClass("MinimalKnob");
       this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
       this.wrapper.tabIndex = 0;
       this.zero = this._createDiv(this.handle, "MinimalKnobZero");
@@ -3125,7 +3385,7 @@ var mc2 = (function (exports) {
       const size = 16;
 
       this._createChildren();
-      this.setWrapperClass("MinimalLED");
+      this._setWrapperClass("MinimalLED");
       this._createStyle();
 
       this.setSize(size, size);
@@ -3372,7 +3632,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalNumericStepper");
+      this._setWrapperClass("MinimalNumericStepper");
 
       this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
       this.input.value = this._value;
@@ -3726,7 +3986,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalPanel");
+      this._setWrapperClass("MinimalPanel");
     }
 
     _createStyle() {
@@ -3807,7 +4067,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalProgressBar");
+      this._setWrapperClass("MinimalProgressBar");
       this.fill = this._createDiv(this.wrapper, "MinimalProgressBarFill");
     }
 
@@ -3840,10 +4100,10 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       super.enabled = enabled;
       if (this._enabled) {
-        this.setWrapperClass("MinimalProgressBar");
+        this._setWrapperClass("MinimalProgressBar");
         this.fill.setAttribute("class", "MinimalProgressBarFill");
       } else {
-        this.setWrapperClass("MinimalProgressBarDisabled");
+        this._setWrapperClass("MinimalProgressBarDisabled");
         this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
       }
     }
@@ -3993,7 +4253,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalRadioButton");
+      this._setWrapperClass("MinimalRadioButton");
       this.wrapper.tabIndex = 0;
       this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
       this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -4060,9 +4320,9 @@ var mc2 = (function (exports) {
       this.check.setAttribute("class", className);
       this.check.setAttribute("class", className);
       if (this.enabled) {
-        this.setWrapperClass("MinimalRadioButton");
+        this._setWrapperClass("MinimalRadioButton");
       } else {
-        this.setWrapperClass("MinimalRadioButtonDisabled");
+        this._setWrapperClass("MinimalRadioButtonDisabled");
       }
     }
 
@@ -4278,7 +4538,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalTextBox");
+      this.__setWrapperClass("MinimalTextBox");
       this.wrapper.textContent = this._text;
     }
 
@@ -4340,9 +4600,9 @@ var mc2 = (function (exports) {
     set enabled(enabled) {
       super.enabled = enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalTextBox");
+        this._setWrapperClass("MinimalTextBox");
       } else {
-        this.setWrapperClass("MinimalTextBoxDisabled");
+        this._setWrapperClass("MinimalTextBoxDisabled");
       }
     }
 
@@ -4555,7 +4815,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalToggle");
+      this._setWrapperClass("MinimalToggle");
       this.wrapper.tabIndex = 0;
       this.label = new Label(this.wrapper, 0, -15, this._text);
       this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
@@ -4654,10 +4914,10 @@ var mc2 = (function (exports) {
         super.enabled = enabled;
         this.label.enable = enabled;
         if (this.enabled) {
-          this.setWrapperClass("MinimalToggle");
+          this._setWrapperClass("MinimalToggle");
           this.wrapper.tabIndex = 0;
         } else {
-          this.setWrapperClass("MinimalToggleDisabled");
+          this._setWrapperClass("MinimalToggleDisabled");
           this.wrapper.tabIndex = -1;
         }
       }
@@ -4725,7 +4985,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalVbox");
+      this._setWrapperClass("MinimalVbox");
     }
 
     //////////////////////////////////
@@ -4953,7 +5213,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.setWrapperClass("MinimalWindow");
+      this._setWrapperClass("MinimalWindow");
       this.titleBar = this._createDiv(this.wrapper, "MinimalWindowTitleBar");
       this.label = new Label(this.titleBar, 5, 0, this._text);
       this.label.height = 30;

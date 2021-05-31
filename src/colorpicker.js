@@ -49,7 +49,7 @@ export class ColorPicker extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalColorPicker");
+    this._setWrapperClass("MinimalColorPicker");
 
     this.input = this._createInput(this.wrapper, "MinimalColorPickerInput");
     this.input.maxLength = 7;
@@ -119,10 +119,21 @@ export class ColorPicker extends Component {
   }
 
   /**
+   * Sets the color of this component.
+   * @param {string} color - The color to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
    * Sets the color value using three values for red, green and blue.
    * @param {number} r - The value of the red channel (0 - 255).
    * @param {number} g - The value of the red channel (0 - 255).
    * @param {number} b - The value of the red channel (0 - 255).
+   * @returns This instance, suitable for chaining.
    */
   setRGB(r, g, b) {
     let red = r.toString(16);
@@ -143,28 +154,53 @@ export class ColorPicker extends Component {
       blue = blue.charAt(0);
     }
     this.color = red + green + blue;
+    return this;
   }
 
   /**
    * Sets the color value using a single 24-bit number.
    * @param {number} num - The number to parse into a color value. This would usually be in decimal (e.g. 16777215) or hexadecimal (e.g. 0xffffff).
+   * @returns This instance, suitable for chaining.
    */
   setNumber(num) {
     const red = num >> 16;
     const green = num >> 8 & 255;
     const blue = num & 255;
     this.setRGB(red, green, blue);
+    return this;
   }
 
   /**
    * Sets the color value to a random RGB value.
+   * @returns This instance, suitable for chaining.
    */
   setRandom() {
     this.setNumber(Math.random() * 0xffffff);
   }
 
   /**
+   * Sets the text of this color picker.
+   * @param {string} text - The text to set on this color picker.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
+  }
+
+  /**
    * Gets the current value of this component as a single 24-bit number from 0 to 16777215 (0x000000 to 0xffffff).
+   * @returns {number} The numeric representation of this color picker's color.
    */
   getNumber() {
     const c = this.color.substring(1);

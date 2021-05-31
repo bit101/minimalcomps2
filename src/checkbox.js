@@ -40,7 +40,7 @@ export class Checkbox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalCheckbox");
+    this._setWrapperClass("MinimalCheckbox");
     this.wrapper.tabIndex = 0;
     this.check = this._createDiv(this.wrapper, "MinimalCheckboxCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -81,13 +81,6 @@ export class Checkbox extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the checkbox between checked and not checked.
-   */
-  toggle() {
-    this.checked = !this.checked;
-  }
-
   _updateCheckStyle() {
     let className = this.checked
       ? "MinimalCheckboxCheckChecked "
@@ -98,14 +91,42 @@ export class Checkbox extends Component {
     }
     this.check.setAttribute("class", className);
     if (this.enabled) {
-      this.setWrapperClass("MinimalCheckbox");
+      this._setWrapperClass("MinimalCheckbox");
     } else {
-      this.setWrapperClass("MinimalCheckboxDisabled");
+      this._setWrapperClass("MinimalCheckboxDisabled");
     }
   }
 
   _updateWidth() {
     this.style.width = this.label.x + this.label.width + "px";
+  }
+
+  /**
+   * Sets the checked state of this checkbox.
+   * @params {boolean} checked - Whether or not this checkbox will be checked.
+   * @returns This instance, suitable for chaining.
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this checkbox.
+   * @param {string} text - The text to set on this checkbox.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Toggles the state of the checkbox between checked and not checked.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.checked = !this.checked;
+    return this;
   }
 
   //////////////////////////////////
@@ -169,7 +190,7 @@ export class Checkbox extends Component {
   }
 
   /**
-   * Gets the width of this radio button. Setting the width does nothing because it is automatically determined by the width of the label.
+   * Gets the width of this checkbox. Setting the width does nothing because it is automatically determined by the width of the label.
    */
   get width() {
     return this.label.x + this.label.width;

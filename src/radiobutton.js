@@ -51,7 +51,7 @@ export class RadioButton extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalRadioButton");
+    this._setWrapperClass("MinimalRadioButton");
     this.wrapper.tabIndex = 0;
     this.check = this._createDiv(this.wrapper, "MinimalRadioButtonCheck");
     this.label = new Label(this.wrapper, 15, 0, this.text);
@@ -118,9 +118,9 @@ export class RadioButton extends Component {
     this.check.setAttribute("class", className);
     this.check.setAttribute("class", className);
     if (this.enabled) {
-      this.setWrapperClass("MinimalRadioButton");
+      this._setWrapperClass("MinimalRadioButton");
     } else {
-      this.setWrapperClass("MinimalRadioButtonDisabled");
+      this._setWrapperClass("MinimalRadioButtonDisabled");
     }
   }
 

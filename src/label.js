@@ -44,7 +44,7 @@ export class Label extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalLabel");
+    this._setWrapperClass("MinimalLabel");
     this.wrapper.textContent = this._text;
   }
 
@@ -124,9 +124,9 @@ export class Label extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalLabel");
+      this._setWrapperClass("MinimalLabel");
     } else {
-      this.setWrapperClass("MinimalLabel MinimalLabelDisabled");
+      this._setWrapperClass("MinimalLabel MinimalLabelDisabled");
     }
   }
 

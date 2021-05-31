@@ -40,7 +40,7 @@ export class Toggle extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalToggle");
+    this._setWrapperClass("MinimalToggle");
     this.wrapper.tabIndex = 0;
     this.label = new Label(this.wrapper, 0, -15, this._text);
     this.handle = this._createDiv(this.wrapper, "MinimalToggleHandle");
@@ -139,10 +139,10 @@ export class Toggle extends Component {
       super.enabled = enabled;
       this.label.enable = enabled;
       if (this.enabled) {
-        this.setWrapperClass("MinimalToggle");
+        this._setWrapperClass("MinimalToggle");
         this.wrapper.tabIndex = 0;
       } else {
-        this.setWrapperClass("MinimalToggleDisabled");
+        this._setWrapperClass("MinimalToggleDisabled");
         this.wrapper.tabIndex = -1;
       }
     }

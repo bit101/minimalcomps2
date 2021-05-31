@@ -42,7 +42,7 @@ export class Window extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalWindow");
+    this._setWrapperClass("MinimalWindow");
     this.titleBar = this._createDiv(this.wrapper, "MinimalWindowTitleBar");
     this.label = new Label(this.titleBar, 5, 0, this._text);
     this.label.height = 30;

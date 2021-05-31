@@ -58,7 +58,7 @@ export class NumericStepper extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalNumericStepper");
+    this._setWrapperClass("MinimalNumericStepper");
 
     this.input = this._createInput(this.wrapper, "MinimalNumericStepperInput");
     this.input.value = this._value;

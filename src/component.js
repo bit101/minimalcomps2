@@ -56,44 +56,102 @@ export class Component extends HTMLElement {
   // General
   //////////////////////////////////
 
+  _setWrapperClass(className) {
+    this.wrapper.setAttribute("class", className);
+  }
+
   /**
    * Moves the component to a specified position.
    * @param {number} x - The new x position of the component.
    * @param {number} y - The new y position of the component.
+   * @returns This instance, suitable for chaining.
    */
   move(x, y) {
     this.x = x;
     this.y = y;
+    return this;
   }
 
   /**
    * Rotates the component.
    * @param {number} rad - The number of radians to rotate the component by.
+   * @returns This instance, suitable for chaining.
    */
   rotate(rad) {
     this.style.transform = `rotate(${rad}rad)`;
+    return this;
   }
 
   /**
    * Rotates the component.
    * @param {number} deg - The number of degrees to rotate the component by.
+   * @returns This instance, suitable for chaining.
    */
   rotateDeg(deg) {
     this.style.transform = `rotate(${deg}deg)`;
+    return this;
   }
 
   /**
    * Sizes the component.
    * @param {number} w - The new width of the component.
    * @param {number} h - The new height of the component.
+   * @returns This instance, suitable for chaining.
    */
   setSize(w, h) {
     this.width = w;
     this.height = h;
+    return this;
   }
 
-  setWrapperClass(className) {
-    this.wrapper.setAttribute("class", className);
+  /**
+   * Sets the enabled state of this component.
+   * @param {boolean} enabled - Whether or not the component will be enabled.
+   * @returns This instance, suitable for chaining.
+   */
+  setEnabled(enabled) {
+    this.enabled = enabled;
+    return this;
+  }
+
+  /**
+   * Sets the height of this component.
+   * @param {number} height - The height of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setHeight(h) {
+    this.height = h;
+    return this;
+  }
+
+  /**
+   * Sets the width of this component.
+   * @param {number} width - The width of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setWidth(w) {
+    this.width = w;
+    return this;
+  }
+
+  /**
+   * Sets the x position of this component.
+   * @param {number} x - The x position of this component.
+   * @returns This instance, suitable for chaining.
+   */
+  setX(x) {
+    this.x = x;
+    return this;
+  }
+
+  /**
+   * Sets the y position of this component.
+   * @param {number} y - The y position of this component.
+   * @returns this instance, suitable for chaining.
+   */
+  setY(y) {
+    this.y = y;
+    return this;
   }
 
   //////////////////////////////////

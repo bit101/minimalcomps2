@@ -30,7 +30,7 @@ export class LED extends Component {
     const size = 16;
 
     this._createChildren();
-    this.setWrapperClass("MinimalLED");
+    this._setWrapperClass("MinimalLED");
     this._createStyle();
 
     this.setSize(size, size);

@@ -50,7 +50,7 @@ export class Knob extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalKnob");
+    this._setWrapperClass("MinimalKnob");
     this.handle = this._createDiv(this.wrapper, "MinimalKnobHandle");
     this.wrapper.tabIndex = 0;
     this.zero = this._createDiv(this.handle, "MinimalKnobZero");

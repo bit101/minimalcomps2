@@ -38,7 +38,7 @@ export class TextBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalTextBox");
+    this.__setWrapperClass("MinimalTextBox");
     this.wrapper.textContent = this._text;
   }
 
@@ -100,9 +100,9 @@ export class TextBox extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this.enabled) {
-      this.setWrapperClass("MinimalTextBox");
+      this._setWrapperClass("MinimalTextBox");
     } else {
-      this.setWrapperClass("MinimalTextBoxDisabled");
+      this._setWrapperClass("MinimalTextBoxDisabled");
     }
   }
 

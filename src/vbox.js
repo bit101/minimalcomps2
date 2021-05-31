@@ -34,7 +34,7 @@ export class VBox extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalVbox");
+    this._setWrapperClass("MinimalVbox");
   }
 
   //////////////////////////////////

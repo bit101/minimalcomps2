@@ -41,7 +41,7 @@ export class ProgressBar extends Component {
   //////////////////////////////////
 
   _createChildren() {
-    this.setWrapperClass("MinimalProgressBar");
+    this._setWrapperClass("MinimalProgressBar");
     this.fill = this._createDiv(this.wrapper, "MinimalProgressBarFill");
   }
 
@@ -74,10 +74,10 @@ export class ProgressBar extends Component {
   set enabled(enabled) {
     super.enabled = enabled;
     if (this._enabled) {
-      this.setWrapperClass("MinimalProgressBar");
+      this._setWrapperClass("MinimalProgressBar");
       this.fill.setAttribute("class", "MinimalProgressBarFill");
     } else {
-      this.setWrapperClass("MinimalProgressBarDisabled");
+      this._setWrapperClass("MinimalProgressBarDisabled");
       this.fill.setAttribute("class", "MinimalProgressBarFillDisabled");
     }
   }
