@@ -1030,6 +1030,76 @@ class Label extends Component {
     this.shadowRoot.append(style);
   }
 
+  /**
+   * Sets the alignment of the label's text - "left" (default), "right" or "center".
+   * @param {string} align - The alignment of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setAlign(align) {
+    this.align = align;
+    return this;
+  }
+
+  /**
+   * Sets whether the label will be automatically sized to fit its text.
+   * @param {boolean} autosize - Whether the label will be auto-sized.
+   * @returns This instance, suitable for chaining.
+   */
+  setAutosize(autosize) {
+    this.autosize = autosize;
+    return this;
+  }
+
+  /**
+   * Sets wheter or not the text will be bold.
+   * @param {boolean} bold - Whether or not the text will be bold.
+   * @returns This instance, suitable for chaining.
+   */
+  setBold(bold) {
+    this.bold = bold;
+    return this;
+  }
+
+  /**
+   * Sets the color of the text.
+   * @param {string} color - The color of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
+  }
+
+  /**
+   * Sets the font size of the text.
+   * @param {number} fontSize - The font size of the text.
+   * @returns This instance, suitable for chaining.
+   */
+  setFontSize(fontSize) {
+    this.fontSize = fontSize;
+    return this;
+  }
+
+  /**
+   * Sets whether or not the text will be italicized.
+   * @param {boolean} italics - Whether or not the text will be italicized.
+   * @returns This instance, suitable for chaining.
+   */
+  setItalic(italic) {
+    this.italic = italic;
+    return this;
+  }
+
+  /**
+   * Sets the label's text.
+   * @param {string} text - The text of the label.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -2571,6 +2641,15 @@ class HSlider extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this slider.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+  /**
    * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.
    * @returns This instance, suitable for chaining.
@@ -2615,7 +2694,21 @@ class HSlider extends Component {
    * @param {number} value - The value of this slider.
    * @returns This instance, suitable for chaining.
    */
-  setvalue(value) {
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this slider.
+   * @param {number} value - The value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
     this.value = value;
     return this;
   }
@@ -3206,6 +3299,101 @@ class Knob extends Component {
       this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
+
+  /**
+   * Adds a handler function for the "change" event on this knob.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Sets the number of decimals of precision to be used for the knob. This will effect what is shown in the value label as well as the value property of the knob. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
+   * @param {number} decimals - The decimals of precision to use.
+   * @returns This instance, suitable for chaining.
+   */
+  setDecimals(decimals) {
+    this.decimals = decimals;
+    return this;
+  }
+
+  /**
+   * Sets the maximum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the minimum value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setMin(min) {
+    this.min = min;
+    return this;
+  }
+
+  /**
+   * Sets the value of this knob.
+   * @param {number} value - The value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this knob.
+   * @param {number} value - The value of this knob.
+   * @param {number} min - The minimum value of this knob.
+   * @param {number} max - The maximum value of this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the text of this knob.
+   * @param {string} text - The text to set on this knob.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets whether the text and value labels will be swapped (value on top, text on bottom).
+   * @param {boolean} swapped - Whether the labels will be swapped.
+   * @return This instance, suitable for chaining.
+   */
+  setLabelSwapped(swapped) {
+    this.labelsSwapped = swapped;
+    return this;
+  }
+
+  /**
+   * Sets the mouse drag sensitivity.
+   * @param {number} sensitivity - How many pixels of mouse motion are required to move the value between min and max.
+   * @return This instance, suitable for chaining.
+   */
+  setSensitivity(sensitivity) {
+    this.sensitivity = sensitivity;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
@@ -3440,6 +3628,7 @@ class LED extends Component {
   /**
    * Starts the LED blinking at a specified or default rate.
    * @param {number} bps - Blinks per second. Defaults to 2 blinks per second if no parameter is given.
+   * @returns This instance, suitable for chaining.
    */
   blink(bps) {
     if (!this.enabled) {
@@ -3453,26 +3642,71 @@ class LED extends Component {
         this.lit = !this.lit;
       }
     }, 1 / bps * 1000);
+    return this;
   }
 
   /**
    * Stops the LED blinking and turns it off.
+   * @returns This instance, suitable for chaining.
    */
   stop() {
     this.blinking = false;
     clearInterval(this.interval);
     this.lit = false;
+    return this;
+  }
+
+  /**
+   * Sets whether this LED is lit up.
+   * @param {boolean} lit - Whether or not the LED is lit.
+   * @returns This instance, suitable for chaining.
+   */
+  setLit(lit) {
+    this.lit = lit;
+    return this;
+  }
+
+  /**
+   * Sets the color of this LED.
+   * @param {string} color - The color to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
   }
 
   /**
    * Sets the size of the LED. Because an LED will always be round, if you try to set width and height to different values, they will be set to the smallest value of the two.
    * @param {number} width - The width of the LED.
    * @param {number} height - The height of the LED.
+   * @returns This instance, suitable for chaining.
    */
   setSize(w, h) {
     const size = Math.min(w, h);
     super.width = size;
     super.height = size;
+    return this;
+  }
+
+  /**
+   * Sets the text of this LED.
+   * @param {string} text - The text to set on this LED.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////

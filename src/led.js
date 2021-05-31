@@ -88,6 +88,7 @@ export class LED extends Component {
   /**
    * Starts the LED blinking at a specified or default rate.
    * @param {number} bps - Blinks per second. Defaults to 2 blinks per second if no parameter is given.
+   * @returns This instance, suitable for chaining.
    */
   blink(bps) {
     if (!this.enabled) {
@@ -101,26 +102,71 @@ export class LED extends Component {
         this.lit = !this.lit;
       }
     }, 1 / bps * 1000);
+    return this;
   }
 
   /**
    * Stops the LED blinking and turns it off.
+   * @returns This instance, suitable for chaining.
    */
   stop() {
     this.blinking = false;
     clearInterval(this.interval);
     this.lit = false;
+    return this;
+  }
+
+  /**
+   * Sets whether this LED is lit up.
+   * @param {boolean} lit - Whether or not the LED is lit.
+   * @returns This instance, suitable for chaining.
+   */
+  setLit(lit) {
+    this.lit = lit;
+    return this;
+  }
+
+  /**
+   * Sets the color of this LED.
+   * @param {string} color - The color to set.
+   * @returns This instance, suitable for chaining.
+   */
+  setColor(color) {
+    this.color = color;
+    return this;
   }
 
   /**
    * Sets the size of the LED. Because an LED will always be round, if you try to set width and height to different values, they will be set to the smallest value of the two.
    * @param {number} width - The width of the LED.
    * @param {number} height - The height of the LED.
+   * @returns This instance, suitable for chaining.
    */
   setSize(w, h) {
     const size = Math.min(w, h);
     super.width = size;
     super.height = size;
+    return this;
+  }
+
+  /**
+   * Sets the text of this LED.
+   * @param {string} text - The text to set on this LED.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////

@@ -262,6 +262,15 @@ export class HSlider extends Component {
   }
 
   /**
+   * Adds a handler function for the "change" event on this slider.
+   * @param {function} handler - A function that will handle the "change" event.
+   * @returns This instance, suitable for chaining.
+   */
+  addHandler(handler) {
+    this.addEventListener("change", handler);
+    return this;
+  }
+  /**
    * Sets the number of decimals of precision to be used for the slider. This will effect what is shown in the value label as well as the value property of the slider. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.
    * @returns This instance, suitable for chaining.
@@ -306,7 +315,21 @@ export class HSlider extends Component {
    * @param {number} value - The value of this slider.
    * @returns This instance, suitable for chaining.
    */
-  setvalue(value) {
+  setValue(value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Sets the value, minimum and maximum of this slider.
+   * @param {number} value - The value of this slider.
+   * @param {number} min - The minimum value of this slider.
+   * @param {number} max - The maximum value of this slider.
+   * @returns This instance, suitable for chaining.
+   */
+  setValueMinMax(value, min, max) {
+    this.min = min;
+    this.max = max;
     this.value = value;
     return this;
   }
