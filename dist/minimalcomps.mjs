@@ -1894,6 +1894,7 @@ class ColorPicker extends Component {
    */
   setRandom() {
     this.setNumber(Math.random() * 0xffffff);
+    return this;
   }
 
   /**
@@ -5252,6 +5253,7 @@ class TextInput extends Component {
    */
   setMaxLength(maxLength) {
     this.maxLength = maxLength;
+    return this;
   }
 
   //////////////////////////////////
