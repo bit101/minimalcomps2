@@ -1897,6 +1897,7 @@ var mc2 = (function (exports) {
      */
     setRandom() {
       this.setNumber(Math.random() * 0xffffff);
+      return this;
     }
 
     /**
@@ -5255,6 +5256,7 @@ var mc2 = (function (exports) {
      */
     setMaxLength(maxLength) {
       this.maxLength = maxLength;
+      return this;
     }
 
     //////////////////////////////////
