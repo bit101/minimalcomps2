@@ -128,6 +128,26 @@ export class RadioButton extends Component {
     this.style.width = this.label.x + this.label.width + "px";
   }
 
+  /**
+   * Sets the checked state of this radio button.
+   * @params {boolean} checked - Whether or not this radio button will be checked.
+   * @returns This instance, suitable for chaining.
+   */
+  setChecked(checked) {
+    this.checked = checked;
+    return this;
+  }
+
+  /**
+   * Sets the text of this radio button.
+   * @param {string} text - The text to set on this radio button.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.

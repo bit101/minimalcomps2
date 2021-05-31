@@ -61,6 +61,24 @@ export class TextInput extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Sets the text of this text input.
+   * @param {string} text - The text of this text input.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
+  /**
+   * Sets the maximum number of characters in this text input.
+   * @param {number} maxLength - The max number of chars.
+   * @returns This instance, suitable for chaining.
+   */
+  setMaxLength(maxLength) {
+    this.maxLength = maxLength;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.

@@ -105,6 +105,7 @@ export class Checkbox extends Component {
    * Sets the checked state of this checkbox.
    * @params {boolean} checked - Whether or not this checkbox will be checked.
    * @returns This instance, suitable for chaining.
+   */
   setChecked(checked) {
     this.checked = checked;
     return this;

@@ -62,6 +62,26 @@ export class ProgressBar extends Component {
     this.fill.style.width = percent * this.width + "px";
   }
 
+  /**
+   * Sets the maximum value of this progress bar.
+   * @param {number} max - The maximum value.
+   * @returns This instance, suitable for chaining.
+   */
+  setMax(max) {
+    this.max = max;
+    return this;
+  }
+
+  /**
+   * Sets the current progress value of this progress bar.
+   * @param {number} max - The current progress value.
+   * @returns This instance, suitable for chaining.
+   */
+  setProgress(progress) {
+    this.progress = progress;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.

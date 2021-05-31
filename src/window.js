@@ -131,6 +131,36 @@ export class Window extends Component {
   // General
   //////////////////////////////////
 
+  /**
+   * Sets whether or not this window can be dragged by its title bar.
+   * @param {boolean} draggable - Whether this window can be dragged.
+   * @returns This instance, suitable for chaining.
+   */
+  setDraggable(draggable) {
+    this.draggable = draggable;
+    return this;
+  }
+
+  /**
+   * Sets whether or not this window can be minimized.
+   * @param {boolean} minimizable - Whether this window can be minimized.
+   * @returns This instance, suitable for chaining.
+   */
+  setMinimizable(minimizable) {
+    this.minimizable = minimizable;
+    return this;
+  }
+
+  /**
+   * Sets the test shown in this window's title bar.
+   * @param {string} text - The text in the title bar.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
   //////////////////////////////////
   // Getters and Setters
   //////////////////////////////////

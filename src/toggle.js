@@ -81,14 +81,6 @@ export class Toggle extends Component {
   // General
   //////////////////////////////////
 
-  /**
-   * Toggles the state of the toggle between toggled and not toggled.
-   */
-  toggle() {
-    this.toggled = !this.toggled;
-    this._updateToggle();
-  }
-
   _updateLabel() {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
@@ -111,6 +103,46 @@ export class Toggle extends Component {
     } else {
       this.handle.style.left = 0;
     }
+  }
+
+  /**
+   * Sets whether or not this toggle will be toggled (on).
+   * @params {boolean} toggle - Whether this toggle will be toggled on or off.
+   * @returns This instance, suitable for chaining.
+   */
+  setToggled(toggled) {
+    this.toggled = toggled; 
+    return this;
+  }
+
+  /**
+   * Toggles the state of the toggle between toggled and not toggled.
+   * @returns This instance, suitable for chaining.
+   */
+  toggle() {
+    this.toggled = !this.toggled;
+    this._updateToggle();
+    return this;
+  }
+
+  /**
+   * Sets the text of this toggle.
+   * @param {string} text - The text to set on this toggle.
+   * @returns this instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Sets the text position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "left", "right" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setTextPosition(position) {
+    this.textPosition = position;
+    return this;
   }
 
   //////////////////////////////////

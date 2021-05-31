@@ -22,8 +22,7 @@ export class HBox extends Component {
   constructor(parent, x, y, spacing) {
     super(parent, x, y);
     this._spacing = spacing || 0;
-    this.xpos = 0;
-    this.ypos = 0;
+    this._xpos = 0;
     this._createChildren();
     this.setSize(0, 0);
     this._addToParent();
@@ -46,13 +45,13 @@ export class HBox extends Component {
    */
   appendChild(child) {
     super.appendChild(child);
-    if (this.xpos > 0) {
-      this.xpos += this.spacing;
+    if (this._xpos > 0) {
+      this._xpos += this.spacing;
     }
-    child.x = this.xpos;
+    child.x = this._xpos;
     this.height = Math.max(this.height, child.y + child.height);
-    this.xpos += child.width;
-    this.width = this.xpos;
+    this._xpos += child.width;
+    this.width = this._xpos;
   }
 
   /**

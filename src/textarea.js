@@ -60,6 +60,15 @@ export class TextArea extends Component {
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
 
+  /**
+   * Sets the text of this text area.
+   * @param {string} text - The text of this text area.
+   * @returns This instance, suitable for chaining.
+   */
+  setText(text) {
+    this.text = text;
+  }
+
   //////////////////////////////////
   // Getters/Setters
   // alphabetical. getter first.
