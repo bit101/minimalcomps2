@@ -55,7 +55,8 @@ export class TextArea extends Component {
   // Handlers
   //////////////////////////////////
 
-  _onInput() {
+  _onInput(event) {
+    event.stopPropagation();
     this._text = this.textArea.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -67,6 +68,19 @@ export class TextArea extends Component {
    */
   addHandler(handler) {
     this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("input", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 

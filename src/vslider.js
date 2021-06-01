@@ -81,7 +81,10 @@ export class VSlider extends HSlider {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _setDefaults() {

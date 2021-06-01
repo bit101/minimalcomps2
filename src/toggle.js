@@ -116,12 +116,25 @@ export class Toggle extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("click", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets whether or not this toggle will be toggled (on).
    * @params {boolean} toggle - Whether this toggle will be toggled on or off.
    * @returns This instance, suitable for chaining.
    */
   setToggled(toggled) {
-    this.toggled = toggled; 
+    this.toggled = toggled;
     return this;
   }
 

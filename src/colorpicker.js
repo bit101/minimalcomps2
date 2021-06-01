@@ -129,6 +129,19 @@ export class ColorPicker extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the color of this component.
    * @param {string} color - The color to set.
    * @returns This instance, suitable for chaining.
