@@ -109,13 +109,13 @@ var mc2 = (function (exports) {
     ${Style.baseStyle}
     cursor: pointer;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalCheckboxDisabled {
     ${Style.baseStyle}
     cursor: default;
     height: 100%;
-    width: auto;
+    width: 100%;
   }
   .MinimalCheckbox:focus {
     ${Style.focusStyle}
