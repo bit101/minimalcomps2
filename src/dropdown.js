@@ -194,6 +194,19 @@ export class Dropdown extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Programatically closes the dropdown if it is open.
    * @returns This instance, suitable for chaining.
    */

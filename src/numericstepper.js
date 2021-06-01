@@ -254,6 +254,19 @@ export class NumericStepper extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the number of decimals of precision to be used for the numeric stepper. This will effect what is shown in the value label as well as the value property of the numeric stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.
    * @returns This instance, suitable for chaining.
@@ -364,7 +377,6 @@ export class NumericStepper extends Component {
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -391,7 +403,6 @@ export class NumericStepper extends Component {
     this._max = max;
     if (this.max < this.value) {
       this.value = this.max;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -406,7 +417,6 @@ export class NumericStepper extends Component {
     this._min = min;
     if (this.min > this.value) {
       this.value = this.min;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 

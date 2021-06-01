@@ -112,6 +112,19 @@ export class Checkbox extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("click", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the checked state of this checkbox.
    * @params {boolean} checked - Whether or not this checkbox will be checked.
    * @returns This instance, suitable for chaining.

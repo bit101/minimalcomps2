@@ -104,7 +104,11 @@ export class Knob extends Component {
       mouseY = event.clientY;
     }
     const y = mouseY - this.startY;
-    this.value = this.startValue + -y * mult;
+    const value = this.startValue + -y * mult;
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _onMouseUp() {
@@ -148,16 +152,24 @@ export class Knob extends Component {
     default:
       break;
     }
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
+    let value = this.value;
     if (event.deltaY > 0) {
-      this.value += inc;
+      value += inc;
     } else if (event.deltaY < 0) {
-      this.value -= inc;
+      value -= inc;
+    }
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -227,7 +239,6 @@ export class Knob extends Component {
       this._updateHandleRotation();
       this.valueLabel.text = this._formatValue();
       this._updateLabelPositions();
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -238,6 +249,19 @@ export class Knob extends Component {
    */
   addHandler(handler) {
     this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 

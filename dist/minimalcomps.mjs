@@ -1609,6 +1609,19 @@ class Checkbox extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("click", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the checked state of this checkbox.
    * @params {boolean} checked - Whether or not this checkbox will be checked.
    * @returns This instance, suitable for chaining.
@@ -1833,6 +1846,19 @@ class ColorPicker extends Component {
    */
   addHandler(handler) {
     this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 
@@ -2236,6 +2262,19 @@ class Dropdown extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Programatically closes the dropdown if it is open.
    * @returns This instance, suitable for chaining.
    */
@@ -2574,16 +2613,24 @@ class HSlider extends Component {
       value += inc;
       break;
     }
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
+    let value = this.value;
     if (event.deltaY > 0) {
-      this.value += inc;
+      value += inc;
     } else if (event.deltaY < 0) {
-      this.value -= inc;
+      value -= inc;
+    }
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -2597,7 +2644,10 @@ class HSlider extends Component {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _formatValue() {
@@ -2677,7 +2727,6 @@ class HSlider extends Component {
       this._value = value;
       this._updateHandlePosition();
       this.valueLabel.text = this._formatValue();
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -2688,6 +2737,19 @@ class HSlider extends Component {
    */
   addHandler(handler) {
     this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 
@@ -3217,7 +3279,11 @@ class Knob extends Component {
       mouseY = event.clientY;
     }
     const y = mouseY - this.startY;
-    this.value = this.startValue + -y * mult;
+    const value = this.startValue + -y * mult;
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _onMouseUp() {
@@ -3259,16 +3325,24 @@ class Knob extends Component {
       value += inc;
       break;
     }
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _onWheel(event) {
     event.preventDefault();
     const inc = 1 / Math.pow(10, this._decimals);
+    let value = this.value;
     if (event.deltaY > 0) {
-      this.value += inc;
+      value += inc;
     } else if (event.deltaY < 0) {
-      this.value -= inc;
+      value -= inc;
+    }
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -3338,7 +3412,6 @@ class Knob extends Component {
       this._updateHandleRotation();
       this.valueLabel.text = this._formatValue();
       this._updateLabelPositions();
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -3349,6 +3422,19 @@ class Knob extends Component {
    */
   addHandler(handler) {
     this.addEventListener("change", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 
@@ -4101,6 +4187,19 @@ class NumericStepper extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("change", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the number of decimals of precision to be used for the numeric stepper. This will effect what is shown in the value label as well as the value property of the numeric stepper. A decimals value of 0 will display integers only. Negative decimals will round to the nearest power of 10.
    * @param {number} decimals - The decimals of precision to use.
    * @returns This instance, suitable for chaining.
@@ -4211,7 +4310,6 @@ class NumericStepper extends Component {
     if (this._value !== value) {
       this._value = value;
       this.input.value = value;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -4238,7 +4336,6 @@ class NumericStepper extends Component {
     this._max = max;
     if (this.max < this.value) {
       this.value = this.max;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -4253,7 +4350,6 @@ class NumericStepper extends Component {
     this._min = min;
     if (this.min > this.value) {
       this.value = this.min;
-      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
     }
   }
 
@@ -4718,6 +4814,19 @@ class RadioButton extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("click", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets the checked state of this radio button.
    * @params {boolean} checked - Whether or not this radio button will be checked.
    * @returns This instance, suitable for chaining.
@@ -4867,7 +4976,8 @@ class TextArea extends Component {
   // Handlers
   //////////////////////////////////
 
-  _onInput() {
+  _onInput(event) {
+    event.stopPropagation();
     this._text = this.textArea.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -4879,6 +4989,19 @@ class TextArea extends Component {
    */
   addHandler(handler) {
     this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("input", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 
@@ -5222,7 +5345,8 @@ class TextInput extends Component {
   // Handlers
   //////////////////////////////////
 
-  _onInput() {
+  _onInput(event) {
+    event.stopPropagation();
     this._text = this.input.value;
     this.dispatchEvent(new CustomEvent("input", { detail: this.text }));
   }
@@ -5234,6 +5358,19 @@ class TextInput extends Component {
    */
   addHandler(handler) {
     this.addEventListener("input", handler);
+    return this;
+  }
+
+  /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("input", event => {
+      target[prop] = event.detail;
+    });
     return this;
   }
 
@@ -5418,12 +5555,25 @@ class Toggle extends Component {
   }
 
   /**
+   * Automatically changes the value of a property on a target object with the main value of this component changes.
+   * @param {object} target - The target object to change.
+   * @param {string} prop - The string name of a property on the target object.
+   * @return This instance, suitable for chaining.
+   */
+  bind(target, prop) {
+    this.addEventListener("click", event => {
+      target[prop] = event.detail;
+    });
+    return this;
+  }
+
+  /**
    * Sets whether or not this toggle will be toggled (on).
    * @params {boolean} toggle - Whether this toggle will be toggled on or off.
    * @returns This instance, suitable for chaining.
    */
   setToggled(toggled) {
-    this.toggled = toggled; 
+    this.toggled = toggled;
     return this;
   }
 
@@ -5677,7 +5827,10 @@ class VSlider extends HSlider {
       percent = 1 - percent;
     }
     const value = this.min + (this.max - this.min) * percent;
-    this._updateValue(value);
+    if (value !== this.value) {
+      this._updateValue(value);
+      this.dispatchEvent(new CustomEvent("change", { detail: this.value }));
+    }
   }
 
   _setDefaults() {
