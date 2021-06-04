@@ -23,7 +23,7 @@ export class Dropdown extends Component {
    */
   constructor(parent, x, y, items, index, defaultHandler) {
     super(parent, x, y);
-    this.items = items;
+    this.items = items || [];
     this._open = false;
     this.itemElements = [];
     this._text = "";
@@ -34,7 +34,7 @@ export class Dropdown extends Component {
 
     this.setSize(100, 20);
     this._createItems();
-    this.index = index || -1;
+    this.index = index;
     this.addEventListener("change", defaultHandler);
     this._addToParent();
   }

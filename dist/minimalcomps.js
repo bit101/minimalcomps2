@@ -2094,7 +2094,7 @@ var mc2 = (function (exports) {
      */
     constructor(parent, x, y, items, index, defaultHandler) {
       super(parent, x, y);
-      this.items = items;
+      this.items = items || [];
       this._open = false;
       this.itemElements = [];
       this._text = "";
@@ -2105,7 +2105,7 @@ var mc2 = (function (exports) {
 
       this.setSize(100, 20);
       this._createItems();
-      this.index = index || -1;
+      this.index = index;
       this.addEventListener("change", defaultHandler);
       this._addToParent();
     }
@@ -2356,6 +2356,7 @@ var mc2 = (function (exports) {
     }
 
     set index(index) {
+      console.log(this.items.length);
       if (index < 0 || index >= this.items.length || index === null || index === undefined) {
         this._index = -1;
         this._text = "";
