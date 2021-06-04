@@ -2353,7 +2353,6 @@ class Dropdown extends Component {
   }
 
   set index(index) {
-    console.log(this.items.length);
     if (index < 0 || index >= this.items.length || index === null || index === undefined) {
       this._index = -1;
       this._text = "";
@@ -5718,7 +5717,7 @@ class VBox extends Component {
   appendChild(child) {
     super.appendChild(child);
     if (this._ypos > 0) {
-      this.yp_os += this.spacing;
+      this._ypos += this.spacing;
     }
     child.y = this._ypos;
     this.width = Math.max(this.width, child.x + child.width);

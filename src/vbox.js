@@ -46,7 +46,7 @@ export class VBox extends Component {
   appendChild(child) {
     super.appendChild(child);
     if (this._ypos > 0) {
-      this.yp_os += this.spacing;
+      this._ypos += this.spacing;
     }
     child.y = this._ypos;
     this.width = Math.max(this.width, child.x + child.width);
