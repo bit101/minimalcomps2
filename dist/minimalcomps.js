@@ -5458,6 +5458,7 @@ var mc2 = (function (exports) {
      * @param {HTMLElement} parent - The element to add this toggle to.
      * @param {number} x - The x position of the toggle. Default 0.
      * @param {number} y - The y position of the toggle. Default 0.
+     * @param {string} text - The text for the toggle's label. Default empty string.
      * @param {boolean} toggled - The initial toggled state of the toggle. Default false.
      * @param {function} defaultHandler - A function that will handle the "click" event.
      */
