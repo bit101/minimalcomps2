@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
@@ -31,7 +32,7 @@ export class ColorPicker extends Component {
     }
     color = color || "#f00";
     this._text = text || "";
-    this._textPosition = "top";
+    this._textPosition = Defaults.colorpicker.textPosition;
     this._color = this._correctColor(color);
     this._color = this._cropColor(color);
 

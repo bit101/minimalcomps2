@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
@@ -23,7 +24,7 @@ export class Toggle extends Component {
   constructor(parent, x, y, text, toggled, defaultHandler) {
     super(parent, x, y);
     this._text = text;
-    this._textPosition = "top";
+    this._textPosition = Defaults.toggle.textPosition;
 
     this._createChildren();
     this._createStyle();

@@ -936,13 +936,30 @@ var mc2 = (function (exports) {
   const Defaults = {
     /**
      * Default properties for the Button component.
+     * @typedef {object} button
+     * @property {number} width - The default width of a Button.
+     * @property {number} height - The default height of a Button.
      */
     button: {
       width: 100,
       height: 20,
     },
     /**
+     * Default properties for the ColorPicker component.
+     * @typedef {object} colorpicker
+     * @property {string} textPosition - The default textPosition of a ColorPicker.
+     */
+    colorpicker: {
+      textPosition: "top",
+    },
+    /**
      * Default properties for the HSlider component.
+     * @typedef {object} hslider
+     * @property {number} decimals - The default decimals of a HSlider.
+     * @property {string} textPosition - The default textPosition of a HSlider.
+     * @property {number} width - The default width of a HSlider.
+     * @property {number} height - The default height of a HSlider.
+     * @property {number} handleSize - The default handleSize of a HSlider.
      */
     hslider: {
       decimals: 0,
@@ -953,25 +970,66 @@ var mc2 = (function (exports) {
     },
     /**
      * Default properties for the Image component.
+     * @typedef {object} image
+     * @property {number} width - The default width of a Image.
      */
     image: {
       width: 100,
     },
     /**
-     * Default properties for the knob component.
+     * Default properties for the Knob component.
+     * @typedef {object} knob
+     * @property {number} decimals - The default decimals of a Knob.
+     * @property {number} size - The default size of a Knob.
      */
     knob: {
       decimals: 0,
       size: 40,
     },
     /**
+     * Default properties for the LED component.
+     * @typedef {object} led
+     * @property {stirng} textPosition - The default textPosition of a LED.
+     */
+    led: {
+      textPosition: "top",
+    },
+    /**
      * Default properties for the Label component.
+     * @typedef {object} label
+     * @property {number} fontSize - The default fontSize of a Label.
      */
     label: {
       fontSize: 10,
     },
     /**
+     * Default properties for the NumericStepper component.
+     * @typedef {object} numericstepper
+     * @property {number} decimals - The default decimals of a NumericStepper.
+     * @property {string} textPosition - The default textPosition of a NumericStepper.
+     * @property {number} width - The default width of a NumericStepper.
+     */
+    numericstepper: {
+      decimals: 0,
+      textPosition: "top",
+      width: 100,
+    },
+    /**
+     * Default properties for the Toggle component.
+     * @typedef {object} toggle
+     * @property {string} textPosition - The default textPosition of a Toggle.
+     */
+    toggle: {
+      textPosition: "top",
+    },
+    /**
      * Default properties for the VSlider component.
+     * @typedef {object} vslider
+     * @property {number} decimals - The default decimals of a VSlider.
+     * @property {string} textPosition - The default textPosition of a VSlider.
+     * @property {number} width - The default width of a VSlider.
+     * @property {number} height - The default height of a VSlider.
+     * @property {number} handleSize - The default handleSize of a VSlider.
      */
     vslider: {
       decimals: 0,
@@ -1755,7 +1813,7 @@ var mc2 = (function (exports) {
       }
       color = color || "#f00";
       this._text = text || "";
-      this._textPosition = "top";
+      this._textPosition = Defaults.colorpicker.textPosition;
       this._color = this._correctColor(color);
       this._color = this._cropColor(color);
 
@@ -3696,7 +3754,7 @@ var mc2 = (function (exports) {
       this._text = text || "";
       this._color = color || "#f00";
       this._lit = lit || false;
-      this._textPosition = "top";
+      this._textPosition = Defaults.led.textPosition;
 
       const size = 16;
 
@@ -3972,19 +4030,18 @@ var mc2 = (function (exports) {
       }
 
       this._text = text || "";
-      this._textPosition = "top";
+      this._textPosition = Defaults.numericstepper.textPosition;
 
       this._min = min || 0;
       this._max = max || 0;
-      this._decimals = 0;
-      value = value || 0;
+      this._decimals = Defaults.numericstepper.decimals;    value = value || 0;
       this._value = this._roundValue(value);
 
       this._createChildren();
       this._createStyle();
       this._createListeners();
 
-      this.setSize(100, 20);
+      this.setSize(Defaults.numericstepper.width, 20);
       this.addEventListener("change", defaultHandler);
       this._addToParent();
     }
@@ -5463,7 +5520,7 @@ var mc2 = (function (exports) {
     constructor(parent, x, y, text, toggled, defaultHandler) {
       super(parent, x, y);
       this._text = text;
-      this._textPosition = "top";
+      this._textPosition = Defaults.toggle.textPosition;
 
       this._createChildren();
       this._createStyle();
@@ -6187,7 +6244,7 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-window", Window);
 
-  const version = "1.3.1";
+  const version = "1.4.0";
 
   exports.Button = Button;
   exports.Canvas = Canvas;
