@@ -5090,7 +5090,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _createChildren() {
-      this.__setWrapperClass("MinimalTextBox");
+      this._setWrapperClass("MinimalTextBox");
       this.wrapper.textContent = this._text;
     }
 
@@ -5140,14 +5140,12 @@ var mc2 = (function (exports) {
       return this;
     }
 
-    
     /**
-     * Sets the 
      * Sets a string of HTML text to display. This will accept pretty much any kind of valid HTML markup you can put into a string.
      * @param {string} html - The HTML to set.
      * @returns This instance, suitable for chaining.
      */
-     setHtml(html) {
+    setHtml(html) {
       this.html = html;
       return this;
     }
