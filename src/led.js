@@ -1,4 +1,5 @@
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
@@ -25,7 +26,7 @@ export class LED extends Component {
     this._text = text || "";
     this._color = color || "#f00";
     this._lit = lit || false;
-    this._textPosition = "top";
+    this._textPosition = Defaults.led.textPosition;
 
     const size = 16;
 

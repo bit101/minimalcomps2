@@ -1,5 +1,6 @@
 import { Button } from "./button.js";
 import { Component } from "./component.js";
+import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
 
@@ -36,11 +37,11 @@ export class NumericStepper extends Component {
     }
 
     this._text = text || "";
-    this._textPosition = "top";
+    this._textPosition = Defaults.numericstepper.textPosition;
 
     this._min = min || 0;
     this._max = max || 0;
-    this._decimals = 0;
+    this._decimals = Defaults.numericstepper.decimals;;
     value = value || 0;
     this._value = this._roundValue(value);
 
@@ -48,7 +49,7 @@ export class NumericStepper extends Component {
     this._createStyle();
     this._createListeners();
 
-    this.setSize(100, 20);
+    this.setSize(Defaults.numericstepper.width, 20);
     this.addEventListener("change", defaultHandler);
     this._addToParent();
   }
