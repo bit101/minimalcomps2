@@ -179,6 +179,15 @@ Style.colorpicker = `
   .MinimalColorPickerInput:focus {
     ${Style.focusStyle}
   }
+  .MinimalColorPickerSliders {
+    ${Style.baseStyle}
+    width: 100px;
+    height: 150px;
+    top: 25px;
+    background-color: #fff;
+    border: 1px solid #999;
+    display: none;
+  }
 `;
 
 ////////////////////
