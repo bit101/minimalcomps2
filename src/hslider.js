@@ -270,7 +270,7 @@ export class HSlider extends Component {
       this.valueLabel.y = -this.valueLabel.height - 5;
     } else if (this._valuePosition === "bottom") {
       this.valueLabel.x = this.width - this.valueLabel.width;
-      this.valueLabel.y = -this.height + 5;
+      this.valueLabel.y = this.height + 5;
     }
   }
 
