@@ -954,6 +954,7 @@ const Defaults = {
    * @typedef {object} hslider
    * @property {number} decimals - The default decimals of a HSlider.
    * @property {string} textPosition - The default textPosition of a HSlider.
+   * @property {string} valuePosition - The default valuePosition of a HSlider.
    * @property {number} width - The default width of a HSlider.
    * @property {number} height - The default height of a HSlider.
    * @property {number} handleSize - The default handleSize of a HSlider.
@@ -961,6 +962,7 @@ const Defaults = {
   hslider: {
     decimals: 0,
     textPosition: "top",
+    valuePosition: "top",
     width: 150,
     height: 15,
     handleSize: 15,
@@ -2734,6 +2736,7 @@ class HSlider extends Component {
     this._handleSize = Defaults.hslider.handleSize;
     this._decimals = Defaults.hslider.decimals;
     this._textPosition = Defaults.hslider.textPosition;
+    this._valuePosition = Defaults.hslider.valuePosition;
   }
 
   _updateHandlePosition() {
@@ -2762,6 +2765,9 @@ class HSlider extends Component {
     if (this._textPosition === "left") {
       this.label.x = -this.label.width - 5;
       this.label.y = (this.height - this.label.height) / 2;
+    } else if (this._textPosition === "right") {
+      this.label.x = this.width + 5;
+      this.label.y = (this.height - this.label.height) / 2;
     } else if (this._textPosition === "top") {
       this.label.x = 0;
       this.label.y = -this.label.height - 5;
@@ -2772,8 +2778,19 @@ class HSlider extends Component {
   }
 
   _updateValueLabelPosition() {
-    this.valueLabel.x = this.width + 5;
-    this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
+    if (this._valuePosition === "left") {
+      this.valueLabel.x = -this.valueLabel.width - 5;
+      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
+    } else if (this._valuePosition === "right") {
+      this.valueLabel.x = this.width + 5;
+      this.valueLabel.y = (this.height - this.valueLabel.height) / 2;
+    } else if (this._valuePosition === "top") {
+      this.valueLabel.x = this.width - this.valueLabel.width;
+      this.valueLabel.y = -this.valueLabel.height - 5;
+    } else if (this._valuePosition === "bottom") {
+      this.valueLabel.x = this.width - this.valueLabel.width;
+      this.valueLabel.y = this.height + 5;
+    }
   }
 
   _setSliderSize() {
@@ -2785,6 +2802,7 @@ class HSlider extends Component {
       this._value = value;
       this._updateHandlePosition();
       this.valueLabel.text = this._formatValue();
+      this._updateValueLabelPosition();
     }
   }
 
@@ -2906,12 +2924,22 @@ class HSlider extends Component {
   }
 
   /**
-   * Sets the text position of the text label.
-   * @param {string} position - The position to place the text lable: "top" (default), "left" or "bottom".
+   * Sets the position of the text label.
+   * @param {string} position - The position to place the text lable: "top" (default), "right", "left" or "bottom".
    * @returns this instance, suitable for chaining.
    */
   setTextPosition(position) {
     this.textPosition = position;
+    return this;
+  }
+
+  /**
+   * Sets the position of the value label.
+   * @param {string} position - The position to place the value lable: "top" (default), "right", left" or "bottom".
+   * @returns this instance, suitable for chaining.
+   */
+  setValuePosition(position) {
+    this.valuePosition = position;
     return this;
   }
 
@@ -2990,7 +3018,7 @@ class HSlider extends Component {
   }
 
   /**
-   * Gets and sets the position of the text label displayed on the slider. Valid values are "top" (default), "left" and "bottom". Not applicable to a VSlider.
+   * Gets and sets the position of the text label displayed on the slider. Valid values are "top" (default), "right", "left" and "bottom". Not applicable to a VSlider.
    */
   get textPosition() {
     return this.textPosition;
@@ -2999,6 +3027,30 @@ class HSlider extends Component {
   set textPosition(position) {
     this._textPosition = position;
     this._updateLabelPosition();
+    if (position === "left" && this._valuePosition === "left") {
+      this.valuePosition = "right";
+    }
+    if (position === "right" && this._valuePosition === "right") {
+      this.valuePosition = "left";
+    }
+  }
+
+  /**
+   * Gets and sets the position of the value label displayed on the slider. Valid values are "top" (default), "right", "left" and "bottom". Not applicable to a VSlider.
+   */
+  get valuePosition() {
+    return this._valuePosition;
+  }
+
+  set valuePosition(position) {
+    this._valuePosition = position;
+    this._updateValueLabelPosition();
+    if (position === "left" && this._textPosition === "left") {
+      this.textPosition = "right";
+    }
+    if (position === "right" && this._textPosition === "right") {
+      this.textPosition = "left";
+    }
   }
 
   /**

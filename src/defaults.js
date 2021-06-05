@@ -25,6 +25,7 @@ export const Defaults = {
    * @typedef {object} hslider
    * @property {number} decimals - The default decimals of a HSlider.
    * @property {string} textPosition - The default textPosition of a HSlider.
+   * @property {string} valuePosition - The default valuePosition of a HSlider.
    * @property {number} width - The default width of a HSlider.
    * @property {number} height - The default height of a HSlider.
    * @property {number} handleSize - The default handleSize of a HSlider.
@@ -32,6 +33,7 @@ export const Defaults = {
   hslider: {
     decimals: 0,
     textPosition: "top",
+    valuePosition: "top",
     width: 150,
     height: 15,
     handleSize: 15,
