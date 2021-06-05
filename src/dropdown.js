@@ -139,6 +139,7 @@ export class Dropdown extends Component {
       this.close();
     } else if (event.keyCode === 40) {
       // down
+      event.preventDefault();
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.lastChild) {
         this.dropdown.firstChild.focus();
@@ -147,6 +148,7 @@ export class Dropdown extends Component {
       }
     } else if (event.keyCode === 38) {
       // up
+      event.preventDefault();
       if (this.shadowRoot.activeElement === this.wrapper ||
           this.shadowRoot.activeElement === this.dropdown.firstChild) {
         this.dropdown.lastChild.focus();
