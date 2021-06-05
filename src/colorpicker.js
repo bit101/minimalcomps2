@@ -91,7 +91,8 @@ export class ColorPicker extends Component {
     this.blueSlider.addHandler(this._updateFromSliders);
     this.input.addEventListener("input", this._onInput);
     this.input.addEventListener("focus", this._onFocus);
-    this.input.addEventListener("keydown", this._onKeyPress);
+    this.addEventListener("keydown", this._onKeyPress);
+    this.addEventListener("blur", () => this.showSliders(false));
   }
 
   //////////////////////////////////
