@@ -27,6 +27,7 @@ export class Dropdown extends Component {
     this._open = false;
     this.itemElements = [];
     this._text = "";
+    this._dropdownPosition = "bottom";
 
     this._createChildren();
     this._createStyle();
@@ -35,6 +36,7 @@ export class Dropdown extends Component {
     this.setSize(100, 20);
     this._createItems();
     this.index = index;
+    this._updateDropdownPosition();
     this.addEventListener("change", defaultHandler);
     this._addToParent();
   }
@@ -48,12 +50,12 @@ export class Dropdown extends Component {
     this.wrapper.tabIndex = 0;
 
     this.label = new Label(this.wrapper, 3, 3);
+    this.label.autosize = false;
 
     this.button = this._createDiv(this.wrapper, "MinimalDropdownButton");
     this.button.textContent = "+";
 
-    this.dropdown = this._createDiv(this.wrapper, null);
-    this.dropdown.style.display = "none";
+    this.dropdown = this._createDiv(this.wrapper, "MinimalDropdownPanel");
   }
 
   _createItems() {
@@ -70,6 +72,7 @@ export class Dropdown extends Component {
 
     const label = new Label(item, 3, 0, this.items[index]);
     label.y = (this.height - label.height) / 2;
+    label.autosize = false;
 
     const itemObj = {item, label};
     this._updateItem(itemObj, index);
@@ -87,37 +90,36 @@ export class Dropdown extends Component {
     this._toggle = this._toggle.bind(this);
     this._onItemClick = this._onItemClick.bind(this);
     this._onKeyPress = this._onKeyPress.bind(this);
-    this._onDocumentClick = this._onDocumentClick.bind(this);
 
-    this.wrapper.addEventListener("click", this._toggle);
+    this.wrapper.addEventListener("click", () => {
+      this._toggle();
+    });
     for (let i = 0; i < this.itemElements.length; i++) {
       this.itemElements[i].addEventListener("click", this._onItemClick);
     }
     this.addEventListener("keydown", this._onKeyPress);
+    this.addEventListener("blur", () => this.close());
   }
 
   //////////////////////////////////
   // Handlers
   //////////////////////////////////
 
-  _toggle(event) {
-    event && event.stopPropagation();
+  _toggle() {
     this._open = !this._open;
     if (this._open) {
       this.initialZ = this.style.zIndex;
       this.style.zIndex = 1000000;
       this.dropdown.style.display = "block";
-      document.addEventListener("click", this._onDocumentClick);
     } else {
       this.style.zIndex = this.initialZ;
       this.dropdown.style.display = "none";
-      document.removeEventListener("click", this._onDocumentClick);
     }
   }
 
   _onItemClick(event) {
     event.stopPropagation();
-    this.index = event.target.getAttribute("data-index");
+    this.index = event.currentTarget.getAttribute("data-index");
     this._toggle();
     this.dispatchEvent(new CustomEvent("change", {
       detail: {
@@ -132,8 +134,8 @@ export class Dropdown extends Component {
     if (event.keyCode === 13 && this.enabled) {
       // enter
       this.shadowRoot.activeElement.click();
-    } else if (event.keyCode === 27 || event.keyCode === 9) {
-      // escape || tab
+    } else if (event.keyCode === 27) {
+      // escape
       this.close();
     } else if (event.keyCode === 40) {
       // down
@@ -154,18 +156,12 @@ export class Dropdown extends Component {
     }
   }
 
-  _onDocumentClick(event) {
-    if (event.target.className !== "MinimalDropdownItem") {
-      this.close();
-    }
-  }
-
   //////////////////////////////////
   // General
   //////////////////////////////////
 
   _updateButton() {
-    this.button.style.left = this.width - this.height + "px";
+    this.button.style.left = this.width - this.height - 1 + "px";
     this.button.style.width = this.height + "px";
     this.button.style.height = this.height + "px";
     this.button.style.lineHeight = this.height - 1 + "px";
@@ -175,12 +171,22 @@ export class Dropdown extends Component {
     const { item, label } = itemObj;
 
     const h = this.height - 1;
-    item.style.top = h + i * h + "px";
+    item.style.top = i * h + "px";
     item.style.width = this.width + "px";
     item.style.height = this.height + "px";
-    if (item.firstChild) {
-      label.y = (this.height - label.height) / 2;
+    label.y = (this.height - label.height) / 2;
+    label.width = this.width - 8;
+  }
+
+  _updateDropdownPosition() {
+    if (this._dropdownPosition === "bottom") {
+      this.dropdown.style.top = this.height - 2 + "px";
+    } else if (this._dropdownPosition === "top") {
+      this.dropdown.style.top = -(this.height - 1) * this.items.length + "px";
     }
+    this.dropdown.style.left = "-1px";
+    this.dropdown.style.width = this.width + "px";
+    this.dropdown.style.height = (this.height - 1) * this.items.length + "px";
   }
 
   /**
@@ -227,6 +233,16 @@ export class Dropdown extends Component {
   }
 
   /**
+   * Gets and sets the position of the dropdown list.
+   * @param {string} position - The position where the list will open. Valid values are "bottom" (default) and "top".
+   * @returns This instance, suitable for chaining.
+   */
+  setDropdownPosition(position) {
+    this.dropdownPosition = position;
+    return this;
+  }
+
+  /**
    * Sets the selected index of this dropdown.
    * @param {number} index - The index to set.
    * @returns This instance, suitable for chaining.
@@ -240,6 +256,18 @@ export class Dropdown extends Component {
   // Getters/Setters
   // alphabetical. getter first.
   //////////////////////////////////
+
+  /**
+   * Gets and sets the position of the dropdown list. Valid values are "bottom" (default) and "top".
+   */
+  get dropdownPosition() {
+    return this._dropdownPosition;
+  }
+
+  set dropdownPosition(pos) {
+    this._dropdownPosition = pos;
+    this._updateDropdownPosition();
+  }
 
   get enabled() {
     return super.enabled;
@@ -260,9 +288,7 @@ export class Dropdown extends Component {
       this.wrapper.setAttribute("class", "MinimalDropdownDisabled");
       this.button.setAttribute("class", "MinimalDropdownButtonDisabled");
       this.tabIndex = -1;
-      this._open = false;
-      this.style.zIndex = this.initialZ;
-      this.dropdown.style.display = "none";
+      this.close();
     }
   }
 
@@ -273,8 +299,10 @@ export class Dropdown extends Component {
   set height(height) {
     super.height = height;
     this.label.y = (this.height - this.label.height) / 2;
+    this.label.width = this.width - this.height;
     this._updateButton();
     this.itemElements.forEach((item, i) => this._updateItem(item, i));
+    this._updateDropdownPosition();
   }
 
   /**
@@ -309,6 +337,8 @@ export class Dropdown extends Component {
 
   set width(width) {
     super.width = width;
+    this.label.width = this.width - this.height;
+    this.dropdown.style.width = this.width + "px";
     this._updateButton();
     this.itemElements.forEach(item => {
       this._updateItem(item);
