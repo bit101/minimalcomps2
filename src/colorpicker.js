@@ -2,6 +2,7 @@ import { Component } from "./component.js";
 import { Defaults } from "./defaults.js";
 import { Label } from "./label.js";
 import { Style } from "./style.js";
+import { VSlider } from "./vslider.js";
 
 /**
  * Creates a input for entering color values, with a preview swatch.
@@ -35,12 +36,15 @@ export class ColorPicker extends Component {
     this._textPosition = Defaults.colorpicker.textPosition;
     this._color = this._correctColor(color);
     this._color = this._cropColor(color);
+    this._sliderPosition = "bottom";
+    this._useSliders = true;
+    this._width = 100;
+    this._height = 20;
 
     this._createChildren();
     this._createStyle();
     this._createListeners();
 
-    this.setSize(100, 20);
     this.addEventListener("change", defaultHandler);
     this._addToParent();
   }
@@ -58,6 +62,11 @@ export class ColorPicker extends Component {
 
     this.label = new Label(this.wrapper, 0, -15, this._text);
 
+    this.sliderContainer = this._createDiv(this.wrapper, "MinimalColorPickerSliders");
+    this.redSlider = new VSlider(this.sliderContainer, 12, 20, "R", this.red, 0, 255).setHeight(100);
+    this.greenSlider = new VSlider(this.sliderContainer, 42, 20, "G", this.green, 0, 255).setHeight(100);
+    this.blueSlider = new VSlider(this.sliderContainer, 72, 20, "B", this.blue, 0, 255).setHeight(100);
+
     this.preview = this._createDiv(this.wrapper, "MinimalColorPickerPreview");
     this.preview.style.backgroundColor = this.color;
   }
@@ -69,8 +78,20 @@ export class ColorPicker extends Component {
   }
 
   _createListeners() {
+    this._onFocus = this._onFocus.bind(this);
     this._onInput = this._onInput.bind(this);
+    this._updateFromSliders = this._updateFromSliders.bind(this);
+    this._onDocumentClick = this._onDocumentClick.bind(this);
+    this._onClick = this._onClick.bind(this);
+    this._onKeyPress = this._onKeyPress.bind(this);
+
+    this.addEventListener("click", this._onClick);
+    this.redSlider.addHandler(this._updateFromSliders);
+    this.greenSlider.addHandler(this._updateFromSliders);
+    this.blueSlider.addHandler(this._updateFromSliders);
     this.input.addEventListener("input", this._onInput);
+    this.input.addEventListener("focus", this._onFocus);
+    this.input.addEventListener("keydown", this._onKeyPress);
   }
 
   //////////////////////////////////
@@ -83,8 +104,37 @@ export class ColorPicker extends Component {
     if ((color.length === 4 || color.length === 7) && this.color !== color) {
       this._color = color;
       this.preview.style.backgroundColor = this.color;
+      this._updateSliders();
       this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
     }
+  }
+
+  _onFocus() {
+    this.showSliders(true);
+  }
+
+  _updateFromSliders() {
+    const red = this.redSlider.value;
+    const green = this.greenSlider.value;
+    const blue = this.blueSlider.value;
+    this.setRGB(red, green, blue);
+    this.dispatchEvent(new CustomEvent("change", { detail: this.color }));
+  }
+
+  _onKeyPress(event) {
+    if (event.keyCode === 27) {
+      // escape
+      this.showSliders(false);
+    }
+  }
+
+  _onDocumentClick() {
+    this.showSliders(false);
+  }
+
+  _onClick(event) {
+    // prevents clicks anywhere on this component from closing the slider popup.
+    event.stopPropagation();
   }
 
   //////////////////////////////////
@@ -119,6 +169,38 @@ export class ColorPicker extends Component {
     }
   }
 
+  _updateSliders() {
+    this.redSlider.value = this.red;
+    this.greenSlider.value = this.green;
+    this.blueSlider.value = this.blue;
+  }
+
+  _updateSliderPosition() {
+    if (this._sliderPosition === "bottom") {
+      this.sliderContainer.style.top = "25px";
+    } else if (this._sliderPosition === "top") {
+      this.sliderContainer.style.top = "-155px";
+    }
+  }
+
+  /**
+   * Programatically show or hide the slider container for setting rgb values visually.
+   * @param {boolean} show - Whether to show or hide the sliders.
+   * @returns This instance, suitable for chaining.
+   */
+  showSliders(show) {
+    if (show && this._useSliders) {
+      this.initialZ = this.style.zIndex;
+      this.style.zIndex = 1000000;
+      this.sliderContainer.style.display = "block";
+      document.addEventListener("click", this._onDocumentClick);
+    } else {
+      this.style.zIndex = this.initialZ;
+      this.sliderContainer.style.display = "none";
+      document.removeEventListener("click", this._onDocumentClick);
+    }
+    return this;
+  }
   /**
    * Adds a handler function for the "change" event on this color picker.
    * @param {function} handler - A function that will handle the "change" event.
@@ -204,6 +286,15 @@ export class ColorPicker extends Component {
   }
 
   /**
+   * Gets and sets the position of the slider popup.
+   * @param {string} position - The position where the popup will open. Valid values are "bottom" (default) and "bottom".
+   */
+  setSliderPosition(position) {
+    this.sliderPosition = position;
+    return this;
+  }
+
+  /**
    * Sets the text of this color picker.
    * @param {string} text - The text to set on this color picker.
    * @returns this instance, suitable for chaining.
@@ -239,6 +330,16 @@ export class ColorPicker extends Component {
       return parseInt(r + g + b, 16);
     }
     return parseInt(c, 16);
+  }
+
+  /**
+   * Sets whether clicking into the input area will open up a pane with sliders for setting colors visually.
+   * @param {boolean} useSliders - Whether or not to use the slider ui.
+   * @returns This instance, suitable for chaining.
+   */
+  setUseSliders(useSliders) {
+    this.useSliders = useSliders;
+    return this;
   }
 
   //////////////////////////////////
@@ -308,18 +409,31 @@ export class ColorPicker extends Component {
     this._color = color;
     this.input.value = color;
     this.preview.style.backgroundColor = color;
+    this._updateSliders();
   }
 
   /**
-   * Sets and gets the height of this component.
+   * Sets and gets the height of this component. In reality, this component is fixed size, so setting height or width has no effect.
    */
   get height() {
     return super.height;
   }
 
   set height(h) {
-    super.height = h;
-    this._updateLabel();
+    // noop
+    h = h;
+  }
+
+  /**
+   * Gets and sets the position of the slider popup. Valid values are "bottom" (default) and "bottom".
+   */
+  get sliderPosition() {
+    return this._sliderPosition;
+  }
+
+  set sliderPosition(pos) {
+    this._sliderPosition = pos;
+    this._updateSliderPosition();
   }
 
   /**
@@ -336,6 +450,17 @@ export class ColorPicker extends Component {
   }
 
   /**
+   * Gets and sets whether clicking into the input area will open up a pane with sliders for setting colors visually.
+   */
+  get useSliders() {
+    return this._useSliders;
+  }
+
+  set useSliders(useSliders) {
+    this._useSliders = useSliders;
+  }
+
+  /**
    * Gets and sets the position of the text label displayed on the color picker. Valid values are "top" (default), "left", "right" and "bottom".
    */
   get textPosition() {
@@ -345,6 +470,18 @@ export class ColorPicker extends Component {
   set textPosition(pos) {
     this._textPosition = pos;
     this._updateLabel();
+  }
+
+  /**
+   * Sets and gets the width of this component. In reality, this component is fixed size, so setting height or width has no effect.
+   */
+  get width() {
+    return super.width;
+  }
+
+  set width(w) {
+    // noop
+    w = w;
   }
 }
 
