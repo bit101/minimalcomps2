@@ -3197,6 +3197,7 @@ var mc2 = (function (exports) {
         this.close();
       } else if (event.keyCode === 40) {
         // down
+        event.preventDefault();
         if (this.shadowRoot.activeElement === this.wrapper ||
             this.shadowRoot.activeElement === this.dropdown.lastChild) {
           this.dropdown.firstChild.focus();
@@ -3205,6 +3206,7 @@ var mc2 = (function (exports) {
         }
       } else if (event.keyCode === 38) {
         // up
+        event.preventDefault();
         if (this.shadowRoot.activeElement === this.wrapper ||
             this.shadowRoot.activeElement === this.dropdown.firstChild) {
           this.dropdown.lastChild.focus();
