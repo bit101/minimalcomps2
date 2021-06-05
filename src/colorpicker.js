@@ -81,11 +81,8 @@ export class ColorPicker extends Component {
     this._onFocus = this._onFocus.bind(this);
     this._onInput = this._onInput.bind(this);
     this._updateFromSliders = this._updateFromSliders.bind(this);
-    this._onDocumentClick = this._onDocumentClick.bind(this);
-    this._onClick = this._onClick.bind(this);
     this._onKeyPress = this._onKeyPress.bind(this);
 
-    this.addEventListener("click", this._onClick);
     this.redSlider.addHandler(this._updateFromSliders);
     this.greenSlider.addHandler(this._updateFromSliders);
     this.blueSlider.addHandler(this._updateFromSliders);
@@ -127,15 +124,6 @@ export class ColorPicker extends Component {
       // escape
       this.showSliders(false);
     }
-  }
-
-  _onDocumentClick() {
-    this.showSliders(false);
-  }
-
-  _onClick(event) {
-    // prevents clicks anywhere on this component from closing the slider popup.
-    event.stopPropagation();
   }
 
   //////////////////////////////////
@@ -194,11 +182,9 @@ export class ColorPicker extends Component {
       this.initialZ = this.style.zIndex;
       this.style.zIndex = 1000000;
       this.sliderContainer.style.display = "block";
-      document.addEventListener("click", this._onDocumentClick);
     } else {
       this.style.zIndex = this.initialZ;
       this.sliderContainer.style.display = "none";
-      document.removeEventListener("click", this._onDocumentClick);
     }
     return this;
   }
@@ -288,7 +274,8 @@ export class ColorPicker extends Component {
 
   /**
    * Gets and sets the position of the slider popup.
-   * @param {string} position - The position where the popup will open. Valid values are "bottom" (default) and "bottom".
+   * @param {string} position - The position where the popup will open. Valid values are "bottom" (default) and "top".
+   * @returns This instance, suitable for chaining.
    */
   setSliderPosition(position) {
     this.sliderPosition = position;
@@ -426,7 +413,7 @@ export class ColorPicker extends Component {
   }
 
   /**
-   * Gets and sets the position of the slider popup. Valid values are "bottom" (default) and "bottom".
+   * Gets and sets the position of the slider popup. Valid values are "bottom" (default) and "top".
    */
   get sliderPosition() {
     return this._sliderPosition;

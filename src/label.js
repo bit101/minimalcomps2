@@ -25,6 +25,9 @@ export class Label extends Component {
     this._color = "#333";
     this._bold = false;
     this._italic = false;
+    if (text === null || text === undefined) {
+      text = "";
+    }
 
     this._createChildren();
     this._createStyle();
@@ -34,7 +37,7 @@ export class Label extends Component {
     // then remove it and add it to parent.
     document.body.appendChild(this);
     this._width = this.wrapper.offsetWidth;
-    this.text = text || "";
+    this.text = text;
     this.height = Defaults.label.fontSize + 2;
     this._addToParent();
   }

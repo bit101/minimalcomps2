@@ -187,6 +187,7 @@ Style.colorpicker = `
     background-color: #fff;
     border: 1px solid #999;
     display: none;
+    box-shadow: 2px 2px 2px #ccc;
   }
 `;
 
@@ -248,6 +249,11 @@ Style.dropdown = `
     text-align: center;
     user-select: none;
     -webkit-user-select: none;
+  }
+  .MinimalDropdownPanel {
+    ${Style.baseStyle};
+    box-shadow: 2px 2px 2px #ccc;
+    display: none;
   }
   .MinimalDropdownButtonDisabled {
     ${Style.disabledStyle}
