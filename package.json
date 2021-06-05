@@ -7,7 +7,7 @@
     "uglify": "uglifyjs dist/minimalcomps.js -o dist/minimalcomps.min.js",
     "uglify-mod": "uglifyjs dist/minimalcomps.mjs -o dist/minimalcomps.min.mjs",
     "build": "rollup -c && npm run uglify && npm run uglify-mod",
-    "docs": "jsdoc src/*"
+    "docs": "jsdoc src/* ./README.md -t ./clean-jsdoc-theme"
   },
   "repository": {
     "type": "git",
