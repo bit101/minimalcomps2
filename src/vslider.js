@@ -24,6 +24,7 @@ export class VSlider extends HSlider {
    */
   constructor(parent, x, y, text, value, min, max, defaultHandler) {
     super(parent, x, y, text, value, min, max, defaultHandler);
+    this._labelsSwapped = false;
   }
   //////////////////////////////////
   // Core
@@ -104,12 +105,20 @@ export class VSlider extends HSlider {
 
   _updateLabelPosition() {
     this.label.x = -(this.label.width - this.width) / 2;
-    this.label.y = -this.label.height - 5;
+    if (this._labelsSwapped) {
+      this.label.y = this.height + 5;
+    } else {
+      this.label.y = -this.label.height - 5;
+    }
   }
 
   _updateValueLabelPosition() {
     this.valueLabel.x = -(this.valueLabel.width - this.width) / 2;
-    this.valueLabel.y = this.height + 5;
+    if (this._labelsSwapped) {
+      this.valueLabel.y = -this.valueLabel.height - 5;
+    } else {
+      this.valueLabel.y = this.height + 5;
+    }
   }
 
   _setSliderSize() {
@@ -119,6 +128,16 @@ export class VSlider extends HSlider {
   _updateValue(value) {
     super._updateValue(value);
     this._updateValueLabelPosition();
+  }
+
+  /**
+   * Sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   * @param {boolean} swapped - Whether the labels will be swapped.
+   * @returns This instance, suitable for chaining.
+   */
+  setLabelsSwapped(swapped) {
+    this.labelsSwapped = swapped;
+    return this;
   }
 
   //////////////////////////////////
@@ -151,6 +170,19 @@ export class VSlider extends HSlider {
     super.height = height;
     this._updateLabelPosition();
     this._updateHandlePosition();
+  }
+
+  /**
+   * Gets and sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   */
+  get labelsSwapped() {
+    return this._labelsSwapped;
+  }
+
+  set labelsSwapped(swap) {
+    this._labelsSwapped = swap;
+    this._updateLabelPosition();
+    this._updateValueLabelPosition();
   }
 
   /**
