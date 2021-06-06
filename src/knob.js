@@ -276,6 +276,16 @@ export class Knob extends Component {
   }
 
   /**
+   * Sets whether the text label and value label will be swapped. If true, the text label will be on the bottom and the value label will be on the top.
+   * @param {boolean} swapped - Whether the labels will be swapped.
+   * @returns This instance, suitable for chaining.
+   */
+  setLabelsSwapped(swapped) {
+    this.labelsSwapped = swapped;
+    return this;
+  }
+
+  /**
    * Sets the maximum value of this knob.
    * @param {number} max - The maximum value of this knob.
    * @returns This instance, suitable for chaining.
