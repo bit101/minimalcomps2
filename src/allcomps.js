@@ -13,6 +13,7 @@ import { LED } from "./led.js";
 import { Label } from "./label.js";
 import { NumericStepper } from "./numericstepper.js";
 import { Panel } from "./panel.js";
+import { PlayButton } from "./playbutton.js";
 import { ProgressBar } from "./progressbar.js";
 import { RadioButton } from "./radiobutton.js";
 import { RadioButtonGroup } from "./radiobuttongroup.js";
@@ -44,6 +45,7 @@ export {
   LED,
   NumericStepper,
   Panel,
+  PlayButton,
   ProgressBar,
   RadioButton,
   RadioButtonGroup,
