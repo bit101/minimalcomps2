@@ -457,6 +457,36 @@ Style.panel = `
 `;
 
 ////////////////////
+// PlayButton
+////////////////////
+Style.playbutton = `
+  .MinimalPlayButton {
+    ${Style.buttonStyle}
+    cursor: pointer;
+  }
+  .MinimalPlayButton:hover {
+    background-color: #fff;
+  }
+  .MinimalPlayButton:active {
+    background-color: #ccc;
+  }
+  .MinimalPlayButtonDisabled {
+    ${Style.disabledStyle}
+    ${Style.buttonStyle}
+  }
+  .MinimalPlayButton:focus {
+    ${Style.focusStyle}
+  }
+  .MinimalPlayButtonIcon {
+    ${Style.baseStyle}
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    fill: #333;
+  }
+`;
+
+////////////////////
 // ProgressBar
 ////////////////////
 Style.progressbar = `
