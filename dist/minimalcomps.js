@@ -13,6 +13,7 @@ var mc2 = (function (exports) {
   box-sizing: border-box;
   position: absolute;
   font: 10px sans-serif;
+  -webkit-user-select: none;
 `;
 
   Style.disabledStyle = ` 
@@ -155,6 +156,7 @@ var mc2 = (function (exports) {
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     letter-spacing: 1px;
     padding: 0 4px;
     width: 70px;
@@ -427,6 +429,7 @@ var mc2 = (function (exports) {
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     padding: 0 4px;
     width: 60px;
     height: 20px;
@@ -576,6 +579,7 @@ var mc2 = (function (exports) {
     ${Style.baseStyle}
     ${Style.textStyle}
     ${Style.shadowStyle}
+    -webkit-user-select: text;
     padding: 4px;
     resize: none;
   }
@@ -623,6 +627,7 @@ var mc2 = (function (exports) {
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     padding: 0 4px;
   }
   .MinimalTextInput:disabled,
@@ -6491,7 +6496,6 @@ var mc2 = (function (exports) {
      */
     constructor(parent, x, y, w, h, text) {
       super(parent, x, y);
-      console.log(arguments);
       // don't break where text is second param - original signature.
       if (typeof arguments[1] === "string") {
         text = arguments[1];
