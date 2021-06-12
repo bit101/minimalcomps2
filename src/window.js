@@ -14,14 +14,23 @@ export class Window extends Component {
   /**
    * Constructor
    * @param {HTMLElement} parent - The element to add this window to.
-   * @param {number} text - The text to put in the title bar. Default 0.
    * @param {number} x - The x position of the window. Default 0.
    * @param {number} y - The y position of the window. Default 0.
    * @param {number} w - The width of the window. Default 400.
    * @param {number} h - The height of the window. Default 400.
+   * @param {number} text - The text to put in the title bar. Default 0.
    */
-  constructor(parent, text, x, y, w, h) {
+  constructor(parent, x, y, w, h, text) {
     super(parent, x, y);
+    // don't break where text is second param - original signature.
+    if (typeof arguments[1] === "string") {
+      text = arguments[1];
+      x = arguments[2];
+      y = arguments[3];
+      w = arguments[4];
+      h = arguments[5];
+      this.move(x, y);
+    }
     w = w || 400;
     h = h || 400;
     this._text = text;
