@@ -77,7 +77,7 @@ export class Window extends Component {
   //////////////////////////////////
 
   _onMouseDown(event) {
-    this.style.zIndex = 1000000;
+    this.style.zIndex = Style.windowIndex++;
     let mouseX;
     let mouseY;
     if (event.changedTouches) {

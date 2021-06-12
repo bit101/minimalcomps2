@@ -1,5 +1,8 @@
 const Style = {};
 
+Style.windowIndex = 99999;
+Style.popupZIndex = 9999;
+
 ////////////////////
 // Base Styles
 ////////////////////
@@ -2828,7 +2831,7 @@ class ColorPicker extends Component {
   showSliders(show) {
     if (show && this._useSliders) {
       this.initialZ = this.style.zIndex;
-      this.style.zIndex = 1000000;
+      this.style.zIndex = Style.popupZIndex;
       this.sliderContainer.style.display = "block";
     } else {
       this.style.zIndex = this.initialZ;
@@ -3226,7 +3229,7 @@ class Dropdown extends Component {
     this._open = !this._open;
     if (this._open) {
       this.initialZ = this.style.zIndex;
-      this.style.zIndex = 1000000;
+      this.style.zIndex = Style.popupZIndex;
       this.dropdown.style.display = "block";
     } else {
       this.style.zIndex = this.initialZ;
@@ -6540,7 +6543,7 @@ class Window extends Component {
   //////////////////////////////////
 
   _onMouseDown(event) {
-    this.style.zIndex = 1000000;
+    this.style.zIndex = Style.windowIndex++;
     let mouseX;
     let mouseY;
     if (event.changedTouches) {
@@ -6735,6 +6738,6 @@ class Window extends Component {
 
 customElements.define("minimal-window", Window);
 
-const version = "1.4.0";
+const version = "1.5.0";
 
 export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, LED, Label, NumericStepper, Panel, PlayButton, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, Window, version };
