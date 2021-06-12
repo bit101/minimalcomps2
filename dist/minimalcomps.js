@@ -6755,7 +6755,7 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-window", Window);
 
-  const version = "1.5.0";
+  const version = "1.5.1";
 
   exports.Button = Button;
   exports.Canvas = Canvas;

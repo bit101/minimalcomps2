@@ -6752,6 +6752,6 @@ class Window extends Component {
 
 customElements.define("minimal-window", Window);
 
-const version = "1.5.0";
+const version = "1.5.1";
 
 export { Button, Canvas, Checkbox, ColorPicker, Component, Defaults, Dropdown, HBox, HSlider, Image, Knob, LED, Label, NumericStepper, Panel, PlayButton, ProgressBar, RadioButton, RadioButtonGroup, Style, TextArea, TextBox, TextInput, Toggle, VBox, VSlider, Window, version };
