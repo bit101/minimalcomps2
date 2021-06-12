@@ -26,7 +26,7 @@ import { VBox } from "./vbox.js";
 import { VSlider } from "./vslider.js";
 import { Window } from "./window.js";
 
-const version = "1.5.0";
+const version = "1.5.1";
 
 export {
   version,
