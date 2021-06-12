@@ -10,6 +10,7 @@ Style.baseStyle = `
   box-sizing: border-box;
   position: absolute;
   font: 10px sans-serif;
+  -webkit-user-select: none;
 `;
 
 Style.disabledStyle = ` 
@@ -152,6 +153,7 @@ Style.colorpicker = `
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     letter-spacing: 1px;
     padding: 0 4px;
     width: 70px;
@@ -424,6 +426,7 @@ Style.numericstepper = `
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     padding: 0 4px;
     width: 60px;
     height: 20px;
@@ -573,6 +576,7 @@ Style.textarea = `
     ${Style.baseStyle}
     ${Style.textStyle}
     ${Style.shadowStyle}
+    -webkit-user-select: text;
     padding: 4px;
     resize: none;
   }
@@ -620,6 +624,7 @@ Style.textinput = `
     ${Style.baseStyle}
     ${Style.shadowStyle}
     ${Style.textStyle}
+    -webkit-user-select: text;
     padding: 0 4px;
   }
   .MinimalTextInput:disabled,
@@ -6488,7 +6493,6 @@ class Window extends Component {
    */
   constructor(parent, x, y, w, h, text) {
     super(parent, x, y);
-    console.log(arguments);
     // don't break where text is second param - original signature.
     if (typeof arguments[1] === "string") {
       text = arguments[1];
