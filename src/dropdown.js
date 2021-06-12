@@ -109,7 +109,7 @@ export class Dropdown extends Component {
     this._open = !this._open;
     if (this._open) {
       this.initialZ = this.style.zIndex;
-      this.style.zIndex = 1000000;
+      this.style.zIndex = Style.popupZIndex;
       this.dropdown.style.display = "block";
     } else {
       this.style.zIndex = this.initialZ;

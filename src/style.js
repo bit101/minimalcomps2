@@ -1,5 +1,8 @@
 export const Style = {};
 
+Style.windowIndex = 99999;
+Style.popupZIndex = 9999;
+
 ////////////////////
 // Base Styles
 ////////////////////

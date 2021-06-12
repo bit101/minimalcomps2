@@ -180,7 +180,7 @@ export class ColorPicker extends Component {
   showSliders(show) {
     if (show && this._useSliders) {
       this.initialZ = this.style.zIndex;
-      this.style.zIndex = 1000000;
+      this.style.zIndex = Style.popupZIndex;
       this.sliderContainer.style.display = "block";
     } else {
       this.style.zIndex = this.initialZ;

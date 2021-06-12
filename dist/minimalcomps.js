@@ -3,6 +3,9 @@ var mc2 = (function (exports) {
 
   const Style = {};
 
+  Style.windowIndex = 99999;
+  Style.popupZIndex = 9999;
+
   ////////////////////
   // Base Styles
   ////////////////////
@@ -2831,7 +2834,7 @@ var mc2 = (function (exports) {
     showSliders(show) {
       if (show && this._useSliders) {
         this.initialZ = this.style.zIndex;
-        this.style.zIndex = 1000000;
+        this.style.zIndex = Style.popupZIndex;
         this.sliderContainer.style.display = "block";
       } else {
         this.style.zIndex = this.initialZ;
@@ -3229,7 +3232,7 @@ var mc2 = (function (exports) {
       this._open = !this._open;
       if (this._open) {
         this.initialZ = this.style.zIndex;
-        this.style.zIndex = 1000000;
+        this.style.zIndex = Style.popupZIndex;
         this.dropdown.style.display = "block";
       } else {
         this.style.zIndex = this.initialZ;
@@ -6543,7 +6546,7 @@ var mc2 = (function (exports) {
     //////////////////////////////////
 
     _onMouseDown(event) {
-      this.style.zIndex = 1000000;
+      this.style.zIndex = Style.windowIndex++;
       let mouseX;
       let mouseY;
       if (event.changedTouches) {
@@ -6738,7 +6741,7 @@ var mc2 = (function (exports) {
 
   customElements.define("minimal-window", Window);
 
-  const version = "1.4.0";
+  const version = "1.5.0";
 
   exports.Button = Button;
   exports.Canvas = Canvas;
