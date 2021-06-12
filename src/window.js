@@ -22,7 +22,6 @@ export class Window extends Component {
    */
   constructor(parent, x, y, w, h, text) {
     super(parent, x, y);
-    console.log(arguments);
     // don't break where text is second param - original signature.
     if (typeof arguments[1] === "string") {
       text = arguments[1];
