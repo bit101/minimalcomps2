@@ -56,6 +56,8 @@ export class Knob extends Component {
     this.zero = this._createDiv(this.handle, "MinimalKnobZero");
     this.label = new Label(this.wrapper, 0, 0, this._text);
     this.valueLabel = new Label(this.wrapper, 0, 0, this._roundValue(this._value));
+    this._createDiv(this.wrapper, "MinimalKnobMin");
+    this._createDiv(this.wrapper, "MinimalKnobMax");
   }
 
   _createStyle() {
