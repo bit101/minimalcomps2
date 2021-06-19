@@ -135,6 +135,13 @@ Style.checkbox = `
     width: 10px;
     height: 10px;
   }
+  .MinimalCheckboxCheckChecked::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMSIgdmlld0JveD0iMCAwIDEwIDEwIj4KICAgPHBvbHlsaW5lIHBvaW50cz0iMiwyIDgsOCIgLz4KICAgPHBvbHlsaW5lIHBvaW50cz0iOCwyIDIsOCIgLz4KPC9zdmc+);
+  }
   .MinimalCheckboxCheckDisabled {
     ${Style.disabledStyle}
   }
@@ -374,6 +381,28 @@ Style.knob = `
     top: 50%;
     right: 0;
     transform: translateY(-50%);
+  }
+  .MinimalKnobMin {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 1px;
+    background-color: transparent;
+    top: 50%;
+    transform: rotate(-240deg);
+    border-image: linear-gradient( to left, rgb(0 0 0 / 0%), #808080 ) 1 100%;
+    border-width: 1px 6px 0 0;
+    border-style: solid;
+  }
+  .MinimalKnobMax {
+    ${Style.baseStyle}
+    width: 100%;
+    height: 1px;
+    background-color: transparent;
+    top: 50%;
+    transform: rotate(60deg);
+    border-image: linear-gradient( to left, rgb(0 0 0 / 0%), #808080 ) 1 100%;
+    border-width: 1px 6px 0 0;
+    border-style: solid;
   }
 `;
 

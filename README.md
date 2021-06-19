@@ -41,3 +41,11 @@ Full documentation here: https://www.minimalcomps2.com/documentation/index.html
 
 No need to worry about styles or layout. Just give everything a parent, a position, a prop or two and maybe an event handler.
 
+## Development
+
+Open two CLIs and run:
+
+- `npm run serve-test`
+- `npm start`
+
+Open the URL `http://localhost:9101/test/`
