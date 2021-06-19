@@ -1,4 +1,12 @@
-## MinimalComps2 are now MiniComps. You can find them here: https://github.com/bit101/minicomps
+## Notice:
+
+MinimalComps2 are now MiniComps. You can find them here:
+
+https://github.com/bit101/minicomps
+
+https://minicomps.org
+
+This repo will not continue to be maintained.
 
 # MinimalComps2
 
