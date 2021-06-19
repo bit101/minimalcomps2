@@ -1,3 +1,5 @@
+## MinimalComps2 are now MiniComps. You can find them here: https://github.com/bit101/minicomps
+
 # MinimalComps2
 
 A Web UI tookkit for creating rapid prototypes, experiments and proof of concept projects.
